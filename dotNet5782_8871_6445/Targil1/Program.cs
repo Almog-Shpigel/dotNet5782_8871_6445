@@ -1,12 +1,17 @@
-﻿using System;
+﻿using IDAL.DO;
+using System;
 
-namespace Targil1
+namespace ConsoleUI
 {
     class Program
     {
+        //DateTime currentDate = DateTime.Now;
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            //IDAL.DO.Station baseStation = new IDAL.DO.Station();
+            //Console.WriteLine("Hello World!");
+
+
         }
     }
 }

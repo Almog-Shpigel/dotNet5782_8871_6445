@@ -3,18 +3,18 @@ using System;
 
 namespace ConsoleUI.IDAL.DO
 {
-    internal struct Parcel
+    public struct Parcel
     {
-        public int ID;
-        public int SenderID;
-        public int TargetID;
-        public int DroneID;
-        public WeightCategories Weight;
-        public Priorities Priority;
-        public DateTime TimeRequested;
-        public DateTime Schedued;
-        public DateTime PickedUp;
-        public DateTime Delivered;
+        public int ID { get; set; }
+        public int SenderID { get; set; }
+        public int TargetID { get; set; }
+        public int DroneID { get; set; }
+        public WeightCategories Weight { get; set; }
+        public Priorities Priority { get; set; }
+        public DateTime TimeRequested { get; set; }
+        public DateTime Schedued { get; set; }
+        public DateTime PickedUp { get; set; }
+        public DateTime Delivered { get; set; }
 
         public Parcel(int id, int senderID, int targetID, int droneID,
                       WeightCategories weight, Priorities priority,

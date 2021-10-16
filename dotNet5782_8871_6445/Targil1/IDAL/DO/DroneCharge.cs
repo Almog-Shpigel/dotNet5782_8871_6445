@@ -1,9 +1,9 @@
 ﻿namespace ConsoleUI.IDAL.DO
 {
-    internal struct DroneCharge
+    public struct DroneCharge
     {
-        public int DroneID;
-        public int StationID;
+        public int DroneID { get; set; }
+        public int StationID { get; set; }
 
         public DroneCharge(int droneID, int stationID)
         {

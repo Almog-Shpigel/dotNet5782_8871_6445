@@ -1,12 +1,12 @@
 ﻿namespace ConsoleUI.IDAL.DO
 {
-    internal struct Station
+    public struct Station
     {
-        public int ID;
-        public int Name;
-        public int ChargeSlots;
-        public double Longitude;
-        public double Latitude;
+        public int ID { get; set; }
+        public int Name { get; set; }
+        public int ChargeSlots { get; set; }
+        public double Longitude { get; set; }
+        public double Latitude { get; set; }
 
         public Station(int id, int name, int chargeSlots,
                        double longitude, double latitude)

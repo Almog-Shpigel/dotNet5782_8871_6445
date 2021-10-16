@@ -1,17 +1,17 @@
 ﻿namespace ConsoleUI.IDAL.DO
 {
-    internal struct Customer
+    public struct Customer
     {
-        public int ID;
-        public string Name;
-        public string Phone;
-        public double Longitude;
-        public double Latitude;
+        public int ID { get; set; }
+        public string Name { get; set; }
+        public string Phone { get; set; }
+        public double Longitude { get; set; }
+        public double Latitude { get; set; }
 
-        public Customer(int iD, string name, string phone,
+        public Customer(int id, string name, string phone,
                         double longitude,double latitude)
         {
-            ID = iD;
+            ID = id;
             Name = name;
             Phone = phone;
             Longitude = longitude;

@@ -4,6 +4,7 @@ namespace IDAL
 {
     namespace DO
     {
+        public enum CHOICE  { EXIT, ADD, UPDATE, DISPLAY, DATA_PRINT }
         public enum WeightCategories
         {
             [Description("Light weight")]

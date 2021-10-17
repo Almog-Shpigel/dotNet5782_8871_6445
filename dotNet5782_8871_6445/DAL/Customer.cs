@@ -9,7 +9,7 @@
         public double Latitude { get; set; }
 
         public Customer(int id, string name, string phone,
-                        double longitude,double latitude)
+                        double longitude, double latitude)
         {
             ID = id;
             Name = name;

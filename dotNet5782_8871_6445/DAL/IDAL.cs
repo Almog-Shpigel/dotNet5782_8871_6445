@@ -1,10 +1,15 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.ComponentModel;
 
 namespace IDAL
 {
     namespace DO
     {
-        public enum CHOICE  { EXIT, ADD, UPDATE, DISPLAY, DATA_PRINT }
+        public enum CHOICE { EXIT, ADD, UPDATE, DISPLAY, DATA_PRINT }
         public enum WeightCategories
         {
             [Description("Light weight")]

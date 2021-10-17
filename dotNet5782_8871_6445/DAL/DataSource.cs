@@ -30,11 +30,11 @@ namespace DalObject
             {
                 int id = ++config.StationCouner;
                 string name = "Station " + i;
-                double latitude = rnd.Next(29,34);
-                double longitude = rnd.Next(31,35);
+                double latitude = rnd.Next(29, 34);
+                double longitude = rnd.Next(31, 35);
                 int chargeSlot = rnd.Next(10);
                 stations[i] = new Station(id, name, chargeSlot, longitude, latitude);
-                
+
             }
             for (int i = 0; i < 5; i++)
             {
@@ -43,17 +43,17 @@ namespace DalObject
                 IDAL.DO.WeightCategories weight = (IDAL.DO.WeightCategories)rnd.Next(Enum.GetNames(typeof(IDAL.DO.WeightCategories)).Length);
                 IDAL.DO.DroneStatuses status = (IDAL.DO.DroneStatuses)rnd.Next(Enum.GetNames(typeof(IDAL.DO.DroneStatuses)).Length);
                 double battery = 1000;
-                drones[i] = new Drone(id,model,weight,status,battery);
+                drones[i] = new Drone(id, model, weight, status, battery);
             }
             for (int i = 0; i < 10; i++)
             {
                 int id = ++config.CustomerCouner;
                 int num = rnd.Next(10000000, 99999999);
-                string phone = "05"+ num;
+                string phone = "05" + num;
                 string name = "Customer " + i;
                 double latitude = rnd.Next(29, 34);
                 double longitude = rnd.Next(31, 35);
-                customers[i] = new Customer(id, name,phone, longitude, latitude);
+                customers[i] = new Customer(id, name, phone, longitude, latitude);
 
             }
             //for (int i = 0; i < 10; i++)

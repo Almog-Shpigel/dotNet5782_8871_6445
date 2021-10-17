@@ -11,7 +11,7 @@ namespace IDAL.DO
             public WeightCategories MaxWeight { get; set; }
             public DroneStatuses Status { get; set; }
             public double Battery { get; set; }
-
+            
             public override string ToString()
             {
                 return $"Drone #{ID}: model={Model}, {Status}, {MaxWeight}, battery={(int)Battery}";

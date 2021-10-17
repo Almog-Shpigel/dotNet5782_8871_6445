@@ -15,15 +15,18 @@ namespace ConsoleUI
             Console.WriteLine("Please enter your choice here: ");
             temp = Console.ReadLine();
             choice = Convert.ToInt32(temp);
+            CHOICE Option = (CHOICE)choice;
             do
             {
-                switch (choice)
+                switch (Option)
                 {
-                    case (int)CHOICE.ADD:
+                    case CHOICE.ADD:
                         break;
-                    case (int)CHOICE.UPDATE:
+                    case )CHOICE.UPDATE:
                         break;
-                    case (int)CHOICE.DISPLAY:
+                    case CHOICE.DISPLAY:
+                        Console.ReadLine();
+
                         break;
                     case (int)CHOICE.DATA_PRINT:
                         break;

@@ -40,6 +40,20 @@ namespace ConsoleUI
                         switch(optionAdd)
                         {
                             case ADD_CHOICE.ADD_STATION:
+                                Console.WriteLine("Enter id:");
+                                string id = Console.ReadLine();
+                                int Id= Convert.ToInt32(id);
+                                Console.WriteLine("Enter name:");
+                                string name = Console.ReadLine();
+                                Console.WriteLine("Enter longitude:");
+                                string longitude = Console.ReadLine();
+                                double Longitude = Convert.ToDouble(longitude);
+                                Console.WriteLine("Enter lattitude:");
+                                string lattitude = Console.ReadLine();
+                                double Lattitude = Convert.ToDouble(lattitude);
+                                Console.WriteLine("Enter number of charge slots:");
+                                string chargeSlots = Console.ReadLine();
+                                int ChargeSlots = Convert.ToInt32(chargeSlots);
                                 break;
                             case ADD_CHOICE.ADD_DRONE:
                                 break;

@@ -1,5 +1,4 @@
-﻿using ConsoleUI.IDAL.DO;
-using IDAL.DO.DO;
+﻿using IDAL.DO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,7 +39,7 @@ namespace DalObject
             {
                 int id = ++config.DroneCouner;
                 string model = "Drone " + i;
-                IDAL.DO.WeightCategories weight = (IDAL.DO.WeightCategories)rnd.Next(Enum.GetNames(typeof(IDAL.DO.WeightCategories)).Length);
+                IDAL.DO.WeightCategories weight = (IDAL.DO.WeightCategories)rnd.Next(3);
                 IDAL.DO.DroneStatuses status = (IDAL.DO.DroneStatuses)rnd.Next(Enum.GetNames(typeof(IDAL.DO.DroneStatuses)).Length);
                 double battery = 1000;
                 drones[i] = new Drone(id, model, weight, status, battery);
@@ -56,16 +55,50 @@ namespace DalObject
                 customers[i] = new Customer(id, name, phone, longitude, latitude);
 
             }
-            //for (int i = 0; i < 10; i++)
-            //{
-            //    int id = ++config.ParcelsCouner;
-            //    string name = "Parcel " + i;
-            //    double latitude = rnd.Next(29, 34);
-            //    double longitude = rnd.Next(31, 35);
-            //    int chargeSlot = rnd.Next(10);
-            //    stations[i] = new Station(id, name, chargeSlot, longitude, latitude);
-            //    config.StationCouner++;
-            //}
+            for (int i = 0; i < 10; i++)
+            {
+                int id = ++config.ParcelsCouner;
+                int reciver = rnd.Next(10);
+                int send = rnd.Next(10);
+                while(send==reciver)
+                    reciver = rnd.Next(10);
+                IDAL.DO.WeightCategories weight = (IDAL.DO.WeightCategories)rnd.Next(3);
+                IDAL.DO.Priorities priority = (IDAL.DO.Priorities)rnd.Next(3);
+                DateTime Requested=DateTime.Today, Scedualed = DateTime.Today, PickedUp = DateTime.Today, Deliverd = DateTime.Today;
+                int temp = rnd.Next(1, 4);
+                switch(temp)
+                {
+                    case 1:
+                        Requested = DateTime.Now;
+                        break;
+                    case 2:
+                        Requested = DateTime.Now;
+                        Scedualed = DateTime.Now.AddMinutes(20);
+                        break;
+                    case 3:
+                        Requested = DateTime.Now;
+                        Scedualed = DateTime.Now.AddMinutes(40);
+                        PickedUp = DateTime.Now.AddMinutes(20);
+                        break;
+                    case 4:
+                        Requested = DateTime.Now;
+                        Scedualed = DateTime.Now.AddMinutes(40);
+                        PickedUp = DateTime.Now.AddMinutes(20);
+                        Deliverd = DateTime.Now.AddMinutes(40);
+                        break;
+                }
+                int droneID = 0;
+                for (int j = 0; j < 5; j++)
+                {
+                    if (drones[j].Status == IDAL.DO.DroneStatuses.Available)
+                    {
+                        drones[i].Status = IDAL.DO.DroneStatuses.Delivery;
+                        droneID = drones[i].ID;
+                    }
+                }
+                parcels[i] = new Parcel(id,send,reciver,droneID,weight,priority,Requested, Scedualed,PickedUp,Deliverd);
+
+            }
         }
     }
 }

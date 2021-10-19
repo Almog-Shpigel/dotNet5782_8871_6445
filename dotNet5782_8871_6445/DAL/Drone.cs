@@ -1,6 +1,6 @@
-﻿using IDAL.DO;
+﻿
 
-namespace IDAL.DO
+namespace IDAL
 {
     namespace DO
     {

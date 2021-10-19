@@ -1,14 +1,17 @@
-﻿namespace ConsoleUI.IDAL.DO
+﻿namespace IDAL
 {
-    public struct DroneCharge
+    namespace DO
     {
-        public int DroneID { get; set; }
-        public int StationID { get; set; }
-
-        public DroneCharge(int droneID, int stationID)
+        public struct DroneCharge
         {
-            DroneID = droneID;
-            StationID = stationID;
+            public int DroneID { get; set; }
+            public int StationID { get; set; }
+
+            public DroneCharge(int droneID, int stationID)
+            {
+                DroneID = droneID;
+                StationID = stationID;
+            }
         }
     }
 }

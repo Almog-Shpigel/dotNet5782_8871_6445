@@ -23,7 +23,7 @@ namespace DalObject
             internal static int ParcelsCouner = 0;
 
         }
-        static void Initialize()
+        internal static void Initialize()
         {
             Random rnd = new Random();
             for (int i = 0; i < 2; i++)

@@ -1,4 +1,7 @@
-﻿namespace IDAL
+﻿using DalObject;
+using static DalObject.DataSource;
+
+namespace IDAL
 {
     namespace DO
     {
@@ -13,11 +16,18 @@
             public Station(int id, string name, int chargeSlots,
                            double longitude, double latitude)
             {
+                
                 ID = id;
                 Name = name;
                 ChargeSlots = chargeSlots;
                 Longitude = longitude;
                 Latitude = latitude;
+            }
+            public void print()
+            {
+                System.Console.WriteLine($"Station {Name} #{ID}:\n" +
+                    $"Charge slots available: {ChargeSlots}\n" +
+                    $"Location: {Longitude}, {Latitude}");
             }
         }
     }

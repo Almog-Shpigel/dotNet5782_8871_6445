@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IDAL.DO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,6 @@ namespace DalObject
 {
     public class DalObject
     {
-   
           public  DalObject()
         {
             DataSource.Initialize();
@@ -16,7 +16,7 @@ namespace DalObject
         public void AddNewStation()
         {
             int id = ++DataSource.config.StationCouner;
-            string name = "Station" + id;
+            string name = "Station " + id;
             Console.WriteLine("Enter longitude:");
             string longitude = Console.ReadLine();
             double Longitude = Convert.ToDouble(longitude);
@@ -29,5 +29,15 @@ namespace DalObject
             DataSource.stations[id] = new IDAL.DO.Station(id, name, ChargeSlots, Longitude, Lattitude);
         }
 
+        public void AddNewDrone()
+        {
+            int id = ++DataSource.config.DroneCouner;
+            Console.WriteLine("Enter model name: ");
+            string model = Console.ReadLine() + id;
+            Console.WriteLine("Enter max weight: ");
+            string weight = Console.ReadLine();
+            //WeightCategories Weight = Convert.(weight);
+            DataSource.drones[id] = new IDAL.DO.Drone(id, model, Weight, DroneStatuses.Available, 100);
+        }
     }
 }

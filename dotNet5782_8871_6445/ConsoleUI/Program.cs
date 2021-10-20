@@ -13,17 +13,16 @@ namespace ConsoleUI
             //Console.WriteLine("Hello World!");
             string temp;
             int choice;
-            DalObject.DalObject data;
-           
+            DalObject.DalObject Data = new DalObject.DalObject();
             do
             {
                 Console.Clear();
                 Console.WriteLine("Please choose one of the following options:\n" +
-               "1- Add \n" +
-               "2- Update \n" +
-               "3- Display \n" +
-               "4- Display all \n" +
-               "0- Exit \n");
+               "1- Add\n" +
+               "2- Update\n" +
+               "3- Display\n" +
+               "4- Display all\n" +
+               "0- Exit\n");
                 temp = Console.ReadLine();
                 choice = Convert.ToInt32(temp);
                 CHOICE option = (CHOICE)choice;
@@ -38,18 +37,13 @@ namespace ConsoleUI
                             "4-Add new parcel.\n");
                         temp = Console.ReadLine();
                         choice = Convert.ToInt32(temp);
-                        ADD_CHOICE optionAdd = (ADD_CHOICE)choice;
+                        ADD_CHOICE optionAdd = (ADD_CHOICE)choice - 1;
                         switch(optionAdd)
                         {
-                            case ADD_CHOICE.ADD_STATION:
-                                data.AddNewStation();
-                                break;
-                            case ADD_CHOICE.ADD_DRONE:
-                                break;
-                            case ADD_CHOICE.ADD_CUSTOMER:
-                                break;
-                            case ADD_CHOICE.ADD_PARCEL:
-                                break;
+                            case ADD_CHOICE.ADD_STATION: Data.AddNewStation(); break;
+                            case ADD_CHOICE.ADD_DRONE: Data.AddNewDrone(); break;
+                            //case ADD_CHOICE.ADD_CUSTOMER: Data.AddNewCustomer(); break;
+                            //case ADD_CHOICE.ADD_PARCEL: Data.AddNewParcel(); break;
                         }
                         break;
                     case CHOICE.UPDATE:

@@ -10,7 +10,6 @@ namespace ConsoleUI
         {
             DateTime currentDate = DateTime.Now;
             //IDAL.DO.Station baseStation = new IDAL.DO.Station();
-            //Console.WriteLine("Hello World!");
             string temp;
             int choice;
             DalObject.DalObject Data = new DalObject.DalObject();

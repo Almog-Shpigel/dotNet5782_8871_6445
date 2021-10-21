@@ -34,9 +34,13 @@ namespace DalObject
             int id = ++DataSource.config.DroneCouner;
             Console.WriteLine("Enter model name: ");
             string model = Console.ReadLine() + id;
-            Console.WriteLine("Enter max weight: ");
-            string weight = Console.ReadLine();
-            //WeightCategories Weight = Convert.(weight);
+            Console.WriteLine("Enter weight category:" +
+                "0- Light \n" +
+                "1- Medium \n" +
+                "2- Heavy \n ");
+            string temp = Console.ReadLine();
+            int weight = Convert.ToInt32(temp);
+            WeightCategories Weight = (WeightCategories)weight;
             DataSource.drones[id] = new IDAL.DO.Drone(id, model, Weight, DroneStatuses.Available, 100);
         }
     }

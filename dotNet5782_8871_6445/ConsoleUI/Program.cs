@@ -32,7 +32,7 @@ namespace ConsoleUI
                         UPDATE_CHOICE optionUpdate = (UPDATE_CHOICE)UpdateMenu();
                         switch (optionUpdate)
                         {
-                            case UPDATE_CHOICE.PARCEL_PAIRING: break;
+                            case UPDATE_CHOICE.PARCEL_PAIRING: Data.PairParcelToDrone(); break;
                             case UPDATE_CHOICE.PARCEL_COLLECTED: break;
                             case UPDATE_CHOICE.PARCEL_DELEIVERY: break;
                             case UPDATE_CHOICE.DRONE_TO_CHARGE: break;

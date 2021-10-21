@@ -33,8 +33,8 @@ namespace DalObject
             {
                 int id = rnd.Next(99999, 1000000);
                 string name = "Station " + ++config.StationCouner;
-                double latitude = rnd.Next(29, 34);
-                double longitude = rnd.Next(31, 35);
+                double latitude = (rnd.Next(29, 35) + ((double)rnd.Next(9999, 100000) / 100000));
+                double longitude = (rnd.Next(31, 36) + ((double)rnd.Next(9999, 100000) / 100000));
                 int chargeSlot = rnd.Next(10);
                 stations[i] = new Station(id, name, chargeSlot, longitude, latitude);
             }
@@ -74,9 +74,9 @@ namespace DalObject
             {
                 switch (rnd.Next(2, 5))
                 {
-                    case 4: Deliverd = Requested.AddDays(14); goto case 3;
-                    case 3: PickedUp = Requested.AddDays(12); goto case 2;
-                    case 2: Scedualed = Requested.AddDays(2); break;
+                    case 4: Deliverd = Requested.AddMinutes(rnd.Next(40, 60)); goto case 3; 
+                    case 3: PickedUp = Requested.AddMinutes(rnd.Next(15, 30)); goto case 2;
+                    case 2: Scedualed = Requested.AddMinutes(rnd.Next(3, 10)); break;
                 }
                 int rand;
                 do

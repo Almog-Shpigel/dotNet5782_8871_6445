@@ -9,7 +9,7 @@ namespace DalObject
 {
     public class DalObject
     {
-          public  DalObject()
+          public DalObject()
         {
             DataSource.Initialize();
         }
@@ -41,6 +41,17 @@ namespace DalObject
             Console.Write("Latitude: ");
             double lattitude = Convert.ToDouble(Console.ReadLine());
             DataSource.customers[DataSource.config.CustomerCouner++] = new IDAL.DO.Customer(id, name, phone, longitude, lattitude);
+        }
+
+        public void PairParcelToDrone()
+        {
+            //Console.Write("Please enter the ID number of Parcel (6 digits):");
+            //int idNum = Convert.ToInt32(Console.ReadLine());
+            //int i = 0;
+            //while(DataSource.parcels[i].ID != idNum)
+            //    ++i;
+            //DataSource.parcels[i].DroneID = ;
+
         }
 
         public void AddNewParcel()

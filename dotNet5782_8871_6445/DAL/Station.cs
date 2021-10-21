@@ -25,9 +25,9 @@ namespace IDAL
             }
             public void print()
             {
-                System.Console.WriteLine($"Station {Name} #{ID}:\n" +
+                System.Console.WriteLine($"{Name} #{ID}:\n" +
                     $"Charge slots available: {ChargeSlots}\n" +
-                    $"Location: {Longitude}, {Latitude}");
+                    $"Location: {Longitude}, {Latitude}\n");
             }
         }
     }

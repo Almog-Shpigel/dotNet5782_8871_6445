@@ -8,12 +8,11 @@ namespace ConsoleUI
         
         static void Main(string[] args)
         {
-            DateTime currentDate = DateTime.Now;
             //IDAL.DO.Station baseStation = new IDAL.DO.Station();
             //Console.WriteLine("Hello World!");
             string temp;
             int choice;
-            DalObject.DalObject Data = new DalObject.DalObject();
+            DalObject.DalObject Data = new();
             do
             {
                 Console.Clear();
@@ -22,7 +21,7 @@ namespace ConsoleUI
                "2- Update\n" +
                "3- Display\n" +
                "4- Display all\n" +
-               "0- Exit\n");
+               "0- Exit");
                 temp = Console.ReadLine();
                 choice = Convert.ToInt32(temp);
                 CHOICE option = (CHOICE)choice;
@@ -31,10 +30,10 @@ namespace ConsoleUI
                 {
                     case CHOICE.ADD:
                         Console.WriteLine("Please choose one of the following options:\n" +
-                            "1-Add new station. \n" +
-                            "2-Add new drone. \n" +
-                            "3-Add new customer. \n" +
-                            "4-Add new parcel.\n");
+                            "1-Add new station.\n" +
+                            "2-Add new drone.\n" +
+                            "3-Add new customer.\n" +
+                            "4-Add new parcel.");
                         temp = Console.ReadLine();
                         choice = Convert.ToInt32(temp);
                         ADD_CHOICE optionAdd = (ADD_CHOICE)choice - 1;
@@ -48,11 +47,11 @@ namespace ConsoleUI
                         break;
                     case CHOICE.UPDATE:
                         Console.WriteLine("Please choose one of the following options:\n" +
-                            "1-Assign parcel to a drone. \n" +
-                            "2-Parcel collected by a drone. \n" +
-                            "3-Parcel deleivered to customer. \n" +
-                            "4-Send drone to be charged. \n" +
-                            "5-Realse drone from charging.\n");
+                            "1-Assign parcel to a drone.\n" +
+                            "2-Parcel collected by a drone.\n" +
+                            "3-Parcel deleivered to customer.\n" +
+                            "4-Send drone to be charged.\n" +
+                            "5-Realse drone from charging.");
                         temp = Console.ReadLine();
                         choice = Convert.ToInt32(temp);
                         UPDATE_CHOICE optionUpdate = (UPDATE_CHOICE)choice;
@@ -72,10 +71,10 @@ namespace ConsoleUI
                         break;
                     case CHOICE.DISPLAY:
                         Console.WriteLine("Please choose one of the following options:\n" +
-                             "1-Display station. \n" +
-                             "2-Display drone. \n" +
-                             "3-Display customer. \n" +
-                             "4-Display parcel.\n");
+                             "1-Display station.\n" +
+                             "2-Display drone.\n" +
+                             "3-Display customer.\n" +
+                             "4-Display parcel.");
                         temp = Console.ReadLine();
                         choice = Convert.ToInt32(temp);
                         DISPLAY_CHOICE optionDisplay = (DISPLAY_CHOICE)choice;
@@ -94,19 +93,18 @@ namespace ConsoleUI
                         break;
                     case CHOICE.DATA_PRINT:
                         Console.WriteLine("Please choose one of the following options:\n" +
-                            "1-Display all stations. \n" +
-                            "2-Display all drones. \n" +
-                            "3-Display all customers. \n" +
-                            "4-Display all parcels. \n" +
-                            "5-Display unassigned parcels. \n" +
-                            "6-Display all available stations. \n");
+                            "1-Display all stations.\n" +
+                            "2-Display all drones.\n" +
+                            "3-Display all customers.\n" +
+                            "4-Display all parcels.\n" +
+                            "5-Display unassigned parcels.\n" +
+                            "6-Display all available stations.");
                         temp = Console.ReadLine();
                         choice = Convert.ToInt32(temp);
-                        PRINT_CHOICE optionPrint = (PRINT_CHOICE)choice;
+                        PRINT_CHOICE optionPrint = (PRINT_CHOICE)choice -1;
                         switch (optionPrint)
                         {
-                            case PRINT_CHOICE.PRINT_STATIONS:
-                                break;
+                            case PRINT_CHOICE.PRINT_STATIONS: Data.PrintAllStation(); break;
                             case PRINT_CHOICE.PRINT_DRONES:
                                 break;
                             case PRINT_CHOICE.PRINT_CUSTOMER:

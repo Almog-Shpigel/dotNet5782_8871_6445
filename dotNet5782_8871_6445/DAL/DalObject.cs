@@ -36,8 +36,19 @@ namespace DalObject
             string model = Console.ReadLine() + id;
             Console.WriteLine("Enter max weight: ");
             string weight = Console.ReadLine();
-            //WeightCategories Weight = Convert.(weight);
+            int temp = Convert.ToInt32(weight);
+            WeightCategories Weight = (IDAL.DO.WeightCategories)temp;
             DataSource.drones[id] = new IDAL.DO.Drone(id, model, Weight, DroneStatuses.Available, 100);
+        }
+
+        public void PrintAllStation()
+        {
+            for (int i = 0; i < DataSource.config.StationCouner; i++)
+            {
+                DataSource.stations[i].print();
+                //Console.WriteLine(DataSource.stations[i].print());
+            }
+            Console.ReadKey();
         }
     }
 }

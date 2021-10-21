@@ -9,7 +9,6 @@ namespace ConsoleUI
         static void Main(string[] args)
         {
             //IDAL.DO.Station baseStation = new IDAL.DO.Station();
-            //Console.WriteLine("Hello World!");
             string temp;
             int choice;
             DalObject.DalObject Data = new();

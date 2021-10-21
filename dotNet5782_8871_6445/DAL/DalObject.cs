@@ -44,18 +44,28 @@ namespace DalObject
 
         public void AddNewParcel()
         {
-            
+            int id = ++DataSource.config.ParcelsCouner;
+            Console.Write("Please enter sender ID (6 digits): ");
+            int sender = Convert.ToInt32(Console.Read());
+            Console.Write("Please enter receiver ID (6 digits): ");
+            int target = Convert.ToInt32(Console.Read());
+            int droneID = 0;
+            Console.WriteLine("Enter weight category:" +
+                "0- Light\n" +
+                "1- Medium\n" +
+                "2- Heavy");
+            WeightCategories weight = (WeightCategories)Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Enter priority category:" +
+               "0- Regular\n" +
+               "1- Express\n" +
+               "2- Urgent");
+            Priorities priority = (Priorities)Convert.ToInt32(Console.ReadLine());
+            DateTime    TimeRequested = DateTime.Now,
+                        Scheduled = TimeRequested.AddDays(2),
+                        PickedUp = DateTime.MaxValue,
+                        Delivered = DateTime.MaxValue;
+            DataSource.parcels[id] = new IDAL.DO.Parcel(id, sender, target, droneID, weight, priority, TimeRequested, Scheduled, PickedUp, Delivered);
         }
-                //ID = id;
-                //SenderID = senderID;
-                //TargetID = targetID;
-                //DroneID = droneID;
-                //Weight = weight;
-                //Priority = priority;
-                //TimeRequested = timeRequested;
-                //Scheduled = schedued;
-                //PickedUp = pickedUp;
-                //Delivered = delivered;
         public void AddNewDrone()
         {
             int id = ++DataSource.config.DroneCouner;

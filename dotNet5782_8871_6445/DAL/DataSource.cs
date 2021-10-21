@@ -43,7 +43,7 @@ namespace DalObject
                 int id = ++config.DroneCouner;
                 string model = ((IDAL.DO.DroneModels)rnd.Next(3)).ToString()+ " " + config.DroneCouner;
                 IDAL.DO.WeightCategories weight = (IDAL.DO.WeightCategories)rnd.Next(3);
-                IDAL.DO.DroneStatuses status = (IDAL.DO.DroneStatuses)rnd.Next(3);
+                IDAL.DO.DroneStatuses status = (IDAL.DO.DroneStatuses)rnd.Next(2);
                 double battery = rnd.Next(4,101);           // Battery between 4%-100% charged.
                 drones[i] = new Drone(id, model, weight, status, battery);
             }
@@ -86,20 +86,19 @@ namespace DalObject
                         Deliverd = Requested.AddDays(14);
                         break;
                 }
-                int rand1, rand2;
+                int rand;
                 do
                 {
-                    rand1 = rnd.Next(5);
-                } while (drones[rand1].Status != IDAL.DO.DroneStatuses.Available);
-                do
+                    rand = rnd.Next(10);
+                } while (parcels[rand].DroneID != 0);
+                if (drones[i].Status == IDAL.DO.DroneStatuses.Available)
                 {
-                    rand2 = rnd.Next(10);
-                } while (parcels[rand2].DroneID != 0);
-                drones[rand1].Status = IDAL.DO.DroneStatuses.Delivery;
-                parcels[rand2].DroneID = drones[rand1].ID;
-                parcels[rand2].Scheduled = Scedualed;
-                parcels[rand2].PickedUp = PickedUp;
-                parcels[rand2].Delivered = Deliverd;
+                    drones[i].Status = IDAL.DO.DroneStatuses.Delivery;
+                    parcels[rand].DroneID = drones[i].ID;
+                    parcels[rand].Scheduled = Scedualed;
+                    parcels[rand].PickedUp = PickedUp;
+                    parcels[rand].Delivered = Deliverd;
+                }
             }
         }
     }

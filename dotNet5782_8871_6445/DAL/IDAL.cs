@@ -30,10 +30,10 @@ namespace IDAL
         {
             [Description("Available")]
             Available,
-            [Description("Delivery")]
-            Delivery,
             [Description("Charging")]
-            Charging
+            Charging,
+            [Description("Delivery")]
+            Delivery            
         }
     }
 }

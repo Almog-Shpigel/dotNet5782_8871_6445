@@ -74,18 +74,9 @@ namespace DalObject
             {
                 switch (rnd.Next(2, 5))
                 {
-                    case 2:
-                        Scedualed = Requested.AddDays(2);
-                        break;
-                    case 3:
-                        Scedualed = Requested.AddDays(2);
-                        PickedUp = Requested.AddDays(12);
-                        break;
-                    case 4:
-                        Scedualed = Requested.AddDays(2);
-                        PickedUp = Requested.AddDays(12);
-                        Deliverd = Requested.AddDays(14);
-                        break;
+                    case 4: Deliverd = Requested.AddDays(14); goto case 3;
+                    case 3: PickedUp = Requested.AddDays(12); goto case 2;
+                    case 2: Scedualed = Requested.AddDays(2); break;
                 }
                 int rand;
                 do

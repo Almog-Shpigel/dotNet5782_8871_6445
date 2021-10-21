@@ -24,15 +24,15 @@ namespace ConsoleUI
                         {
                             case ADD_CHOICE.ADD_STATION: Data.AddNewStation(); break;
                             case ADD_CHOICE.ADD_DRONE: Data.AddNewDrone(); break;
-                            //case ADD_CHOICE.ADD_CUSTOMER: Data.AddNewCustomer(); break;
-                            //case ADD_CHOICE.ADD_PARCEL: Data.AddNewParcel(); break;
+                            case ADD_CHOICE.ADD_CUSTOMER: Data.AddNewCustomer(); break;
+                            case ADD_CHOICE.ADD_PARCEL: Data.AddNewParcel(); break;
                         }
                         break;
                     case CHOICE.UPDATE:
                         UPDATE_CHOICE optionUpdate = (UPDATE_CHOICE)UpdateMenu();
                         switch (optionUpdate)
                         {
-                            case UPDATE_CHOICE.PARCEL_PAIRING:break;
+                            case UPDATE_CHOICE.PARCEL_PAIRING: break;
                             case UPDATE_CHOICE.PARCEL_COLLECTED: break;
                             case UPDATE_CHOICE.PARCEL_DELEIVERY: break;
                             case UPDATE_CHOICE.DRONE_TO_CHARGE: break;

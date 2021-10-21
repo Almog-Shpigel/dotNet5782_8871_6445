@@ -18,32 +18,58 @@ namespace DalObject
             int id = ++DataSource.config.StationCouner;
             string name = "Station " + id;
             Console.WriteLine("Enter longitude:");
-            string longitude = Console.ReadLine();
-            double Longitude = Convert.ToDouble(longitude);
+            double longitude = Convert.ToDouble(Console.ReadLine());
             Console.WriteLine("Enter lattitude:");
-            string lattitude = Console.ReadLine();
-            double Lattitude = Convert.ToDouble(lattitude);
+            double lattitude = Convert.ToDouble(Console.ReadLine());
             Console.WriteLine("Enter number of charge slots:");
-            string chargeSlots = Console.ReadLine();
-            int ChargeSlots = Convert.ToInt32(chargeSlots);
-            DataSource.stations[id] = new IDAL.DO.Station(id, name, ChargeSlots, Longitude, Lattitude);
+            int chargeSlots = Convert.ToInt32(Console.ReadLine());
+            DataSource.stations[id] = new IDAL.DO.Station(id, name, chargeSlots, longitude, lattitude);
         }
 
+        public void AddNewCustomer()
+        {
+            Console.Write("Please enter your Customer ID (6 digits): ");
+            int id = Convert.ToInt32(Console.ReadLine());
+            Console.Write("Please enter your full name: ");
+            string name = Console.ReadLine();
+            Console.Write("Please enter your phone number (10 digits): ");
+            string phone = Console.ReadLine();
+            Console.WriteLine("Please enter your location:");
+            Console.Write("Longitude: ");
+            double longitude = Convert.ToDouble(Console.ReadLine());
+            Console.Write("Latitude: ");
+            double lattitude = Convert.ToDouble(Console.ReadLine());
+            DataSource.customers[++DataSource.config.CustomerCouner] = new IDAL.DO.Customer(id, name, phone, longitude, lattitude);
+        }
+
+        public void AddNewParcel()
+        {
+            
+        }
+                //ID = id;
+                //SenderID = senderID;
+                //TargetID = targetID;
+                //DroneID = droneID;
+                //Weight = weight;
+                //Priority = priority;
+                //TimeRequested = timeRequested;
+                //Scheduled = schedued;
+                //PickedUp = pickedUp;
+                //Delivered = delivered;
         public void AddNewDrone()
         {
             int id = ++DataSource.config.DroneCouner;
             Console.WriteLine("Enter model name: ");
             string model = Console.ReadLine() + id;
             Console.WriteLine("Enter weight category:" +
-                "0- Light \n" +
-                "1- Medium \n" +
-                "2- Heavy \n ");
+                "0- Light\n" +
+                "1- Medium\n" +
+                "2- Heavy");
             string temp = Console.ReadLine();
             int weight = Convert.ToInt32(temp);
             WeightCategories Weight = (WeightCategories)weight;
             DataSource.drones[id] = new IDAL.DO.Drone(id, model, Weight, DroneStatuses.Available, 100);
         }
-
         public void PrintAllStation()
         {
             for (int i = 0; i < DataSource.config.StationCouner; i++)

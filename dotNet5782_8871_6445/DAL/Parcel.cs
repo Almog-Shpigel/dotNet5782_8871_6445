@@ -38,15 +38,15 @@ namespace IDAL
             {
                 System.Console.WriteLine(
                     $"Parcel #{ID}:\n" +
-                    $"Sender ID: {SenderID}\n" +
-                    $"Target ID: {TargetID}\n" +
-                    $"Drone ID: {DroneID}\n" +
-                    $"Parcel weight: {Weight}\n" +
-                    $"Parcel priority: {Priority}\n" +
-                    $"Time Requested: {TimeRequested}\n" +
-                    $"Scheduled: {Scheduled}\n" +
-                    $"Picked up: {PickedUp}\n" +
-                    $"Delivered: {Delivered}\n");
+                    $"Sender ID:        {SenderID}\n" +
+                    $"Target ID:        {TargetID}\n" +
+                    $"Drone ID:         {DroneID}\n" +
+                    $"Parcel weight:    {Weight}\n" +
+                    $"Parcel priority:  {Priority}\n" +
+                    $"Time Requested:   {TimeRequested}\n" +
+                    $"Scheduled:        {Scheduled}\n" +
+                    $"Picked up:        {PickedUp}\n" +
+                    $"Delivered:        {Delivered}\n");
             }
         }
     }

@@ -3,7 +3,6 @@ using System;
 
 namespace IDAL
 {
-
     namespace DO
     {
         public struct Parcel
@@ -15,7 +14,7 @@ namespace IDAL
             public WeightCategories Weight { get; set; }
             public Priorities Priority { get; set; }
             public DateTime TimeRequested { get; set; }
-            public DateTime Schedued { get; set; }
+            public DateTime Scheduled { get; set; }
             public DateTime PickedUp { get; set; }
             public DateTime Delivered { get; set; }
 
@@ -31,9 +30,23 @@ namespace IDAL
                 Weight = weight;
                 Priority = priority;
                 TimeRequested = timeRequested;
-                Schedued = schedued;
+                Scheduled = schedued;
                 PickedUp = pickedUp;
                 Delivered = delivered;
+            }
+            public void print()
+            {
+                System.Console.WriteLine(
+                    $"Parcel #{ID}:\n" +
+                    $"Sender ID: {SenderID}\n" +
+                    $"Target ID: {TargetID}\n" +
+                    $"Drone ID: {DroneID}\n" +
+                    $"Parcel weight: {Weight}\n" +
+                    $"Parcel priority: {Priority}\n" +
+                    $"Time Requested: {TimeRequested}\n" +
+                    $"Scheduled: {Scheduled}\n" +
+                    $"Picked up: {PickedUp}\n" +
+                    $"Delivered: {Delivered}\n");
             }
         }
     }

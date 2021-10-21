@@ -12,6 +12,10 @@
                 DroneID = droneID;
                 StationID = stationID;
             }
+            public void print()
+            {
+                System.Console.WriteLine($"Drone #{DroneID} is being charge at {StationID}\n");
+            }
         }
     }
 }

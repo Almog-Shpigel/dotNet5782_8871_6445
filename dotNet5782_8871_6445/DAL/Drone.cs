@@ -25,6 +25,13 @@ namespace IDAL
                 Status = status;
                 Battery = battery;
             }
+            public void print()
+            {
+                System.Console.WriteLine($"{Model} #{ID}:\n" +
+                    $"Max Weight: {MaxWeight}\n" +
+                    $"Drone Statuses: {Status}\n" +
+                    $"Battery {Battery}\n");
+            }
         }
     }
 }

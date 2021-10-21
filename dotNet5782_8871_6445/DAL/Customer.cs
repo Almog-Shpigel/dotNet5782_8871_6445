@@ -19,6 +19,12 @@
                 Longitude = longitude;
                 Latitude = latitude;
             }
+            public void print()
+            {
+                System.Console.WriteLine($"{Name} #{ID}:\n" +
+                    $"Phone number: {Phone}\n" +
+                    $"Location: {Longitude}, {Latitude}\n");
+            }
         }
     }
 }

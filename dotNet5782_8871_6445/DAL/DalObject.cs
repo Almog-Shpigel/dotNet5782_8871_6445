@@ -47,11 +47,39 @@ namespace DalObject
         public void PrintAllStation()
         {
             for (int i = 0; i < DataSource.config.StationCouner; i++)
-            {
                 DataSource.stations[i].print();
-                //Console.WriteLine(DataSource.stations[i].print());
-            }
-            Console.ReadKey();
+        }
+
+        public void PrintAllDrones()
+        {
+            for (int i = 0; i < DataSource.config.DroneCouner; i++)
+                DataSource.drones[i].print();
+        }
+
+        public void PrintAllCustomers()
+        {
+            for (int i = 0; i < DataSource.config.CustomerCouner; i++)
+                DataSource.customers[i].print();
+        }
+
+        public void PrintAllParcels()
+        {
+            for (int i = 0; i < DataSource.config.ParcelsCouner; i++)
+                DataSource.parcels[i].print();
+        }
+
+        public void PrintAllUnassignedParcel()
+        {
+            for (int i = 0; i < DataSource.config.ParcelsCouner; i++)
+                if (DataSource.parcels[i].DroneID == 0)
+                    DataSource.parcels[i].print();
+        }
+
+        public void PrintAllAvailableStations()
+        {
+            for (int i = 0; i < DataSource.config.StationCouner; i++)
+                if(DataSource.stations[i].ChargeSlots > 0)
+                DataSource.stations[i].print();
         }
     }
 }

@@ -49,12 +49,13 @@ namespace DalObject
             }
             for (int i = 0; i < 10; i++)        // Initializing 10 customers.
             {
-                int id = ++config.CustomerCouner;
+                int id = rnd.Next(99999, 1000000);
                 string phone = "05" + rnd.Next(10000000, 99999999);
                 string name = ((IDAL.DO.CustomerNames)rnd.Next(17)).ToString();
                 double latitude = (rnd.Next(29, 35) + ((double)rnd.Next(9999, 100000) / 100000));
                 double longitude = (rnd.Next(31, 36) + ((double)rnd.Next(9999, 100000) / 100000));
                 customers[i] = new Customer(id, name, phone, longitude, latitude);
+                ++config.CustomerCouner;
             }
             for (int i = 0; i < 10; i++)        // Initializing 10 parcels.
             {

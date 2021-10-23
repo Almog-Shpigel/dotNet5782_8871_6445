@@ -18,18 +18,18 @@ namespace IDAL
             public DateTime PickedUp { get; set; }
             public DateTime Delivered { get; set; }
 
-            public Parcel(int id, int senderID, int targetID, int droneID,
+            public Parcel(int id, int sender, int target, int drone,
                           WeightCategories weight, Priorities priority,
-                          DateTime timeRequested, DateTime schedued,
+                          DateTime requested, DateTime schedued,
                           DateTime pickedUp, DateTime delivered)
             {
                 ID = id;
-                SenderID = senderID;
-                TargetID = targetID;
-                DroneID = droneID;
+                SenderID = sender;
+                TargetID = target;
+                DroneID = drone;
                 Weight = weight;
                 Priority = priority;
-                TimeRequested = timeRequested;
+                TimeRequested = requested;
                 Scheduled = schedued;
                 PickedUp = pickedUp;
                 Delivered = delivered;

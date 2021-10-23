@@ -15,10 +15,10 @@ namespace DalObject
         internal static Parcel[] parcels = new Parcel[1000];
         internal class config
         {
-            internal static int DroneCouner = 0;
-            internal static int CustomerCouner = 0;
-            internal static int StationCouner = 0;
-            internal static int ParcelsCouner = 0;
+            internal static int DroneCounter = 0;
+            internal static int CustomerCounter = 0;
+            internal static int StationCounter = 0;
+            internal static int ParcelsCounter = 0;
         }
         internal static void Initialize()
         {
@@ -31,8 +31,8 @@ namespace DalObject
             // Initializing 2 stations.
             for (int i = 0; i < 2; i++)         
             {
-                int id = 122000 + ++config.StationCouner;      
-                string name = "Station " + config.StationCouner;
+                int id = 122000 + ++config.StationCounter;      
+                string name = "Station " + config.StationCounter;
                 double latitude = (rnd.Next(29, 35) + ((double)rnd.Next(9999, 100000) / 100000));
                 double longitude = (rnd.Next(31, 36) + ((double)rnd.Next(9999, 100000) / 100000));
                 int chargeSlot = rnd.Next(10);
@@ -41,8 +41,8 @@ namespace DalObject
             // Initializing 5 drones.
             for (int i = 0; i < 5; i++)         
             {
-                int id = 669000 + ++config.DroneCouner;
-                string model = ((IDAL.DO.DroneModels)rnd.Next(3)).ToString()+ " " + config.DroneCouner;
+                int id = 669000 + ++config.DroneCounter;
+                string model = ((IDAL.DO.DroneModels)rnd.Next(3)).ToString()+ " " + config.DroneCounter;
                 IDAL.DO.WeightCategories weight = (IDAL.DO.WeightCategories)rnd.Next(3);
                 IDAL.DO.DroneStatuses status = (IDAL.DO.DroneStatuses)rnd.Next(2);
                 double battery = rnd.Next(4,101);           // Battery between 4%-100% charged.
@@ -57,12 +57,12 @@ namespace DalObject
                 double latitude = (rnd.Next(29, 35) + ((double)rnd.Next(9999, 100000) / 100000));
                 double longitude = (rnd.Next(31, 36) + ((double)rnd.Next(9999, 100000) / 100000));
                 customers[i] = new Customer(id, name, phone, longitude, latitude);
-                ++config.CustomerCouner;
+                ++config.CustomerCounter;
             }
             // Initializing 10 parcels.
             for (int i = 0; i < 10; i++)        
             {
-                int id = 344000 + ++config.ParcelsCouner;
+                int id = 344000 + ++config.ParcelsCounter;
                 int sender = customers[rnd.Next(10)].ID;
                 int reciver = customers[rnd.Next(10)].ID;
                 while (sender == reciver)

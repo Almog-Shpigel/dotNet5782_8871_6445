@@ -25,11 +25,28 @@ namespace IDAL
             }
             public void print()
             {
-                string newLong, newLatt;
-
+                string sLong = convertLongLatit(Longitude), sLatit = convertLongLatit(Latitude);
+                //newLatt = (int)Latitude;
                 System.Console.WriteLine($"{Name} #{ID}:\n" +
                     $"Charge slots available: {ChargeSlots}\n" +
-                    $"Location: {Longitude}, {Latitude}\n");
+                    $"Location: (" + sLong + ", " + sLatit + ")\n");
+            }
+            public string convertLongLatit(double number)
+            {
+                int result, temp;
+                string sLongLatit;
+                result = (int)number;
+                sLongLatit = result + "d ";
+                result = (int)((number - result) * 10000);
+                result = result * 60;
+                temp = result % 10000;
+                result /= 10000;
+                sLongLatit += result + "\' ";
+                result = temp * 60;
+                temp = result % 10000;
+                result /= 10000;
+                sLongLatit += result + "." + temp + "\'\' ";
+                return sLongLatit;
             }
         }
     }

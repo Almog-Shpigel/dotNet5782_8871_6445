@@ -33,20 +33,20 @@ namespace ConsoleUI
                         switch (optionUpdate)
                         {
                             case UPDATE_CHOICE.PARCEL_PAIRING: Data.PairParcelToDrone(); break;
-                            case UPDATE_CHOICE.PARCEL_COLLECTED: break;
-                            case UPDATE_CHOICE.PARCEL_DELEIVERY: break;
-                            case UPDATE_CHOICE.DRONE_TO_CHARGE: break;
-                            case UPDATE_CHOICE.DRONE_AVAILABLE: break;
+                            case UPDATE_CHOICE.PARCEL_COLLECTED: Data.ParcelCollected();  break;
+                            case UPDATE_CHOICE.PARCEL_DELEIVERY: Data.ParcelDeleivery(); break;
+                            case UPDATE_CHOICE.DRONE_TO_CHARGE: Data.DroneToBeCharge(); break;
+                            case UPDATE_CHOICE.DRONE_AVAILABLE: Data.DroneAvailable(); break;
                         }
                         break;
                     case CHOICE.DISPLAY:
                         DISPLAY_CHOICE optionDisplay = (DISPLAY_CHOICE)DispalyMenu();
                         switch (optionDisplay)
                         {
-                            case DISPLAY_CHOICE.DISPLAY_STATION: break;
-                            case DISPLAY_CHOICE.DISPLAY_DRONE: break;
-                            case DISPLAY_CHOICE.DISPLAY_CUSTOMER: break;
-                            case DISPLAY_CHOICE.DISPLAY_PARCEL: break;
+                            case DISPLAY_CHOICE.DISPLAY_STATION: Data.DisplayStation(); break;
+                            case DISPLAY_CHOICE.DISPLAY_DRONE: Data.DisplayDrone(); break;
+                            case DISPLAY_CHOICE.DISPLAY_CUSTOMER: Data.DisplayCustomer(); break;
+                            case DISPLAY_CHOICE.DISPLAY_PARCEL: Data.DisplayParcel(); break;
                         }
                         break;
                     case CHOICE.DATA_PRINT:
@@ -69,6 +69,7 @@ namespace ConsoleUI
             } while (choice != 0);
 
         }
+
         private static int Menu()
         {
             Console.WriteLine("Please choose one of the following options:\n" +

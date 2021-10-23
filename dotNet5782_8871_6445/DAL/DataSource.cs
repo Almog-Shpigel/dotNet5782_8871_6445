@@ -13,7 +13,6 @@ namespace DalObject
         internal static Station[] stations = new Station[5];
         internal static Customer[] customers = new Customer[100];
         internal static Parcel[] parcels = new Parcel[1000];
-
         internal class config
         {
             internal static int DroneCouner = 0;
@@ -29,25 +28,28 @@ namespace DalObject
                         Scedualed = DateTime.MaxValue,
                         PickedUp = DateTime.MaxValue,
                         Deliverd = DateTime.MaxValue;
-            for (int i = 0; i < 2; i++)         // Initializing 2 stations.
+            // Initializing 2 stations.
+            for (int i = 0; i < 2; i++)         
             {
-                int id = rnd.Next(99999, 1000000);
-                string name = "Station " + ++config.StationCouner;
+                int id = 122000 + ++config.StationCouner;
+                string name = "Station " + config.StationCouner;
                 double latitude = (rnd.Next(29, 35) + ((double)rnd.Next(9999, 100000) / 100000));
                 double longitude = (rnd.Next(31, 36) + ((double)rnd.Next(9999, 100000) / 100000));
                 int chargeSlot = rnd.Next(10);
                 stations[i] = new Station(id, name, chargeSlot, longitude, latitude);
             }
-            for (int i = 0; i < 5; i++)         // Initializing 5 drones.
+            // Initializing 5 drones.
+            for (int i = 0; i < 5; i++)         
             {
-                int id = ++config.DroneCouner;
+                int id = 669000 + ++config.DroneCouner;
                 string model = ((IDAL.DO.DroneModels)rnd.Next(3)).ToString()+ " " + config.DroneCouner;
                 IDAL.DO.WeightCategories weight = (IDAL.DO.WeightCategories)rnd.Next(3);
                 IDAL.DO.DroneStatuses status = (IDAL.DO.DroneStatuses)rnd.Next(2);
                 double battery = rnd.Next(4,101);           // Battery between 4%-100% charged.
                 drones[i] = new Drone(id, model, weight, status, battery);
             }
-            for (int i = 0; i < 10; i++)        // Initializing 10 customers.
+            // Initializing 10 customers.
+            for (int i = 0; i < 10; i++)        
             {
                 int id = rnd.Next(99999, 1000000);
                 string phone = "05" + rnd.Next(10000000, 99999999);
@@ -57,9 +59,10 @@ namespace DalObject
                 customers[i] = new Customer(id, name, phone, longitude, latitude);
                 ++config.CustomerCouner;
             }
-            for (int i = 0; i < 10; i++)        // Initializing 10 parcels.
+            // Initializing 10 parcels.
+            for (int i = 0; i < 10; i++)        
             {
-                int id = ++config.ParcelsCouner;
+                int id = 344000 + ++config.ParcelsCouner;
                 int sender = customers[rnd.Next(10)].ID;
                 int reciver = customers[rnd.Next(10)].ID;
                 while (sender == reciver)
@@ -70,6 +73,7 @@ namespace DalObject
                 int droneID = 0;           
                 parcels[i] = new Parcel(id, sender, reciver, droneID, weight, priority, Requested, Scedualed, PickedUp, Deliverd);
             }
+            // Pairing parcels to drones.
             for (int i = 0; i < 5; i++)
             {
                 switch (rnd.Next(2, 5))

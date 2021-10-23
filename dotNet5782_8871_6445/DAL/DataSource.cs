@@ -31,7 +31,7 @@ namespace DalObject
             // Initializing 2 stations.
             for (int i = 0; i < 2; i++)         
             {
-                int id = 122000 + ++config.StationCouner;
+                int id = 122000 + ++config.StationCouner;      
                 string name = "Station " + config.StationCouner;
                 double latitude = (rnd.Next(29, 35) + ((double)rnd.Next(9999, 100000) / 100000));
                 double longitude = (rnd.Next(31, 36) + ((double)rnd.Next(9999, 100000) / 100000));

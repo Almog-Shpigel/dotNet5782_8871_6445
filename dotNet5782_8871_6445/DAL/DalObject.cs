@@ -15,29 +15,31 @@ namespace DalObject
         }
         public void AddNewStation()
         {
-            int id = 122000 + ++DataSource.config.StationCouner;
-            string name = "Station " + DataSource.config.StationCouner;
+            int id = 122000 + ++DataSource.config.StationCouner;        //Every ID number will be 6 digits starting with 12200 (changeable)
+            string name = "Station " + DataSource.config.StationCouner; //Marking the stations according to the counter, also changable
             Console.WriteLine("Enter longitude:");
-            double longitude = Convert.ToDouble(Console.ReadLine());
+            double longitude = Convert.ToDouble(Console.ReadLine());    //Reciving location
             Console.WriteLine("Enter lattitude:");
             double lattitude = Convert.ToDouble(Console.ReadLine());
             Console.WriteLine("Enter number of charge slots:");
             int chargeSlots = Convert.ToInt32(Console.ReadLine());
+            //Adding new object to the array
             DataSource.stations[DataSource.config.StationCouner - 1] = new IDAL.DO.Station(id, name, chargeSlots, longitude, lattitude);
         }
         public void AddNewCustomer()
         {
-            Console.Write("Please enter your Customer ID (6 digits): ");
+            Console.Write("Please enter your Customer ID (6 digits): ");    //Reciving ID
             int id = Convert.ToInt32(Console.ReadLine());
-            Console.Write("Please enter your full name: ");
+            Console.Write("Please enter your full name: ");                 //Reciving name
             string name = Console.ReadLine();
-            Console.Write("Please enter your phone number (10 digits): ");
+            Console.Write("Please enter your phone number (10 digits): ");  //Reciving phone number
             string phone = Console.ReadLine();
-            Console.WriteLine("Please enter your location:");
+            Console.WriteLine("Please enter your location:");               //Reciving location
             Console.Write("Longitude: ");
             double longitude = Convert.ToDouble(Console.ReadLine());
             Console.Write("Latitude: ");
             double lattitude = Convert.ToDouble(Console.ReadLine());
+            //Adding new object to the array
             DataSource.customers[DataSource.config.CustomerCouner++] = new IDAL.DO.Customer(id, name, phone, longitude, lattitude);
         }
         public void DroneAvailable()
@@ -45,9 +47,9 @@ namespace DalObject
             Console.Write("Please enter the ID number of Drone (6 digits): ");
             int droneID = Convert.ToInt32(Console.ReadLine());
             int j = 0;
-            while (DataSource.drones[j].ID != droneID && j <= DataSource.config.DroneCouner)
+            while (DataSource.drones[j].ID != droneID && j <= DataSource.config.DroneCouner) //Going through the array to find the wanted drone
                 ++j;
-            DataSource.drones[j].Status = DroneStatuses.Available;
+            DataSource.drones[j].Status = DroneStatuses.Available;           //Changing the status of the drone 
         }
 
         public void DisplayDrone()
@@ -55,7 +57,7 @@ namespace DalObject
             Console.Write("Please enter the ID number of Drone (6 digits): ");
             int droneID = Convert.ToInt32(Console.ReadLine());
             int j = 0;
-            while (DataSource.drones[j].ID != droneID && j <= DataSource.config.DroneCouner)
+            while (DataSource.drones[j].ID != droneID && j <= DataSource.config.DroneCouner)  //Going through the array to find the wanted drone
                 ++j;
             DataSource.drones[j].print();
         }
@@ -65,7 +67,7 @@ namespace DalObject
             Console.Write("Please enter the ID number of customer (6 digits): ");
             int CustomerID = Convert.ToInt32(Console.ReadLine());
             int j = 0;
-            while (DataSource.customers[j].ID != CustomerID && j <= DataSource.config.CustomerCouner)
+            while (DataSource.customers[j].ID != CustomerID && j <= DataSource.config.CustomerCouner) //Going through the array to find the wanted customer
                 ++j;
             DataSource.customers[j].print();
         }
@@ -75,7 +77,7 @@ namespace DalObject
             Console.Write("Please enter the ID number of parcel (6 digits): ");
             int ParcelID = Convert.ToInt32(Console.ReadLine());
             int j = 0;
-            while (DataSource.parcels[j].ID != ParcelID && j <= DataSource.config.ParcelsCouner)
+            while (DataSource.parcels[j].ID != ParcelID && j <= DataSource.config.ParcelsCouner) //Going through the array to find the wanted parcel
                 ++j;
             DataSource.parcels[j].print();
         }
@@ -85,7 +87,7 @@ namespace DalObject
             Console.Write("Please enter the ID number of station (6 digits): ");
             int StationID = Convert.ToInt32(Console.ReadLine());
             int j = 0;
-            while (DataSource.stations[j].ID != StationID && j <= DataSource.config.StationCouner)
+            while (DataSource.stations[j].ID != StationID && j <= DataSource.config.StationCouner) //Going through the array to find the wanted station
                 ++j;
             DataSource.stations[j].print();
         }
@@ -95,32 +97,35 @@ namespace DalObject
             Console.Write("Please enter the ID number of Drone (6 digits): ");
             int droneID = Convert.ToInt32(Console.ReadLine());
             int i = 0, j = 0, k = 0;
-            while (DataSource.drones[j].ID != droneID && j <= DataSource.config.DroneCouner)
+            while (DataSource.drones[j].ID != droneID && j <= DataSource.config.DroneCouner)    //Finding the wanted drone
                 ++j;
-            while (DataSource.stations[k].ChargeSlots == 0 && k <= DataSource.config.StationCouner)
+            while (DataSource.stations[k].ChargeSlots == 0 && k <= DataSource.config.StationCouner) //Searching for available station with free charging spots for our drone
                 ++k;
             DroneCharge charge = new DroneCharge(DataSource.drones[j].ID, DataSource.stations[k].ID);
-            if (DataSource.drones[j].Status == DroneStatuses.Delivery)
+            //Checking to see if our drone was in the middle of a delivery
+            if (DataSource.drones[j].Status == DroneStatuses.Delivery)                          //Checking to see if our drone was in the middle of a delivery
             {
-                while (DataSource.parcels[i].DroneID != droneID && i <= DataSource.config.ParcelsCouner)
+                //If so, searching the parcel that paired with this drone so we can unassign them
+                while (DataSource.parcels[i].DroneID != droneID && i <= DataSource.config.ParcelsCouner) 
                     ++i;
                 DataSource.parcels[i].DroneID = 0;
             }
-            DataSource.drones[j].Status = DroneStatuses.Charging;
+            DataSource.drones[j].Status = DroneStatuses.Charging;       //Changing the drone status
         }
         public void ParcelDeleivery()
         {
             Console.Write("Please enter the ID number of Parcel (6 digits): ");
             int idNum = Convert.ToInt32(Console.ReadLine());
             int i = 0;
-            while (DataSource.parcels[i].ID != idNum && i <= DataSource.config.ParcelsCouner)
+            while (DataSource.parcels[i].ID != idNum && i <= DataSource.config.ParcelsCouner) //Finding the wanted parcel
                 ++i;
+            // In case the ID isn't in the array
             if (i == DataSource.config.ParcelsCouner)
             {
                 Console.WriteLine("ID couldn't be found. Please enter a valid ID number.");
                 PairParcelToDrone();
             }
-            DataSource.parcels[i].Delivered = DateTime.Now;
+            DataSource.parcels[i].Delivered = DateTime.Now;         //Changing the time of the parcel to update it's been delivered now
 
         }
         public void ParcelCollected()
@@ -128,26 +133,27 @@ namespace DalObject
             Console.Write("Please enter the ID number of Parcel (6 digits): ");
             int idNum = Convert.ToInt32(Console.ReadLine());
             int i = 0, j = 0;
-            while (DataSource.parcels[i].ID != idNum && i <= DataSource.config.ParcelsCouner)
+            while (DataSource.parcels[i].ID != idNum && i <= DataSource.config.ParcelsCouner) //Searching for the wanted parcel
                 ++i;
+            // In case the ID isn't in the array
             if (i == DataSource.config.ParcelsCouner)
             {
                 Console.WriteLine("ID couldn't be found. Please enter a valid ID number.");
                 PairParcelToDrone();
             }
-            DataSource.parcels[i].PickedUp = DateTime.Now;
             int droneID = DataSource.parcels[i].DroneID;
             while (DataSource.drones[j].ID != droneID && j <= DataSource.config.DroneCouner)
                 ++j;
-            DataSource.drones[j].Status = DroneStatuses.Available;
+            DataSource.parcels[i].PickedUp = DateTime.Now; //Updating the time of the pickup by the drone
         }
         public void PairParcelToDrone()
         {
             Console.Write("Please enter the ID number of Parcel (6 digits): ");
             int idNum = Convert.ToInt32(Console.ReadLine());
             int i = 0, j = 0;
-            while (DataSource.parcels[i].ID != idNum && i <= DataSource.config.ParcelsCouner)
+            while (DataSource.parcels[i].ID != idNum && i <= DataSource.config.ParcelsCouner) //Searching for the wanted parcel
                 ++i;
+            // In case the ID isn't in the array
             if (i == DataSource.config.ParcelsCouner)
             {
                 Console.WriteLine("ID couldn't be found. Please enter a valid ID number.");
@@ -155,20 +161,20 @@ namespace DalObject
             }
             while   (j <= DataSource.config.DroneCouner && 
                     (DataSource.drones[j].Status != DroneStatuses.Available ||
-                    (int)DataSource.parcels[i].Weight > (int)DataSource.drones[j].MaxWeight))
+                    (int)DataSource.parcels[i].Weight > (int)DataSource.drones[j].MaxWeight)) //Searching a drone that is available and also can carry the parcel according to his max wight category
                 ++j;
-            if (j == DataSource.config.DroneCouner)
+            if (j == DataSource.config.DroneCouner)     //In case there is no drone available to carry this parcel
                 Console.WriteLine("There are no drones available at this time.\nPlease try again later.");
             else
             {
-                DataSource.parcels[i].DroneID = DataSource.drones[j].ID;
-                DataSource.drones[j].Status = DroneStatuses.Delivery;
-                DataSource.parcels[i].Scheduled = DateTime.Now;
+                DataSource.parcels[i].DroneID = DataSource.drones[j].ID;    //Pairing the parcel with the ID of the drone chose to take it
+                DataSource.drones[j].Status = DroneStatuses.Delivery;       //Changing the status of the drone
+                DataSource.parcels[i].Scheduled = DateTime.Now;             //Updating the scheduled time for the parcel
             }
         }
         public void AddNewParcel()
         {
-            int id = 344000 + ++DataSource.config.ParcelsCouner;
+            int id = 344000 + ++DataSource.config.ParcelsCouner;    //Every parcel id will begin with 34400(changeable) and will be 6 digits
             Console.Write("Please enter sender ID (6 digits): ");
             int sender = Convert.ToInt32(Console.ReadLine());
             Console.Write("Please enter receiver ID (6 digits): ");
@@ -178,30 +184,32 @@ namespace DalObject
                 "0- Light\n" +
                 "1- Medium\n" +
                 "2- Heavy");
-            WeightCategories weight = (WeightCategories)Convert.ToInt32(Console.ReadLine());
+            WeightCategories weight = (WeightCategories)Convert.ToInt32(Console.ReadLine()); //Choosing a weight category for the parcel
             Console.WriteLine("Enter priority category:\n" +
                "0- Regular\n" +
                "1- Express\n" +
                "2- Urgent");
-            Priorities priority = (Priorities)Convert.ToInt32(Console.ReadLine());
+            Priorities priority = (Priorities)Convert.ToInt32(Console.ReadLine());      //Choosing a priority category for the parcel
+            //Setting all the times to be dufault untill they will recive any updates
             DateTime    TimeRequested = DateTime.Now,
-                        Scheduled = TimeRequested.AddDays(2),
+                        Scheduled = DateTime.MaxValue,
                         PickedUp = DateTime.MaxValue,
                         Delivered = DateTime.MaxValue;
+            //Adding new object to the array
             DataSource.parcels[DataSource.config.ParcelsCouner - 1] = new IDAL.DO.Parcel(id, sender, target, droneID, weight, priority, TimeRequested, Scheduled, PickedUp, Delivered);
         }
         public void AddNewDrone()
         {
-            int id = 669000 + ++DataSource.config.DroneCouner;
+            int id = 669000 + ++DataSource.config.DroneCouner;      //Every drone id will begin with 66900(changeable) and will be 6 digits
             Console.WriteLine("Enter model name: ");
             string model = Console.ReadLine()+ " " + DataSource.config.DroneCouner;
             Console.WriteLine("Enter weight category:\n" +
                 "0- Light\n" +
                 "1- Medium\n" +
                 "2- Heavy");
-            string temp = Console.ReadLine();
-            int weight = Convert.ToInt32(temp);
+            int weight = Convert.ToInt32(Console.ReadLine());       //Reciving weight category
             WeightCategories Weight = (WeightCategories)weight;
+            //Adding new object to the array
             DataSource.drones[DataSource.config.DroneCouner - 1] = new IDAL.DO.Drone(id, model, Weight, DroneStatuses.Available, 100);
         }
         public void PrintAllStation()
@@ -227,7 +235,7 @@ namespace DalObject
         public void PrintAllUnassignedParcel()
         {
             for (int i = 0; i < DataSource.config.ParcelsCouner; i++)
-                if (DataSource.parcels[i].DroneID == 0)
+                if (DataSource.parcels[i].DroneID == 0) //If DroneID is 0 it means the parcel hasn't been assigned yet
                     DataSource.parcels[i].print();
         }
         public void PrintAllAvailableStations()

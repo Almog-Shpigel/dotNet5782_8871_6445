@@ -98,12 +98,15 @@ namespace DalObject
         {
             Console.Write("Please enter the ID number of Drone (6 digits): ");
             int DroneID = Convert.ToInt32(Console.ReadLine());
-            int i = 0, j = 0, k = 0;
+            int i = 0, j = 0, station = 0;
             while (DataSource.drones[j].ID != DroneID && j <= DataSource.config.DroneCounter)    //Finding the wanted drone
                 ++j;
-            while (DataSource.stations[k].ChargeSlots == 0 && k <= DataSource.config.StationCounter) //Searching for available station with free charging spots for our drone
-                ++k;
-            DroneCharge charge = new DroneCharge(DataSource.drones[j].ID, DataSource.stations[k].ID);
+            Console.WriteLine("Choose a station from the list of availbale stations:");
+            PrintAllAvailableStations();
+            station = Convert.ToInt32(Console.ReadLine());
+            DroneCharge charge = new DroneCharge(DataSource.drones[j].ID, station);
+            station %= 1000;                                                                    // Assuming we have less than 1000 stations because our ID is 122xxx
+            --DataSource.stations[station].ChargeSlots;
             //Checking to see if our drone was in the middle of a delivery
             if (DataSource.drones[j].Status == DroneStatuses.Delivery)                          //Checking to see if our drone was in the middle of a delivery
             {
@@ -217,7 +220,7 @@ namespace DalObject
         }
         #endregion
         #region Print
-        public void PrintAllStation()
+        public void PrintAllStations()
         {
             for (int i = 0; i < DataSource.config.StationCounter; i++)
                 DataSource.stations[i].print();
@@ -237,7 +240,7 @@ namespace DalObject
             for (int i = 0; i < DataSource.config.ParcelsCounter; i++)
                 DataSource.parcels[i].print();
         }
-        public void PrintAllUnassignedParcel()
+        public void PrintAllUnassignedParcels()
         {
             for (int i = 0; i < DataSource.config.ParcelsCounter; i++)
                 if (DataSource.parcels[i].DroneID == 0) //If DroneID is 0 it means the parcel hasn't been assigned yet

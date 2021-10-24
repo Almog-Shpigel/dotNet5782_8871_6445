@@ -53,11 +53,11 @@ namespace ConsoleUI
                         PRINT_CHOICE OptionPrint = (PRINT_CHOICE)DataPrintMenu();   // Receives a choice from the user to dispaly all data.
                         switch (OptionPrint)
                         {
-                            case PRINT_CHOICE.PRINT_STATIONS: Data.PrintAllStation(); break;
+                            case PRINT_CHOICE.PRINT_STATIONS: Data.PrintAllStations(); break;
                             case PRINT_CHOICE.PRINT_DRONES: Data.PrintAllDrones(); break;
                             case PRINT_CHOICE.PRINT_CUSTOMERS: Data.PrintAllCustomers(); break;
                             case PRINT_CHOICE.PRINT_PARCELS: Data.PrintAllParcels(); break;
-                            case PRINT_CHOICE.PRINT_UNASSIGNED_PARCELS: Data.PrintAllUnassignedParcel(); break;
+                            case PRINT_CHOICE.PRINT_UNASSIGNED_PARCELS: Data.PrintAllUnassignedParcels(); break;
                             case PRINT_CHOICE.PRINT_AVAILABLE_STATIONS: Data.PrintAllAvailableStations(); break;
                         }
                         break;

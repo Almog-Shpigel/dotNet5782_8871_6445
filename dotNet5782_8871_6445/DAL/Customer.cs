@@ -19,13 +19,14 @@
                 Longitude = longitude;
                 Latitude = latitude;
             }
-            public void print()
+            public override string ToString()
             {
                 string sLong = ConvertCoordinates(Longitude), sLatit = ConvertCoordinates(Latitude);    /// Converts the coordinates to be in base 60 (bonus).
-                System.Console.WriteLine($"{Name} #{ID}:\n" +
+                return ($"{Name} #{ID}:\n" +
                     $"Phone number: {Phone}\n" +
-                    $"Location: "+ sLong+", "+ sLatit + "\n");
+                    $"Location: " + sLong + ", " + sLatit + "\n");
             }
+
             public string ConvertCoordinates(double number)
             {
                 int result, remainder;

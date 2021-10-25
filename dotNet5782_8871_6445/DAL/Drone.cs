@@ -12,10 +12,6 @@ namespace IDAL
             public DroneStatuses Status { get; set; }
             public double Battery { get; set; }
 
-            public override string ToString()
-            {
-                return $"Drone #{ID}: model={Model}, {Status}, {MaxWeight}, battery={(int)Battery}";
-            }
             public Drone(int id, string model, WeightCategories maxWeight,
                          DroneStatuses status, double battery)
             {
@@ -25,9 +21,10 @@ namespace IDAL
                 Status = status;
                 Battery = battery;
             }
-            public void print()
+
+            public override string ToString()
             {
-                System.Console.WriteLine($"{Model} #{ID}:\n" +
+                return ($"{Model} #{ID}:\n" +
                     $"Max Weight: {MaxWeight}\n" +
                     $"Drone Statuses: {Status}\n" +
                     $"Battery {Battery}\n");

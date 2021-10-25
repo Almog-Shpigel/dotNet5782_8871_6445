@@ -50,7 +50,7 @@ namespace DalObject
         public void DroneAvailable(int DroneID)
         {
             int j = 0;
-            while (DataSource.drones[j].ID != DroneID && j <= DataSource.config.DroneCounter) ///Going through the array to find the wanted drone
+            while (DataSource.drones[j].ID != DroneID) ///Going through the array to find the wanted drone
                 ++j;
             DataSource.drones[j].Status = DroneStatuses.Available;           ///Changing the status of the drone 
         }
@@ -108,78 +108,93 @@ namespace DalObject
         }
         #endregion
         #region Display
-        public void DisplayDrone()
+        public string DisplayDrone(int DroneID)
         {
-            Console.Write("Please enter the ID number of Drone (6 digits): ");
-            int DroneID = Convert.ToInt32(Console.ReadLine());
-            int j = 0;
-            while (DataSource.drones[j].ID != DroneID && j <= DataSource.config.DroneCounter)  ///Going through the array to find the wanted drone
-                ++j;
-            DataSource.drones[j].print();
+            int i = 0;
+            while (DataSource.drones[i].ID != DroneID)  ///Going through the array to find the wanted drone
+                ++i;
+            return DataSource.drones[i].ToString();
         }
 
-        public void DisplayCustomer()
+        public string DisplayCustomer(int CustomerID)
         {
-            Console.Write("Please enter the ID number of customer (6 digits): ");
-            int CustomerID = Convert.ToInt32(Console.ReadLine());
             int j = 0;
-            while (DataSource.customers[j].ID != CustomerID && j <= DataSource.config.CustomerCounter) ///Going through the array to find the wanted customer
+            while (DataSource.customers[j].ID != CustomerID) ///Going through the array to find the wanted customer
                 ++j;
-            DataSource.customers[j].print();
+            return DataSource.customers[j].ToString();
         }
 
-        public void DisplayParcel()
+        public string DisplayParcel(int ParcelID)
         {
-            Console.Write("Please enter the ID number of parcel (6 digits): ");
-            int ParcelID = Convert.ToInt32(Console.ReadLine());
             int j = 0;
-            while (DataSource.parcels[j].ID != ParcelID && j <= DataSource.config.ParcelsCounter) ///Going through the array to find the wanted parcel
+            while (DataSource.parcels[j].ID != ParcelID) ///Going through the array to find the wanted parcel
                 ++j;
-            DataSource.parcels[j].print();
+            return DataSource.parcels[j].ToString();
         }
 
-        public void DisplayStation()
+        public string DisplayStation(int StationID)
         {
-            Console.Write("Please enter the ID number of station (6 digits): ");
-            int StationID = Convert.ToInt32(Console.ReadLine());
             int j = 0;
-            while (DataSource.stations[j].ID != StationID && j <= DataSource.config.StationCounter) ///Going through the array to find the wanted station
+            while (DataSource.stations[j].ID != StationID) ///Going through the array to find the wanted station
                 ++j;
-            DataSource.stations[j].print();
+            return DataSource.stations[j].ToString();
         }
         #endregion
         #region Print
-        public void PrintAllStations()
+        public string[] PrintAllStations()
         {
+            string[] StationsStrings = new string[DataSource.config.StationCounter];
             for (int i = 0; i < DataSource.config.StationCounter; i++)
-                DataSource.stations[i].print();
+                StationsStrings[i] = DataSource.stations[i].ToString();
+
+            return StationsStrings;
         }
-        public void PrintAllDrones()
+        public string[] PrintAllDrones()
         {
+            string[] DronesStrings = new string[DataSource.config.DroneCounter];
             for (int i = 0; i < DataSource.config.DroneCounter; i++)
-                DataSource.drones[i].print();
+                DronesStrings[i] = DataSource.drones[i].ToString();
+
+            return DronesStrings;
         }
-        public void PrintAllCustomers()
+        public string[] PrintAllCustomers()
         {
+            string[] CustomersStrings = new string[DataSource.config.CustomerCounter];
             for (int i = 0; i < DataSource.config.CustomerCounter; i++)
-                DataSource.customers[i].print();
+                CustomersStrings[i] = DataSource.customers[i].ToString();
+
+            return CustomersStrings;
         }
-        public void PrintAllParcels()
+        public string[] PrintAllParcels()
         {
+            string[] ParcelsStrings = new string[DataSource.config.ParcelsCounter];
             for (int i = 0; i < DataSource.config.ParcelsCounter; i++)
-                DataSource.parcels[i].print();
+                ParcelsStrings[i] = DataSource.parcels[i].ToString();
+
+            return ParcelsStrings;
         }
-        public void PrintAllUnassignedParcels()
+        public string[] PrintAllUnassignedParcels()
         {
-            for (int i = 0; i < DataSource.config.ParcelsCounter; i++)
+            string[] parcels = new string[DataSource.config.ParcelsCounter];
+            for (int i = 0, j = 0; i < DataSource.config.ParcelsCounter; i++)
                 if (DataSource.parcels[i].DroneID == 0) ///If DroneID is 0 it means the parcel hasn't been assigned yet
-                    DataSource.parcels[i].print();
+                {
+                    parcels[j] = DataSource.parcels[i].ToString();
+                    ++j;
+                }
+            return parcels;
         }
-        public void PrintAllAvailableStations()
+        public string[] PrintAllAvailableStations()
         {
-            for (int i = 0; i < DataSource.config.StationCounter; i++)
-                if(DataSource.stations[i].ChargeSlots > 0)
-                DataSource.stations[i].print();
+            string[] stations = new string[DataSource.config.StationCounter];
+            for (int i = 0, j = 0; i < DataSource.config.StationCounter; i++) 
+                if (DataSource.stations[i].ChargeSlots > 0)
+                {
+                    stations[j] = DataSource.stations[i].ToString();
+                    ++j;
+                }
+
+            return stations;
         }
         #endregion Print
     }

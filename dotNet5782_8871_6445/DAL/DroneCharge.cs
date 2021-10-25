@@ -12,9 +12,10 @@
                 DroneID = droneID;
                 StationID = stationID;
             }
-            public void print()
+
+            public override string ToString()
             {
-                System.Console.WriteLine($"Drone #{DroneID} is being charge at {StationID}\n");
+                return ($"Drone #{DroneID} is being charge at {StationID}\n");
             }
         }
     }

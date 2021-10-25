@@ -23,10 +23,10 @@ namespace IDAL
                 Longitude = longitude;
                 Latitude = latitude;
             }
-            public void print()
+            public override string ToString()
             {
                 string sLong = ConvertCoordinates(Longitude), sLatit = ConvertCoordinates(Latitude);    /// Converts the coordinates to be in base 60 (bonus).
-                System.Console.WriteLine($"{Name} #{ID}:\n" +
+                return ($"{Name} #{ID}:\n" +
                     $"Charge slots available: {ChargeSlots}\n" +
                     $"Location: (" + sLong + ", " + sLatit + ")\n");
             }

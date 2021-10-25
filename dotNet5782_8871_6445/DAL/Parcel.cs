@@ -47,11 +47,6 @@ namespace IDAL
                     $"Picked up:        {PickedUp}\n" +
                     $"Delivered:        {Delivered}\n";
             }
-            public void print()
-            {
-                System.Console.WriteLine(
-                    );
-            }
         }
     }
 }

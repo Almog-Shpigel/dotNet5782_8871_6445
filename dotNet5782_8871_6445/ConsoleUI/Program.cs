@@ -14,12 +14,12 @@ namespace ConsoleUI
                 Console.WriteLine("Press anykey to start the program.");
                 Console.ReadKey();
                 Console.Clear();
-                choice = Menu();            // Receives a choice from the user.
+                choice = Menu();            /// Receives a choice from the user.
                 CHOICE option = (CHOICE)choice;
                 switch (option)
                 {
                     case CHOICE.ADD:
-                        ADD_CHOICE OptionAdd = (ADD_CHOICE)AddMenu();   // Receives an add choice from the user.
+                        ADD_CHOICE OptionAdd = (ADD_CHOICE)AddMenu();   /// Receives an add choice from the user.
                         switch (OptionAdd)
                         {
                             case ADD_CHOICE.ADD_STATION: Data.AddNewStation(); break;
@@ -29,7 +29,7 @@ namespace ConsoleUI
                         }
                         break;
                     case CHOICE.UPDATE:
-                        UPDATE_CHOICE OptionUpdate = (UPDATE_CHOICE)UpdateMenu();   // Receives an update choice from the user.
+                        UPDATE_CHOICE OptionUpdate = (UPDATE_CHOICE)UpdateMenu();   /// Receives an update choice from the user.
                         switch (OptionUpdate)
                         {
                             case UPDATE_CHOICE.PARCEL_PAIRING: Data.PairParcelToDrone(); break;
@@ -40,7 +40,7 @@ namespace ConsoleUI
                         }
                         break;
                     case CHOICE.DISPLAY:
-                        DISPLAY_CHOICE OptionDisplay = (DISPLAY_CHOICE)DispalyMenu();   // Receives a dispaly choice from the user.
+                        DISPLAY_CHOICE OptionDisplay = (DISPLAY_CHOICE)DispalyMenu();   /// Receives a dispaly choice from the user.
                         switch (OptionDisplay)
                         {
                             case DISPLAY_CHOICE.DISPLAY_STATION: Data.DisplayStation(); break;
@@ -50,7 +50,7 @@ namespace ConsoleUI
                         }
                         break;
                     case CHOICE.DATA_PRINT:
-                        PRINT_CHOICE OptionPrint = (PRINT_CHOICE)DataPrintMenu();   // Receives a choice from the user to dispaly all data.
+                        PRINT_CHOICE OptionPrint = (PRINT_CHOICE)DataPrintMenu();   /// Receives a choice from the user to dispaly all data.
                         switch (OptionPrint)
                         {
                             case PRINT_CHOICE.PRINT_STATIONS: Data.PrintAllStations(); break;
@@ -61,14 +61,14 @@ namespace ConsoleUI
                             case PRINT_CHOICE.PRINT_AVAILABLE_STATIONS: Data.PrintAllAvailableStations(); break;
                         }
                         break;
-                    case CHOICE.EXIT: break;    // Exit from menu by choosing 0.
+                    case CHOICE.EXIT: break;    /// Exit from menu by choosing 0.
                 }
                 
             } while (choice != 0);
 
         }
 
-        private static int Menu()   // Main program menu.
+        private static int Menu()   /// Main program menu.
         {
             Console.WriteLine("Please choose one of the following options:\n" +
                                "1- Add\n" +
@@ -78,7 +78,7 @@ namespace ConsoleUI
                                "0- Exit");
             return Convert.ToInt32(Console.ReadLine());
         }
-        private static int AddMenu()   // Add menu.
+        private static int AddMenu()   /// Add menu.
         {
             Console.WriteLine("Please choose one of the following options:\n" +
                                 "1- Add new station.\n" +
@@ -87,7 +87,7 @@ namespace ConsoleUI
                                 "4- Add new parcel.");
             return Convert.ToInt32(Console.ReadLine()) - 1;
         }
-        private static int UpdateMenu()   // Update menu.
+        private static int UpdateMenu()   /// Update menu.
         {
             Console.WriteLine("Please choose one of the following options:\n" +
                                 "1-Assign parcel to a drone.\n" +
@@ -97,7 +97,7 @@ namespace ConsoleUI
                                 "5-Realse drone from charging.");
             return Convert.ToInt32(Console.ReadLine()) - 1;
         }
-        private static int DispalyMenu()    // Dispaly menu.
+        private static int DispalyMenu()    /// Dispaly menu.
         {
             Console.WriteLine("Please choose one of the following options:\n" +
                                  "1-Display station.\n" +
@@ -106,7 +106,7 @@ namespace ConsoleUI
                                  "4-Display parcel.");
             return Convert.ToInt32(Console.ReadLine()) - 1;
         }
-        private static int DataPrintMenu()  // Data print menu.
+        private static int DataPrintMenu()  /// Data print menu.
         {
             Console.WriteLine("Please choose one of the following options:\n" +
                             "1-Display all stations.\n" +

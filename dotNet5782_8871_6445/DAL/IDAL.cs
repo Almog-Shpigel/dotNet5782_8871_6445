@@ -9,7 +9,7 @@ namespace IDAL
 {
     namespace DO
     {
-        // Enums for all the menus:
+        /// Enums for all the menus:
         public enum CHOICE { EXIT, ADD, UPDATE, DISPLAY, DATA_PRINT }
         public enum ADD_CHOICE { ADD_STATION,ADD_DRONE,ADD_CUSTOMER,ADD_PARCEL}
         public enum UPDATE_CHOICE {PARCEL_PAIRING,PARCEL_COLLECTED,PARCEL_DELEIVERY,DRONE_TO_CHARGE,DRONE_AVAILABLE }

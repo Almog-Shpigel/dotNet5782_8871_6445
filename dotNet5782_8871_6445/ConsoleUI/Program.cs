@@ -87,6 +87,26 @@ namespace ConsoleUI
                                 input = int.TryParse(Console.ReadLine(), out int ParcelID);
                                 Console.WriteLine(Data.DisplayParcel(ParcelID));
                                 break;
+                            case DISPLAY_CHOICE.DISTANCE_STATION:
+                                Console.WriteLine("Please enter the coordinates of a point:");
+                                Console.Write("Enter longitude: ");
+                                input = double.TryParse(Console.ReadLine(), out double longitude);    ///Reciving location
+                                Console.Write("Enter latitude: ");
+                                input = double.TryParse(Console.ReadLine(), out double latitude);
+                                Console.Write("Please enter station ID: ");
+                                input = int.TryParse(Console.ReadLine(), out StationID);
+                                Console.WriteLine("The distance is: " + Data.DistanceFromStation(longitude, latitude, StationID) + " km");
+                                break;
+                            case DISPLAY_CHOICE.DISTANCE_CUSTOMER:
+                                Console.WriteLine("Please enter the coordinates of a point:");
+                                Console.Write("Enter longitude: ");
+                                input = double.TryParse(Console.ReadLine(), out longitude);    ///Reciving location
+                                Console.Write("Enter latitude: ");
+                                input = double.TryParse(Console.ReadLine(), out latitude);
+                                Console.Write("Please enter customer ID: ");
+                                input = int.TryParse(Console.ReadLine(), out CustomerID);
+                                Console.WriteLine("The distance is: " + Data.DistanceFromStation(longitude, latitude, CustomerID) + " km");
+                                break;
                         }
                         break;
                     case CHOICE.DATA_PRINT:
@@ -167,31 +187,34 @@ namespace ConsoleUI
         private static int DispalyMenu()    /// Dispaly menu.
         {
             Console.WriteLine("Please choose one of the following options:\n" +
-                                 "1-Display station.\n" +
-                                 "2-Display drone.\n" +
-                                 "3-Display customer.\n" +
-                                 "4-Display parcel.");
+                                 "1- Display station.\n" +
+                                 "2- Display drone.\n" +
+                                 "3- Display customer.\n" +
+                                 "4- Display parcel.\n" +
+                                 "5- Display distance from a station.\n" +
+                                 "6- Display distance from a customer.");
+
             bool input = int.TryParse(Console.ReadLine(), out int choice);
             return choice - 1;
         }
         private static int DataPrintMenu()  /// Data print menu.
         {
             Console.WriteLine("Please choose one of the following options:\n" +
-                            "1-Display all stations.\n" +
-                            "2-Display all drones.\n" +
-                            "3-Display all customers.\n" +
-                            "4-Display all parcels.\n" +
-                            "5-Display unassigned parcels.\n" +
-                            "6-Display all available stations.");
+                            "1- Display all stations.\n" +
+                            "2- Display all drones.\n" +
+                            "3- Display all customers.\n" +
+                            "4- Display all parcels.\n" +
+                            "5- Display unassigned parcels.\n" +
+                            "6- Display all available stations.");
             bool input = int.TryParse(Console.ReadLine(), out int choice);
             return choice - 1;
         }
         private static void AddNewStation(DalObject.DalObject Data)
         {
             bool input;
-            Console.WriteLine("Enter longitude:");
+            Console.Write("Enter longitude: ");
             input = double.TryParse(Console.ReadLine(), out double longitude);    ///Reciving location
-            Console.WriteLine("Enter lattitude:");
+            Console.Write("Enter latitude: ");
             input = double.TryParse(Console.ReadLine(), out double latitude);
             Console.WriteLine("Enter number of charge slots:");
             input = int.TryParse(Console.ReadLine(), out int ChargeSlots);

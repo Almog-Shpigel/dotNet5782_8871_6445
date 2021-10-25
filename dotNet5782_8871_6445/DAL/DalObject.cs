@@ -106,6 +106,46 @@ namespace DalObject
              DataSource.parcels[i].Scheduled = DateTime.Now;             ///Updating the scheduled time for the parcel
              
         }
+
+        public double DistanceFromStation(double x1, double y1, int StationID)
+        {
+            int i = 0;
+            double x2, y2;
+
+            while (StationID != DataSource.stations[i].ID)
+                ++i;
+
+            x1 = (x1 * Math.PI) / 180;
+            y1 = (y1 * Math.PI) / 180;
+            x2 = DataSource.stations[i].Longitude;
+            x2 = (x2 * Math.PI) / 180;
+            y2 = DataSource.stations[i].Latitude;
+            y2 = (y2 * Math.PI) / 180;
+            double result1 =  Math.Pow(Math.Sin((x2 - x1) / 2), 2) + Math.Cos(y1) * Math.Cos(y2) * Math.Pow(Math.Sin((y2 - y1) / 2), 2);
+            double result2 = 2 * Math.Asin(Math.Sqrt(result1));
+            double radius = 3956;
+            return (result2 * radius);
+        }
+
+        public double DistanceFromCustomer(double x1, double y1, int CustomerID)
+        {
+            int i = 0;
+            double x2, y2;
+
+            while (CustomerID != DataSource.customers[i].ID)
+                ++i;
+
+            x1 = (x1 * Math.PI) / 180;
+            y1 = (y1 * Math.PI) / 180;
+            x2 = DataSource.customers[i].Longitude;
+            x2 = (x2 * Math.PI) / 180;
+            y2 = DataSource.customers[i].Latitude;
+            y2 = (y2 * Math.PI) / 180;
+            double result1 = Math.Pow(Math.Sin((x2 - x1) / 2), 2) + Math.Cos(y1) * Math.Cos(y2) * Math.Pow(Math.Sin((y2 - y1) / 2), 2);
+            double result2 = 2 * Math.Asin(Math.Sqrt(result1));
+            double radius = 3956;
+            return (result2 * radius);
+        }
         #endregion
         #region Display
         public string DisplayDrone(int DroneID)

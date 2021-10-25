@@ -34,10 +34,9 @@ namespace IDAL
                 PickedUp = pickedUp;
                 Delivered = delivered;
             }
-            public void print()
+            public override string ToString()
             {
-                System.Console.WriteLine(
-                    $"Parcel #{ID}:\n" +
+                return $"Parcel #{ID}:\n" +
                     $"Sender ID:        {SenderID}\n" +
                     $"Target ID:        {TargetID}\n" +
                     $"Drone ID:         {DroneID}\n" +
@@ -46,7 +45,12 @@ namespace IDAL
                     $"Time Requested:   {TimeRequested}\n" +
                     $"Scheduled:        {Scheduled}\n" +
                     $"Picked up:        {PickedUp}\n" +
-                    $"Delivered:        {Delivered}\n");
+                    $"Delivered:        {Delivered}\n";
+            }
+            public void print()
+            {
+                System.Console.WriteLine(
+                    );
             }
         }
     }

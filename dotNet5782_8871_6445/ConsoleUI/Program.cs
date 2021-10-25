@@ -22,21 +22,44 @@ namespace ConsoleUI
                         ADD_CHOICE OptionAdd = (ADD_CHOICE)AddMenu();   /// Receives an add choice from the user.
                         switch (OptionAdd)
                         {
-                            case ADD_CHOICE.ADD_STATION: Data.AddNewStation(); break;
-                            case ADD_CHOICE.ADD_DRONE: Data.AddNewDrone(); break;
-                            case ADD_CHOICE.ADD_CUSTOMER: Data.AddNewCustomer(); break;
-                            case ADD_CHOICE.ADD_PARCEL: Data.AddNewParcel(); break;
+                            case ADD_CHOICE.ADD_STATION: AddNewStation(Data); break;
+                            case ADD_CHOICE.ADD_DRONE: AddNewDrone(Data); break;
+                            case ADD_CHOICE.ADD_CUSTOMER: AddNewCustomer(Data); break;
+                            case ADD_CHOICE.ADD_PARCEL: AddNewParcel(Data); break;
                         }
                         break;
                     case CHOICE.UPDATE:
                         UPDATE_CHOICE OptionUpdate = (UPDATE_CHOICE)UpdateMenu();   /// Receives an update choice from the user.
                         switch (OptionUpdate)
                         {
-                            case UPDATE_CHOICE.PARCEL_PAIRING: Data.PairParcelToDrone(); break;
-                            case UPDATE_CHOICE.PARCEL_COLLECTED: Data.ParcelCollected();  break;
-                            case UPDATE_CHOICE.PARCEL_DELEIVERY: Data.ParcelDeleivery(); break;
-                            case UPDATE_CHOICE.DRONE_TO_CHARGE: Data.DroneToBeCharge(); break;
-                            case UPDATE_CHOICE.DRONE_AVAILABLE: Data.DroneAvailable(); break;
+                            case UPDATE_CHOICE.PARCEL_PAIRING:
+                                Console.Write("Please enter the ID number of Parcel (6 digits): ");
+                                int ParcelID = Convert.ToInt32(Console.ReadLine());
+                                Data.PairParcelToDrone(ParcelID);
+                                break;
+                            case UPDATE_CHOICE.PARCEL_COLLECTED:
+                                Console.Write("Please enter the ID number of Parcel (6 digits): ");
+                                int id = Convert.ToInt32(Console.ReadLine());
+                                Data.ParcelCollected(id);
+                                break;
+                            case UPDATE_CHOICE.PARCEL_DELEIVERY:
+                                Console.Write("Please enter the ID number of Parcel (6 digits): ");
+                                int idNum = Convert.ToInt32(Console.ReadLine());
+                                Data.ParcelDeleivery(idNum);
+                                break;
+                            case UPDATE_CHOICE.DRONE_TO_CHARGE:
+                                Console.Write("Please enter the ID number of Drone (6 digits): ");
+                                int droneID = Convert.ToInt32(Console.ReadLine());
+                                Console.WriteLine("Choose a station from the list of availbale stations:");
+                                Data.PrintAllAvailableStations();
+                                int station = Convert.ToInt32(Console.ReadLine());
+                                Data.DroneToBeCharge(droneID,station);
+                                break;
+                            case UPDATE_CHOICE.DRONE_AVAILABLE:
+                                Console.Write("Please enter the ID number of Drone (6 digits): ");
+                                int DroneID = Convert.ToInt32(Console.ReadLine());
+                                Data.DroneAvailable(DroneID);
+                                break;
                         }
                         break;
                     case CHOICE.DISPLAY:
@@ -116,6 +139,62 @@ namespace ConsoleUI
                             "5-Display unassigned parcels.\n" +
                             "6-Display all available stations.");
             return Convert.ToInt32(Console.ReadLine()) - 1;
+        }
+        private static void AddNewStation(DalObject.DalObject Data)
+        {
+            Console.WriteLine("Enter longitude:");
+            double longitude = Convert.ToDouble(Console.ReadLine());    ///Reciving location
+            Console.WriteLine("Enter lattitude:");
+            double lattitude = Convert.ToDouble(Console.ReadLine());
+            Console.WriteLine("Enter number of charge slots:");
+            int ChargeSlots = Convert.ToInt32(Console.ReadLine());
+            ///Adding new object to the array
+            Data.AddNewStation(longitude, lattitude, ChargeSlots);
+        }
+        private static void AddNewDrone(DalObject.DalObject Data)
+        {
+            Console.WriteLine("Enter model name: ");
+            string model = Console.ReadLine();
+            Console.WriteLine("Enter weight category:\n" +
+                "0- Light\n" +
+                "1- Medium\n" +
+                "2- Heavy");
+            int weight = Convert.ToInt32(Console.ReadLine());       ///Reciving weight category
+            WeightCategories Weight = (WeightCategories)weight;
+            Data.AddNewDrone(model, Weight);
+        }
+        private static void AddNewCustomer(DalObject.DalObject Data)
+        {
+            Console.Write("Please enter your Customer ID (6 digits): ");    ///Reciving ID
+            int id = Convert.ToInt32(Console.ReadLine());
+            Console.Write("Please enter your full name: ");                 ///Reciving name
+            string name = Console.ReadLine();
+            Console.Write("Please enter your phone number (10 digits): ");  ///Reciving phone number
+            string phone = Console.ReadLine();
+            Console.WriteLine("Please enter your location:");               ///Reciving location
+            Console.Write("Longitude: ");
+            double longitude = Convert.ToDouble(Console.ReadLine());
+            Console.Write("Latitude: ");
+            double lattitude = Convert.ToDouble(Console.ReadLine());
+            Data.AddNewCustomer(id, name, phone, longitude, lattitude);
+        }
+        private static void AddNewParcel(DalObject.DalObject Data)
+        {
+            Console.Write("Please enter sender ID (6 digits): ");
+            int sender = Convert.ToInt32(Console.ReadLine());
+            Console.Write("Please enter receiver ID (6 digits): ");
+            int target = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Enter weight category:\n" +
+                "0- Light\n" +
+                "1- Medium\n" +
+                "2- Heavy");
+            WeightCategories weight = (WeightCategories)Convert.ToInt32(Console.ReadLine()); ///Choosing a weight category for the parcel
+            Console.WriteLine("Enter priority category:\n" +
+               "0- Regular\n" +
+               "1- Express\n" +
+               "2- Urgent");
+            Priorities priority = (Priorities)Convert.ToInt32(Console.ReadLine());      ///Choosing a priority category for the parcel
+            Data.AddNewParcel(sender,target,weight,priority);
         }
     }
 }

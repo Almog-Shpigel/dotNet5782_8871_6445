@@ -52,59 +52,56 @@ namespace DalObject
             int j = 0;
             while (DataSource.drones[j].ID != DroneID) ///Going through the array to find the wanted drone
                 ++j;
-            DataSource.drones[j].Status = DroneStatuses.Available;           ///Changing the status of the drone 
+            DataSource.drones[j].Status = DroneStatuses.Available;           ///Changing the status of the drone
+            j = 0;
+            while (DataSource.DroneCharges[j].DroneID != DroneID) ///Going through the array to find the wanted DroneCharged object
+                ++j;
+            j = 0;
+            int StationId = DataSource.DroneCharges[j].StationID;
+            while (DataSource.stations[j].ID != StationId) ///Going through the array to find the wanted station the drone was charged in
+                ++j;
+            DataSource.stations[j].ChargeSlots++; //Freeing a space for other drones
         }
-        public void DroneToBeCharge(int DroneID, int station)
+        public void DroneToBeCharge(int DroneID, int StationID)
         {
             int i = 0, j = 0;
-            while (DataSource.drones[j].ID != DroneID && j <= DataSource.config.DroneCounter)    ///Finding the wanted drone
+            while (DataSource.drones[j].ID != DroneID)    ///Finding the wanted drone
                 ++j;
-            DroneCharge charge = new DroneCharge(DataSource.drones[j].ID, station);
-            station %= 1000;                                                                    /// Assuming we have less than 1000 stations because our ID is 122xxx
-            --DataSource.stations[station].ChargeSlots;
-            ///Checking to see if our drone was in the middle of a delivery
-            if (DataSource.drones[j].Status == DroneStatuses.Delivery)                          ///Checking to see if our drone was in the middle of a delivery
-            {
-                ///If so, searching the parcel that paired with this drone so we can unassign them
-                while (DataSource.parcels[i].DroneID != DroneID && i <= DataSource.config.ParcelsCounter)
-                    ++i;
-                DataSource.parcels[i].DroneID = 0;
-            }
             DataSource.drones[j].Status = DroneStatuses.Charging;       ///Changing the drone status
+            DataSource.DroneCharges[DataSource.config.DroneChargeCounter++] = new IDAL.DO.DroneCharge(DroneID,StationID);
+            for (int h = 0; h < DataSource.config.DroneChargeCounter; h++)
+            {
+                Console.WriteLine(DataSource.DroneCharges[h].ToString());
+            }
+            while (DataSource.stations[i].ID != StationID)    ///Finding the wanted station
+                ++i;
+            --DataSource.stations[i].ChargeSlots; ///one slot was taken by the drone we chose
         }
         public void ParcelDeleivery(int idNum)
         {
             int i = 0;
-            while (DataSource.parcels[i].ID != idNum && i <= DataSource.config.ParcelsCounter) ///Finding the wanted parcel
+            while (DataSource.parcels[i].ID != idNum) ///Finding the wanted parcel
                 ++i;
             DataSource.parcels[i].Delivered = DateTime.Now;         ///Changing the time of the parcel to update it's been delivered now
+            DroneAvailable(DataSource.parcels[i].DroneID);
         }
         public void ParcelCollected(int id)
         {
-  
-            int i = 0, j = 0;
-            while (DataSource.parcels[i].ID != id && i <= DataSource.config.ParcelsCounter) ///Searching for the wanted parcel
+            int i = 0;
+            while (DataSource.parcels[i].ID != id) ///Searching for the wanted parcel
                 ++i;        
-            int DroneID = DataSource.parcels[i].DroneID;
-            while (DataSource.drones[j].ID != DroneID && j <= DataSource.config.DroneCounter)
-                ++j;
             DataSource.parcels[i].PickedUp = DateTime.Now; ///Updating the time of the pickup by the drone
         }
-        public void PairParcelToDrone(int ParcelID)
+        public void PairParcelToDrone(int ParcelID,int DroneID)
         {
             int i = 0, j = 0;
-            while (DataSource.parcels[i].ID != ParcelID && i <= DataSource.config.ParcelsCounter) ///Searching for the wanted parcel
+            while (DataSource.parcels[i].ID != ParcelID) ///Searching for the wanted parcel
                 ++i;
-            while (j <= DataSource.config.DroneCounter &&
-                    (DataSource.drones[j].Status != DroneStatuses.Available ||
-                    (int)DataSource.parcels[i].Weight > (int)DataSource.drones[j].MaxWeight))
-            { ///Searching a drone that is available and also can carry the parcel according to his max wight category
+            DataSource.parcels[i].DroneID = DroneID;     ///Pairing the parcel with the ID of the drone chose to take it
+            while (DataSource.drones[j].ID != DroneID)
                 ++j;
-            }
-             DataSource.parcels[i].DroneID = DataSource.drones[j].ID;    ///Pairing the parcel with the ID of the drone chose to take it
              DataSource.drones[j].Status = DroneStatuses.Delivery;       ///Changing the status of the drone
-             DataSource.parcels[i].Scheduled = DateTime.Now;             ///Updating the scheduled time for the parcel
-             
+             DataSource.parcels[i].Scheduled = DateTime.Now;             ///Updating the scheduled time for the parcel 
         }
         #endregion
         #region Display

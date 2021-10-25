@@ -36,7 +36,9 @@ namespace ConsoleUI
                             case UPDATE_CHOICE.PARCEL_PAIRING:
                                 Console.Write("Please enter the ID number of Parcel (6 digits): ");
                                 input = int.TryParse(Console.ReadLine(), out int ParcelID);
-                                Data.PairParcelToDrone(ParcelID);
+                                Console.Write("Please enter the ID number of Drone (6 digits): ");
+                                input = int.TryParse(Console.ReadLine(), out int DroneId);
+                                Data.PairParcelToDrone(ParcelID, DroneId);
                                 break;
                             case UPDATE_CHOICE.PARCEL_COLLECTED:
                                 Console.Write("Please enter the ID number of Parcel (6 digits): ");
@@ -51,8 +53,10 @@ namespace ConsoleUI
                             case UPDATE_CHOICE.DRONE_TO_CHARGE:
                                 Console.Write("Please enter the ID number of Drone (6 digits): ");
                                 input = int.TryParse(Console.ReadLine(), out int droneID );
-                                Console.WriteLine("Choose a station from the list of availbale stations:");
-                                Data.PrintAllAvailableStations();
+                                Console.WriteLine("Choose a station ID from the list of availbale stations:");
+                                string[] stations = Data.PrintAllAvailableStations();
+                                foreach (string item in stations)
+                                    Console.WriteLine(item);
                                 input = int.TryParse(Console.ReadLine(), out int station);
                                 Data.DroneToBeCharge(droneID,station);
                                 break;

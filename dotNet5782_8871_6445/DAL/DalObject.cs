@@ -16,15 +16,15 @@ namespace DalObject
         #region Add
         public void AddNewStation(double longitude, double latitude,int ChargeSlots)
         {
-            int id = 122000 + ++DataSource.config.StationCounter;        ///Every ID number will be 6 digits starting with 12200 (changeable)
-            string name = "Station " + DataSource.config.StationCounter; ///Marking the stations according to the counter, also changable
-            ///Adding new object to the array
-            DataSource.stations[DataSource.config.StationCounter - 1] = new IDAL.DO.Station(id, name, ChargeSlots, longitude, latitude);
+            int id = 122000 + DataSource.stations.Count();        ///Every ID number will be 6 digits starting with 12200 (changeable)
+            string name = "Station " + DataSource.stations.Count(); ///Marking the stations according to the counter, also changable
+            Station NewStation = new Station(id, name, ChargeSlots, longitude, latitude);
+            DataSource.stations.Add(NewStation);
         }
         public void AddNewCustomer(int id, string name,string phone,double longitude,double latitude)
         {
-            ///Adding new object to the array
-            DataSource.customers[DataSource.config.CustomerCounter++] = new IDAL.DO.Customer(id, name, phone, longitude, latitude);
+            Customer NewCustomer = new Customer(id, name, phone, longitude, latitude);
+            DataSource.customers.Add(NewCustomer);
         }
         public void AddNewParcel(int sender,int target,IDAL.DO.WeightCategories weight, IDAL.DO.Priorities priority)
         {
@@ -35,73 +35,70 @@ namespace DalObject
                         Scheduled = DateTime.MaxValue,
                         PickedUp = DateTime.MaxValue,
                         Delivered = DateTime.MaxValue;
-            ///Adding new object to the array
-            DataSource.parcels[DataSource.config.ParcelsCounter - 1] = new IDAL.DO.Parcel(id, sender, target, DroneID, weight, priority, TimeRequested, Scheduled, PickedUp, Delivered);
+            Parcel NewParcel = new Parcel(id, sender, target, DroneID, weight, priority, TimeRequested, Scheduled, PickedUp, Delivered);
+            DataSource.parcels.Add(NewParcel);
         }
         public void AddNewDrone(string model,IDAL.DO.WeightCategories weight)
         {
-            int id = 669000 + ++DataSource.config.DroneCounter;      ///Every drone id will begin with 66900(changeable) and will be 6 digits
-            model += " " + DataSource.config.DroneCounter;
-            ///Adding new object to the array
-            DataSource.drones[DataSource.config.DroneCounter - 1] = new IDAL.DO.Drone(id, model, weight, DroneStatuses.Available, 100);
+            int id = 669000 + DataSource.drones.Count();      ///Every drone id will begin with 66900(changeable) and will be 6 digits
+            model += " " + DataSource.drones.Count();
+            Drone NewDrone = new Drone(id, model, weight);
+            DataSource.drones.Add(NewDrone);
         }
         #endregion
         #region Update
         public void DroneAvailable(int DroneID)
         {
             int j = 0;
-            while (DataSource.drones[j].ID != DroneID) ///Going through the array to find the wanted drone
+            while (DataSource.droneCharges[j].DroneID != DroneID) ///Going through the array to find the wanted DroneCharged object
                 ++j;
-            DataSource.drones[j].Status = DroneStatuses.Available;           ///Changing the status of the drone
+            int StationId = DataSource.droneCharges[j].StationID;
             j = 0;
-            while (DataSource.DroneCharges[j].DroneID != DroneID) ///Going through the array to find the wanted DroneCharged object
-                ++j;
-            j = 0;
-            int StationId = DataSource.DroneCharges[j].StationID;
             while (DataSource.stations[j].ID != StationId) ///Going through the array to find the wanted station the drone was charged in
                 ++j;
-            DataSource.stations[j].ChargeSlots++; //Freeing a space for other drones
+            Station NewStation = DataSource.stations[j];
+            NewStation.ChargeSlots++;
+            DataSource.stations[j]=NewStation; //Freeing a space for other drones
         }
         public void DroneToBeCharge(int DroneID, int StationID)
         {
-            int i = 0, j = 0;
-            while (DataSource.drones[j].ID != DroneID)    ///Finding the wanted drone
-                ++j;
-            DataSource.drones[j].Status = DroneStatuses.Charging;       ///Changing the drone status
-            DataSource.DroneCharges[DataSource.config.DroneChargeCounter++] = new IDAL.DO.DroneCharge(DroneID,StationID);
-            for (int h = 0; h < DataSource.config.DroneChargeCounter; h++)
-            {
-                Console.WriteLine(DataSource.DroneCharges[h].ToString());
-            }
+            int i = 0;
+            DroneCharge NewCharge = new DroneCharge(DroneID, StationID);
+            DataSource.droneCharges.Add(NewCharge);
             while (DataSource.stations[i].ID != StationID)    ///Finding the wanted station
                 ++i;
-            --DataSource.stations[i].ChargeSlots; ///one slot was taken by the drone we chose
+            Station NewStation = DataSource.stations[i];
+            NewStation.ChargeSlots--;
+            DataSource.stations[i] = NewStation; ///one slot was taken by the drone we chose
         }
         public void ParcelDeleivery(int idNum)
         {
             int i = 0;
             while (DataSource.parcels[i].ID != idNum) ///Finding the wanted parcel
                 ++i;
-            DataSource.parcels[i].Delivered = DateTime.Now;         ///Changing the time of the parcel to update it's been delivered now
-            DroneAvailable(DataSource.parcels[i].DroneID);
+            Parcel NewParcel = DataSource.parcels[i];
+            NewParcel.Delivered = DateTime.Now; ///Changing the time of the parcel to update it's been delivered now
+            DataSource.parcels[i] = NewParcel;
         }
         public void ParcelCollected(int id)
         {
             int i = 0;
             while (DataSource.parcels[i].ID != id) ///Searching for the wanted parcel
-                ++i;        
-            DataSource.parcels[i].PickedUp = DateTime.Now; ///Updating the time of the pickup by the drone
+                ++i;
+            Parcel NewParcel = DataSource.parcels[i];
+            NewParcel.PickedUp = DateTime.Now; 
+            DataSource.parcels[i] = NewParcel; ///Updating the time of the pickup by the drone
         }
         public void PairParcelToDrone(int ParcelID,int DroneID)
         {
             int i = 0, j = 0;
             while (DataSource.parcels[i].ID != ParcelID) ///Searching for the wanted parcel
                 ++i;
-            DataSource.parcels[i].DroneID = DroneID;     ///Pairing the parcel with the ID of the drone chose to take it
-            while (DataSource.drones[j].ID != DroneID)
-                ++j;
-             DataSource.drones[j].Status = DroneStatuses.Delivery;       ///Changing the status of the drone
-             DataSource.parcels[i].Scheduled = DateTime.Now;             ///Updating the scheduled time for the parcel 
+            Parcel NewParcel = DataSource.parcels[i];
+            NewParcel.PickedUp = DateTime.Now;
+            NewParcel.DroneID = DroneID;                ///Pairing the parcel with the ID of the drone chose to take it
+            NewParcel.Scheduled = DateTime.Now;         ///Updating the scheduled time for the parcel
+            DataSource.parcels[i] = NewParcel;
         }
 
         public double DistanceFromStation(double x1, double y1, int StationID)

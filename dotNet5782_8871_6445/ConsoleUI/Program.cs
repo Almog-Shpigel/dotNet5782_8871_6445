@@ -1,5 +1,6 @@
 ﻿using IDAL.DO;
 using System;
+using System.Collections.Generic;
 
 namespace ConsoleUI
 {
@@ -54,7 +55,7 @@ namespace ConsoleUI
                                 Console.Write("Please enter the ID number of Drone (6 digits): ");
                                 input = int.TryParse(Console.ReadLine(), out int droneID );
                                 Console.WriteLine("Choose a station ID from the list of availbale stations:");
-                                string[] stations = Data.PrintAllAvailableStations();
+                                List<string> stations =(List<string>) Data.PrintAllAvailableStations();
                                 foreach (string item in stations)
                                     Console.WriteLine(item);
                                 input = int.TryParse(Console.ReadLine(), out int station);
@@ -118,32 +119,32 @@ namespace ConsoleUI
                         switch (OptionPrint)
                         {
                             case PRINT_CHOICE.PRINT_STATIONS:
-                                string[] stations = Data.PrintAllStations();
+                                List<string> stations =(List<string>) Data.PrintAllStations();
                                 foreach (string item in stations)
                                     Console.WriteLine(item);
                                 break;
-                            case PRINT_CHOICE.PRINT_DRONES: 
-                                string[] drones = Data.PrintAllDrones();
+                            case PRINT_CHOICE.PRINT_DRONES:
+                                List<string> drones =(List<string>) Data.PrintAllDrones();
                                 foreach (string item in drones)
                                     Console.WriteLine(item);
                                 break;
                             case PRINT_CHOICE.PRINT_CUSTOMERS:
-                                string[] customers = Data.PrintAllCustomers();
+                                List<string> customers =(List<string>) Data.PrintAllCustomers();
                                 foreach (string item in customers)
                                     Console.WriteLine(item);
                                 break;
-                            case PRINT_CHOICE.PRINT_PARCELS: 
-                                string[] parcels = Data.PrintAllParcels();
+                            case PRINT_CHOICE.PRINT_PARCELS:
+                                List<string> parcels =(List<string>) Data.PrintAllParcels();
                                 foreach (string item in parcels)
                                     Console.WriteLine(item);
                                 break;
-                            case PRINT_CHOICE.PRINT_UNASSIGNED_PARCELS: 
-                                string[] AvaParcels = Data.PrintAllUnassignedParcels();
+                            case PRINT_CHOICE.PRINT_UNASSIGNED_PARCELS:
+                                List<string> AvaParcels =(List<string>) Data.PrintAllUnassignedParcels();
                                 foreach (string item in AvaParcels)
                                     Console.WriteLine(item);
                                 break;
-                            case PRINT_CHOICE.PRINT_AVAILABLE_STATIONS: 
-                                string[] AvaStations = Data.PrintAllAvailableStations();
+                            case PRINT_CHOICE.PRINT_AVAILABLE_STATIONS:
+                                List<string> AvaStations =(List<string>) Data.PrintAllAvailableStations();
                                 foreach (string item in AvaStations)
                                     Console.WriteLine(item);
                                 break;

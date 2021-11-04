@@ -175,60 +175,49 @@ namespace DalObject
         }
         #endregion
         #region Print
-        public string[] PrintAllStations()
+        public IEnumerable<string> PrintAllStations()
         {
-            string[] StationsStrings = new string[DataSource.config.StationCounter];
-            for (int i = 0; i < DataSource.config.StationCounter; i++)
-                StationsStrings[i] = DataSource.stations[i].ToString();
-
-            return StationsStrings;
+            List <string> StationsList = new List<string>();
+            for (int i = 0; i < DataSource.stations.Count(); i++)
+                StationsList.Add(DataSource.stations[i].ToString());
+            return StationsList;
         }
-        public string[] PrintAllDrones()
+        public IEnumerable<string> PrintAllDrones()
         {
-            string[] DronesStrings = new string[DataSource.config.DroneCounter];
-            for (int i = 0; i < DataSource.config.DroneCounter; i++)
-                DronesStrings[i] = DataSource.drones[i].ToString();
-
-            return DronesStrings;
+            List<string> DronesList = new List<string>();
+            for (int i = 0; i < DataSource.drones.Count(); i++)
+                DronesList.Add(DataSource.drones[i].ToString());
+            return DronesList;
         }
-        public string[] PrintAllCustomers()
+        public IEnumerable<string> PrintAllCustomers()
         {
-            string[] CustomersStrings = new string[DataSource.config.CustomerCounter];
-            for (int i = 0; i < DataSource.config.CustomerCounter; i++)
-                CustomersStrings[i] = DataSource.customers[i].ToString();
-
-            return CustomersStrings;
+            List<string> CustomerList = new List<string>();
+            for (int i = 0; i < DataSource.customers.Count(); i++)
+                CustomerList.Add(DataSource.customers[i].ToString());
+            return CustomerList;
         }
-        public string[] PrintAllParcels()
+        public IEnumerable<string> PrintAllParcels()
         {
-            string[] ParcelsStrings = new string[DataSource.config.ParcelsCounter];
-            for (int i = 0; i < DataSource.config.ParcelsCounter; i++)
-                ParcelsStrings[i] = DataSource.parcels[i].ToString();
-
-            return ParcelsStrings;
+            List<string> ParcelsList = new List<string>();
+            for (int i = 0; i < DataSource.parcels.Count(); i++)
+                ParcelsList.Add(DataSource.parcels[i].ToString());
+            return ParcelsList;
         }
-        public string[] PrintAllUnassignedParcels()
+        public IEnumerable<string> PrintAllUnassignedParcels()
         {
-            string[] parcels = new string[DataSource.config.ParcelsCounter];
-            for (int i = 0, j = 0; i < DataSource.config.ParcelsCounter; i++)
+            List<string> UnassignedParcelsList = new List<string>();
+            for (int i = 0; i < DataSource.parcels.Count(); i++)
                 if (DataSource.parcels[i].DroneID == 0) ///If DroneID is 0 it means the parcel hasn't been assigned yet
-                {
-                    parcels[j] = DataSource.parcels[i].ToString();
-                    ++j;
-                }
-            return parcels;
+                    UnassignedParcelsList.Add(DataSource.parcels[i].ToString());
+            return UnassignedParcelsList;
         }
-        public string[] PrintAllAvailableStations()
+        public IEnumerable<string> PrintAllAvailableStations()
         {
-            string[] stations = new string[DataSource.config.StationCounter];
-            for (int i = 0, j = 0; i < DataSource.config.StationCounter; i++) 
+            List<string> AvailableStationsList = new List<string>();
+            for (int i = 0; i < DataSource.stations.Count(); i++) 
                 if (DataSource.stations[i].ChargeSlots > 0)
-                {
-                    stations[j] = DataSource.stations[i].ToString();
-                    ++j;
-                }
-
-            return stations;
+                    AvailableStationsList.Add(DataSource.stations[i].ToString());                
+            return AvailableStationsList;
         }
         #endregion Print
     }

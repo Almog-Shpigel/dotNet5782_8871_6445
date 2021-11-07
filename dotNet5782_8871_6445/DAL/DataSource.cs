@@ -17,6 +17,11 @@ namespace DalObject
         internal class config
         {
             internal static int ParcelsCounter = 0;
+            internal static double Empty = 0;
+            internal static double LightWight = 0;
+            internal static double MediumWight = 0;
+            internal static double HaevyWight = 0;
+            internal static double ChargeRate = 0; 
         }
         internal static void Initialize()
         {

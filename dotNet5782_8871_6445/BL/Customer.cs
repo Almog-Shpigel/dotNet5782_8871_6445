@@ -1,8 +1,10 @@
-﻿namespace IDAL
+﻿using System;
+
+namespace IBL
 {
-    namespace DO
+    namespace BO
     {
-        public struct Customer
+        public class Customer
         {
             public int ID { get; set; }
             public string Name { get; set; }
@@ -26,7 +28,6 @@
                     $"Phone number: {Phone}\n" +
                     $"Location: (" + sLong + " E, " + sLatit + " N)\n");
             }
-
             public string ConvertCoordinates(double number)
             {
                 int result, remainder;
@@ -46,4 +47,5 @@
             }
         }
     }
+    
 }

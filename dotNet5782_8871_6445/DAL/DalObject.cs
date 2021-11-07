@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,20 +15,29 @@ namespace DalObject
             DataSource.Initialize();
         }
         #region Add
-        public void AddNewStation(double longitude, double latitude,int ChargeSlots)
+        public void AddNewStation(double longitude, double latitude, int ChargeSlots)
         {
             int id = 122000 + DataSource.stations.Count();        ///Every ID number will be 6 digits starting with 12200 (changeable)
             string name = "Station " + DataSource.stations.Count(); ///Marking the stations according to the counter, also changable
             Station NewStation = new Station(id, name, ChargeSlots, longitude, latitude);
             DataSource.stations.Add(NewStation);
         }
-        public void AddNewCustomer(int id, string name,string phone,double longitude,double latitude)
+        public void AddNewCustomer(int id, string name, string phone, double longitude, double latitude)
         {
+            if(CustomerExist(id))
+                    throw new CustomerExistException("The ID exists already in the data!!");
+
             Customer NewCustomer = new Customer(id, name, phone, longitude, latitude);
             DataSource.customers.Add(NewCustomer);
         }
         public void AddNewParcel(int sender,int target,IDAL.DO.WeightCategories weight, IDAL.DO.Priorities priority)
         {
+            
+            if (!CustomerExist(sender))
+                throw new CustomerExistException("The sender ID dosen't exists in the data!!");
+
+            if (!CustomerExist(target))
+                throw new CustomerExistException("The target ID dosen't exists in the data!!");
             int id = 344000 + ++DataSource.config.ParcelsCounter;    ///Every parcel id will begin with 34400(changeable) and will be 6 digits
             int DroneID = 0;
             ///Setting all the times to be dufault untill they will recive any updates
@@ -49,6 +59,9 @@ namespace DalObject
         #region Update
         public void DroneAvailable(int DroneID)
         {
+            if(!DroneExist(DroneID))
+                    throw new DroneExistException("The drone dosen't exists in the data!!");
+
             int j = 0;
             while (DataSource.droneCharges[j].DroneID != DroneID) ///Going through the array to find the wanted DroneCharged object
                 ++j;
@@ -62,6 +75,12 @@ namespace DalObject
         }
         public void DroneToBeCharge(int DroneID, int StationID)
         {
+            if (!DroneExist(DroneID))
+                throw new DroneExistException("The drone dosen't exists in the data!!");
+
+            if (!StationExist(StationID))
+                throw new StationExistException("The station dosen't exists in the data!!");
+
             int i = 0;
             DroneCharge NewCharge = new DroneCharge(DroneID, StationID);
             DataSource.droneCharges.Add(NewCharge);
@@ -71,19 +90,25 @@ namespace DalObject
             NewStation.ChargeSlots--;
             DataSource.stations[i] = NewStation; ///one slot was taken by the drone we chose
         }
-        public void ParcelDeleivery(int idNum)
+        public void ParcelDeleivery(int ParcelID)
         {
+            if (!ParcelExist(ParcelID))
+                throw new DroneExistException("The parcel dosen't exists in the data!!");
+
             int i = 0;
-            while (DataSource.parcels[i].ID != idNum) ///Finding the wanted parcel
+            while (DataSource.parcels[i].ID != ParcelID) ///Finding the wanted parcel
                 ++i;
             Parcel NewParcel = DataSource.parcels[i];
             NewParcel.Delivered = DateTime.Now; ///Changing the time of the parcel to update it's been delivered now
             DataSource.parcels[i] = NewParcel;
         }
-        public void ParcelCollected(int id)
+        public void ParcelCollected(int ParcelID)
         {
+            if (!ParcelExist(ParcelID))
+                throw new DroneExistException("The parcel dosen't exists in the data!!");
+
             int i = 0;
-            while (DataSource.parcels[i].ID != id) ///Searching for the wanted parcel
+            while (DataSource.parcels[i].ID != ParcelID) ///Searching for the wanted parcel
                 ++i;
             Parcel NewParcel = DataSource.parcels[i];
             NewParcel.PickedUp = DateTime.Now; 
@@ -91,6 +116,12 @@ namespace DalObject
         }
         public void PairParcelToDrone(int ParcelID,int DroneID)
         {
+            if (!ParcelExist(ParcelID))
+                throw new DroneExistException("The parcel dosen't exists in the data!!");
+
+            if (!DroneExist(DroneID))
+                throw new DroneExistException("The drone dosen't exists in the data!!");
+
             int i = 0, j = 0;
             while (DataSource.parcels[i].ID != ParcelID) ///Searching for the wanted parcel
                 ++i;
@@ -220,5 +251,47 @@ namespace DalObject
             return AvailableStationsList;
         }
         #endregion Print
+        public double[] GetBatteryUsed()
+        {
+            double[] BatteryUsed = new double[5];
+            BatteryUsed[0] = DataSource.config.Empty;
+            BatteryUsed[1] = DataSource.config.LightWight;
+            BatteryUsed[2] = DataSource.config.MediumWight;
+            BatteryUsed[3] = DataSource.config.HaevyWight;
+            BatteryUsed[4] = DataSource.config.ChargeRate;
+            return BatteryUsed;
+        }
+
+        internal bool DroneExist(int id)
+        {
+            foreach (Drone drone in DataSource.drones)
+                if (drone.ID == id)
+                    return true;
+            return false;
+        }
+        internal bool StationExist(int id)
+        {
+            foreach (Station station in DataSource.stations)
+                if (station.ID == id)
+                    return true;
+            return false;
+        }
+        internal bool CustomerExist(int id)
+        {
+            foreach (Customer customer in DataSource.customers)
+                if (customer.ID == id)
+                    return true;
+            return false;
+        }
+        internal bool ParcelExist(int id)
+        {
+            foreach (Parcel parcel in DataSource.parcels)
+                if (parcel.ID == id)
+                    return true;
+            return false;
+        }
+
     }
+
+    
 }

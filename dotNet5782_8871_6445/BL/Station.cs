@@ -1,21 +1,28 @@
-﻿namespace IDAL
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace IBL
 {
-    namespace DO
+    namespace BO
     {
-        public struct Customer
+        class Station
         {
             public int ID { get; set; }
             public string Name { get; set; }
-            public string Phone { get; set; }
+            public int ChargeSlots { get; set; }
             public double Longitude { get; set; }
             public double Latitude { get; set; }
 
-            public Customer(int id, string name, string phone,
-                            double longitude, double latitude)
+            public Station(int id, string name, int slots,
+                           double longitude, double latitude)
             {
+
                 ID = id;
                 Name = name;
-                Phone = phone;
+                ChargeSlots = slots;
                 Longitude = longitude;
                 Latitude = latitude;
             }
@@ -23,10 +30,9 @@
             {
                 string sLong = ConvertCoordinates(Longitude), sLatit = ConvertCoordinates(Latitude);    /// Converts the coordinates to be in base 60 (bonus).
                 return ($"{Name} #{ID}:\n" +
-                    $"Phone number: {Phone}\n" +
-                    $"Location: (" + sLong + " E, " + sLatit + " N)\n");
+                    $"Charge slots available: {ChargeSlots}\n" +
+                    $"Location: (" + sLong + "E, " + sLatit + "N)\n");
             }
-
             public string ConvertCoordinates(double number)
             {
                 int result, remainder;

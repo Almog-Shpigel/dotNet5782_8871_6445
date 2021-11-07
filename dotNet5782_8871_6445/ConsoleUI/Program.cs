@@ -1,4 +1,5 @@
 ﻿using IDAL.DO;
+using IDAL;
 using System;
 using System.Collections.Generic;
 
@@ -10,10 +11,11 @@ namespace ConsoleUI
         {
             int choice;
             bool input;
-            DalObject.DalObject Data = new();
+            //IDal Data = new DalObject.DataSource();
+            
             do
             {
-                Console.WriteLine("Press anykey to start the program.");
+                Console.WriteLine("Press anykey to start the program...");
                 Console.ReadKey();
                 Console.Clear();
                 choice = Menu();            /// Receives a choice from the user.

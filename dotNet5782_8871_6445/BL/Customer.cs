@@ -1,29 +1,31 @@
 ﻿using System;
+using IBL.BO;
+using System.Collections.Generic;
 
 namespace IBL
 {
     namespace BO
     {
-        public class Customer
+        class Customer
         {
             public int ID { get; set; }
             public string Name { get; set; }
             public string Phone { get; set; }
-            public double Longitude { get; set; }
-            public double Latitude { get; set; }
-
+            public Location Location { get; set; }
+            public List<Parcel> ParcelesSentByCustomer { get; set; }
+            public List<Parcel> ParcelesSentToCustomer { get; set; }
             public Customer(int id, string name, string phone,
                             double longitude, double latitude)
             {
                 ID = id;
                 Name = name;
                 Phone = phone;
-                Longitude = longitude;
-                Latitude = latitude;
+                Location.Longitude = longitude;
+                Location.Latitude = latitude;
             }
             public override string ToString()
             {
-                string sLong = ConvertCoordinates(Longitude), sLatit = ConvertCoordinates(Latitude);    /// Converts the coordinates to be in base 60 (bonus).
+                string sLong = ConvertCoordinates(Location.Longitude), sLatit = ConvertCoordinates(Location.Latitude);    /// Converts the coordinates to be in base 60 (bonus).
                 return ($"{Name} #{ID}:\n" +
                     $"Phone number: {Phone}\n" +
                     $"Location: (" + sLong + " E, " + sLatit + " N)\n");

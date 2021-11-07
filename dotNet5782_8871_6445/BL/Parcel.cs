@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static IBL.BO.Enums;
 
 namespace IBL
 {
@@ -11,11 +12,11 @@ namespace IBL
         class Parcel
         {
             public int ID { get; set; }
-            public int SenderID { get; set; }
-            public int TargetID { get; set; }
-            public int DroneID { get; set; }
+            public CustomerInParcel Sender { get; set; }
+            public CustomerInParcel Target { get; set; }
             public WeightCategories Weight { get; set; }
             public Priorities Priority { get; set; }
+            //public DroneInParcel DroneInParcel { get; set; }
             public DateTime TimeRequested { get; set; }
             public DateTime Scheduled { get; set; }
             public DateTime PickedUp { get; set; }

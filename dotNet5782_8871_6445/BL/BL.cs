@@ -8,11 +8,12 @@ using IDAL;
 
 namespace BL
 {
-   public class BL 
+    public class BL: IBL.IBL
     {
         public BL()
         {
             IDal Data = new DalObject.DalObject();
+            Double[] BatteryUsed = Data.GetBatteryUsed();
 
         }
     }

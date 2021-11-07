@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace IDAL
-{
+{ 
     public interface IDal
     {
         public void AddNewStation(double longitude, double latitude, int ChargeSlots);

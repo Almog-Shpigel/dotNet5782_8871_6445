@@ -11,8 +11,7 @@ namespace ConsoleUI
         {
             int choice;
             bool input;
-            //IDal Data = new DalObject.DataSource();
-            
+            IDal Data = new DalObject.DalObject();
             do
             {
                 Console.WriteLine("Press anykey to start the program...");

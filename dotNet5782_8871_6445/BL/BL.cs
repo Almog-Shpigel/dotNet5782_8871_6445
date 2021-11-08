@@ -5,8 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DalObject;
+using IBL.BO;
 using IDAL;
-using IDAL.DO;
+using static IBL.BO.Enums;
 using static IBL.BO.Exceptions;
 
 namespace IBL
@@ -14,15 +15,19 @@ namespace IBL
     public class BL: IBL
     {
         IDal Data = new DalObject.DalObject();
+        List<DroneForList> DroneList = new();
         public BL()
         {
             Double[] BatteryUsed = Data.GetBatteryUsed();
+            IEnumerable<IDAL.DO.Drone> AllDrones;
+            AllDrones= Data.GetAllDrones();
+
         }
 
         public IEnumerable<string> DispalyAllStations()
         {
             List<string> stations = new();
-            foreach (Station station in Data.GetAllStations())
+            foreach (IDAL.DO.Station station in Data.GetAllStations())
                 stations.Add(station.ToString());
             return stations;
         }
@@ -30,7 +35,7 @@ namespace IBL
         public List<string> DispalyAllDrones()
         {
             List<string> drones = new();
-            foreach (Drone drone in Data.GetAllDrones())
+            foreach (IDAL.DO.Drone drone in Data.GetAllDrones())
                 drones.Add(drone.ToString());
             return drones;
         }
@@ -38,7 +43,7 @@ namespace IBL
         public IEnumerable<string> DispalyAllCustomers()
         {
             List<string> customers = new();
-            foreach (Customer customer in Data.GetAllCustomers())
+            foreach (IDAL.DO.Customer customer in Data.GetAllCustomers())
                 customers.Add(customer.ToString());
             return customers;
         }
@@ -46,34 +51,34 @@ namespace IBL
         public IEnumerable<string> DispalyAllParcels()
         {
             List<string> parcels = new();
-            foreach (Parcel parcel in Data.GetAllParcels())
+            foreach (IDAL.DO.Parcel parcel in Data.GetAllParcels())
                 parcels.Add(parcel.ToString());
             return parcels;
         }
 
         public IEnumerable<string> DispalyAllUnassignedParcels()
         {
-            IEnumerable<Parcel> AllParecels = Data.GetAllParcels();
+            IEnumerable<IDAL.DO.Parcel> AllParecels = Data.GetAllParcels();
             AllParecels.Select(x => x.ID == 0);
             List<string> parcels = new();
-            foreach (Parcel parcel in AllParecels)
+            foreach (IDAL.DO.Parcel parcel in AllParecels)
                 parcels.Add(parcel.ToString());
             return parcels;
         }
 
         public IEnumerable<string> DispalyAllAvailableStations()
         {
-            IEnumerable<Station> AllStations = Data.GetAllStations();
+            IEnumerable<IDAL.DO.Station> AllStations = Data.GetAllStations();
             AllStations.Select(x => x.ChargeSlots > 0);
             List<string> stations = new();
-            foreach (Station station in AllStations)
+            foreach (IDAL.DO.Station station in AllStations)
                 stations.Add(station.ToString());
             return stations;
         }
 
         public string DisplayStation(int StationID)
         {
-            foreach (Station station in Data.GetAllStations())
+            foreach (IDAL.DO.Station station in Data.GetAllStations())
                 if (station.ID == StationID)
                     return station.ToString();
             throw new StationExistException();
@@ -81,7 +86,7 @@ namespace IBL
 
         public string DisplayDrone(int DroneID)
         {
-            foreach (Drone drone in Data.GetAllDrones())
+            foreach (IDAL.DO.Drone drone in Data.GetAllDrones())
                 if (drone.ID == DroneID)
                     return drone.ToString();
             throw new DroneExistException();
@@ -89,7 +94,7 @@ namespace IBL
 
         public string DisplayCustomer(int CustomerID)
         {
-            foreach (Customer customer in Data.GetAllCustomers())
+            foreach (IDAL.DO.Customer customer in Data.GetAllCustomers())
                 if (customer.ID == CustomerID)
                     return customer.ToString();
             throw new CustomerExistException();
@@ -97,7 +102,7 @@ namespace IBL
 
         public string DisplayParcel(int ParcelID)
         {
-            foreach (Parcel parcel in Data.GetAllParcels())
+            foreach (IDAL.DO.Parcel parcel in Data.GetAllParcels())
                 if (parcel.ID == ParcelID)
                     return parcel.ToString();
             throw new ParcelExistException();
@@ -105,8 +110,8 @@ namespace IBL
         public string DisplayDistanceFromStation(double longitude1, double latitude1, int StationID)
         {
             double longitude2 = 0, latitude2 = 0;
-            IEnumerable<Station> stations = Data.GetAllStations();
-            foreach (Station station in stations)
+            IEnumerable<IDAL.DO.Station> stations = Data.GetAllStations();
+            foreach (IDAL.DO.Station station in stations)
                 if (station.ID == StationID)
                 {
                     longitude2 = station.Longitude;
@@ -119,8 +124,8 @@ namespace IBL
         public string DisplayDistanceFromCustomer(double longitude1, double latitude1, int CustomerID)
         {
             double longitude2 = 0, latitude2 = 0;
-            IEnumerable<Customer> customers = Data.GetAllCustomers();
-            foreach (Customer customer in customers)
+            IEnumerable<IDAL.DO.Customer> customers = Data.GetAllCustomers();
+            foreach (IDAL.DO.Customer customer in customers)
                 if (customer.ID == CustomerID)
                 {
                     longitude2 = customer.Longitude;
@@ -189,7 +194,7 @@ namespace IBL
             throw new NotImplementedException();
         }
 
-        public void AddNewDrone(int DroneId, string model, WeightCategories weight, int StationId)
+        internal void AddNewDrone(int DroneId, string model, WeightCategories weight, int StationId)
         {
             //מצב סוללה יוגרל בין %20 ל-40%
             //יוסף כנמצא בתחזוקה
@@ -211,7 +216,7 @@ namespace IBL
             throw new NotImplementedException();
         }
 
-        public void AddNewParcel(int sender, int receiver, WeightCategories weight, Priorities prioritie)
+        internal void AddNewParcel(int sender, int receiver, WeightCategories weight, Priorities prioritie)
         {
             //ב-BL כל הזמנים יאותחלו לזמן אפס למעט תאריך יצירה שיאותחל ל-DateTime.Now
             //הרחפן יאותחל ל-null

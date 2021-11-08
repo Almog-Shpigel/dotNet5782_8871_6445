@@ -1,4 +1,5 @@
-﻿using IDAL.DO;
+﻿using IBL;
+using IDAL.DO;
 using System;
 namespace ConsoleUI_BL
 {
@@ -6,7 +7,7 @@ namespace ConsoleUI_BL
     {
         static void Main(string[] args)
         {
-            BL.BL IBL = new();
+            IBL.BL IBL = new();
             int choice;
             do
             {

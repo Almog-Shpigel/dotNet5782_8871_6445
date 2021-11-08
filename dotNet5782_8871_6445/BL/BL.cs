@@ -8,9 +8,9 @@ using DalObject;
 using IDAL;
 using IDAL.DO;
 
-namespace BL
+namespace IBL
 {
-    public class BL: IBL.IBL
+    public class BL: IBL
     {
         public BL()
         {

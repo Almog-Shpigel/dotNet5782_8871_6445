@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IDAL.DO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -29,6 +30,11 @@ namespace IDAL
         public IEnumerable<string> PrintAllParcels();
         public IEnumerable<string> PrintAllUnassignedParcels();
         public IEnumerable<string> PrintAllAvailableStations();
+        public IEnumerable<Parcel> GetAllParcels();
+        public IEnumerable<Station> GetAllStations();
+        public IEnumerable<Customer> GetAllCustomers();
+        public IEnumerable<Drone> GetAllDrones();
+        public IEnumerable<DroneCharge> GetAllDronesCharge();
         public double[] GetBatteryUsed();
     }
 }

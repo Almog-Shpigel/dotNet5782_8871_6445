@@ -34,7 +34,7 @@ namespace ConsoleUI_BL
         }
         public static int ChargeSlots()
         {
-            Console.WriteLine("Enter number of charge slots:");
+            Console.Write("Enter number of charge slots:");
             bool input = int.TryParse(Console.ReadLine(), out int ChargeSlots);
             return ChargeSlots;
         }

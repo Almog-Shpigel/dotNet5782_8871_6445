@@ -28,9 +28,9 @@ namespace IBL
                           DateTime pickedUp, DateTime delivered)
             {
                 ID = id;
-                SenderID = sender;
-                TargetID = target;
-                DroneID = drone;
+                //SenderID = sender;
+                //TargetID = target;
+                //DroneID = drone;
                 Weight = weight;
                 Priority = priority;
                 TimeRequested = requested;
@@ -41,9 +41,9 @@ namespace IBL
             public override string ToString()
             {
                 return $"Parcel #{ID}:\n" +
-                    $"Sender ID:        {SenderID}\n" +
-                    $"Target ID:        {TargetID}\n" +
-                    $"Drone ID:         {DroneID}\n" +
+                    //$"Sender ID:        {SenderID}\n" +
+                    //$"Target ID:        {TargetID}\n" +
+                    //$"Drone ID:         {DroneID}\n" +
                     $"Parcel weight:    {Weight}\n" +
                     $"Parcel priority:  {Priority}\n" +
                     $"Time Requested:   {TimeRequested}\n" +

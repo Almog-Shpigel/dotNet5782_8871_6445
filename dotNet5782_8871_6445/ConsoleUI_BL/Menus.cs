@@ -25,8 +25,8 @@ namespace ConsoleUI_BL
             {
                 case CHOICE.ADD: ADD(IBL); break;       /// Receives an add choice from the user.
                 case CHOICE.UPDATE: UPDATE(IBL); break;
-                case CHOICE.DISPLAY: break;
-                case CHOICE.DATA_PRINT: break;
+                case CHOICE.DISPLAY: DISPLAY(IBL); break;
+                case CHOICE.DATA_PRINT: DISPLAY_DATA(IBL); break;
                 case CHOICE.EXIT: break;                    /// Exit from menu by choosing 0.
             }
             return choice;

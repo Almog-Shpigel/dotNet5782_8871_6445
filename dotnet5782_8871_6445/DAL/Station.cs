@@ -16,7 +16,6 @@ namespace IDAL
             public Station(int id, string name, int slots,
                            double longitude, double latitude)
             {
-                
                 ID = id;
                 Name = name;
                 ChargeSlots = slots;

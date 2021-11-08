@@ -12,8 +12,8 @@ namespace IBL
             public string Name { get; set; }
             public string Phone { get; set; }
             public Location Location { get; set; }
-            public List<Parcel> ParcelesSentByCustomer { get; set; }
-            public List<Parcel> ParcelesSentToCustomer { get; set; }
+            public IEnumerable<Parcel> ParcelesSentByCustomer { get; set; }
+            public IEnumerable<Parcel> ParcelesSentToCustomer { get; set; }
             public Customer(int id, string name, string phone,
                             double longitude, double latitude)
             {

@@ -6,9 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using IDAL;
 
-namespace BL
+namespace IBL
 {
-    public class BL: IBL.IBL
+    public class BL: IBL
     {
         public BL()
         {

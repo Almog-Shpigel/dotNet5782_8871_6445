@@ -243,6 +243,7 @@ namespace DalObject
                     UnassignedParcelsList.Add(DataSource.parcels[i].ToString());
             return UnassignedParcelsList;
         }
+        
         public IEnumerable<string> PrintAllAvailableStations()
         {
             List<string> AvailableStationsList = new List<string>();
@@ -251,7 +252,30 @@ namespace DalObject
                     AvailableStationsList.Add(DataSource.stations[i].ToString());                
             return AvailableStationsList;
         }
+
+
         #endregion Print
+
+        public IEnumerable<Parcel> GetAllParcels()
+        {
+            return DataSource.parcels;
+        }
+        public IEnumerable<Station> GetAllStations()
+        {
+            return DataSource.stations;
+        }
+        public IEnumerable<Customer> GetAllCustomers()
+        {
+            return DataSource.customers;
+        }
+        public IEnumerable<Drone> GetAllDrones()
+        {
+            return DataSource.drones;
+        }
+        public IEnumerable<DroneCharge> GetAllDronesCharge()
+        {
+            return DataSource.droneCharges;
+        }
         public double[] GetBatteryUsed()
         {
             double[] BatteryUsed = new double[5];

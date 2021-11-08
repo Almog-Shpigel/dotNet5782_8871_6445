@@ -7,17 +7,129 @@ using System.Threading.Tasks;
 using DalObject;
 using IDAL;
 using IDAL.DO;
+using static IBL.BO.Exceptions;
 
 namespace IBL
 {
     public class BL: IBL
     {
+        IDal Data = new DalObject.DalObject();
         public BL()
         {
-            IDal Data = new DalObject.DalObject();
             Double[] BatteryUsed = Data.GetBatteryUsed();
-
         }
+
+        public IEnumerable<string> DispalyAllStations()
+        {
+            List<string> stations = new();
+            foreach (Station station in Data.GetAllStations())
+                stations.Add(station.ToString());
+            return stations;
+        }
+
+        public List<string> DispalyAllDrones()
+        {
+            List<string> drones = new();
+            foreach (Drone drone in Data.GetAllDrones())
+                drones.Add(drone.ToString());
+            return drones;
+        }
+
+        public IEnumerable<string> DispalyAllCustomers()
+        {
+            List<string> customers = new();
+            foreach (Customer customer in Data.GetAllCustomers())
+                customers.Add(customer.ToString());
+            return customers;
+        }
+
+        public IEnumerable<string> DispalyAllParcels()
+        {
+            List<string> parcels = new();
+            foreach (Parcel parcel in Data.GetAllParcels())
+                parcels.Add(parcel.ToString());
+            return parcels;
+        }
+
+        public IEnumerable<string> DispalyAllUnassignedParcels()
+        {
+            IEnumerable<Parcel> AllParecels = Data.GetAllParcels();
+            AllParecels.Select(x => x.ID == 0);
+            List<string> parcels = new();
+            foreach (Parcel parcel in AllParecels)
+                parcels.Add(parcel.ToString());
+            return parcels;
+        }
+
+        public IEnumerable<string> DispalyAllAvailableStations()
+        {
+            IEnumerable<Station> AllStations = Data.GetAllStations();
+            AllStations.Select(x => x.ChargeSlots > 0);
+            List<string> stations = new();
+            foreach (Station station in AllStations)
+                stations.Add(station.ToString());
+            return stations;
+        }
+
+        public string DisplayStation(int StationID)
+        {
+            foreach (Station station in Data.GetAllStations())
+                if (station.ID == StationID)
+                    return station.ToString();
+            throw new StationExistException();
+        }
+
+        public string DisplayDrone(int DroneID)
+        {
+            foreach (Drone drone in Data.GetAllDrones())
+                if (drone.ID == DroneID)
+                    return drone.ToString();
+            throw new DroneExistException();
+        }
+
+        public string DisplayCustomer(int CustomerID)
+        {
+            foreach (Customer customer in Data.GetAllCustomers())
+                if (customer.ID == CustomerID)
+                    return customer.ToString();
+            throw new CustomerExistException();
+        }
+
+        public string DisplayParcel(int ParcelID)
+        {
+            foreach (Parcel parcel in Data.GetAllParcels())
+                if (parcel.ID == ParcelID)
+                    return parcel.ToString();
+            throw new ParcelExistException();
+        }
+        public string DisplayDistanceFromStation(double longitude1, double latitude1, int StationID)
+        {
+            double longitude2 = 0, latitude2 = 0;
+            IEnumerable<Station> stations = Data.GetAllStations();
+            foreach (Station station in stations)
+                if (station.ID == StationID)
+                {
+                    longitude2 = station.Longitude;
+                    latitude2 = station.Latitude;
+                }
+
+            return "The distance is: " + Distance(longitude1, latitude1, longitude2, latitude2) + " km";
+        }
+
+        public string DisplayDistanceFromCustomer(double longitude1, double latitude1, int CustomerID)
+        {
+            double longitude2 = 0, latitude2 = 0;
+            IEnumerable<Customer> customers = Data.GetAllCustomers();
+            foreach (Customer customer in customers)
+                if (customer.ID == CustomerID)
+                {
+                    longitude2 = customer.Longitude;
+                    latitude2 = customer.Latitude;
+                }
+
+            return "The distance is: " + Distance(longitude1, latitude1, longitude2, latitude2) + " km";
+        }
+
         public void UpdateDroneName(int v1, string v2)
         {
             throw new NotImplementedException();
@@ -38,10 +150,7 @@ namespace IBL
             throw new NotImplementedException();
         }
 
-        public string DisplayDistanceFromStation(double v1, double v2, int v3)
-        {
-            throw new NotImplementedException();
-        }
+        
 
         public void UpdateParcelCollectedByDrone(int v)
         {
@@ -51,13 +160,6 @@ namespace IBL
         public void AddNewStation(int id, string name, double longitude, double latitude, int ChargeSlots)
         {
             //רשימת הרחפנים בטעינה תאותחל לרשימה ריקה
-        }
-
-        public string DisplayDistanceFromCustomer(double longitude1, double latitude1, int CustomerID)
-        {
-            double longitude2, latitude2;
-            
-            return "The distance is: " + Distance(longitude1, latitude1, longitude2, latitude2) + " km";
         }
 
         private double Distance(double x1, double y1, double x2, double y2)

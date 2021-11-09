@@ -18,6 +18,5 @@ namespace IDAL
         public enum Priorities { Regular, Express, Urgent }
         public enum DroneModels { Mavic, Skydio, Phantom }
         public enum CustomerNames { Almog, Devora, Amitai, Alon, Gila, Rachel, Yair, Yishai, Ariel, David, Merav, Yoav, Noam, Efart, Rotem, Dor, Shoshana }
-        //public enum DroneStatuses { Available, Charging, Delivery }
     }
 }

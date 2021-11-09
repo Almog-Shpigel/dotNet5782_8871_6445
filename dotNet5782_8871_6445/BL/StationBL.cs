@@ -1,34 +1,37 @@
 ﻿using System;
-using IBL.BO;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace IBL
 {
     namespace BO
     {
-        class Customer
+        class StationBL
         {
             public int ID { get; set; }
             public string Name { get; set; }
-            public string Phone { get; set; }
-            public Location Location { get; set; }
-            public IEnumerable<Parcel> ParcelesSentByCustomer { get; set; }
-            public IEnumerable<Parcel> ParcelesSentToCustomer { get; set; }
-            public Customer(int id, string name, string phone,
-                            double longitude, double latitude)
+            public int ChargeSlots { get; set; }
+            public double Longitude { get; set; }
+            public double Latitude { get; set; }
+
+            public StationBL(int id, string name, int slots,
+                           double longitude, double latitude)
             {
+
                 ID = id;
                 Name = name;
-                Phone = phone;
-                Location.Longitude = longitude;
-                Location.Latitude = latitude;
+                ChargeSlots = slots;
+                Longitude = longitude;
+                Latitude = latitude;
             }
             public override string ToString()
             {
-                string sLong = ConvertCoordinates(Location.Longitude), sLatit = ConvertCoordinates(Location.Latitude);    /// Converts the coordinates to be in base 60 (bonus).
+                string sLong = ConvertCoordinates(Longitude), sLatit = ConvertCoordinates(Latitude);    /// Converts the coordinates to be in base 60 (bonus).
                 return ($"{Name} #{ID}:\n" +
-                    $"Phone number: {Phone}\n" +
-                    $"Location: (" + sLong + " E, " + sLatit + " N)\n");
+                    $"Charge slots available: {ChargeSlots}\n" +
+                    $"Location: (" + sLong + "E, " + sLatit + "N)\n");
             }
             public string ConvertCoordinates(double number)
             {
@@ -49,5 +52,4 @@ namespace IBL
             }
         }
     }
-    
 }

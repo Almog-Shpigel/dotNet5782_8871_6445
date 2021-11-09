@@ -1,15 +1,16 @@
-﻿using System;
+﻿using IDAL.DO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static IBL.BO.Enums;
+using static IBL.BO.EnumsBL;
 
 namespace IBL
 {
     namespace BO
     {
-        class Parcel
+        class ParcelBL
         {
             public int ID { get; set; }
             public CustomerInParcel Sender { get; set; }
@@ -22,7 +23,7 @@ namespace IBL
             public DateTime PickedUp { get; set; }
             public DateTime Delivered { get; set; }
 
-            public Parcel(int id, int sender, int target, int drone,
+            public ParcelBL(int id, int sender, int target, int drone,
                           WeightCategories weight, Priorities priority,
                           DateTime requested, DateTime schedued,
                           DateTime pickedUp, DateTime delivered)

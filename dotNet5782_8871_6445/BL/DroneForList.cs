@@ -1,4 +1,5 @@
-﻿using static IBL.BO.Enums;
+﻿using IDAL.DO;
+using static IBL.BO.EnumsBL;
 
 namespace IBL
 {

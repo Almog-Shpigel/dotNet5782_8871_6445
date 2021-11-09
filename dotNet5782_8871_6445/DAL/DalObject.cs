@@ -276,6 +276,27 @@ namespace DalObject
         {
             return DataSource.droneCharges;
         }
+        public Drone GetDrone(int id)
+        {
+            foreach (Drone drone in DataSource.drones)
+            {
+                if (drone.ID == id)
+                    return drone;
+            }
+            throw new DroneExistException("Drone not exist!");
+        }
+        public Station GetStation(int id)
+        {
+            return;
+        }
+        public Customer GetCustomer(int id)
+        {
+
+        }
+        public Parcel GetParcel(int id)
+        {
+
+        }
         public double[] GetBatteryUsed()
         {
             double[] BatteryUsed = new double[5];

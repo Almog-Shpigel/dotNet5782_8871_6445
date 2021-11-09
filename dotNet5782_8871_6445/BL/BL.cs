@@ -24,13 +24,31 @@ namespace IBL
             AllDrones= Data.GetAllDrones();
             IEnumerable<Parcel> AllParcels;
             AllParcels = Data.GetAllParcels();
+            IEnumerable<Customer> AllCustomer;
+            AllCustomer = Data.GetAllCustomers();
             DroneForList NewDrone = new();
+
             foreach (Drone drone in AllDrones)
             {
-                if(NewDrone.Status )
+                
                 NewDrone.ID = drone.ID;
                 NewDrone.Model = drone.Model;
                 NewDrone.MaxWeight = drone.MaxWeight;
+                foreach (Parcel parcel in AllParcels)
+                {
+                    if (parcel.DroneID == drone.ID)
+                    { 
+                        if (parcel.PickedUp==DateTime.MaxValue)
+                            NewDrone.CurrentLocation= ClosetsStation()
+                        if (parcel.Delivered == DateTime.MaxValue)
+                        {
+                            NewDrone.Status = DroneStatus.Delivery;
+                            NewDrone.ParcelID = parcel.ID;
+                        }
+
+                    }
+                        
+                }
                 
             }
 

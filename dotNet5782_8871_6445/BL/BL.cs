@@ -24,10 +24,7 @@ namespace IBL
             AllDrones= Data.GetAllDrones();
             IEnumerable<Parcel> AllParcels;
             AllParcels = Data.GetAllParcels();
-            IEnumerable<Customer> AllCustomer;
-            AllCustomer = Data.GetAllCustomers();
             DroneForList NewDrone = new();
-
             foreach (Drone drone in AllDrones)
             {
                 
@@ -37,21 +34,55 @@ namespace IBL
                 foreach (Parcel parcel in AllParcels)
                 {
                     if (parcel.DroneID == drone.ID)
-                    { 
-                        if (parcel.PickedUp==DateTime.MaxValue)
-                            NewDrone.CurrentLocation= ClosetsStation()
+                    {
                         if (parcel.Delivered == DateTime.MaxValue)
                         {
                             NewDrone.Status = DroneStatus.Delivery;
                             NewDrone.ParcelID = parcel.ID;
+                            Customer sender = Data.GetCustomer(parcel.SenderID);
+                            if (parcel.PickedUp == DateTime.MaxValue)
+                                NewDrone.CurrentLocation = ClosestsStation(sender.Latitude, sender.Longitude);
+                            else    ///means it did get pickedup
+                            {
+                                NewDrone.CurrentLocation.Latitude = sender.Latitude;
+                                NewDrone.CurrentLocation.Longitude = sender.Longitude;
+                            }
+                            Customer target = Data.GetCustomer(parcel.TargetID);
+                            Location NearestStation = ClosestsStation(target.Latitude, target.Longitude);
+                            double DisDroneTarget, DisTargetStation,MinBattery;
+                            DisDroneTarget = Distance(NewDrone.CurrentLocation.Latitude, NewDrone.CurrentLocation.Longitude, target.Latitude, target.Longitude);
+                            DisTargetStation = Distance(target.Latitude, target.Longitude,NearestStation.Latitude,NearestStation.Longitude);
+                            MinBattery =(WeightMultiplier(parcel.Weight, BatteryUsed) * DisDroneTarget) + (BatteryUsed[0] * DisTargetStation);
+                            Random rand = new Random();
+                            NewDrone.Battery = rand.Next((int)MinBattery, 100)+rand.NextDouble();
+                            //Needs to handle case of drone not in delivery, and at the end to send the new drone to the list
                         }
 
                     }
-                        
+
                 }
                 
             }
 
+        }
+
+        private Location ClosestsStation(double latitude, double longitude)
+        {
+            IEnumerable < Station > AllStation = Data.GetAllStations();
+            double distance=0;
+            Location NearestStation=new(AllStation.First().Latitude,AllStation.First().Longitude);
+            double min = Distance(latitude, longitude, NearestStation.Latitude, NearestStation.Longitude);
+            foreach (Station station in AllStation)
+            {
+                distance = Distance(latitude, longitude, station.Latitude, station.Longitude);
+                if (distance<min)
+                {
+                    min = distance;
+                    NearestStation.Latitude = station.Latitude;
+                    NearestStation.Longitude = station.Longitude;
+                }
+            }
+            return NearestStation;           
         }
 
         public List<string> DispalyAllStations()
@@ -199,7 +230,19 @@ namespace IBL
         {
             //רשימת הרחפנים בטעינה תאותחל לרשימה ריקה
         }
-
+        private double WeightMultiplier(WeightCategories weight,Double [] BatteryUse)
+        {
+            switch((int)weight)
+            {
+                case 0:
+                    return BatteryUse[1]; //Light
+                case 1:
+                    return BatteryUse[2]; //Medium
+                case 2:
+                    return BatteryUse[3]; //Heavy
+            }
+             return BatteryUse[0]; //Empty
+        }
         private double Distance(double x1, double y1, double x2, double y2)
         {
             x1 = (x1 * Math.PI) / 180;

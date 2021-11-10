@@ -287,15 +287,31 @@ namespace DalObject
         }
         public Station GetStation(int id)
         {
-            return;
+            foreach (Station station in DataSource.stations)
+            {
+                if (station.ID == id)
+                    return station;
+            }
+            throw new DroneExistException("Station not exist!");
+         
         }
         public Customer GetCustomer(int id)
         {
-
+            foreach (Customer customer in DataSource.customers)
+            {
+                if (customer.ID == id)
+                    return customer;
+            }
+            throw new DroneExistException("Customer not exist!");
         }
         public Parcel GetParcel(int id)
         {
-
+            foreach (Parcel parcel in DataSource.parcels)
+            {
+                if (parcel.ID == id)
+                    return parcel;
+            }
+            throw new DroneExistException("Parcel not exist!");
         }
         public double[] GetBatteryUsed()
         {

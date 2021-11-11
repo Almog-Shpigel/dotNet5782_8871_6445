@@ -35,6 +35,12 @@ namespace IDAL
         public IEnumerable<Customer> GetAllCustomers();
         public IEnumerable<Drone> GetAllDrones();
         public IEnumerable<DroneCharge> GetAllDronesCharge();
+        public Drone GetDrone(int id);
+        public Station GetStation(int id);
+        public Customer GetCustomer(int id);
+        public Parcel GetParcel(int id);
+
+
         public double[] GetBatteryUsed();
     }
 }

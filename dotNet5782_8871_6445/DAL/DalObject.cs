@@ -1,6 +1,7 @@
 ﻿using IDAL;
 using IDAL.DO;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -323,7 +324,7 @@ namespace DalObject
             BatteryUsed[4] = DataSource.config.ChargeRate;
             return BatteryUsed;
         }
-
+        
         internal bool DroneExist(int id)
         {
             foreach (Drone drone in DataSource.drones)

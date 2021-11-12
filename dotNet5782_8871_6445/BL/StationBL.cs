@@ -13,22 +13,21 @@ namespace IBL
             public int ID { get; set; }
             public string Name { get; set; }
             public int ChargeSlots { get; set; }
-            public double Longitude { get; set; }
-            public double Latitude { get; set; }
+            public Location Location { get; set; }
+            public List<DroneCharge> ChargingDrones;
 
-            public StationBL(int id, string name, int slots,
+        public StationBL(int id, string name, int slots,
                            double longitude, double latitude)
             {
-
                 ID = id;
                 Name = name;
                 ChargeSlots = slots;
-                Longitude = longitude;
-                Latitude = latitude;
+                Location = new (longitude, latitude);
+                ChargingDrones = new();
             }
             public override string ToString()
             {
-                string sLong = ConvertCoordinates(Longitude), sLatit = ConvertCoordinates(Latitude);    /// Converts the coordinates to be in base 60 (bonus).
+                string sLong = ConvertCoordinates(Location.Longitude), sLatit = ConvertCoordinates(Location.Latitude);    /// Converts the coordinates to be in base 60 (bonus).
                 return ($"{Name} #{ID}:\n" +
                     $"Charge slots available: {ChargeSlots}\n" +
                     $"Location: (" + sLong + "E, " + sLatit + "N)\n");

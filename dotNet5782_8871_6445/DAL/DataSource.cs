@@ -23,10 +23,10 @@ namespace DalObject
             /// A drone with full battery and medium cargo can fly 20 km
             /// A drone with full battery and heavy cargo can fly 15 km
             /// </summary>
-            internal static double Empty = 3.3;         
-            internal static double LightWight = 4;
-            internal static double MediumWight = 5;
-            internal static double HaevyWight = 6.6;
+            internal static double Empty = 0.33;         
+            internal static double LightWight = 0.4;
+            internal static double MediumWight = 0.5;
+            internal static double HaevyWight = 0.66;
             internal static double ChargeRate = 60;     ///1% per minute
         }
         internal static void Initialize()
@@ -42,8 +42,8 @@ namespace DalObject
             {
                 int id = 122000 + stations.Count();      
                 string name = "Station " + stations.Count();
-                double latitude = (rnd.Next(30, 33) + ((double)rnd.Next(9999, 100000) / 100000));
-                double longitude = (rnd.Next(32, 35) + ((double)rnd.Next(9999, 100000) / 100000));
+                double latitude = (rnd.Next(29, 34) + ((double)rnd.Next(9999, 100000) / 100000));
+                double longitude = (rnd.Next(31, 35) + ((double)rnd.Next(9999, 100000) / 100000));
                 int chargeSlot = rnd.Next(10);
                 Station NewStation = new Station(id, name, chargeSlot, longitude, latitude);
                 stations.Add(NewStation);

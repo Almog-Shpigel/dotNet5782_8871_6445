@@ -17,10 +17,9 @@ namespace DalObject
             DataSource.Initialize();
         }
         #region Add
-        public void AddNewStation(double longitude, double latitude, int ChargeSlots)
+        public void AddNewStation(int id, string name, double longitude, double latitude, int ChargeSlots)
         {
-            int id = 122000 + DataSource.stations.Count();        ///Every ID number will be 6 digits starting with 12200 (changeable)
-            string name = "Station " + DataSource.stations.Count(); ///Marking the stations according to the counter, also changable
+            name = "Station " + name;
             Station NewStation = new Station(id, name, ChargeSlots, longitude, latitude);
             DataSource.stations.Add(NewStation);
         }

@@ -124,7 +124,7 @@ namespace DalObject
             if (!DroneExist(DroneID))
                 throw new DroneExistException("The drone dosen't exists in the data!!");
 
-            int i = 0, j = 0;
+            int i = 0;
             while (DataSource.parcels[i].ID != ParcelID) ///Searching for the wanted parcel
                 ++i;
             Parcel NewParcel = DataSource.parcels[i];
@@ -293,7 +293,7 @@ namespace DalObject
                 if (station.ID == id)
                     return station;
             }
-            throw new DroneExistException("Station not exist!");
+            throw new StationExistException("Station not exist!");
          
         }
         public Customer GetCustomer(int id)
@@ -303,7 +303,7 @@ namespace DalObject
                 if (customer.ID == id)
                     return customer;
             }
-            throw new DroneExistException("Customer not exist!");
+            throw new CustomerExistException("Customer not exist!");
         }
         public Parcel GetParcel(int id)
         {
@@ -312,7 +312,7 @@ namespace DalObject
                 if (parcel.ID == id)
                     return parcel;
             }
-            throw new DroneExistException("Parcel not exist!");
+            throw new ParcelExistException("Parcel not exist!");
         }
         public double[] GetBatteryUsed()
         {

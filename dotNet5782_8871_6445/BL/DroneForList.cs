@@ -14,6 +14,18 @@ namespace IBL
             public DroneStatus Status { get; set; }
             public Location CurrentLocation { get; set; }
             public int ParcelID { get; set; }
+
+            public DroneForList()
+            {
+                ID = 0;
+                Model = "";
+                MaxWeight = WeightCategories.Light;
+                Battery = 0;
+                Status = DroneStatus.Charging;
+                CurrentLocation = new(0,0);
+                ParcelID = 0;
+            }
+
         }
     }
 }

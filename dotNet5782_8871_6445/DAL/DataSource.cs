@@ -42,8 +42,8 @@ namespace DalObject
             {
                 int id = 122000 + stations.Count();      
                 string name = "Station " + stations.Count();
-                double latitude = (rnd.Next(29, 35) + ((double)rnd.Next(9999, 100000) / 100000));
-                double longitude = (rnd.Next(31, 36) + ((double)rnd.Next(9999, 100000) / 100000));
+                double latitude = (rnd.Next(30, 33) + ((double)rnd.Next(9999, 100000) / 100000));
+                double longitude = (rnd.Next(32, 35) + ((double)rnd.Next(9999, 100000) / 100000));
                 int chargeSlot = rnd.Next(10);
                 Station NewStation = new Station(id, name, chargeSlot, longitude, latitude);
                 stations.Add(NewStation);

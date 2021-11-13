@@ -25,7 +25,7 @@ namespace IBL
                 CurrentLocation = new(0,0);
                 ParcelID = 0;
             }
-            public DroneToList(int id, string model, WeightCategories weight, double battery, DroneStatus status, Location location, int ParcelId)
+            public DroneToList(int id , string model, WeightCategories weight, double battery, DroneStatus status, Location location, int ParcelId)
             {
                 ID = id;
                 Model = model;

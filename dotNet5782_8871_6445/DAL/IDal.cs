@@ -9,7 +9,7 @@ namespace IDAL
 { 
     public interface IDal
     {
-        public void AddNewStation(double longitude, double latitude, int ChargeSlots);
+        public void AddNewStation(int id, string name, double longitude, double latitude, int ChargeSlots);
         public void AddNewCustomer(int id, string name, string phone, double longitude, double latitude);
         public void AddNewParcel(int sender, int target, IDAL.DO.WeightCategories weight, IDAL.DO.Priorities priority);
         public void AddNewDrone(string model, IDAL.DO.WeightCategories weight);
@@ -35,12 +35,11 @@ namespace IDAL
         public IEnumerable<Customer> GetAllCustomers();
         public IEnumerable<Drone> GetAllDrones();
         public IEnumerable<DroneCharge> GetAllDronesCharge();
+        //public List<Station> GetAllAvailableStations();
         public Drone GetDrone(int id);
         public Station GetStation(int id);
         public Customer GetCustomer(int id);
         public Parcel GetParcel(int id);
-
-
         public double[] GetBatteryUsed();
     }
 }

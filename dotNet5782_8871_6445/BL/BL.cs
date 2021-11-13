@@ -40,7 +40,6 @@ namespace IBL
                 }
                 DroneList.Add(NewDrone); 
             }
-
         }
         private DroneToList InitDroneInDelivery(DroneToList NewDrone, Parcel parcel)
         {
@@ -52,19 +51,7 @@ namespace IBL
             Location NearestStat = NearestStation(target.Latitude, target.Longitude);
 
             if (parcel.PickedUp == DateTime.MaxValue)
-            {
-                try
-                {
-                    NewDrone.Status = DroneStatus.Delivery;
                     NewDrone.CurrentLocation = NearestStation(sender.Latitude, sender.Longitude);
-                }
-                catch (StationExistException)   /// If there is no available station, we'll creat a new station for the drone. 
-                {
-
-                    //Data.AddNewStation(rand.Next(30, 33) + ((double)rand.Next(9999, 100000) / 100000), rand.Next(32, 35) + ((double)rand.Next(9999, 100000) / 100000),4);
-                    //NewDrone.CurrentLocation = NearestStation(sender.Latitude, sender.Longitude);
-                }
-            }
             else    ///means it did get pickedup
             {
                 NewDrone.CurrentLocation.Latitude = sender.Latitude;
@@ -73,7 +60,7 @@ namespace IBL
             DisDroneTarget = Distance(NewDrone.CurrentLocation.Latitude, NewDrone.CurrentLocation.Longitude, target.Latitude, target.Longitude);
             DisTargetStation = Distance(target.Latitude, target.Longitude, NearestStat.Latitude, NearestStat.Longitude);
             MinBattery = (WeightMultiplier(parcel.Weight, BatteryUsed) * DisDroneTarget) + (BatteryUsed[0] * DisTargetStation);
-            NewDrone.Battery = RandBatteryStatus(MinBattery, 100);
+            NewDrone.BatteryStatus = RandBatteryStatus(MinBattery, 100);
             return NewDrone;
         }
         private DroneToList InitDroneNOTinDelivery(DroneToList NewDrone)
@@ -93,24 +80,15 @@ namespace IBL
                     RandomCustomer = rand.Next(0, AllPastCustomers.Count());
                     NewDrone.CurrentLocation.Latitude = AllPastCustomers[RandomCustomer].Latitude;
                     NewDrone.CurrentLocation.Longitude = AllPastCustomers[RandomCustomer].Longitude;
-                    try
-                    {
-                        nearest = NearestStation(NewDrone.CurrentLocation.Latitude, NewDrone.CurrentLocation.Longitude);
-                        NewDrone.Battery = RandBatteryToStation(NewDrone, nearest, BatteryUsed[0]);
-                        /// Assuming the station is not far more 100% battery... Almog, we have to see how to fix the problem if there is no near enough station that the drone can fly to even with max battery.
-                    }
-                    catch (StationExistException)
-                    {
-                        /// What do we do if there are no stations available??
-                        /// ClosestsStation has a throw in it...
-                    }
+                    nearest = NearestStation(NewDrone.CurrentLocation.Latitude, NewDrone.CurrentLocation.Longitude);
+                    NewDrone.BatteryStatus = RandBatteryToStation(NewDrone, nearest, BatteryUsed[0]);
                     break;
                 case DroneStatus.Charging:
                     NewDrone.Status = DroneStatus.Charging;
                     RandomStation = rand.Next(0, AllAvailableStations.Count());
                     NewDrone.CurrentLocation.Latitude = AllAvailableStations[RandomStation].Latitude;
                     NewDrone.CurrentLocation.Longitude = AllAvailableStations[RandomStation].Longitude;
-                    NewDrone.Battery = RandBatteryStatus(0,21);
+                    NewDrone.BatteryStatus = RandBatteryStatus(0,21);
                     break;
             }
             NewDrone.Status =(DroneStatus)rand.Next(0,2);
@@ -127,15 +105,12 @@ namespace IBL
         private double RandBatteryStatus(double min, double max)
         {
             Random rand = new Random();
-            double MinBattery = 0, MaxBattery = 100, swap;
+            double MinBattery = 0, MaxBattery = 100, swap; 
             if (min > max) { swap = min; min = max; max = swap; }
-            if (max > MaxBattery) max = MaxBattery;
-            if (min < MinBattery) min = MinBattery;
-            
             if (min >= MaxBattery)
-                return rand.Next((int)MaxBattery, (int)max) + (min + max) % 1;
+                return MaxBattery;
             if (max <= MinBattery)
-                return rand.Next((int)min, (int)MinBattery) + (min + max) % 1;
+                return MinBattery;
             return rand.Next((int)min, (int)max) + (min + max) % 1; ;
         }
 
@@ -165,10 +140,8 @@ namespace IBL
         /// <returns></returns>
         private Location NearestStation(double latitude, double longitude)
         {
-            IEnumerable <Station> AllStation = GetAllAvailableStations();
+            IEnumerable <Station> AllStation = Data.GetAllStations();
             Location NearestStation = new(AllStation.First().Latitude, AllStation.First().Longitude);
-            if (AllStation.Count() == 0)
-                throw new StationExistException("No station is available at the moment. Please try again later.");
             double distance, MinDistance;
             MinDistance = Distance(latitude, longitude, NearestStation.Latitude, NearestStation.Longitude);
             foreach (Station station in AllStation)
@@ -299,7 +272,7 @@ namespace IBL
 
         public void UpdateDroneName(int v1, string v2)
         {
-
+            
             throw new NotImplementedException();
         }
 

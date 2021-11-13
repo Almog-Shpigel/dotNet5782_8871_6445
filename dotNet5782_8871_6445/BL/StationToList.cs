@@ -6,19 +6,22 @@ using System.Threading.Tasks;
 
 namespace BL
 {
-    class StationToList
+    namespace BO
     {
-        public int ID { get; set; }
-        public string Name { get; set; }
-        public int AvailableChargeSlots { get; set; }
-        public int UsedChargeSlots { get; set; }
-
-        public StationToList(int id, string name, int AvailableSlots, int UsedSlots)
+        class StationToList
         {
-            ID = id;
-            Name = name;
-            AvailableChargeSlots = AvailableSlots;
-            UsedChargeSlots = UsedSlots;
+            public int ID { get; set; }
+            public string Name { get; set; }
+            public int AvailableChargeSlots { get; set; }
+            public int UsedChargeSlots { get; set; }
+
+            public StationToList(int id, string name, int AvailableSlots, int UsedSlots)
+            {
+                ID = id;
+                Name = name;
+                AvailableChargeSlots = AvailableSlots;
+                UsedChargeSlots = UsedSlots;
+            }
         }
     }
 }

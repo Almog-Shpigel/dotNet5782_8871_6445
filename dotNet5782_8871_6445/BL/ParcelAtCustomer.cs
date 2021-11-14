@@ -1,34 +1,34 @@
-﻿using IDAL.DO;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using IBL.BO;
+using IDAL.DO;
 using static IBL.BO.EnumsBL;
-namespace IBL
+
+namespace BL
 {
     namespace BO
     {
-        class ParcelToList
+        class ParcelAtCustomer
         {
             public int ID { get; set; }
 
-            public string SenderName { get; set; }
-            public string TargetName { get; set; }
             public WeightCategories Weight { get; set; }
             public Priorities Priority { get; set; }
             public ParcelStatus Status { get; set; }
+            public CustomerInParcel Customer { get; set; }
 
-            public ParcelToList(int iD, string senderName, string targetName, WeightCategories weight, Priorities priority, ParcelStatus status)
+            public ParcelAtCustomer(int iD, WeightCategories weight, Priorities priority, ParcelStatus status, CustomerInParcel customer)
             {
                 ID = iD;
-                SenderName = senderName;
-                TargetName = targetName;
                 Weight = weight;
                 Priority = priority;
                 Status = status;
+                Customer = customer;
             }
-            //ToString............
+
         }
     }
 }

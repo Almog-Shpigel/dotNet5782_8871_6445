@@ -1,4 +1,5 @@
-﻿using IDAL.DO;
+﻿using BL.BO;
+using IDAL.DO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,14 +18,19 @@ namespace IBL
             public WeightCategories MaxWeight { get; set; }
             public double BatteryStatus { get; set; }
             public DroneStatus Status { get; set; }
-            public Location Location { get; set; }
+            public ParcelInDelivery Parcel { get; set; }
+            public Location CurrentLocation { get; set; }
 
-            public DroneBL(int id, string model, WeightCategories maxWeight)
+
+            public DroneBL(int id, string model, WeightCategories maxWeight, double batteryStatus, DroneStatus status, ParcelInDelivery parcel, Location currentLocation)
             {
                 ID = id;
                 Model = model;
                 MaxWeight = maxWeight;
-
+                BatteryStatus = batteryStatus;
+                Status = status;
+                Parcel = parcel;
+                CurrentLocation = currentLocation;
             }
 
             public override string ToString()

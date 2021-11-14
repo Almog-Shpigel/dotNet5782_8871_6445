@@ -11,12 +11,12 @@ namespace BL
     {
         public int ID { get; set; }
         public double BatteryStatus { get; set; }
-        public Location Location { get; set; }
+        public Location CurrentLocation { get; set; }
         public DroneInParcel(int id, double battery, Location location)
         {
             ID = id;
             BatteryStatus = battery;
-            Location = location;
+            CurrentLocation = location;
         }
     }
 }

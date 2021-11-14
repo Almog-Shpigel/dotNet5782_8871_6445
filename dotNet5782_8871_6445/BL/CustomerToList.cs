@@ -10,13 +10,22 @@ namespace IBL
     {
         class CustomerToList
         {
-            public int ID { get; set; }
+            public int ID { get; set; }            
             public string Name { get; set; }
             public string Phone { get; set; }
-            public int SentAndDeliverd;
-            public int SentAndNOTDeliverd;
-            public int Recived;
-            public int OnTheWay;
+            public int SentAndDeliverd { get; set; }
+            public int SentAndNOTDeliverd { get; set; }
+            public int ParcelsRecived { get; set; }
+            public int ParcelsOnTheWay { get; set; }
+            public CustomerToList(int iD, string name, string phone, int delivered, int NotDelivered, int recived)
+            {
+                ID = iD;
+                Name = name;
+                Phone = phone;
+                SentAndDeliverd = delivered;
+                SentAndNOTDeliverd = NotDelivered;
+                ParcelsRecived = recived;
+            }
 
         }
     }

@@ -11,7 +11,7 @@ namespace ConsoleUI_BL
     {
         public static int StationID()
         {
-            Console.Write("Please enter station ID (6 digits): ");    ///Reciving ID
+            Console.Write("Please enter station ID: ");    ///Reciving ID
             bool input = int.TryParse(Console.ReadLine(), out int StationId);
             return StationId;
         }
@@ -41,14 +41,14 @@ namespace ConsoleUI_BL
 
         public static int ChargeTime()
         {
-            Console.WriteLine("Enter amount of time to be recharged: (min)");
+            Console.WriteLine("Enter amount of time to be recharged: ");
             bool input = int.TryParse(Console.ReadLine(), out int TimeToCharge);
             return TimeToCharge;
         }
 
         public static int DroneID()
         {
-            Console.Write("Please enter drone ID (6 digits): ");    ///Reciving ID
+            Console.Write("Please enter drone ID: ");    ///Reciving ID
             bool input = int.TryParse(Console.ReadLine(), out int DroneId);
             return DroneId;
         }
@@ -73,7 +73,7 @@ namespace ConsoleUI_BL
         }
         public static int CustomerID(string name)
         {
-            Console.Write($"Please enter {0} ID (6 digits): ", name);    ///Reciving ID
+            Console.Write($"Please enter {0} ID: ", name);    ///Reciving ID
             bool input = int.TryParse(Console.ReadLine(), out int CustomerId);
             return CustomerId;
         }
@@ -84,12 +84,12 @@ namespace ConsoleUI_BL
         }
         public static string PhoneNumber()
         {
-            Console.Write("Please enter your phone number (10 digits): ");  ///Reciving phone number
+            Console.Write("Please enter your phone number: ");  ///Reciving phone number
             return Console.ReadLine();
         }
         public static int ParcelID()
         {
-            Console.Write("Please enter parcel ID (6 digits): ");    ///Reciving ID
+            Console.Write("Please enter parcel ID: ");    ///Reciving ID
             bool input = int.TryParse(Console.ReadLine(), out int ParcelId);
             return ParcelId;
         }

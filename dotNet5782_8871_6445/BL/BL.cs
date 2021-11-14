@@ -158,57 +158,128 @@ namespace IBL
             return NearestStation;           
         }
 
-        public List<string> DispalyAllStations()
+        public IEnumerable<StationToList> DispalyAllStations()
         {
-            List<string> stations = new();
+            List<StationToList> stations = new();
+            StationToList NewStation = new ();
             foreach (Station station in Data.GetAllStations())
-                stations.Add(station.ToString());
+            {
+                NewStation.ID = station.ID;
+                NewStation.Name = station.Name;
+                NewStation.AvailableChargeSlots = station.ChargeSlots;
+                foreach (IDAL.DO.DroneCharge drone in Data.GetAllDronesCharge())
+                {
+                    if (drone.StationID == station.ID)
+                        NewStation.UsedChargeSlots++;
+                }
+                stations.Add(NewStation);
+            }
             return stations;
         }
 
-        public List<string> DispalyAllDrones()
+        public IEnumerable<DroneToList> DispalyAllDrones()
         {
-            List<string> drones = new();
-            foreach (Drone drone in Data.GetAllDrones())
-                drones.Add(drone.ToString());
-            return drones;
+            return DroneList;
         }
 
-        public List<string> DispalyAllCustomers()
+        public IEnumerable<CustomerToList> DispalyAllCustomers()
         {
-            List<string> customers = new();
+            List<CustomerToList> customers = new();
+            CustomerToList NewCustomer = new();
             foreach (Customer customer in Data.GetAllCustomers())
-                customers.Add(customer.ToString());
+            {
+                NewCustomer.ID = customer.ID;
+                NewCustomer.Name = customer.Name;
+                NewCustomer.Phone = customer.Phone;
+                foreach (Parcel parcel in Data.GetAllParcels())
+                {
+                    if (parcel.TargetID == customer.ID)
+                    {
+                        if (parcel.Delivered == DateTime.MaxValue)
+                            NewCustomer.ParcelsOnTheWay++;
+                        else
+                            NewCustomer.ParcelsRecived++;
+                    }
+                    if (parcel.SenderID == customer.ID)
+                    {
+                        if (parcel.Delivered == DateTime.MaxValue)
+                            NewCustomer.SentAndNOTDeliverd++;
+                        else
+                            NewCustomer.SentAndDeliverd++;
+                    }
+                }
+                customers.Add(NewCustomer);
+            }
             return customers;
         }
 
-        public List<string> DispalyAllParcels()
+        public IEnumerable<ParcelToList> DispalyAllParcels()
         {
-            List<string> parcels = new();
+            List<ParcelToList> parcels = new();
+            ParcelToList NewParcel = new();
             foreach (Parcel parcel in Data.GetAllParcels())
-                parcels.Add(parcel.ToString());
+            {
+                NewParcel.ID = parcel.ID;
+                NewParcel.Priority = parcel.Priority;
+                NewParcel.TargetName = Data.GetCustomer(parcel.TargetID).Name;
+                NewParcel.SenderName = Data.GetCustomer(parcel.SenderID).Name;
+                NewParcel.Weight = parcel.Weight;
+                if (parcel.Delivered != DateTime.MaxValue)
+                    NewParcel.Status = ParcelStatus.Delivered;
+                else if (parcel.PickedUp != DateTime.MaxValue)
+                    NewParcel.Status = ParcelStatus.PickedUp;
+                else if (parcel.Scheduled != DateTime.MaxValue)
+                    NewParcel.Status = ParcelStatus.Scheduled;
+                else
+                    NewParcel.Status = ParcelStatus.Requested;
+                parcels.Add(NewParcel);
+            }
             return parcels;
         }
 
-        public List<string> DispalyAllUnassignedParcels()
+        public IEnumerable<ParcelToList> DispalyAllUnassignedParcels()
         {
-            IEnumerable<Parcel> AllParecels = Data.GetAllParcels();
-            List<string> UnassignedParcels = new();
-            foreach (Parcel parcel in AllParecels)
-                if (parcel.DroneID == 0)
-                    UnassignedParcels.Add(parcel.ToString());
-
+            List<ParcelToList> UnassignedParcels = new();
+            ParcelToList NewParcel = new();
+            foreach (Parcel parcel in Data.GetAllParcels())
+            {
+                if (parcel.DroneID != 0)
+                {
+                    NewParcel.ID = parcel.ID;
+                    NewParcel.Priority = parcel.Priority;
+                    NewParcel.TargetName = Data.GetCustomer(parcel.TargetID).Name;
+                    NewParcel.SenderName = Data.GetCustomer(parcel.SenderID).Name;
+                    NewParcel.Weight = parcel.Weight;
+                    if (parcel.Delivered != DateTime.MaxValue)
+                        NewParcel.Status = ParcelStatus.Delivered;
+                    else if (parcel.PickedUp != DateTime.MaxValue)
+                        NewParcel.Status = ParcelStatus.PickedUp;
+                    else if (parcel.Scheduled != DateTime.MaxValue)
+                        NewParcel.Status = ParcelStatus.Scheduled;
+                    else
+                        NewParcel.Status = ParcelStatus.Requested;
+                    UnassignedParcels.Add(NewParcel);
+                }
+            }
             return UnassignedParcels;
         }
 
         public List<string> DispalyAllAvailableStations()
         {
-            IEnumerable<Station> AllStations = Data.GetAllStations();
-            List<string> AvailableStations = new();
-
-            foreach (Station station in AllStations)
-                if (station.ChargeSlots > 0)
-                    AvailableStations.Add(station.ToString());
+            List<StationToList> AvailableStations = new();
+            StationToList NewStation = new();
+            foreach (Station station in Data.GetAllStations())
+            {
+                NewStation.ID = station.ID;
+                NewStation.Name = station.Name;
+                NewStation.AvailableChargeSlots = station.ChargeSlots;
+                foreach (IDAL.DO.DroneCharge drone in Data.GetAllDronesCharge())
+                {
+                    if (drone.StationID == station.ID)
+                        NewStation.UsedChargeSlots++;
+                }
+                AvailableStations.Add(NewStation);
+            }
             return AvailableStations;
         }
 
@@ -305,7 +376,7 @@ namespace IBL
                 throw new WrongInputException("ID can't be a negative number.");
             if(ChargeSlots < 0)
                 throw new WrongInputException("Number of charge slots can't be a negative number.");
-            //StationBL NewStation = new(id, name, ChargeSlots, longitude, latitude); // I don't know if we need to creat StationBL before sending the info to DAL
+            StationBL NewStation = new(id, name, ChargeSlots, longitude, latitude); // all the checks will be in the cunstractur
             Data.AddNewStation(id, name, longitude, latitude, ChargeSlots);
             //רשימת הרחפנים בטעינה תאותחל לרשימה ריקה
         }

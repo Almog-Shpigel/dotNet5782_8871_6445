@@ -8,7 +8,7 @@ namespace IBL
 {
     namespace BO
     {
-        class EnumsBL
+        public class EnumsBL
         {
             /// Enums for all the menus:
             public enum DroneStatus { Available, Charging, Delivery }

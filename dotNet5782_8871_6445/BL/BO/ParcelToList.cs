@@ -9,7 +9,7 @@ namespace IBL
 {
     namespace BO
     {
-        class ParcelToList
+        public class ParcelToList
         {
             public int ID { get; set; }
 
@@ -19,7 +19,7 @@ namespace IBL
             public Priorities Priority { get; set; }
             public ParcelStatus Status { get; set; }
 
-            public ParcelToList(int iD, string senderName, string targetName, WeightCategories weight, Priorities priority, ParcelStatus status)
+            public ParcelToList(int iD = 0, string senderName = "", string targetName = "", WeightCategories weight = WeightCategories.Light, Priorities priority = Priorities.Regular, ParcelStatus status = ParcelStatus.Delivered)
             {
                 ID = iD;
                 SenderName = senderName;

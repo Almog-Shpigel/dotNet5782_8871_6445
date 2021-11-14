@@ -8,7 +8,7 @@ namespace IBL
 {
     namespace BO
     {
-        class CustomerToList
+        public class CustomerToList
         {
             public int ID { get; set; }            
             public string Name { get; set; }
@@ -17,7 +17,7 @@ namespace IBL
             public int SentAndNOTDeliverd { get; set; }
             public int ParcelsRecived { get; set; }
             public int ParcelsOnTheWay { get; set; }
-            public CustomerToList(int iD, string name, string phone, int delivered, int NotDelivered, int recived)
+            public CustomerToList(int iD = 0, string name = "", string phone = "", int delivered = 0, int NotDelivered = 0, int recived = 0)
             {
                 ID = iD;
                 Name = name;

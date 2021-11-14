@@ -1,5 +1,4 @@
-﻿using BL.BO;
-using IDAL.DO;
+﻿using IDAL.DO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,8 +34,7 @@ namespace IBL
 
             public override string ToString()
             {
-                return ($"{Model} #{ID}:\n" +
-                    $"Max Weight: {MaxWeight}\n");
+                return ($"{Model} #{ID}: Max Weight: {MaxWeight}, battery status: {BatteryStatus}%, Drone status: {Status}, parcel in delivery: {Parcel}, loctaion: {CurrentLocation}");
             }
 
         }

@@ -35,6 +35,10 @@ namespace IBL
                 CurrentLocation = location;
                 ParcelID = ParcelId;
             }
+            public override string ToString()
+            {
+                return $"Drone #{ID}: model {Model},{Status},{MaxWeight}, location: {CurrentLocation}, battery: {BatteryStatus}";
+            }
         }
     }
 }

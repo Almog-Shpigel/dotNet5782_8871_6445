@@ -7,7 +7,7 @@ using IBL.BO;
 using IDAL.DO;
 using static IBL.BO.EnumsBL;
 
-namespace BL
+namespace IBL
 {
     namespace BO
     {

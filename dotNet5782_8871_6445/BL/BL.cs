@@ -4,35 +4,34 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using BL.BO;
 using DalObject;
 using IBL.BO;
 using IDAL;
 using IDAL.DO;
 using static IBL.BO.EnumsBL;
-using static IBL.BO.Exceptions;
+//using static IBL.BO.Exceptions;
 
 namespace IBL
 {
     public class BL: IBL
     {
-        IDal Data = new DalObject.DalObject();
-        List<DroneToList> DroneList = new();
-        Double[] BatteryUsed;
+        private IDal Data;
+        private List<DroneToList> DroneList;
+        private Double[] BatteryUsed;
+        private static Random rand = new Random();
         public BL()
         {
+            Data = new DalObject.DalObject();
+            DroneList = new List<DroneToList>();
             BatteryUsed = Data.GetBatteryUsed();
-            IEnumerable<Drone> AllDrones;
-            IEnumerable<Parcel> AllParcels;
-            AllDrones = Data.GetAllDrones();
-            AllParcels = Data.GetAllParcels();
+
             DroneToList NewDrone = new();
-            foreach (Drone drone in AllDrones)
+            foreach (Drone drone in Data.GetAllDrones())
             {
                 NewDrone.ID = drone.ID;
                 NewDrone.Model = drone.Model;
                 NewDrone.MaxWeight = drone.MaxWeight;
-                foreach (Parcel parcel in AllParcels)
+                foreach (Parcel parcel in Data.GetAllParcels())
                 {
                     if (parcel.DroneID == drone.ID && parcel.Delivered == DateTime.MaxValue)
                         NewDrone = InitDroneInDelivery(NewDrone,  parcel);
@@ -158,7 +157,7 @@ namespace IBL
             return NearestStation;           
         }
 
-        public IEnumerable<StationToList> DispalyAllStations()
+        public List<StationToList> DispalyAllStations()
         {
             List<StationToList> stations = new();
             StationToList NewStation = new ();
@@ -177,12 +176,12 @@ namespace IBL
             return stations;
         }
 
-        public IEnumerable<DroneToList> DispalyAllDrones()
+        public List<DroneToList> DispalyAllDrones()
         {
             return DroneList;
         }
 
-        public IEnumerable<CustomerToList> DispalyAllCustomers()
+        public List<CustomerToList> DispalyAllCustomers()
         {
             List<CustomerToList> customers = new();
             CustomerToList NewCustomer = new();
@@ -213,7 +212,7 @@ namespace IBL
             return customers;
         }
 
-        public IEnumerable<ParcelToList> DispalyAllParcels()
+        public List<ParcelToList> DispalyAllParcels()
         {
             List<ParcelToList> parcels = new();
             ParcelToList NewParcel = new();
@@ -237,7 +236,7 @@ namespace IBL
             return parcels;
         }
 
-        public IEnumerable<ParcelToList> DispalyAllUnassignedParcels()
+        public List<ParcelToList> DispalyAllUnassignedParcels()
         {
             List<ParcelToList> UnassignedParcels = new();
             ParcelToList NewParcel = new();
@@ -264,7 +263,7 @@ namespace IBL
             return UnassignedParcels;
         }
 
-        public List<string> DispalyAllAvailableStations()
+        public List<StationToList> DispalyAllAvailableStations()
         {
             List<StationToList> AvailableStations = new();
             StationToList NewStation = new();
@@ -423,7 +422,7 @@ namespace IBL
         public void AddNewDrone(int DroneId, string model, WeightCategories weight, int StationId)
         {
             ParcelInDelivery parcel = new();
-            DroneBL NewDrone = new DroneBL(DroneId,model,weight,RandBatteryStatus(20,41),DroneStatus.Charging, parcel,)
+            //DroneBL NewDrone = new DroneBL(DroneId,model,weight,RandBatteryStatus(20,41),DroneStatus.Charging, parcel,)
             //מצב סוללה יוגרל בין %20 ל-40%
             //יוסף כנמצא בתחזוקה
             //מיקום הרחפן יהיה כמיקום התחנה

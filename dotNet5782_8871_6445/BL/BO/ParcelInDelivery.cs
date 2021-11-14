@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using IBL.BO;
 using IDAL.DO;
 
-namespace BL
+namespace IBL
 {
     namespace BO
     {
@@ -45,7 +45,10 @@ namespace BL
                 TargetLocation = targetLocation;
                 DeliveryDistance = deliveryDistance;
             }
-
+            public override string ToString()
+            {
+                return $"Parcel #{ID}, {Weight}, {Priority}, {Status}, {Sender}, {Target}, {PickUpLocation}, {TargetLocation}, {DeliveryDistance}";
+            }
         }
     }
 }

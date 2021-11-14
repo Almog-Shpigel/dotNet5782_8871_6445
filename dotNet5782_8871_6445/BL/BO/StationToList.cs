@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BL
+namespace IBL
 {
     namespace BO
     {
@@ -22,6 +22,10 @@ namespace BL
                 Name = name;
                 AvailableChargeSlots = AvailableSlots;
                 UsedChargeSlots = UsedSlots;
+            }
+            public override string ToString()
+            {
+                return $"{Name} #{ID}, No. of available charge slots: {AvailableChargeSlots}, No. of used charge slots: {UsedChargeSlots}";
             }
         }
     }

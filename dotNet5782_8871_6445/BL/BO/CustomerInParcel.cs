@@ -18,6 +18,10 @@ namespace IBL
                 ID = id;
                 Name = name;
             }
+            public override string ToString()
+            {
+                return $"Name: {Name}, #{ID}";
+            }
         }
     }
 }

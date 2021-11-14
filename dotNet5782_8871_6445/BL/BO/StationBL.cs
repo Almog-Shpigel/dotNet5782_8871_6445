@@ -27,27 +27,10 @@ namespace IBL
             }
             public override string ToString()
             {
-                string sLong = ConvertCoordinates(Location.Longitude), sLatit = ConvertCoordinates(Location.Latitude);    /// Converts the coordinates to be in base 60 (bonus).
-                return ($"{Name} #{ID}:\n" +
+                
+                return $"{Name} #{ID}:\n" +
                     $"Charge slots available: {ChargeSlots}\n" +
-                    $"Location: (" + sLong + "E, " + sLatit + "N)\n");
-            }
-            public string ConvertCoordinates(double number)
-            {
-                int result, remainder;
-                string coordinates;
-                result = (int)number;
-                coordinates = result + "" + (char)176 + " ";                            /// coordinates holds now the degrees.
-                result = (int)((number - result) * 10000);
-                result = result * 60;
-                remainder = result % 10000;
-                result /= 10000;
-                coordinates += result + "\' ";                          /// coordinates holds now the minutes.
-                result = remainder * 60;
-                remainder = result % 10000;
-                result /= 10000;
-                coordinates += result + "." + remainder + "\" ";      /// coordinates holds now the seconds.
-                return coordinates;
+                    $"Location: {Location}";
             }
         }
     }

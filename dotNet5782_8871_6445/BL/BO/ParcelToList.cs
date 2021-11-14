@@ -28,7 +28,10 @@ namespace IBL
                 Priority = priority;
                 Status = status;
             }
-            //ToString............
+            public override string ToString()
+            {
+                return $"Parcel #{ID}, {Weight}, {Priority}, {Status}, sent by {SenderName} to {TargetName}";
+            }
         }
     }
 }

@@ -21,7 +21,7 @@ namespace IBL
 
             public override string ToString()
             {
-                return ($"Drone #{DroneID} is being charge at {BatteryStatus}\n");
+                return ($"Drone #{DroneID}, battery status: {BatteryStatus}%");
             }
         }
     }

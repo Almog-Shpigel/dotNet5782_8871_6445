@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BL
+namespace IBL
 {
     class DroneInParcel
     {
@@ -17,6 +17,10 @@ namespace BL
             ID = id;
             BatteryStatus = battery;
             CurrentLocation = location;
+        }
+        public override string ToString()
+        {
+            return $"Drone #{ID}, battery status: {BatteryStatus}, location: {CurrentLocation}";
         }
     }
 }

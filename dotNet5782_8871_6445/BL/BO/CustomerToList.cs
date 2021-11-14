@@ -26,7 +26,10 @@ namespace IBL
                 SentAndNOTDeliverd = NotDelivered;
                 ParcelsRecived = recived;
             }
-
+            public override string ToString()
+            {
+                return $"Name: {Name}, #{ID}, phone number: {Phone}, No. of deliverd: {SentAndDeliverd}, No. of not deliverd: {SentAndNOTDeliverd}, No. of parcels received: {ParcelsRecived}, No. od parcels on the way: {ParcelsOnTheWay}";
+            }
         }
     }
 }

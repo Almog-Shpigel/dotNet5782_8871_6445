@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BL.BO;
 using DalObject;
 using IBL.BO;
 using IDAL;
@@ -304,6 +305,7 @@ namespace IBL
                 throw new WrongInputException("ID can't be a negative number.");
             if(ChargeSlots < 0)
                 throw new WrongInputException("Number of charge slots can't be a negative number.");
+            //StationBL NewStation = new(id, name, ChargeSlots, longitude, latitude); // I don't know if we need to creat StationBL before sending the info to DAL
             Data.AddNewStation(id, name, longitude, latitude, ChargeSlots);
             //רשימת הרחפנים בטעינה תאותחל לרשימה ריקה
         }
@@ -349,6 +351,8 @@ namespace IBL
 
         public void AddNewDrone(int DroneId, string model, WeightCategories weight, int StationId)
         {
+            ParcelInDelivery parcel = new();
+            DroneBL NewDrone = new DroneBL(DroneId,model,weight,RandBatteryStatus(20,41),DroneStatus.Charging, parcel,)
             //מצב סוללה יוגרל בין %20 ל-40%
             //יוסף כנמצא בתחזוקה
             //מיקום הרחפן יהיה כמיקום התחנה

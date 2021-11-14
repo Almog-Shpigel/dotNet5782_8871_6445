@@ -12,7 +12,7 @@ namespace IBL
         {
             public double Latitude;
             public double Longitude;
-            public Location (double latitude, double longitude) { Latitude = latitude; Longitude = longitude; }
+            public Location (double latitude = 0, double longitude = 0) { Latitude = latitude; Longitude = longitude; }
         }
     }
 }

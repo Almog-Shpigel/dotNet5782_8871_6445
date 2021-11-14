@@ -12,9 +12,10 @@ namespace IBL
         {
             public int ID { get; set; }
             public string Name { get; set; }
-            public CustomerInParcel(int iD, string name)
+
+            public CustomerInParcel(int id = 0, string name = "")
             {
-                ID = iD;
+                ID = id;
                 Name = name;
             }
         }

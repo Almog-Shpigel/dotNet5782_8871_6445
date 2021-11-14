@@ -21,9 +21,21 @@ namespace BL
             public Location PickUpLocation { get; set; }
             public Location TargetLocation { get; set; }
             public double DeliveryDistance { get; set; }
-            public ParcelInDelivery(int iD, WeightCategories weight, Priorities priority, bool status, CustomerInParcel sender, CustomerInParcel target, Location pickUpLocation, Location targetLocation, double deliveryDistance)
+            public ParcelInDelivery()
             {
-                ID = iD;
+                ID = 0;
+                Weight = WeightCategories.Light;
+                Priority = Priorities.Regular;
+                Status = false;
+                Sender = new();
+                Target = new();
+                PickUpLocation = new();
+                TargetLocation = new();
+                DeliveryDistance = 0;
+            }
+            public ParcelInDelivery(int id, WeightCategories weight, Priorities priority, bool status, CustomerInParcel sender, CustomerInParcel target, Location pickUpLocation, Location targetLocation, double deliveryDistance)
+            {
+                ID = id;
                 Weight = weight;
                 Priority = priority;
                 Status = status;

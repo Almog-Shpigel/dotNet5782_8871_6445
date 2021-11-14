@@ -15,7 +15,6 @@ namespace IDAL
                 ID = id;
                 Model = model;
                 MaxWeight = maxWeight;
-             
             }
 
             public override string ToString()

@@ -8,7 +8,7 @@ namespace IBL
 {
     namespace BO
     {
-        class CustomerInParcel
+       public class CustomerInParcel
         {
             public int ID { get; set; }
             public string Name { get; set; }

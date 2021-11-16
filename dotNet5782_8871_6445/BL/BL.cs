@@ -369,13 +369,13 @@ namespace IBL
             throw new NotImplementedException();
         }
 
-        public void AddNewStation(int id, string name, double longitude, double latitude, int ChargeSlots)
+        public void AddNewStation(StationBL station)
         {
             if (id < 0)
                 throw new WrongInputException("ID can't be a negative number.");
             if(ChargeSlots < 0)
                 throw new WrongInputException("Number of charge slots can't be a negative number.");
-            StationBL NewStation = new(id, name, ChargeSlots, longitude, latitude); // all the checks will be in the cunstractur
+            StationBL NewStation = new(id, name, ChargeSlots, longitude, latitude); // all the checks will be in the constractur
             Data.AddNewStation(id, name, longitude, latitude, ChargeSlots);
             //רשימת הרחפנים בטעינה תאותחל לרשימה ריקה
         }
@@ -404,22 +404,18 @@ namespace IBL
             return (result2 * radius);
         }
 
-        public void UpdateParcelDeleiveredByDrone(Func<int> droneID)
+        public void UpdateParcelDeleiveredByDrone(int droneID)
         {
             throw new NotImplementedException();
         }
 
-        public void AddNewStation()
-        {
-            throw new NotImplementedException();
-        }
 
         public void UpdateDroneToBeCharged(int v)
         {
             throw new NotImplementedException();
         }
 
-        public void AddNewDrone(int DroneId, string model, WeightCategories weight, int StationId)
+        public void AddNewDrone(DroneBL drone, int StationID) //Reciving a drone with name,id and weight, and a staion id to sent it to charge there
         {
             ParcelInDelivery parcel = new();
             //DroneBL NewDrone = new DroneBL(DroneId,model,weight,RandBatteryStatus(20,41),DroneStatus.Charging, parcel,)
@@ -438,12 +434,12 @@ namespace IBL
             throw new NotImplementedException();
         }
 
-        public void AddNewCustomer(int id, string name, string phone, double longitude, double latitude)
+        public void AddNewCustomer(CustomerBL customer)
         {
             throw new NotImplementedException();
         }
 
-        public void AddNewParcel(int sender, int receiver, WeightCategories weight, Priorities prioritie)
+        public void AddNewParcel(ParcelBL parcel)
         {
             //ב-BL כל הזמנים יאותחלו לזמן אפס למעט תאריך יצירה שיאותחל ל-DateTime.Now
             //הרחפן יאותחל ל-null

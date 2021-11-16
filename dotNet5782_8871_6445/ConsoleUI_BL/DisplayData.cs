@@ -1,4 +1,5 @@
 ﻿using IBL;
+using IBL.BO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,45 +12,45 @@ namespace ConsoleUI_BL
     {
         public static void Stations(IBL.BL IBL)
         {
-            List<string> stations = IBL.DispalyAllStations();
-            foreach (string station in stations)
-                Console.WriteLine(station);
+            List<StationToList> stations = IBL.DispalyAllStations();
+            foreach (var station in stations)
+                Console.WriteLine(station.ToString());
         }
 
         public static void Drones(IBL.BL IBL)
         {
-            List<string> drones = IBL.DispalyAllDrones();
-            foreach (string drone in drones)
-                Console.WriteLine(drone);
+            List<DroneToList> drones = IBL.DispalyAllDrones();
+            foreach (var drone in drones)
+                Console.WriteLine(drone.ToString());
         }
 
         public static void Customers(IBL.BL IBL)
         {
-            
-            List<string> customers = IBL.DispalyAllCustomers();
-            foreach (string customer in customers)
-                Console.WriteLine(customer);
+
+            List<CustomerToList> customers = IBL.DispalyAllCustomers();
+            foreach (var customer in customers)
+                Console.WriteLine(customer.ToString());
         }
 
         public static void Parcels(IBL.BL IBL)
         {
-            List<string> parcels = IBL.DispalyAllParcels();
-            foreach (string parcel in parcels)
-                Console.WriteLine(parcel);
+            List<ParcelToList> parcels = IBL.DispalyAllParcels();
+            foreach (var parcel in parcels)
+                Console.WriteLine(parcel.ToString());
         }
 
         public static void UnassignedParcels(IBL.BL IBL)
         {
-            List<string> UnassiPars = IBL.DispalyAllUnassignedParcels();
-            foreach (string UnassiPar in UnassiPars)
-                Console.WriteLine(UnassiPar);
+            List<ParcelToList> UnassiPars = IBL.DispalyAllUnassignedParcels();
+            foreach (var UnassiPar in UnassiPars)
+                Console.WriteLine(UnassiPar.ToString());
         }
 
         public static void AvailableStations(IBL.BL IBL)
         {
-            List<string> AvailStats = IBL.DispalyAllAvailableStations();
-            foreach (string AvailStat in AvailStats)
-                Console.WriteLine(AvailStat);
+            List<StationToList> AvailStats = IBL.DispalyAllAvailableStations();
+            foreach (var AvailStat in AvailStats)
+                Console.WriteLine(AvailStat.ToString());
         }
     }
 }

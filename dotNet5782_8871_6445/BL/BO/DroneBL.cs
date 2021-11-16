@@ -10,7 +10,7 @@ namespace IBL
 {
     namespace BO
     {
-        class DroneBL
+       public class DroneBL
         {
             public int ID { get; set; }
             public string Model { get; set; }
@@ -21,15 +21,15 @@ namespace IBL
             public Location CurrentLocation { get; set; }
 
 
-            public DroneBL(int id, string model, WeightCategories maxWeight, double batteryStatus, DroneStatus status, ParcelInDelivery parcel, Location currentLocation)
+            public DroneBL(int id = 0, string model = "", WeightCategories maxWeight = WeightCategories.Light, double batteryStatus = 0, DroneStatus status = DroneStatus.Charging)
             {
+                if (id < 100000 || id > 999999)
+                    throw new InvalidIDException("Invalid customer ID number");
                 ID = id;
                 Model = model;
                 MaxWeight = maxWeight;
                 BatteryStatus = batteryStatus;
                 Status = status;
-                Parcel = parcel;
-                CurrentLocation = currentLocation;
             }
 
             public override string ToString()

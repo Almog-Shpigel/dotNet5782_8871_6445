@@ -2,6 +2,8 @@
 using IBL.BO;
 using IDAL.DO;
 using System;
+using System.Collections.Generic;
+
 namespace ConsoleUI_BL
 {
     public class Program
@@ -242,6 +244,89 @@ namespace ConsoleUI_BL
                 int MinutesInCharge = RequestMinutesInCharge();
                 IBL.UpdateDroneAvailable(id, MinutesInCharge);
             }
+        #endregion
+        #region Display
+        private void Station(IBL.BL IBL)
+        {
+            int id = RequestID();
+            Console.WriteLine(IBL.DisplayStation(id));
+        }
+
+        private void Drone(IBL.BL IBL)
+        {
+            int id = RequestID();
+            Console.WriteLine(IBL.DisplayDrone(id));
+        }
+
+        private void Customer(IBL.BL IBL)
+        {
+            int id = RequestID();
+            Console.WriteLine(IBL.DisplayCustomer(id));
+        }
+
+        private void Parcel(IBL.BL IBL)
+        {
+            int id = RequestID();
+            Console.WriteLine(IBL.DisplayParcel(id));
+        }
+
+        private void DistanceFromStation(IBL.BL IBL)
+        {
+            int id = RequestID();
+            Location location = RequestLocation();
+            Console.WriteLine(IBL.DisplayDistanceFromStation(location.Longitude, location.Latitude,id));
+        }
+
+        private void DistanceFromCustomer(IBL.BL IBL)
+        {
+            int id = RequestID();
+            Location location = RequestLocation();
+            Console.WriteLine(IBL.DisplayDistanceFromCustomer(location.Longitude, location.Latitude, id));
+        }
+        #endregion
+        #region Display_Lists
+        private void Stations(IBL.BL IBL)
+        {
+            List<StationToList> stations = IBL.DispalyAllStations();
+            foreach (var station in stations)
+                Console.WriteLine(station.ToString());
+        }
+
+        private void Drones(IBL.BL IBL)
+        {
+            List<DroneToList> drones = IBL.DispalyAllDrones();
+            foreach (var drone in drones)
+                Console.WriteLine(drone.ToString());
+        }
+
+        private void Customers(IBL.BL IBL)
+        {
+
+            List<CustomerToList> customers = IBL.DispalyAllCustomers();
+            foreach (var customer in customers)
+                Console.WriteLine(customer.ToString());
+        }
+
+        private void Parcels(IBL.BL IBL)
+        {
+            List<ParcelToList> parcels = IBL.DispalyAllParcels();
+            foreach (var parcel in parcels)
+                Console.WriteLine(parcel.ToString());
+        }
+
+        private void UnassignedParcels(IBL.BL IBL)
+        {
+            List<ParcelToList> UnassiPars = IBL.DispalyAllUnassignedParcels();
+            foreach (var UnassiPar in UnassiPars)
+                Console.WriteLine(UnassiPar.ToString());
+        }
+
+        private void AvailableStations(IBL.BL IBL)
+        {
+            List<StationToList> AvailStats = IBL.DispalyAllAvailableStations();
+            foreach (var AvailStat in AvailStats)
+                Console.WriteLine(AvailStat.ToString());
+        }
         #endregion
         #region Request
         private int RequestID()

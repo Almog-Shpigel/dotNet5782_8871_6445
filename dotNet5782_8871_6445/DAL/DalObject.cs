@@ -17,44 +17,33 @@ namespace DalObject
             DataSource.Initialize();
         }
         #region Add
-        public void AddNewStation(int id, string name, double longitude, double latitude, int ChargeSlots)
+        public void AddNewStation(Station station)
         {
-            name = "Station " + name;
-            Station NewStation = new Station(id, name, ChargeSlots, longitude, latitude);
-            DataSource.stations.Add(NewStation);
+            if (StationExist(station.ID))
+                throw new StationExistException("The station ID exists already in the data!!");
+            station.Name = "Station " + station.Name;
+            DataSource.stations.Add(station);
         }
-        public void AddNewCustomer(int id, string name, string phone, double longitude, double latitude)
+        public void AddNewCustomer(Customer customer)
         {
-            if(CustomerExist(id))
-                    throw new CustomerExistException("The ID exists already in the data!!");
-
-            Customer NewCustomer = new Customer(id, name, phone, longitude, latitude);
-            DataSource.customers.Add(NewCustomer);
+            if(CustomerExist(customer.ID))
+                throw new CustomerExistException("The customer ID exists already in the data!!");
+            DataSource.customers.Add(customer);
         }
-        public void AddNewParcel(int sender,int target,IDAL.DO.WeightCategories weight, IDAL.DO.Priorities priority)
+        public void AddNewParcel(Parcel parcel)
         {
-            
-            if (!CustomerExist(sender))
+            if (!CustomerExist(parcel.SenderID))
                 throw new CustomerExistException("The sender ID dosen't exists in the data!!");
-
-            if (!CustomerExist(target))
+            if (!CustomerExist(parcel.TargetID))
                 throw new CustomerExistException("The target ID dosen't exists in the data!!");
-            int id = 344000 + ++DataSource.config.ParcelsCounter;    ///Every parcel id will begin with 34400(changeable) and will be 6 digits
-            int DroneID = 0;
-            ///Setting all the times to be dufault untill they will recive any updates
-            DateTime TimeRequested = DateTime.Now,
-                        Scheduled = DateTime.MaxValue,
-                        PickedUp = DateTime.MaxValue,
-                        Delivered = DateTime.MaxValue;
-            Parcel NewParcel = new Parcel(id, sender, target, DroneID, weight, priority, TimeRequested, Scheduled, PickedUp, Delivered);
-            DataSource.parcels.Add(NewParcel);
+            parcel.ID = ++DataSource.config.ParcelsCounter;
+            DataSource.parcels.Add(parcel);
         }
-        public void AddNewDrone(string model,IDAL.DO.WeightCategories weight)
+        public void AddNewDrone(Drone drone)
         {
-            int id = 669000 + DataSource.drones.Count();      ///Every drone id will begin with 66900(changeable) and will be 6 digits
-            model += " " + DataSource.drones.Count();
-            Drone NewDrone = new Drone(id, model, weight);
-            DataSource.drones.Add(NewDrone);
+            if (DroneExist(drone.ID))
+                throw new DroneExistException("The drone ID exists already in the data!!");
+            DataSource.drones.Add(drone);
         }
         #endregion
         #region Update
@@ -72,7 +61,7 @@ namespace DalObject
                 ++j;
             Station NewStation = DataSource.stations[j];
             NewStation.ChargeSlots++;
-            DataSource.stations[j]=NewStation; //Freeing a space for other drones
+            DataSource.stations[j]=NewStation; ///Freeing a space for other drones
         }
         public void DroneToBeCharge(int DroneID, int StationID)
         {
@@ -83,7 +72,7 @@ namespace DalObject
                 throw new StationExistException("The station dosen't exists in the data!!");
 
             int i = 0;
-            DroneCharge NewCharge = new DroneCharge(DroneID, StationID);
+            DroneCharge NewCharge = new DroneCharge(DroneID, StationID,);
             DataSource.droneCharges.Add(NewCharge);
             while (DataSource.stations[i].ID != StationID)    ///Finding the wanted station
                 ++i;

@@ -25,7 +25,7 @@ namespace IBL
         public void UpdateStation(int v1, string v2, int v3);
         public void UpdateCustomer(int v1, string v2, string v3);
         public void UpdateParcelToDrone(int v);
-        public void UpdateParcelDeleiveredByDrone(Func<int> droneID);
+        public void UpdateParcelDeleiveredByDrone(int droneID);
         public void UpdateDroneToBeCharged(int v);
         public void UpdateParcelCollectedByDrone(int v);
         public void UpdateDroneAvailable(int v1, int v2);
@@ -33,6 +33,6 @@ namespace IBL
         public void AddNewStation(StationBL station);
         public void AddNewDrone(DroneBL drone);
         public void AddNewParcel(ParcelBL parcel);
-        public List<string> PrintAllAvailableStations();
+        //public List<string> PrintAllAvailableStations(); // I'm not sure what this is for...
     }
 }

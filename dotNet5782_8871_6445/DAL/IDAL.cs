@@ -9,10 +9,10 @@ namespace IDAL
 { 
     public interface IDal
     {
-        public void AddNewStation(int id, string name, double longitude, double latitude, int ChargeSlots);
-        public void AddNewCustomer(int id, string name, string phone, double longitude, double latitude);
-        public void AddNewParcel(int sender, int target, IDAL.DO.WeightCategories weight, IDAL.DO.Priorities priority);
-        public void AddNewDrone(string model, IDAL.DO.WeightCategories weight);
+        public void AddNewStation(Station station);
+        public void AddNewCustomer(Customer customer);
+        public void AddNewParcel(Parcel parcel);
+        public void AddNewDrone(Drone drone);
         public void DroneAvailable(int DroneID);
         public void DroneToBeCharge(int DroneID, int StationID);
         public void ParcelDeleivery(int idNum);

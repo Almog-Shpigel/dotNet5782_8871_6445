@@ -12,7 +12,6 @@ namespace IBL
         public class ParcelToList
         {
             public int ID { get; set; }
-
             public string SenderName { get; set; }
             public string TargetName { get; set; }
             public WeightCategories Weight { get; set; }

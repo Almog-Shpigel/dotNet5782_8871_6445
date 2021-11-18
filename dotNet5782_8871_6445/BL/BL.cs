@@ -18,7 +18,8 @@ namespace IBL
         private IDal Data;
         private List<DroneToList> DroneList;
         private Double[] BatteryUsed;
-        private static Random rand = new Random();
+        private static Random rand = new();
+
         public BL()
         {
             Data = new DalObject.DalObject();
@@ -41,6 +42,7 @@ namespace IBL
                 DroneList.Add(NewDrone); 
             }
         }
+
         private DroneToList InitDroneInDelivery(DroneToList NewDrone, Parcel parcel)
         {
             double DisDroneTarget, DisTargetStation, MinBattery;
@@ -63,6 +65,7 @@ namespace IBL
             NewDrone.BatteryStatus = RandBatteryStatus(MinBattery, 100);
             return NewDrone;
         }
+
         private DroneToList InitDroneNOTinDelivery(DroneToList NewDrone)
         {
             Random rand = new Random();
@@ -104,7 +107,7 @@ namespace IBL
 
         private double RandBatteryStatus(double min, double max)
         {
-            Random rand = new Random();
+            Random rand = new();
             double MinBattery = 0, MaxBattery = 100, swap; 
             if (min > max) { swap = min; min = max; max = swap; }
             if (min >= MaxBattery)
@@ -131,6 +134,7 @@ namespace IBL
                     AvailableStationsList.Add(station);
             return AvailableStationsList;
         }
+
         /// <summary>
         /// The function returns the location of the nearest available station.
         /// <para>
@@ -313,6 +317,7 @@ namespace IBL
                     return parcel.ToString();
             throw new ParcelExistException();
         }
+
         public string DisplayDistanceFromStation(double longitude1, double latitude1, int StationID)
         {
             double longitude2 = 0, latitude2 = 0;
@@ -362,37 +367,41 @@ namespace IBL
             throw new NotImplementedException();
         }
 
-        
-
         public void UpdateParcelCollectedByDrone(int v)
         {
             throw new NotImplementedException();
         }
 
-        public void AddNewStation(StationBL station)
+        public void AddNewStation(StationBL StationBO)
         {
-            if (id < 0)
-                throw new WrongInputException("ID can't be a negative number.");
-            if(ChargeSlots < 0)
-                throw new WrongInputException("Number of charge slots can't be a negative number.");
-            StationBL NewStation = new(id, name, ChargeSlots, longitude, latitude); // all the checks will be in the constractur
-            Data.AddNewStation(id, name, longitude, latitude, ChargeSlots);
-            //רשימת הרחפנים בטעינה תאותחל לרשימה ריקה
+            if (StationBO.ID < 100000 || StationBO.ID > 999999)
+                throw new InvalidIDException("Invalid station ID number. Must have 6 digits");
+            if (StationBO.ChargeSlots < 0)
+                throw new InvalidSlotsException("Charge slots can't be a negative number");
+            if ((int)StationBO.Location.Latitude != 31 || (int)StationBO.Location.Longitude != 35)
+                throw new OutOfRangeLocationException("The location is outside of Jerusalem"); ///We assume for now that all the locations are inside Jerusalem
+
+            Station StationDO = new(StationBO.ID, StationBO.Name, StationBO.ChargeSlots, StationBO.Location.Longitude, StationBO.Location.Latitude);
+            Data.AddNewStation(StationDO);
         }
-        private double WeightMultiplier(WeightCategories weight,Double [] BatteryUse)
+
+        private static double WeightMultiplier(WeightCategories weight,Double [] BatteryUse)
         {
-            switch((int)weight)
+            switch (weight)
             {
-                case 0:
+                case WeightCategories.Light:
                     return BatteryUse[1]; //Light
-                case 1:
+                case WeightCategories.Medium:
                     return BatteryUse[2]; //Medium
-                case 2:
+                case WeightCategories.Heavy:
                     return BatteryUse[3]; //Heavy
+                default:
+                    break;
             }
-             return BatteryUse[0]; //Empty
+            return BatteryUse[0]; //Empty
         }
-        private double Distance(double x1, double y1, double x2, double y2)
+
+        private static double Distance(double x1, double y1, double x2, double y2)
         {
             x1 = (x1 * Math.PI) / 180;
             y1 = (y1 * Math.PI) / 180;
@@ -409,13 +418,12 @@ namespace IBL
             throw new NotImplementedException();
         }
 
-
         public void UpdateDroneToBeCharged(int v)
         {
             throw new NotImplementedException();
         }
 
-        public void AddNewDrone(DroneBL drone, int StationID) //Reciving a drone with name,id and weight, and a staion id to sent it to charge there
+        public void AddNewDrone(DroneBL drone) //Reciving a drone with name,id and weight, and a staion id to sent it to charge there
         {
             ParcelInDelivery parcel = new();
             //DroneBL NewDrone = new DroneBL(DroneId,model,weight,RandBatteryStatus(20,41),DroneStatus.Charging, parcel,)
@@ -444,6 +452,6 @@ namespace IBL
             //ב-BL כל הזמנים יאותחלו לזמן אפס למעט תאריך יצירה שיאותחל ל-DateTime.Now
             //הרחפן יאותחל ל-null
         }
-        
+
     }
 }

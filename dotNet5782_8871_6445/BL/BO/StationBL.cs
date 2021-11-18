@@ -18,12 +18,6 @@ namespace IBL
 
         public StationBL(int id, string name, int slots, Location location)
             {
-                if (id < 100000 || id > 999999)
-                    throw new InvalidIDException("Invalid station ID number");
-                if (slots < 0)
-                    throw new InvalidSlotsException("Charge slots can't be a negative number");
-                if ((int)location.Latitude != 31 || (int)location.Longitude != 35)
-                    throw new OutOfRangeLocationException("The location is outside of Jerusalem"); ///We assume for now that all the locations are inside Jerusalem
                 ID = id;
                 Name = name;
                 ChargeSlots = slots;

@@ -25,7 +25,7 @@ namespace IBL
                 result = (int)number;
                 coordinates = result + "" + (char)176 + " ";                            /// coordinates holds now the degrees.
                 result = (int)((number - result) * 10000);
-                result = result * 60;
+                result *= 60;
                 remainder = result % 10000;
                 result /= 10000;
                 coordinates += result + "\' ";                          /// coordinates holds now the minutes.

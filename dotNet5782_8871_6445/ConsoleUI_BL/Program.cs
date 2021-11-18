@@ -1,9 +1,12 @@
 ﻿using IBL;
+using IBL.BO;
 using IDAL.DO;
 using System;
+using System.Collections.Generic;
+
 namespace ConsoleUI_BL
 {
-    class Program
+    public class Program
     {
         static void Main(string[] args)
         {
@@ -14,11 +17,11 @@ namespace ConsoleUI_BL
                 Console.WriteLine("Press anykey to start the program...");
                 Console.ReadKey();
                 Console.Clear();
-                MenuChoice = FirstMenu(IBL);                                /// Receives a Menu choice from the user.
+                MenuChoice = FirstMenu();                                /// Receives a Menu choice from the user.
             } while (MenuChoice != 0);
         }
-
-        public static int FirstMenu(IBL.BL IBL)                /// Main program menu.
+        #region Menues
+        public static int FirstMenu()                /// Main program menu.
         {
             Console.WriteLine("Please choose one of the following options: \n" +
                                 "1- Add \n" +
@@ -36,15 +39,15 @@ namespace ConsoleUI_BL
             CHOICE option = (CHOICE)MenuChoice;
             switch (option)
             {
-                case CHOICE.ADD: ADD(IBL); break;       /// Receives an add choice from the user.
-                case CHOICE.UPDATE: UPDATE(IBL); break;
-                case CHOICE.DISPLAY: DISPLAY(IBL); break;
-                case CHOICE.DATA_PRINT: DISPLAY_DATA(IBL); break;
+                case CHOICE.ADD: ADD(); break;       /// Receives an add choice from the user.
+                case CHOICE.UPDATE: UPDATE(); break;
+                case CHOICE.DISPLAY: DISPLAY(); break;
+                case CHOICE.DATA_PRINT: DISPLAY_DATA(); break;
                 case CHOICE.EXIT: break;                    /// Exit from menu by choosing 0.
             }
             return MenuChoice;
         }
-        public static void ADD(IBL.BL IBL)       /// Add menu.
+        public static void ADD()       /// Add menu.
         {
             Console.WriteLine("Please choose one of the following options:\n" +
                                 "1- Add new station. \n" +
@@ -57,17 +60,16 @@ namespace ConsoleUI_BL
             {
                 success = ADD_CHOICE.TryParse(Console.ReadLine(), out AddOption);
             } while (!success);
-            
+
             switch (AddOption)
             {
-                case ADD_CHOICE.ADD_STATION: Add.NewStation(IBL); break;
+                case ADD_CHOICE.ADD_STATION: AddNewStation(IBL); break;
                 case ADD_CHOICE.ADD_DRONE: Add.NewDrone(IBL); break;
                 case ADD_CHOICE.ADD_CUSTOMER: Add.NewCustomer(IBL); break;
                 case ADD_CHOICE.ADD_PARCEL: Add.NewParcel(IBL); break;
             }
         }
-
-        public static void UPDATE(IBL.BL IBL)   /// Update menu.
+        public static void UPDATE()   /// Update menu.
         {
             Console.WriteLine("Please choose one of the following options:\n" +
                                 "1- Update Drone's name. \n" +
@@ -84,7 +86,7 @@ namespace ConsoleUI_BL
             {
                 success = UPDATE_CHOICE.TryParse(Console.ReadLine(), out UpdateOption);
             } while (!success);
-            
+
             switch (UpdateOption)
             {
                 case UPDATE_CHOICE.DRONE: Update.DroneName(IBL); break;
@@ -97,8 +99,7 @@ namespace ConsoleUI_BL
                 case UPDATE_CHOICE.DRONE_AVAILABLE: Update.DroneAvailable(IBL); break;
             }
         }
-
-        public static void DISPLAY(IBL.BL IBL)   /// Update menu.
+        public static void DISPLAY()   /// Update menu.
         {
             Console.WriteLine("Please choose one of the following options:\n" +
                                  "1- Display station.\n" +
@@ -113,7 +114,7 @@ namespace ConsoleUI_BL
             {
                 success = DISPLAY_CHOICE.TryParse(Console.ReadLine(), out DisplayOption);
             } while (!success);
-            
+
             switch (DisplayOption)
             {
                 case DISPLAY_CHOICE.DISPLAY_STATION: Display.Station(IBL); break;
@@ -125,7 +126,7 @@ namespace ConsoleUI_BL
             }
         }
 
-        public static void DISPLAY_DATA(IBL.BL IBL)  /// Data print menu.
+        public static void DISPLAY_DATA()  /// Data print menu.
         {
             Console.WriteLine("Please choose one of the following options:\n" +
                                 "1- Display all stations.\n" +
@@ -140,7 +141,7 @@ namespace ConsoleUI_BL
             {
                 success = PRINT_CHOICE.TryParse(Console.ReadLine(), out PrintOption);
             } while (!success);
-            
+
             switch (PrintOption)
             {
                 case PRINT_CHOICE.PRINT_STATIONS: DisplayData.Stations(IBL); break;
@@ -151,5 +152,254 @@ namespace ConsoleUI_BL
                 case PRINT_CHOICE.PRINT_AVAILABLE_STATIONS: DisplayData.AvailableStations(IBL); break;
             }
         }
+        #endregion
+        #region Add
+      private void AddNewStation(IBL.BL IBL)
+            {
+                int id = RequestID();
+                string name = RequestStationName();
+                Location location = RequestLocation();
+                int slots = RequestChargeSlots();
+                StationBL NewStation = new StationBL(id, name, slots, location);
+                IBL.AddNewStation(NewStation);
+            }
+
+    //private void NewDrone(IBL.BL IBL)
+            //{
+            //    int id = RequestID();
+            //    string model = RequestModelName();
+            //    WeightCategories weight = RequestWeightCategorie();
+            //    int StationID = RequestID();
+            //    DroneBL NewDrone = new DroneBL(id,model,weight);
+            //    IBL.AddNewDrone(NewDrone,StationID);
+            //}
+
+      private void AddNewCustomer(IBL.BL IBL)
+            {
+                int id = RequestID();
+                string name = RequestCustomerName();
+                string phone = RequestPhoneNumber();
+                Location location = RequestLocation();
+                CustomerBL NewCustomer = new CustomerBL(id, name, phone, location);
+                IBL.AddNewCustomer(NewCustomer);
+            }
+      private void AddNewParcel(IBL.BL IBL)
+            {
+                int SenderID = RequestID();
+                int TargetID = RequestID();
+                WeightCategories weight = RequestWeightCategorie();
+                Priorities priority = RequestPrioritie();
+                ParcelBL NewParcel = new ParcelBL(SenderID, TargetID, weight, priority);
+                IBL.AddNewParcel(NewParcel);
+            }
+        #endregion
+        #region Update
+        private void UpdateDroneName(IBL.BL IBL)
+            {
+                int id = RequestID();
+                string model = RequestModelName();
+                IBL.UpdateDroneName(id, model);
+            }
+        private void UpdateStation(IBL.BL IBL)
+            {
+                int id = RequestID();
+                string name = RequestStationName();
+                int slots = RequestChargeSlots();
+                IBL.UpdateStation(id, name, slots);
+            }
+        private void UpdateCustomer(IBL.BL IBL)
+            {
+                int id = RequestID();
+                string name = RequestCustomerName();
+                string phone = RequestPhoneNumber();
+                IBL.UpdateCustomer(id, name, phone);
+            }
+        private void PairParcelToDrone(IBL.BL IBL)
+            {
+                int id = RequestID();
+                IBL.UpdateParcelToDrone(id);
+            }
+
+        private void ParcelCollectedByDrone(IBL.BL IBL)
+            {
+                int id = RequestID();
+                IBL.UpdateParcelCollectedByDrone(id);
+            }
+
+        private void ParcelDeleiveredByDrone(IBL.BL IBL)
+            {
+                int id = RequestID();
+                IBL.UpdateParcelDeleiveredByDrone(id);
+            }
+
+        private void DroneToBeCharged(IBL.BL IBL)
+            {
+                int id = RequestID();
+                IBL.UpdateDroneToBeCharged(id);
+            }
+
+        private void DroneAvailable(IBL.BL IBL)
+            {
+                int id = RequestID();
+                int MinutesInCharge = RequestMinutesInCharge();
+                IBL.UpdateDroneAvailable(id, MinutesInCharge);
+            }
+        #endregion
+        #region Display
+        private void Station(IBL.BL IBL)
+        {
+            int id = RequestID();
+            Console.WriteLine(IBL.DisplayStation(id));
+        }
+
+        private void Drone(IBL.BL IBL)
+        {
+            int id = RequestID();
+            Console.WriteLine(IBL.DisplayDrone(id));
+        }
+
+        private void Customer(IBL.BL IBL)
+        {
+            int id = RequestID();
+            Console.WriteLine(IBL.DisplayCustomer(id));
+        }
+
+        private void Parcel(IBL.BL IBL)
+        {
+            int id = RequestID();
+            Console.WriteLine(IBL.DisplayParcel(id));
+        }
+
+        private void DistanceFromStation(IBL.BL IBL)
+        {
+            int id = RequestID();
+            Location location = RequestLocation();
+            Console.WriteLine(IBL.DisplayDistanceFromStation(location.Longitude, location.Latitude,id));
+        }
+
+        private void DistanceFromCustomer(IBL.BL IBL)
+        {
+            int id = RequestID();
+            Location location = RequestLocation();
+            Console.WriteLine(IBL.DisplayDistanceFromCustomer(location.Longitude, location.Latitude, id));
+        }
+        #endregion
+        #region Display_Lists
+        private void Stations(IBL.BL IBL)
+        {
+            List<StationToList> stations = IBL.DispalyAllStations();
+            foreach (var station in stations)
+                Console.WriteLine(station.ToString());
+        }
+
+        private void Drones(IBL.BL IBL)
+        {
+            List<DroneToList> drones = IBL.DispalyAllDrones();
+            foreach (var drone in drones)
+                Console.WriteLine(drone.ToString());
+        }
+
+        private void Customers(IBL.BL IBL)
+        {
+
+            List<CustomerToList> customers = IBL.DispalyAllCustomers();
+            foreach (var customer in customers)
+                Console.WriteLine(customer.ToString());
+        }
+
+        private void Parcels(IBL.BL IBL)
+        {
+            List<ParcelToList> parcels = IBL.DispalyAllParcels();
+            foreach (var parcel in parcels)
+                Console.WriteLine(parcel.ToString());
+        }
+
+        private void UnassignedParcels(IBL.BL IBL)
+        {
+            List<ParcelToList> UnassiPars = IBL.DispalyAllUnassignedParcels();
+            foreach (var UnassiPar in UnassiPars)
+                Console.WriteLine(UnassiPar.ToString());
+        }
+
+        private void AvailableStations(IBL.BL IBL)
+        {
+            List<StationToList> AvailStats = IBL.DispalyAllAvailableStations();
+            foreach (var AvailStat in AvailStats)
+                Console.WriteLine(AvailStat.ToString());
+        }
+        #endregion
+        #region Request
+        private int RequestID()
+            {
+                Console.Write("Please enter ID: ");    ///Reciving ID
+                bool input = int.TryParse(Console.ReadLine(), out int StationId);
+                return StationId;
+            }
+        private string RequestStationName()
+            {
+                Console.Write("Please enter station name: ");                 ///Reciving name
+                return Console.ReadLine();
+            }
+        private Location RequestLocation()
+            {
+                Console.Write("Enter longitude: ");
+                bool lon = double.TryParse(Console.ReadLine(), out double longitude);    ///Reciving location
+                Console.Write("Enter latitude: ");
+                bool lat = double.TryParse(Console.ReadLine(), out double latitude);
+                Location location = new Location(latitude, longitude);
+                return location;
+            }
+            
+        private int RequestChargeSlots()
+            {
+                Console.Write("Enter number of charge slots:");
+                bool input = int.TryParse(Console.ReadLine(), out int ChargeSlots);
+                return ChargeSlots;
+            }
+
+
+        private string RequestModelName()
+            {
+                Console.WriteLine("Enter model name: ");
+                return Console.ReadLine();
+            }
+        private WeightCategories RequestWeightCategorie()
+            {
+                Console.WriteLine("Enter weight category:\n" +
+                    "0- Light \n1- Medium \n2- Heavy");
+                bool input = int.TryParse(Console.ReadLine(), out int weight);       ///Reciving weight category
+                return (WeightCategories)weight;
+            }
+        private Priorities RequestPrioritie()
+            {
+                Console.WriteLine("Enter priority category:\n" +
+                   "0- Regular\n 1- Express\n 2- Urgent");
+                bool input = int.TryParse(Console.ReadLine(), out int priority);
+                return (Priorities)priority;      ///Choosing a priority category for the parcel
+            }
+        private string RequestCustomerName()
+            {
+                Console.Write("Please enter full name: ");                 ///Reciving name
+                return Console.ReadLine();
+            }
+        private string RequestPhoneNumber()
+            {
+                Console.Write("Please enter phone number: ");  ///Reciving phone number
+                return Console.ReadLine();
+            }
+        
+
+        private int RequestMinutesInCharge()
+        {
+            bool success;
+            int minutes = 0;
+            do
+            {
+                Console.WriteLine("Please enter amount of minutes in charging");
+                success = int.TryParse(Console.ReadLine(), out minutes);
+            } while (success);
+            return minutes;
+        }
+        #endregion
     }
 }

@@ -11,7 +11,7 @@ namespace IBL
 {
     namespace BO
     {
-        class ParcelBL
+       public class ParcelBL
         {
             public int ID { get; set; }
             public CustomerInParcel Sender { get; set; }
@@ -24,22 +24,18 @@ namespace IBL
             public DateTime PickedUp { get; set; }
             public DateTime Delivered { get; set; }
 
-            public ParcelBL(int id, CustomerInParcel sender, CustomerInParcel target,
-                          WeightCategories weight, Priorities priority,
-                          DateTime requested, DateTime scheduled,
-                          DateTime pickedUp, DateTime delivered, DroneInParcel droneInParcel)
+            public ParcelBL( int sender, int target,
+                          WeightCategories weight, Priorities priority)
             {
-                ID = id;
-                Sender= sender;
-                Target = target;
-                DroneInParcel = droneInParcel;
+                //Sender= sender;
+                //Target = target;
+                //DroneInParcel = droneInParcel;
                 Weight = weight;
                 Priority = priority;
-                TimeRequested = requested;
-                Scheduled = scheduled;
-                PickedUp = pickedUp;
-                Delivered = delivered;
-                DroneInParcel = droneInParcel;
+                TimeRequested = DateTime.Now;
+                Scheduled = DateTime.MinValue;
+                PickedUp = DateTime.MinValue;
+                Delivered = DateTime.MinValue;
             }
             public override string ToString()
             {

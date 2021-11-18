@@ -11,7 +11,7 @@ namespace IBL
 {
     namespace BO
     {
-        class ParcelAtCustomer
+       public class ParcelAtCustomer
         {
             public int ID { get; set; }
 

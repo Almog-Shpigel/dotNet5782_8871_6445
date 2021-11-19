@@ -17,11 +17,11 @@ namespace ConsoleUI_BL
                 Console.WriteLine("Press anykey to start the program...");
                 Console.ReadKey();
                 Console.Clear();
-                MenuChoice = FirstMenu();                                /// Receives a Menu choice from the user.
+                MenuChoice = FirstMenu(IBL);                                /// Receives a Menu choice from the user.
             } while (MenuChoice != 0);
         }
         #region Menues
-        public static int FirstMenu()                /// Main program menu.
+        public static int FirstMenu(IBL.BL IBL)                /// Main program menu.
         {
             Console.WriteLine("Please choose one of the following options: \n" +
                                 "1- Add \n" +
@@ -39,15 +39,15 @@ namespace ConsoleUI_BL
             CHOICE option = (CHOICE)MenuChoice;
             switch (option)
             {
-                case CHOICE.ADD: ADD(); break;       /// Receives an add choice from the user.
-                case CHOICE.UPDATE: UPDATE(); break;
-                case CHOICE.DISPLAY: DISPLAY(); break;
-                case CHOICE.DATA_PRINT: DISPLAY_DATA(); break;
+                case CHOICE.ADD: ADD(IBL); break;       /// Receives an add choice from the user.
+                case CHOICE.UPDATE: UPDATE(IBL); break;
+                case CHOICE.DISPLAY: DISPLAY(IBL); break;
+                case CHOICE.DATA_PRINT: DISPLAY_DATA(IBL); break;
                 case CHOICE.EXIT: break;                    /// Exit from menu by choosing 0.
             }
             return MenuChoice;
         }
-        public static void ADD()       /// Add menu.
+        public static void ADD(IBL.BL IBL)       /// Add menu.
         {
             Console.WriteLine("Please choose one of the following options:\n" +
                                 "1- Add new station. \n" +
@@ -64,12 +64,12 @@ namespace ConsoleUI_BL
             switch (AddOption)
             {
                 case ADD_CHOICE.ADD_STATION: AddNewStation(IBL); break;
-                case ADD_CHOICE.ADD_DRONE: Add.NewDrone(IBL); break;
-                case ADD_CHOICE.ADD_CUSTOMER: Add.NewCustomer(IBL); break;
-                case ADD_CHOICE.ADD_PARCEL: Add.NewParcel(IBL); break;
+                case ADD_CHOICE.ADD_DRONE: AddNewDrone(IBL); break;
+                case ADD_CHOICE.ADD_CUSTOMER: AddNewCustomer(IBL); break;
+                case ADD_CHOICE.ADD_PARCEL: AddNewParcel(IBL); break;
             }
         }
-        public static void UPDATE()   /// Update menu.
+        public static void UPDATE(IBL.BL IBL)   /// Update menu.
         {
             Console.WriteLine("Please choose one of the following options:\n" +
                                 "1- Update Drone's name. \n" +
@@ -89,17 +89,17 @@ namespace ConsoleUI_BL
 
             switch (UpdateOption)
             {
-                case UPDATE_CHOICE.DRONE: Update.DroneName(IBL); break;
-                case UPDATE_CHOICE.STATION: Update.Station(IBL); break;
-                case UPDATE_CHOICE.CUSTOMER: Update.Customer(IBL); break;
-                case UPDATE_CHOICE.PARCEL_PAIRING: Update.PairParcelToDrone(IBL); break;
-                case UPDATE_CHOICE.PARCEL_COLLECTED: Update.ParcelCollectedByDrone(IBL); break;
-                case UPDATE_CHOICE.PARCEL_DELEIVERY: Update.ParcelDeleiveredByDrone(IBL); break;
-                case UPDATE_CHOICE.DRONE_TO_CHARGE: Update.DroneToBeCharged(IBL); break;
-                case UPDATE_CHOICE.DRONE_AVAILABLE: Update.DroneAvailable(IBL); break;
+                case UPDATE_CHOICE.DRONE: UpdateDroneName(IBL); break;
+                case UPDATE_CHOICE.STATION: UpdateStation(IBL); break;
+                case UPDATE_CHOICE.CUSTOMER: UpdateCustomer(IBL); break;
+                case UPDATE_CHOICE.PARCEL_PAIRING: PairParcelToDrone(IBL); break;
+                case UPDATE_CHOICE.PARCEL_COLLECTED: ParcelCollectedByDrone(IBL); break;
+                case UPDATE_CHOICE.PARCEL_DELEIVERY: ParcelDeleiveredByDrone(IBL); break;
+                case UPDATE_CHOICE.DRONE_TO_CHARGE: DroneToBeCharged(IBL); break;
+                case UPDATE_CHOICE.DRONE_AVAILABLE: DroneAvailable(IBL); break;
             }
         }
-        public static void DISPLAY()   /// Update menu.
+        public static void DISPLAY(IBL.BL IBL)   /// Update menu.
         {
             Console.WriteLine("Please choose one of the following options:\n" +
                                  "1- Display station.\n" +
@@ -117,16 +117,16 @@ namespace ConsoleUI_BL
 
             switch (DisplayOption)
             {
-                case DISPLAY_CHOICE.DISPLAY_STATION: Display.Station(IBL); break;
-                case DISPLAY_CHOICE.DISPLAY_DRONE: Display.Drone(IBL); break;
-                case DISPLAY_CHOICE.DISPLAY_CUSTOMER: Display.Customer(IBL); break;
-                case DISPLAY_CHOICE.DISPLAY_PARCEL: Display.Parcel(IBL); break;
-                case DISPLAY_CHOICE.DISTANCE_STATION: Display.DistanceFromStation(IBL); break;
-                case DISPLAY_CHOICE.DISTANCE_CUSTOMER: Display.DistanceFromCustomer(IBL); break;
+                case DISPLAY_CHOICE.DISPLAY_STATION: DisplayStation(IBL); break;
+                case DISPLAY_CHOICE.DISPLAY_DRONE: DisplayDrone(IBL); break;
+                case DISPLAY_CHOICE.DISPLAY_CUSTOMER: DisplayCustomer(IBL); break;
+                case DISPLAY_CHOICE.DISPLAY_PARCEL: DisplayParcel(IBL); break;
+                case DISPLAY_CHOICE.DISTANCE_STATION: DisplayDistanceFromStation(IBL); break;
+                case DISPLAY_CHOICE.DISTANCE_CUSTOMER: DisplayDistanceFromCustomer(IBL); break;
             }
         }
 
-        public static void DISPLAY_DATA()  /// Data print menu.
+        public static void DISPLAY_DATA(IBL.BL IBL)  /// Data print menu.
         {
             Console.WriteLine("Please choose one of the following options:\n" +
                                 "1- Display all stations.\n" +
@@ -144,17 +144,41 @@ namespace ConsoleUI_BL
 
             switch (PrintOption)
             {
-                case PRINT_CHOICE.PRINT_STATIONS: DisplayData.Stations(IBL); break;
-                case PRINT_CHOICE.PRINT_DRONES: DisplayData.Drones(IBL); break;
-                case PRINT_CHOICE.PRINT_CUSTOMERS: DisplayData.Customers(IBL); break;
-                case PRINT_CHOICE.PRINT_PARCELS: DisplayData.Parcels(IBL); break;
-                case PRINT_CHOICE.PRINT_UNASSIGNED_PARCELS: DisplayData.UnassignedParcels(IBL); break;
-                case PRINT_CHOICE.PRINT_AVAILABLE_STATIONS: DisplayData.AvailableStations(IBL); break;
+                case PRINT_CHOICE.PRINT_STATIONS:
+                    List<StationToList> stations = IBL.DispalyAllStations();
+                    foreach (var station in stations)
+                        Console.WriteLine(station.ToString());
+                    break;
+                case PRINT_CHOICE.PRINT_DRONES:
+                    List<DroneToList> drones = IBL.DispalyAllDrones();
+                    foreach (var drone in drones)
+                        Console.WriteLine(drone.ToString());
+                    break;
+                case PRINT_CHOICE.PRINT_CUSTOMERS:
+                    List<CustomerToList> customers = IBL.DispalyAllCustomers();
+                    foreach (var customer in customers)
+                        Console.WriteLine(customer.ToString());
+                    break;
+                case PRINT_CHOICE.PRINT_PARCELS:
+                    List<ParcelToList> parcels = IBL.DispalyAllParcels();
+                    foreach (var parcel in parcels)
+                        Console.WriteLine(parcel.ToString());
+                    break;
+                case PRINT_CHOICE.PRINT_UNASSIGNED_PARCELS:
+                    List<ParcelToList> UnassiPars = IBL.DispalyAllUnassignedParcels();
+                    foreach (var UnassiPar in UnassiPars)
+                        Console.WriteLine(UnassiPar.ToString());
+                    break;
+                case PRINT_CHOICE.PRINT_AVAILABLE_STATIONS:
+                    List<StationToList> AvailStats = IBL.DispalyAllAvailableStations();
+                    foreach (var AvailStat in AvailStats)
+                        Console.WriteLine(AvailStat.ToString());
+                    break;
             }
         }
         #endregion
         #region Add
-      private void AddNewStation(IBL.BL IBL)
+      public static void AddNewStation(IBL.BL IBL)
             {
                 int id = RequestID();
                 string name = RequestStationName();
@@ -164,17 +188,17 @@ namespace ConsoleUI_BL
                 IBL.AddNewStation(NewStation);
             }
 
-    //private void NewDrone(IBL.BL IBL)
-            //{
-            //    int id = RequestID();
-            //    string model = RequestModelName();
-            //    WeightCategories weight = RequestWeightCategorie();
-            //    int StationID = RequestID();
-            //    DroneBL NewDrone = new DroneBL(id,model,weight);
-            //    IBL.AddNewDrone(NewDrone,StationID);
-            //}
+        private static void NewDrone(IBL.BL IBL)
+        {
+            int id = RequestID();
+            string model = RequestModelName();
+            WeightCategories weight = RequestWeightCategorie();
+            int StationID = RequestID();
+            DroneBL NewDrone = new DroneBL(id, model, weight);
+            IBL.AddNewDrone(NewDrone, StationID);
+        }
 
-      private void AddNewCustomer(IBL.BL IBL)
+        private static void AddNewCustomer(IBL.BL IBL)
             {
                 int id = RequestID();
                 string name = RequestCustomerName();
@@ -183,7 +207,7 @@ namespace ConsoleUI_BL
                 CustomerBL NewCustomer = new CustomerBL(id, name, phone, location);
                 IBL.AddNewCustomer(NewCustomer);
             }
-      private void AddNewParcel(IBL.BL IBL)
+      private static void AddNewParcel(IBL.BL IBL)
             {
                 int SenderID = RequestID();
                 int TargetID = RequestID();
@@ -194,51 +218,51 @@ namespace ConsoleUI_BL
             }
         #endregion
         #region Update
-        private void UpdateDroneName(IBL.BL IBL)
+        private static void UpdateDroneName(IBL.BL IBL)
             {
                 int id = RequestID();
                 string model = RequestModelName();
                 IBL.UpdateDroneName(id, model);
             }
-        private void UpdateStation(IBL.BL IBL)
+        private static void UpdateStation(IBL.BL IBL)
             {
                 int id = RequestID();
                 string name = RequestStationName();
                 int slots = RequestChargeSlots();
                 IBL.UpdateStation(id, name, slots);
             }
-        private void UpdateCustomer(IBL.BL IBL)
+        private static void UpdateCustomer(IBL.BL IBL)
             {
                 int id = RequestID();
                 string name = RequestCustomerName();
                 string phone = RequestPhoneNumber();
                 IBL.UpdateCustomer(id, name, phone);
             }
-        private void PairParcelToDrone(IBL.BL IBL)
+        private static void PairParcelToDrone(IBL.BL IBL)
             {
                 int id = RequestID();
                 IBL.UpdateParcelToDrone(id);
             }
 
-        private void ParcelCollectedByDrone(IBL.BL IBL)
+        private static void ParcelCollectedByDrone(IBL.BL IBL)
             {
                 int id = RequestID();
                 IBL.UpdateParcelCollectedByDrone(id);
             }
 
-        private void ParcelDeleiveredByDrone(IBL.BL IBL)
+        private static void ParcelDeleiveredByDrone(IBL.BL IBL)
             {
                 int id = RequestID();
                 IBL.UpdateParcelDeleiveredByDrone(id);
             }
 
-        private void DroneToBeCharged(IBL.BL IBL)
+        private static void DroneToBeCharged(IBL.BL IBL)
             {
                 int id = RequestID();
                 IBL.UpdateDroneToBeCharged(id);
             }
 
-        private void DroneAvailable(IBL.BL IBL)
+        private static void DroneAvailable(IBL.BL IBL)
             {
                 int id = RequestID();
                 int MinutesInCharge = RequestMinutesInCharge();
@@ -246,38 +270,38 @@ namespace ConsoleUI_BL
             }
         #endregion
         #region Display
-        private void Station(IBL.BL IBL)
+        private static void DisplayStation(IBL.BL IBL)
         {
             int id = RequestID();
             Console.WriteLine(IBL.DisplayStation(id));
         }
 
-        private void Drone(IBL.BL IBL)
+        private static void DisplayDrone(IBL.BL IBL)
         {
             int id = RequestID();
             Console.WriteLine(IBL.DisplayDrone(id));
         }
 
-        private void Customer(IBL.BL IBL)
+        private static void DisplayCustomer(IBL.BL IBL)
         {
             int id = RequestID();
             Console.WriteLine(IBL.DisplayCustomer(id));
         }
 
-        private void Parcel(IBL.BL IBL)
+        private static void DisplayParcel(IBL.BL IBL)
         {
             int id = RequestID();
             Console.WriteLine(IBL.DisplayParcel(id));
         }
 
-        private void DistanceFromStation(IBL.BL IBL)
+        private static void DisplayDistanceFromStation(IBL.BL IBL)
         {
             int id = RequestID();
             Location location = RequestLocation();
             Console.WriteLine(IBL.DisplayDistanceFromStation(location.Longitude, location.Latitude,id));
         }
 
-        private void DistanceFromCustomer(IBL.BL IBL)
+        private static void DisplayDistanceFromCustomer(IBL.BL IBL)
         {
             int id = RequestID();
             Location location = RequestLocation();
@@ -285,21 +309,21 @@ namespace ConsoleUI_BL
         }
         #endregion
         #region Display_Lists
-        private void Stations(IBL.BL IBL)
+        private static void Stations(IBL.BL IBL)
         {
             List<StationToList> stations = IBL.DispalyAllStations();
             foreach (var station in stations)
                 Console.WriteLine(station.ToString());
         }
 
-        private void Drones(IBL.BL IBL)
+        private static void Drones(IBL.BL IBL)
         {
             List<DroneToList> drones = IBL.DispalyAllDrones();
             foreach (var drone in drones)
                 Console.WriteLine(drone.ToString());
         }
 
-        private void Customers(IBL.BL IBL)
+        private static void Customers(IBL.BL IBL)
         {
 
             List<CustomerToList> customers = IBL.DispalyAllCustomers();
@@ -307,21 +331,21 @@ namespace ConsoleUI_BL
                 Console.WriteLine(customer.ToString());
         }
 
-        private void Parcels(IBL.BL IBL)
+        private static void Parcels(IBL.BL IBL)
         {
             List<ParcelToList> parcels = IBL.DispalyAllParcels();
             foreach (var parcel in parcels)
                 Console.WriteLine(parcel.ToString());
         }
 
-        private void UnassignedParcels(IBL.BL IBL)
+        private static void UnassignedParcels(IBL.BL IBL)
         {
             List<ParcelToList> UnassiPars = IBL.DispalyAllUnassignedParcels();
             foreach (var UnassiPar in UnassiPars)
                 Console.WriteLine(UnassiPar.ToString());
         }
 
-        private void AvailableStations(IBL.BL IBL)
+        private static void AvailableStations(IBL.BL IBL)
         {
             List<StationToList> AvailStats = IBL.DispalyAllAvailableStations();
             foreach (var AvailStat in AvailStats)
@@ -329,18 +353,18 @@ namespace ConsoleUI_BL
         }
         #endregion
         #region Request
-        private int RequestID()
+        private static int RequestID()
             {
                 Console.Write("Please enter ID: ");    ///Reciving ID
                 bool input = int.TryParse(Console.ReadLine(), out int StationId);
                 return StationId;
             }
-        private string RequestStationName()
+        private static string RequestStationName()
             {
                 Console.Write("Please enter station name: ");                 ///Reciving name
                 return Console.ReadLine();
             }
-        private Location RequestLocation()
+        private static Location RequestLocation()
             {
                 Console.Write("Enter longitude: ");
                 bool lon = double.TryParse(Console.ReadLine(), out double longitude);    ///Reciving location
@@ -350,7 +374,7 @@ namespace ConsoleUI_BL
                 return location;
             }
             
-        private int RequestChargeSlots()
+        private static int RequestChargeSlots()
             {
                 Console.Write("Enter number of charge slots:");
                 bool input = int.TryParse(Console.ReadLine(), out int ChargeSlots);
@@ -358,38 +382,38 @@ namespace ConsoleUI_BL
             }
 
 
-        private string RequestModelName()
+        private static string RequestModelName()
             {
                 Console.WriteLine("Enter model name: ");
                 return Console.ReadLine();
             }
-        private WeightCategories RequestWeightCategorie()
+        private static WeightCategories RequestWeightCategorie()
             {
                 Console.WriteLine("Enter weight category:\n" +
                     "0- Light \n1- Medium \n2- Heavy");
                 bool input = int.TryParse(Console.ReadLine(), out int weight);       ///Reciving weight category
                 return (WeightCategories)weight;
             }
-        private Priorities RequestPrioritie()
+        private static Priorities RequestPrioritie()
             {
                 Console.WriteLine("Enter priority category:\n" +
                    "0- Regular\n 1- Express\n 2- Urgent");
                 bool input = int.TryParse(Console.ReadLine(), out int priority);
                 return (Priorities)priority;      ///Choosing a priority category for the parcel
             }
-        private string RequestCustomerName()
+        private static string RequestCustomerName()
             {
                 Console.Write("Please enter full name: ");                 ///Reciving name
                 return Console.ReadLine();
             }
-        private string RequestPhoneNumber()
+        private static string RequestPhoneNumber()
             {
                 Console.Write("Please enter phone number: ");  ///Reciving phone number
                 return Console.ReadLine();
             }
         
 
-        private int RequestMinutesInCharge()
+        private static int RequestMinutesInCharge()
         {
             bool success;
             int minutes = 0;

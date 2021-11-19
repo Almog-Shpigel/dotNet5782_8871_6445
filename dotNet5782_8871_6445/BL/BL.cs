@@ -423,10 +423,23 @@ namespace IBL
             throw new NotImplementedException();
         }
 
-        public void AddNewDrone(DroneBL drone) //Reciving a drone with name,id and weight, and a staion id to sent it to charge there
+        public void AddNewDrone(DroneBL DroneBL, int StationID) //Reciving a drone with name,id and weight, and a staion id to sent it to charge there
         {
-            ParcelInDelivery parcel = new();
-            //DroneBL NewDrone = new DroneBL(DroneId,model,weight,RandBatteryStatus(20,41),DroneStatus.Charging, parcel,)
+            if (DroneBL.ID < 100000 || DroneBL.ID > 999999)
+                throw new InvalidIDException("Drone ID has to have 6 positive digits.");
+            
+            DroneBL.BatteryStatus = RandBatteryStatus(20,41);
+            DroneBL.Status = DroneStatus.Charging;
+            IEnumerable<Station> stations = Data.GetAllStations();
+            foreach (Station station in stations)
+                if (station.ID == StationID)
+                {
+                    if (station.ChargeSlots <= 0)
+                        throw new InvalidSlotsException("There are no slots available at this station.");
+                    DroneBL.CurrentLocation.Latitude = station.Latitude;
+                    DroneBL.CurrentLocation.Longitude = station.Longitude;
+                }
+            // לא גמרתי פה, אבל הייתי חייב ללכת... צריך להוסיף בדיקה לראות שהתחנה קיימת וגם להוסיף את הרחפן לנתונים וגם לשכבה הלוגית
             //מצב סוללה יוגרל בין %20 ל-40%
             //יוסף כנמצא בתחזוקה
             //מיקום הרחפן יהיה כמיקום התחנה

@@ -14,7 +14,7 @@ namespace IDAL
         public void AddNewParcel(Parcel parcel);
         public void AddNewDrone(Drone drone);
         public void DroneAvailable(int DroneID);
-        public void DroneToBeCharge(int DroneID, int StationID);
+        public void DroneToBeCharge(int DroneID, int StationID, DateTime start);
         public void ParcelDeleivery(int idNum);
         public void ParcelCollected(int id);
         public void PairParcelToDrone(int ParcelID, int DroneID);

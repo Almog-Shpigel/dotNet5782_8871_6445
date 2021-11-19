@@ -63,7 +63,7 @@ namespace DalObject
             NewStation.ChargeSlots++;
             DataSource.stations[j]=NewStation; ///Freeing a space for other drones
         }
-        public void DroneToBeCharge(int DroneID, int StationID)
+        public void DroneToBeCharge(int DroneID, int StationID, DateTime start)
         {
             if (!DroneExist(DroneID))
                 throw new DroneExistException("The drone dosen't exists in the data!!");
@@ -72,7 +72,7 @@ namespace DalObject
                 throw new StationExistException("The station dosen't exists in the data!!");
 
             int i = 0;
-            DroneCharge NewCharge = new DroneCharge(DroneID, StationID,);
+            DroneCharge NewCharge = new DroneCharge(DroneID, StationID, start);
             DataSource.droneCharges.Add(NewCharge);
             while (DataSource.stations[i].ID != StationID)    ///Finding the wanted station
                 ++i;

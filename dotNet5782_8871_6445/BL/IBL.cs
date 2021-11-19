@@ -31,7 +31,7 @@ namespace IBL
         public void UpdateDroneAvailable(int v1, int v2);
         public void AddNewCustomer(CustomerBL customer);
         public void AddNewStation(StationBL station);
-        public void AddNewDrone(DroneBL drone);
+        public void AddNewDrone(DroneBL drone, int StationID);
         public void AddNewParcel(ParcelBL parcel);
         //public List<string> PrintAllAvailableStations(); // I'm not sure what this is for...
     }

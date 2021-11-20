@@ -380,8 +380,7 @@ namespace IBL
                 throw new InvalidSlotsException("Charge slots can't be a negative number");
             if ((int)StationBO.Location.Latitude != 31 || (int)StationBO.Location.Longitude != 35)
                 throw new OutOfRangeLocationException("The location is outside of Jerusalem"); ///We assume for now that all the locations are inside Jerusalem
-
-            Station StationDO = new(StationBO.ID, StationBO.Name, StationBO.ChargeSlots, StationBO.Location.Longitude, StationBO.Location.Latitude);
+            Station StationDO = new(StationBO.ID, StationBO.Name, StationBO.ChargeSlots, StationBO.Location.Latitude ,StationBO.Location.Longitude);
             Data.AddNewStation(StationDO);
         }
 
@@ -445,7 +444,16 @@ namespace IBL
         }
         public void AddNewCustomer(CustomerBL customer)
         {
-            throw new NotImplementedException();
+            if (customer.ID < 100000000 || customer.ID > 999999999)
+                throw new InvalidIDException("Invalid customer ID number");
+            char str = customer.Phone[0];
+            bool success = int.TryParse(customer.Phone, out int PhoneNumber);
+            if (success || str != '0' || PhoneNumber < 500000000 || PhoneNumber > 5999999999) ///Checking if the number starts with a '05' and contain 10 numbers
+                throw new InvalidPhoneNumberException("Invalid phone number");
+            if ((int)customer.Location.Latitude != 31 || (int)customer.Location.Longitude != 35)
+                throw new OutOfRangeLocationException("The location is outside of Jerusalem"); ///We assume for now that all the locations
+            Customer NewCustomer = new Customer(customer.ID, customer.Name, customer.Phone, customer.Location.Latitude, customer.Location.Longitude);
+            Data.AddNewCustomer(NewCustomer);
         }
 
         public void AddNewParcel(ParcelBL parcel)

@@ -188,7 +188,7 @@ namespace ConsoleUI_BL
                 IBL.AddNewStation(NewStation);
             }
 
-        private static void NewDrone(IBL.BL IBL)
+        private static void AddNewDrone(IBL.BL IBL)
         {
             int id = RequestID();
             string model = RequestModelName();

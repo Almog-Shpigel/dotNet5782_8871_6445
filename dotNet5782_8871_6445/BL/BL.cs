@@ -380,8 +380,7 @@ namespace IBL
                 throw new InvalidSlotsException("Charge slots can't be a negative number");
             if ((int)StationBO.Location.Latitude != 31 || (int)StationBO.Location.Longitude != 35)
                 throw new OutOfRangeLocationException("The location is outside of Jerusalem"); ///We assume for now that all the locations are inside Jerusalem
-
-            Station StationDO = new(StationBO.ID, StationBO.Name, StationBO.ChargeSlots, StationBO.Location.Longitude, StationBO.Location.Latitude);
+            Station StationDO = new(StationBO.ID, StationBO.Name, StationBO.ChargeSlots, StationBO.Location.Latitude ,StationBO.Location.Longitude);
             Data.AddNewStation(StationDO);
         }
 
@@ -427,7 +426,6 @@ namespace IBL
         {
             if (DroneBL.ID < 100000 || DroneBL.ID > 999999)
                 throw new InvalidIDException("Drone ID has to have 6 positive digits.");
-            
             DroneBL.BatteryStatus = RandBatteryStatus(20,41);
             DroneBL.Status = DroneStatus.Charging;
             IEnumerable<Station> stations = Data.GetAllStations();
@@ -439,10 +437,29 @@ namespace IBL
                     DroneBL.CurrentLocation.Latitude = station.Latitude;
                     DroneBL.CurrentLocation.Longitude = station.Longitude;
                 }
-            // לא גמרתי פה, אבל הייתי חייב ללכת... צריך להוסיף בדיקה לראות שהתחנה קיימת וגם להוסיף את הרחפן לנתונים וגם לשכבה הלוגית
-            //מצב סוללה יוגרל בין %20 ל-40%
-            //יוסף כנמצא בתחזוקה
-            //מיקום הרחפן יהיה כמיקום התחנה
+            Drone NewDrone = new Drone(DroneBL.ID, DroneBL.Model, DroneBL.MaxWeight); 
+            Data.AddNewDrone(NewDrone, StationID);              ///Sending the new drone to the data
+            DroneToList NewDroneToList = new DroneToList(DroneBL.ID,DroneBL.Model,DroneBL.MaxWeight,DroneBL.BatteryStatus,DroneBL.Status,DroneBL.CurrentLocation,0);
+            DroneList.Add(NewDroneToList);      ///Saving a logic version of the new drone
+        }
+        public void AddNewCustomer(CustomerBL customer)
+        {
+            if (customer.ID < 100000000 || customer.ID > 999999999)
+                throw new InvalidIDException("Invalid customer ID number");
+            char str = customer.Phone[0];
+            bool success = int.TryParse(customer.Phone, out int PhoneNumber);
+            if (success || str != '0' || PhoneNumber < 500000000 || PhoneNumber > 5999999999) ///Checking if the number starts with a '05' and contain 10 numbers
+                throw new InvalidPhoneNumberException("Invalid phone number");
+            if ((int)customer.Location.Latitude != 31 || (int)customer.Location.Longitude != 35)
+                throw new OutOfRangeLocationException("The location is outside of Jerusalem"); ///We assume for now that all the locations
+            Customer NewCustomer = new Customer(customer.ID, customer.Name, customer.Phone, customer.Location.Latitude, customer.Location.Longitude);
+            Data.AddNewCustomer(NewCustomer);
+        }
+
+        public void AddNewParcel(ParcelBL parcel)
+        {
+            //ב-BL כל הזמנים יאותחלו לזמן אפס למעט תאריך יצירה שיאותחל ל-DateTime.Now
+            //הרחפן יאותחל ל-null
         }
 
         public void UpdateDroneAvailable(int v1, int v2)
@@ -455,16 +472,7 @@ namespace IBL
             throw new NotImplementedException();
         }
 
-        public void AddNewCustomer(CustomerBL customer)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void AddNewParcel(ParcelBL parcel)
-        {
-            //ב-BL כל הזמנים יאותחלו לזמן אפס למעט תאריך יצירה שיאותחל ל-DateTime.Now
-            //הרחפן יאותחל ל-null
-        }
+        
 
     }
 }

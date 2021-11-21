@@ -10,11 +10,11 @@ namespace IDAL
             public int ID { get; set; }
             public string Name { get; set; }
             public int ChargeSlots { get; set; }
-            public double Longitude { get; set; }
             public double Latitude { get; set; }
+            public double Longitude { get; set; }
+            
 
-            public Station(int id, string name, int slots,
-                           double longitude, double latitude)
+            public Station(int id, string name, int slots,double latitude, double longitude)
             {
                 ID = id;
                 Name = name;

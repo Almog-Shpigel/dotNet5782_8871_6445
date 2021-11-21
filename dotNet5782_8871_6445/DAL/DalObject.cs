@@ -39,10 +39,13 @@ namespace DalObject
             parcel.ID = ++DataSource.config.ParcelsCounter;
             DataSource.parcels.Add(parcel);
         }
-        public void AddNewDrone(Drone drone)
+        public void AddNewDrone(Drone drone,int StationID)
         {
             if (DroneExist(drone.ID))
                 throw new DroneExistException("The drone ID exists already in the data!!");
+            if (!StationExist(StationID))
+                throw new StationExistException("The station doesn't exists in the data!!");
+            DroneToBeCharge(drone.ID, StationID, DateTime.Now);
             DataSource.drones.Add(drone);
         }
         #endregion

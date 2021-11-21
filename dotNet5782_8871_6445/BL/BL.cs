@@ -71,7 +71,7 @@ namespace IBL
             Random rand = new Random();
             Location nearest;
             int RandomStation, RandomCustomer;
-            DroneStatus option = (DroneStatus) rand.Next(0, 2);
+            DroneStatus option = (DroneStatus) rand.Next(0, 2);     ///Random status, Available or Charging
             List<Station> AllAvailableStations = GetAllAvailableStations();
             List<Customer> AllPastCustomers = GetPastCustomers();
             if (AllPastCustomers.Count() == 0)      ///We are assuming that the odds that there are no available stations are very unlikley
@@ -89,7 +89,7 @@ namespace IBL
                 case DroneStatus.Charging:
                     NewDrone.Status = DroneStatus.Charging;
                     RandomStation = rand.Next(0, AllAvailableStations.Count());
-                    //Data.DroneToBeCharge(NewDrone.ID, AllAvailableStations[RandomStation].ID,DateTime.Now);
+                    Data.DroneToBeCharge(NewDrone.ID, AllAvailableStations[RandomStation].ID,DateTime.Now);
                     NewDrone.CurrentLocation.Latitude = AllAvailableStations[RandomStation].Latitude;
                     NewDrone.CurrentLocation.Longitude = AllAvailableStations[RandomStation].Longitude;
                     NewDrone.BatteryStatus = RandBatteryStatus(0,21);
@@ -175,7 +175,7 @@ namespace IBL
                 NewStation.AvailableChargeSlots = station.ChargeSlots;
                 foreach (IDAL.DO.DroneCharge drone in Data.GetAllDronesCharge())
                 {
-                    if (drone.StationID == station.ID)
+                    if (drone.StationID == NewStation.ID)
                         NewStation.UsedChargeSlots++;
                 }
                 stations.Add(NewStation);
@@ -392,7 +392,7 @@ namespace IBL
                 Data.UpdateCustomerName(id, name);
 
         }
-
+        /// מפה צריך להמשיך....
         public void UpdateParcelToDrone(int v)
         {
             throw new NotImplementedException();
@@ -413,6 +413,49 @@ namespace IBL
                 throw new OutOfRangeLocationException("The location is outside of Jerusalem"); ///We assume for now that all the locations are inside Jerusalem
             Station StationDO = new(StationBO.ID, StationBO.Name, StationBO.ChargeSlots, StationBO.Location.Latitude ,StationBO.Location.Longitude);
             Data.AddNewStation(StationDO);
+        }
+        public void AddNewDrone(DroneBL DroneBL, int StationID) //Reciving a drone with name,id and weight, and a staion id to sent it to charge there
+        {
+            if (DroneBL.ID < 100000 || DroneBL.ID > 999999)
+                throw new InvalidIDException("Drone ID has to have 6 positive digits.");
+            DroneBL.BatteryStatus = RandBatteryStatus(20, 41);
+            DroneBL.Status = DroneStatus.Charging;
+            IEnumerable<Station> stations = Data.GetAllStations();
+            foreach (Station station in stations)
+                if (station.ID == StationID)
+                {
+                    if (station.ChargeSlots <= 0)
+                        throw new InvalidSlotsException("There are no slots available at this station.");
+                    DroneBL.CurrentLocation.Latitude = station.Latitude;
+                    DroneBL.CurrentLocation.Longitude = station.Longitude;
+                }
+            Drone NewDrone = new Drone(DroneBL.ID, DroneBL.Model, DroneBL.MaxWeight);
+            Data.AddNewDrone(NewDrone, StationID);              ///Sending the new drone to the data
+            DroneToList NewDroneToList = new DroneToList(DroneBL.ID, DroneBL.Model, DroneBL.MaxWeight, DroneBL.BatteryStatus, DroneBL.Status, DroneBL.CurrentLocation, 0);
+            DroneList.Add(NewDroneToList);      ///Saving a logic version of the new drone
+        }
+        public void AddNewCustomer(CustomerBL customer)
+        {
+            if (customer.ID < 100000000 || customer.ID > 999999999)
+                throw new InvalidIDException("Invalid customer ID number");
+            char str = customer.Phone[0];
+            bool success = int.TryParse(customer.Phone, out int PhoneNumber);
+            if (!success || str != '0' || PhoneNumber < 500000000 || PhoneNumber > 599999999) ///Checking if the number starts with a '05' and contain 10 numbers
+                throw new InvalidPhoneNumberException("Invalid phone number");
+            if ((int)customer.Location.Latitude != 31 || (int)customer.Location.Longitude != 35)
+                throw new OutOfRangeLocationException("The location is outside of Jerusalem"); ///We assume for now that all the locations
+            Customer NewCustomer = new Customer(customer.ID, customer.Name, customer.Phone, customer.Location.Latitude, customer.Location.Longitude);
+            Data.AddNewCustomer(NewCustomer);
+        }
+
+        public void AddNewParcel(ParcelBL parcel)
+        {
+            if (parcel.Sender.ID < 100000000 || parcel.Sender.ID > 999999999)
+                throw new InvalidIDException("Invalid sender ID number");
+            if (parcel.Target.ID < 100000000 || parcel.Target.ID > 999999999)
+                throw new InvalidIDException("Invalid receiver ID number");
+            Parcel ParcelDO = new Parcel(parcel.ID, parcel.Sender.ID, parcel.Target.ID, 0, parcel.Weight, parcel.Priority, parcel.TimeRequested, parcel.Scheduled, parcel.PickedUp, parcel.Delivered);
+            Data.AddNewParcel(ParcelDO);
         }
 
         private static double WeightMultiplier(WeightCategories weight,Double [] BatteryUse)
@@ -453,49 +496,7 @@ namespace IBL
             throw new NotImplementedException();
         }
 
-        public void AddNewDrone(DroneBL DroneBL, int StationID) //Reciving a drone with name,id and weight, and a staion id to sent it to charge there
-        {
-            if (DroneBL.ID < 100000 || DroneBL.ID > 999999)
-                throw new InvalidIDException("Drone ID has to have 6 positive digits.");
-            DroneBL.BatteryStatus = RandBatteryStatus(20,41);
-            DroneBL.Status = DroneStatus.Charging;
-            IEnumerable<Station> stations = Data.GetAllStations();
-            foreach (Station station in stations)
-                if (station.ID == StationID)
-                {
-                    if (station.ChargeSlots <= 0)
-                        throw new InvalidSlotsException("There are no slots available at this station.");
-                    DroneBL.CurrentLocation.Latitude = station.Latitude;
-                    DroneBL.CurrentLocation.Longitude = station.Longitude;
-                }
-            Drone NewDrone = new Drone(DroneBL.ID, DroneBL.Model, DroneBL.MaxWeight); 
-            Data.AddNewDrone(NewDrone, StationID);              ///Sending the new drone to the data
-            DroneToList NewDroneToList = new DroneToList(DroneBL.ID,DroneBL.Model,DroneBL.MaxWeight,DroneBL.BatteryStatus,DroneBL.Status,DroneBL.CurrentLocation,0);
-            DroneList.Add(NewDroneToList);      ///Saving a logic version of the new drone
-        }
-        public void AddNewCustomer(CustomerBL customer)
-        {
-            if (customer.ID < 100000000 || customer.ID > 999999999)
-                throw new InvalidIDException("Invalid customer ID number");
-            char str = customer.Phone[0];
-            bool success = int.TryParse(customer.Phone, out int PhoneNumber);
-            if (!success || str != '0' || PhoneNumber < 500000000 || PhoneNumber > 599999999) ///Checking if the number starts with a '05' and contain 10 numbers
-                throw new InvalidPhoneNumberException("Invalid phone number");
-            if ((int)customer.Location.Latitude != 31 || (int)customer.Location.Longitude != 35)
-                throw new OutOfRangeLocationException("The location is outside of Jerusalem"); ///We assume for now that all the locations
-            Customer NewCustomer = new Customer(customer.ID, customer.Name, customer.Phone, customer.Location.Latitude, customer.Location.Longitude);
-            Data.AddNewCustomer(NewCustomer);
-        }
-
-        public void AddNewParcel(ParcelBL parcel)
-        {
-            if (parcel.Sender.ID < 100000000 || parcel.Sender.ID > 999999999)
-                throw new InvalidIDException("Invalid sender ID number");
-            if (parcel.Target.ID < 100000000 || parcel.Target.ID > 999999999)
-                throw new InvalidIDException("Invalid receiver ID number");
-            Parcel ParcelDO = new Parcel(parcel.ID, parcel.Sender.ID, parcel.Target.ID, 0, parcel.Weight, parcel.Priority, parcel.TimeRequested,parcel.Scheduled,parcel.PickedUp,parcel.Delivered);
-            Data.AddNewParcel(ParcelDO);
-        }
+     
 
         public void UpdateDroneAvailable(int v1, int v2)
         {

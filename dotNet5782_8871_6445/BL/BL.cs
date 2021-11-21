@@ -89,6 +89,7 @@ namespace IBL
                 case DroneStatus.Charging:
                     NewDrone.Status = DroneStatus.Charging;
                     RandomStation = rand.Next(0, AllAvailableStations.Count());
+                    //Data.DroneToBeCharge(NewDrone.ID, AllAvailableStations[RandomStation].ID,DateTime.Now);
                     NewDrone.CurrentLocation.Latitude = AllAvailableStations[RandomStation].Latitude;
                     NewDrone.CurrentLocation.Longitude = AllAvailableStations[RandomStation].Longitude;
                     NewDrone.BatteryStatus = RandBatteryStatus(0,21);
@@ -350,13 +351,15 @@ namespace IBL
 
         public void UpdateDroneName(int id, string model)
         {
-            List<> Data.GetAllDrones();
-            
+            if (id < 100000 || id > 999999)
+                throw new InvalidIDException("Drone ID has to have 6 positive digits.");
+            Data.UpdateDroneName(id, model);
         }
 
-        public void UpdateStation(int v1, string v2, int v3)
+        public void UpdateStation(int StationID, string name, int ChargeSlots)
         {
-            throw new NotImplementedException();
+            if (ChargeSlots < 0)
+                throw new InvalidSlotsException("Charge slots can't be negative number");
         }
 
         public void UpdateCustomer(int v1, string v2, string v3)

@@ -54,6 +54,18 @@ namespace DalObject
         #endregion
 
         #region Update
+        public void UpdateDroneName(int id, string model)
+        {
+            if (!DroneExist(id))
+                throw new DroneExistException("The drone dosen't exists in the data!!");
+            Drone drone = GetDrone(id);
+            drone.Model = model;
+            for (int i = 0; i < DataSource.drones.Count(); i++)
+            {
+                if (DataSource.drones[i].ID == drone.ID)
+                    DataSource.drones[i] = drone;
+            }
+        }
         public void DroneAvailable(int DroneID)
         {
             if(!DroneExist(DroneID))

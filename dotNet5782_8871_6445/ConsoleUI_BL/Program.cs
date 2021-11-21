@@ -272,10 +272,20 @@ namespace ConsoleUI_BL
         {
             int id = RequestID();
             string name = RequestStationName();
-            int slots = RequestChargeSlots();
+            bool success;
+            int ChargeSlots = 0;
+            string slots;
+            do
+            {
+                Console.Write("Enter number of charge slots:");
+                slots = Console.ReadLine();
+                if (slots == "")
+                    break;
+                success = int.TryParse(slots, out ChargeSlots);
+            } while (!success);
             try
             {
-                IBL.UpdateStation(id, name, slots);
+                IBL.UpdateStation(id, name, ChargeSlots);
             }
             catch (Exception exp)
             {

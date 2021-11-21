@@ -38,7 +38,7 @@ namespace DalObject
                         PickedUp = DateTime.MaxValue,
                         Deliverd = DateTime.MaxValue;
             /// Initializing 2 stations.
-            for (int i = 0; i < 2; i++)         
+            for (int i = 0; i < 10; i++)         
             {
                 int id = 122000 + stations.Count();      
                 string name = "Station " + stations.Count();

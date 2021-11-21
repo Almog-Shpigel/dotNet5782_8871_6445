@@ -23,13 +23,13 @@ namespace IBL
 
             public DroneBL(int id = 0, string model = "", WeightCategories maxWeight = WeightCategories.Light, double batteryStatus = 0, DroneStatus status = DroneStatus.Charging)
             {
-                if (id < 100000 || id > 999999)
-                    throw new InvalidIDException("Invalid customer ID number");
                 ID = id;
                 Model = model;
                 MaxWeight = maxWeight;
                 BatteryStatus = batteryStatus;
                 Status = status;
+                Parcel = null;
+                CurrentLocation = null;
             }
 
             public override string ToString()

@@ -48,8 +48,8 @@ namespace DalObject
                 throw new DroneExistException("The drone ID exists already in the data!!");
             if (!StationExist(StationID))
                 throw new StationExistException("The station doesn't exists in the data!!");
-            DroneToBeCharge(drone.ID, StationID, DateTime.Now);
             DataSource.drones.Add(drone);
+            DroneToBeCharge(drone.ID, StationID, DateTime.Now);
         }
         #endregion
 
@@ -142,11 +142,11 @@ namespace DalObject
             int i = 0;
             DroneCharge NewCharge = new DroneCharge(DroneID, StationID, start);
             DataSource.droneCharges.Add(NewCharge);
-            while (DataSource.stations[i].ID != StationID)    ///Finding the wanted station
+            while (DataSource.stations[i].ID != StationID)      ///Finding the wanted station
                 ++i;
             Station NewStation = DataSource.stations[i];
             NewStation.ChargeSlots--;
-            DataSource.stations[i] = NewStation; ///one slot was taken by the drone we chose
+            DataSource.stations[i] = NewStation;                ///one slot was taken by the drone we chose
         }
 
         public void ParcelDeleivery(int ParcelID)

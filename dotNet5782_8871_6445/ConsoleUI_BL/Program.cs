@@ -529,7 +529,7 @@ namespace ConsoleUI_BL
             int ChargeSlots;
             do
             {
-                Console.Write("Enter number of charge slots:");
+                Console.Write("Enter number of charge slots: ");
                 success = int.TryParse(Console.ReadLine(), out ChargeSlots);
             } while (!success);
             return ChargeSlots;
@@ -537,7 +537,7 @@ namespace ConsoleUI_BL
 
         private static string RequestModelName()
         {
-            Console.WriteLine("Enter model name: ");
+            Console.Write("Enter model name: ");
             return Console.ReadLine();
         }
 

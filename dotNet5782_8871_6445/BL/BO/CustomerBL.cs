@@ -24,9 +24,14 @@ namespace IBL
                 ParcelesSentByCustomer = new();
                 ParcelesSentToCustomer = new();
             }
+
             public override string ToString()
             {
-                return ($"{Name} #{ID}, Phone number: {Phone}, location: {Location}");
+                return ($"{Name} #{ID}:\n" +
+                    $"Phone number:     {Phone}\n" +
+                    $"Location:         {Location}\n" +
+                    $"No. of parcel sent:       {ParcelesSentByCustomer}\n" +
+                    $"No. of parcel received:   {ParcelesSentToCustomer}");
             }
         }
     }

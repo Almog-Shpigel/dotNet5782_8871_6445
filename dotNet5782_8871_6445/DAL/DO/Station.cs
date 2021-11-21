@@ -14,7 +14,7 @@ namespace IDAL
             public double Longitude { get; set; }
             
 
-            public Station(int id, string name, int slots,double latitude, double longitude)
+            public Station(int id = 0, string name = "", int slots = 0, double latitude = 0, double longitude = 0)
             {
                 ID = id;
                 Name = name;

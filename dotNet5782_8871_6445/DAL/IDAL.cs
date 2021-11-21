@@ -42,5 +42,9 @@ namespace IDAL
         public Parcel GetParcel(int id);
         public double[] GetBatteryUsed();
         public void UpdateDroneName(int id, string model);
+        public void UpdateStationName(int stationID, string name);
+        public void UpdateStationSlots(int stationID, int slots);
+        public void UpdateCustomerName(int id, string name);
+        public void UpdateCustomerPhone(int id, int phone);
     }
 }

@@ -66,6 +66,54 @@ namespace DalObject
                     DataSource.drones[i] = drone;
             }
         }
+        public void UpdateStationSlots(int stationID,int slots)
+        {
+            if (!StationExist(stationID))
+                throw new StationExistException("The station dosen't exists in the data!!");
+            Station station = GetStation(stationID);
+            station.ChargeSlots = slots;
+            for (int i = 0; i < DataSource.stations.Count(); i++)
+            {
+                if (DataSource.stations[i].ID == station.ID)
+                    DataSource.stations[i] = station;
+            }
+        }
+        public void UpdateStationName(int stationID, string name)
+        {
+            if(!StationExist(stationID))
+                throw new StationExistException("The station dosen't exists in the data!!");
+            Station station = GetStation(stationID);
+            station.Name = name;
+            for (int i = 0; i < DataSource.stations.Count(); i++)
+            {
+                if (DataSource.stations[i].ID == station.ID)
+                    DataSource.stations[i] = station;
+            }
+        }
+        public void UpdateCustomerName(int id, string name)
+        {
+            if (!CustomerExist(id))
+                throw new CustomerExistException("The customer doesn't exists in the data!!");
+            Customer customer = GetCustomer(id);
+            customer.Name = name;
+            for (int i = 0; i < DataSource.stations.Count(); i++)
+            {
+                if (DataSource.customers[i].ID == customer.ID)
+                    DataSource.customers[i] = customer;
+            }
+        }
+        public void UpdateCustomerPhone(int id, int phone)
+        {
+            if (!CustomerExist(id))
+                throw new CustomerExistException("The customer doesn't exists in the data!!");
+            Customer customer = GetCustomer(id);
+            customer.Phone ='0'+ phone.ToString();
+            for (int i = 0; i < DataSource.stations.Count(); i++)
+            {
+                if (DataSource.customers[i].ID == customer.ID)
+                    DataSource.customers[i] = customer;
+            }
+        }
         public void DroneAvailable(int DroneID)
         {
             if(!DroneExist(DroneID))

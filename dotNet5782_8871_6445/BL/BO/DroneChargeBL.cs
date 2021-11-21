@@ -8,12 +8,12 @@ namespace IBL
 {
     namespace BO
     {
-        public class DroneCharge
+        public class DroneChargeBL
         {
             public int DroneID { get; set; }
             public double BatteryStatus { get; set; }
 
-            public DroneCharge(int droneID, double battery)
+            public DroneChargeBL(int droneID, double battery)
             {
                 DroneID = droneID;
                 BatteryStatus = battery;

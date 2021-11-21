@@ -356,15 +356,41 @@ namespace IBL
             Data.UpdateDroneName(id, model);
         }
 
-        public void UpdateStation(int StationID, string name, int ChargeSlots)
+        public void UpdateStation(int StationID, bool ChangeName , bool ChangeSlots ,string name, int slots) 
         {
-            if (ChargeSlots < 0)
-                throw new InvalidSlotsException("Charge slots can't be negative number");
+            if (StationID < 100000 || StationID > 999999)
+                throw new InvalidIDException("Invalid station ID number. Must have 6 digits");
+            if (ChangeName)
+                Data.UpdateStationName(StationID, name);
+            if (ChangeSlots)
+            {
+                Station station = Data.GetStation(StationID);
+                IEnumerable<DroneCharge> AllDroneCharge = Data.GetAllDronesCharge();
+                int ChargeCounter = 0;
+                foreach (var drone in AllDroneCharge)
+                {
+                    if (drone.StationID == StationID)
+                        ChargeCounter++;
+                }
+                if (ChargeCounter > slots)
+                    throw new InvalidSlotsException("Charge slots can't be less than the number of currently charging drones in the station");
+                Data.UpdateStationSlots(StationID, slots);
+            }  
         }
 
-        public void UpdateCustomer(int v1, string v2, string v3)
+        public void UpdateCustomer(int id, bool changeName, bool changePhone, string name, int phone)
         {
-            throw new NotImplementedException();
+            if (id < 100000000 || id > 999999999)
+                throw new InvalidIDException("Customer ID has to have 9 positive digits.");
+            if (changePhone)
+            {
+                if (phone < 500000000 || phone > 599999999)
+                    throw new InvalidPhoneNumberException("Invalid phone number");
+                Data.UpdateCustomerPhone(id, phone);
+            }
+            if (changeName)
+                Data.UpdateCustomerName(id, name);
+
         }
 
         public void UpdateParcelToDrone(int v)

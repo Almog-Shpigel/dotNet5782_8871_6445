@@ -22,8 +22,8 @@ namespace IBL
         public string DisplayDistanceFromStation(double longitude1, double latitude1, int StationID);
         public string DisplayDistanceFromCustomer(double longitude1, double latitude1, int CustomerID);
         public void UpdateDroneName(int v1, string v2);
-        public void UpdateStation(int v1, string v2, int v3);
-        public void UpdateCustomer(int v1, string v2, string v3);
+        public void UpdateStation(int v1, bool v2,bool v3, string name , int slots);
+        public void UpdateCustomer(int v1, bool v2, bool v3, string name, int phone);
         public void UpdateParcelToDrone(int v);
         public void UpdateParcelDeleiveredByDrone(int droneID);
         public void UpdateDroneToBeCharged(int v);

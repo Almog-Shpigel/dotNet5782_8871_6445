@@ -270,24 +270,31 @@ namespace ConsoleUI_BL
 
         private static void UpdateStation(IBL.BL IBL)
         {
+
+            bool success = true, ChangeName = true, ChangeSlots = true;
+            int slots = 0;
+            string ChargeSlots = "";
             int id = RequestID();
             string name = RequestStationName();
-            bool success;
-            int ChargeSlots = 0;
-            string slots;
+            if (name == "")
+                ChangeName = false;
             do
             {
                 Console.Write("Enter number of charge slots:");
-                slots = Console.ReadLine();
-                if (slots == "")
+                ChargeSlots = Console.ReadLine();
+                if (ChargeSlots == "")
+                {
+                    ChangeSlots = false;
                     break;
-                success = int.TryParse(slots, out ChargeSlots);
+                }
+                success = int.TryParse(ChargeSlots, out slots);
             } while (!success);
+
             try
             {
-                IBL.UpdateStation(id, name, ChargeSlots);
+                    IBL.UpdateStation(id,ChangeName,ChangeSlots,name, slots);
             }
-            catch (Exception exp)
+            catch (Exception exp) 
             {
                 Console.WriteLine(exp.Message);
                 UpdateStation(IBL);
@@ -296,12 +303,27 @@ namespace ConsoleUI_BL
 
         private static void UpdateCustomer(IBL.BL IBL)
         {
+            bool successs = true, ChangeName = true, ChangePhone = true ;
+            string phone = "";
+            int PhoneNumber = 0;
             int id = RequestID();
             string name = RequestCustomerName();
-            string phone = RequestPhoneNumber();
+            if (name == "")
+                ChangeName = false;
+            do
+            {
+                Console.Write("Enter phone number:");
+                 phone = Console.ReadLine();
+                if (phone == "")
+                {
+                    ChangePhone = false;
+                    break;
+                }
+                successs = int.TryParse(phone, out PhoneNumber);
+            } while (!successs);
             try
             {
-                IBL.UpdateCustomer(id, name, phone);
+                IBL.UpdateCustomer(id,ChangeName,ChangePhone, name, PhoneNumber);
             }
             catch (Exception exp)
             {

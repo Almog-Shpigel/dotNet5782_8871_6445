@@ -24,12 +24,14 @@ namespace DalObject
             station.Name = "Station " + station.Name;
             DataSource.stations.Add(station);
         }
+
         public void AddNewCustomer(Customer customer)
         {
             if(CustomerExist(customer.ID))
                 throw new CustomerExistException("The customer ID exists already in the data!!");
             DataSource.customers.Add(customer);
         }
+
         public void AddNewParcel(Parcel parcel)
         {
             if (!CustomerExist(parcel.SenderID))
@@ -39,6 +41,7 @@ namespace DalObject
             parcel.ID = ++DataSource.config.ParcelsCounter;
             DataSource.parcels.Add(parcel);
         }
+
         public void AddNewDrone(Drone drone,int StationID)
         {
             if (DroneExist(drone.ID))
@@ -49,6 +52,7 @@ namespace DalObject
             DataSource.drones.Add(drone);
         }
         #endregion
+
         #region Update
         public void DroneAvailable(int DroneID)
         {
@@ -66,6 +70,7 @@ namespace DalObject
             NewStation.ChargeSlots++;
             DataSource.stations[j]=NewStation; ///Freeing a space for other drones
         }
+
         public void DroneToBeCharge(int DroneID, int StationID, DateTime start)
         {
             if (!DroneExist(DroneID))
@@ -83,6 +88,7 @@ namespace DalObject
             NewStation.ChargeSlots--;
             DataSource.stations[i] = NewStation; ///one slot was taken by the drone we chose
         }
+
         public void ParcelDeleivery(int ParcelID)
         {
             if (!ParcelExist(ParcelID))
@@ -95,6 +101,7 @@ namespace DalObject
             NewParcel.Delivered = DateTime.Now; ///Changing the time of the parcel to update it's been delivered now
             DataSource.parcels[i] = NewParcel;
         }
+
         public void ParcelCollected(int ParcelID)
         {
             if (!ParcelExist(ParcelID))
@@ -107,6 +114,7 @@ namespace DalObject
             NewParcel.PickedUp = DateTime.Now; 
             DataSource.parcels[i] = NewParcel; ///Updating the time of the pickup by the drone
         }
+
         public void PairParcelToDrone(int ParcelID,int DroneID)
         {
             if (!ParcelExist(ParcelID))
@@ -165,6 +173,7 @@ namespace DalObject
             return (result2 * radius);
         }
         #endregion
+
         #region Display
         public string DisplayDrone(int DroneID)
         {
@@ -198,6 +207,7 @@ namespace DalObject
             return DataSource.stations[j].ToString();
         }
         #endregion
+
         #region Print
         public IEnumerable<string> PrintAllStations()
         {
@@ -252,22 +262,27 @@ namespace DalObject
         {
             return DataSource.parcels;
         }
+
         public IEnumerable<Station> GetAllStations()
         {
             return DataSource.stations;
         }
+
         public IEnumerable<Customer> GetAllCustomers()
         {
             return DataSource.customers;
         }
+
         public IEnumerable<Drone> GetAllDrones()
         {
             return DataSource.drones;
         }
+
         public IEnumerable<DroneCharge> GetAllDronesCharge()
         {
             return DataSource.droneCharges;
         }
+
         public Drone GetDrone(int id)
         {
             foreach (Drone drone in DataSource.drones)
@@ -277,6 +292,7 @@ namespace DalObject
             }
             throw new DroneExistException("Drone not exist!");
         }
+
         public Station GetStation(int id)
         {
             foreach (Station station in DataSource.stations)
@@ -287,6 +303,7 @@ namespace DalObject
             throw new StationExistException("Station not exist!");
          
         }
+
         public Customer GetCustomer(int id)
         {
             foreach (Customer customer in DataSource.customers)
@@ -296,6 +313,7 @@ namespace DalObject
             }
             throw new CustomerExistException("Customer not exist!");
         }
+
         public Parcel GetParcel(int id)
         {
             foreach (Parcel parcel in DataSource.parcels)
@@ -305,6 +323,7 @@ namespace DalObject
             }
             throw new ParcelExistException("Parcel not exist!");
         }
+
         public double[] GetBatteryUsed()
         {
             double[] BatteryUsed = new double[5];
@@ -323,6 +342,7 @@ namespace DalObject
                     return true;
             return false;
         }
+
         internal bool StationExist(int id)
         {
             foreach (Station station in DataSource.stations)
@@ -330,6 +350,7 @@ namespace DalObject
                     return true;
             return false;
         }
+
         internal bool CustomerExist(int id)
         {
             foreach (Customer customer in DataSource.customers)
@@ -337,6 +358,7 @@ namespace DalObject
                     return true;
             return false;
         }
+
         internal bool ParcelExist(int id)
         {
             foreach (Parcel parcel in DataSource.parcels)
@@ -344,8 +366,5 @@ namespace DalObject
                     return true;
             return false;
         }
-
     }
-
-    
 }

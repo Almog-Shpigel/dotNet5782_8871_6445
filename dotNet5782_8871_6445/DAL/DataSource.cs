@@ -54,7 +54,7 @@ namespace DalObject
                 int id = 669000 + drones.Count();
                 string model = ((IDAL.DO.DroneModels)rnd.Next(3)) + " " + drones.Count();
                 IDAL.DO.WeightCategories weight = (IDAL.DO.WeightCategories)rnd.Next(3);
-                Drone NewDrone = new Drone(id,model, weight);
+                Drone NewDrone = new Drone(id, model, weight);
                 drones.Add(NewDrone);
             }
             /// Initializing 10 customers.

@@ -26,9 +26,9 @@ namespace IBL
             DroneList = new List<DroneToList>();
             BatteryUsed = Data.GetBatteryUsed();
 
-            DroneToList NewDrone = new();
             foreach (Drone drone in Data.GetAllDrones())
             {
+                DroneToList NewDrone = new();
                 NewDrone.ID = drone.ID;
                 NewDrone.Model = drone.Model;
                 NewDrone.MaxWeight = drone.MaxWeight;
@@ -114,7 +114,9 @@ namespace IBL
                 return MaxBattery;
             if (max <= MinBattery)
                 return MinBattery;
-            return rand.Next((int)min, (int)max) + (min + max) % 1; ;
+            double remider = (int)(min + max + rand.Next(50));
+            remider /= 100;
+            return rand.Next((int)min, (int)max) + remider;
         }
 
         private List<Customer> GetPastCustomers()
@@ -164,9 +166,9 @@ namespace IBL
         public List<StationToList> DispalyAllStations()
         {
             List<StationToList> stations = new();
-            StationToList NewStation = new ();
             foreach (Station station in Data.GetAllStations())
             {
+                StationToList NewStation = new();
                 NewStation.ID = station.ID;
                 NewStation.Name = station.Name;
                 NewStation.AvailableChargeSlots = station.ChargeSlots;
@@ -188,9 +190,9 @@ namespace IBL
         public List<CustomerToList> DispalyAllCustomers()
         {
             List<CustomerToList> customers = new();
-            CustomerToList NewCustomer = new();
             foreach (Customer customer in Data.GetAllCustomers())
             {
+                CustomerToList NewCustomer = new();
                 NewCustomer.ID = customer.ID;
                 NewCustomer.Name = customer.Name;
                 NewCustomer.Phone = customer.Phone;
@@ -219,9 +221,9 @@ namespace IBL
         public List<ParcelToList> DispalyAllParcels()
         {
             List<ParcelToList> parcels = new();
-            ParcelToList NewParcel = new();
             foreach (Parcel parcel in Data.GetAllParcels())
             {
+                ParcelToList NewParcel = new();
                 NewParcel.ID = parcel.ID;
                 NewParcel.Priority = parcel.Priority;
                 NewParcel.TargetName = Data.GetCustomer(parcel.TargetID).Name;
@@ -243,9 +245,9 @@ namespace IBL
         public List<ParcelToList> DispalyAllUnassignedParcels()
         {
             List<ParcelToList> UnassignedParcels = new();
-            ParcelToList NewParcel = new();
             foreach (Parcel parcel in Data.GetAllParcels())
             {
+                ParcelToList NewParcel = new();
                 if (parcel.DroneID != 0)
                 {
                     NewParcel.ID = parcel.ID;
@@ -270,9 +272,9 @@ namespace IBL
         public List<StationToList> DispalyAllAvailableStations()
         {
             List<StationToList> AvailableStations = new();
-            StationToList NewStation = new();
             foreach (Station station in Data.GetAllStations())
             {
+                StationToList NewStation = new();
                 NewStation.ID = station.ID;
                 NewStation.Name = station.Name;
                 NewStation.AvailableChargeSlots = station.ChargeSlots;
@@ -346,10 +348,10 @@ namespace IBL
             return "The distance is: " + Distance(longitude1, latitude1, longitude2, latitude2) + " km";
         }
 
-        public void UpdateDroneName(int v1, string v2)
+        public void UpdateDroneName(int id, string model)
         {
+            List<> Data.GetAllDrones();
             
-            throw new NotImplementedException();
         }
 
         public void UpdateStation(int v1, string v2, int v3)
@@ -448,7 +450,7 @@ namespace IBL
                 throw new InvalidIDException("Invalid customer ID number");
             char str = customer.Phone[0];
             bool success = int.TryParse(customer.Phone, out int PhoneNumber);
-            if (success || str != '0' || PhoneNumber < 500000000 || PhoneNumber > 5999999999) ///Checking if the number starts with a '05' and contain 10 numbers
+            if (!success || str != '0' || PhoneNumber < 500000000 || PhoneNumber > 599999999) ///Checking if the number starts with a '05' and contain 10 numbers
                 throw new InvalidPhoneNumberException("Invalid phone number");
             if ((int)customer.Location.Latitude != 31 || (int)customer.Location.Longitude != 35)
                 throw new OutOfRangeLocationException("The location is outside of Jerusalem"); ///We assume for now that all the locations
@@ -458,8 +460,12 @@ namespace IBL
 
         public void AddNewParcel(ParcelBL parcel)
         {
-            //ב-BL כל הזמנים יאותחלו לזמן אפס למעט תאריך יצירה שיאותחל ל-DateTime.Now
-            //הרחפן יאותחל ל-null
+            if (parcel.Sender.ID < 100000000 || parcel.Sender.ID > 999999999)
+                throw new InvalidIDException("Invalid sender ID number");
+            if (parcel.Target.ID < 100000000 || parcel.Target.ID > 999999999)
+                throw new InvalidIDException("Invalid receiver ID number");
+            Parcel ParcelDO = new Parcel(parcel.ID, parcel.Sender.ID, parcel.Target.ID, 0, parcel.Weight, parcel.Priority, parcel.TimeRequested,parcel.Scheduled,parcel.PickedUp,parcel.Delivered);
+            Data.AddNewParcel(ParcelDO);
         }
 
         public void UpdateDroneAvailable(int v1, int v2)

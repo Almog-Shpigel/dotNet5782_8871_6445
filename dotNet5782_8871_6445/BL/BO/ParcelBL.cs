@@ -27,9 +27,9 @@ namespace IBL
             public ParcelBL( int sender, int target,
                           WeightCategories weight, Priorities priority)
             {
-                //Sender= sender;
-                //Target = target;
-                //DroneInParcel = droneInParcel;
+                Sender = new(sender);
+                Target = new(target);
+                DroneInParcel = null;
                 Weight = weight;
                 Priority = priority;
                 TimeRequested = DateTime.Now;

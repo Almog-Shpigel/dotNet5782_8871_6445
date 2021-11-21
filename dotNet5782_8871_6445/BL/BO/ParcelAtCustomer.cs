@@ -28,7 +28,7 @@ namespace IBL
                 Status = status;
                 Customer = customer;
             }
-
+            //TO DO: ToString()
         }
     }
 }

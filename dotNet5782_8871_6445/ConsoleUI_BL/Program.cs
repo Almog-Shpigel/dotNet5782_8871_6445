@@ -177,16 +177,25 @@ namespace ConsoleUI_BL
             }
         }
         #endregion
+
         #region Add
-      public static void AddNewStation(IBL.BL IBL)
+        public static void AddNewStation(IBL.BL IBL)
+        {
+            int id = RequestID();
+            string name = RequestStationName();
+            Location location = RequestLocation();
+            int slots = RequestChargeSlots();
+            StationBL NewStation = new StationBL(id, name, slots, location);
+            try
             {
-                int id = RequestID();
-                string name = RequestStationName();
-                Location location = RequestLocation();
-                int slots = RequestChargeSlots();
-                StationBL NewStation = new StationBL(id, name, slots, location);
                 IBL.AddNewStation(NewStation);
             }
+            catch (Exception exp)
+            {
+                Console.WriteLine(exp.Message);
+                AddNewStation(IBL);
+            }
+        }
 
         private static void AddNewDrone(IBL.BL IBL)
         {
@@ -195,80 +204,174 @@ namespace ConsoleUI_BL
             WeightCategories weight = RequestWeightCategorie();
             int StationID = RequestID();
             DroneBL NewDrone = new DroneBL(id, model, weight);
-            IBL.AddNewDrone(NewDrone, StationID);
+            try
+            {
+                IBL.AddNewDrone(NewDrone, StationID);
+            }
+            catch (Exception exp)
+            {
+                Console.WriteLine(exp.Message);
+                AddNewDrone(IBL);
+            }
         }
 
         private static void AddNewCustomer(IBL.BL IBL)
+        {
+            int id = RequestID();
+            string name = RequestCustomerName();
+            string phone = RequestPhoneNumber();
+            Location location = RequestLocation();
+            CustomerBL NewCustomer = new CustomerBL(id, name, phone, location);
+            try
             {
-                int id = RequestID();
-                string name = RequestCustomerName();
-                string phone = RequestPhoneNumber();
-                Location location = RequestLocation();
-                CustomerBL NewCustomer = new CustomerBL(id, name, phone, location);
                 IBL.AddNewCustomer(NewCustomer);
             }
-      private static void AddNewParcel(IBL.BL IBL)
+            catch (Exception exp)
             {
-                int SenderID = RequestID();
-                int TargetID = RequestID();
-                WeightCategories weight = RequestWeightCategorie();
-                Priorities priority = RequestPrioritie();
-                ParcelBL NewParcel = new ParcelBL(SenderID, TargetID, weight, priority);
+                Console.WriteLine(exp.Message);
+                AddNewCustomer(IBL);
+            }
+        }
+
+        private static void AddNewParcel(IBL.BL IBL)
+        {
+            int SenderID = RequestID();
+            int TargetID = RequestID();
+            WeightCategories weight = RequestWeightCategorie();
+            Priorities priority = RequestPrioritie();
+            ParcelBL NewParcel = new ParcelBL(SenderID, TargetID, weight, priority);
+            try
+            {
                 IBL.AddNewParcel(NewParcel);
             }
+            catch (Exception exp)
+            {
+                Console.WriteLine(exp.Message);
+                AddNewParcel(IBL);
+            }
+        }
         #endregion
+
         #region Update
         private static void UpdateDroneName(IBL.BL IBL)
+        {
+            int id = RequestID();
+            string model = RequestModelName();
+            try
             {
-                int id = RequestID();
-                string model = RequestModelName();
                 IBL.UpdateDroneName(id, model);
             }
-        private static void UpdateStation(IBL.BL IBL)
+            catch (Exception exp)
             {
-                int id = RequestID();
-                string name = RequestStationName();
-                int slots = RequestChargeSlots();
+                Console.WriteLine(exp.Message);
+                UpdateDroneName(IBL);
+            }
+        }
+
+        private static void UpdateStation(IBL.BL IBL)
+        {
+            int id = RequestID();
+            string name = RequestStationName();
+            int slots = RequestChargeSlots();
+            try
+            {
                 IBL.UpdateStation(id, name, slots);
             }
-        private static void UpdateCustomer(IBL.BL IBL)
+            catch (Exception exp)
             {
-                int id = RequestID();
-                string name = RequestCustomerName();
-                string phone = RequestPhoneNumber();
+                Console.WriteLine(exp.Message);
+                UpdateStation(IBL);
+            }
+        }
+
+        private static void UpdateCustomer(IBL.BL IBL)
+        {
+            int id = RequestID();
+            string name = RequestCustomerName();
+            string phone = RequestPhoneNumber();
+            try
+            {
                 IBL.UpdateCustomer(id, name, phone);
             }
-        private static void PairParcelToDrone(IBL.BL IBL)
+            catch (Exception exp)
             {
-                int id = RequestID();
+                Console.WriteLine(exp.Message);
+                UpdateCustomer(IBL);
+            }
+        }
+
+        private static void PairParcelToDrone(IBL.BL IBL)
+        {
+            int id = RequestID();
+            try
+            {
                 IBL.UpdateParcelToDrone(id);
             }
+            catch (Exception exp)
+            {
+                Console.WriteLine(exp.Message);
+                PairParcelToDrone(IBL);
+            }
+        }
 
         private static void ParcelCollectedByDrone(IBL.BL IBL)
+        {
+            int id = RequestID();
+            try
             {
-                int id = RequestID();
                 IBL.UpdateParcelCollectedByDrone(id);
             }
+            catch (Exception exp)
+            {
+                Console.WriteLine(exp.Message);
+                ParcelCollectedByDrone(IBL);
+            }
+        }
 
         private static void ParcelDeleiveredByDrone(IBL.BL IBL)
+        {
+            int id = RequestID();
+            try
             {
-                int id = RequestID();
                 IBL.UpdateParcelDeleiveredByDrone(id);
             }
+            catch (Exception exp)
+            {
+                Console.WriteLine(exp.Message);
+                ParcelDeleiveredByDrone(IBL);
+            }
+        }
 
         private static void DroneToBeCharged(IBL.BL IBL)
+        {
+            int id = RequestID();
+            try
             {
-                int id = RequestID();
                 IBL.UpdateDroneToBeCharged(id);
             }
+            catch (Exception exp)
+            {
+                Console.WriteLine(exp.Message);
+                DroneToBeCharged(IBL);
+            }
+        }
 
         private static void DroneAvailable(IBL.BL IBL)
+        {
+            int id = RequestID();
+            int MinutesInCharge = RequestMinutesInCharge();
+            try
             {
-                int id = RequestID();
-                int MinutesInCharge = RequestMinutesInCharge();
                 IBL.UpdateDroneAvailable(id, MinutesInCharge);
             }
+            catch (Exception exp)
+            {
+                Console.WriteLine(exp.Message);
+                DroneAvailable(IBL);
+            }
+        }
         #endregion
+
         #region Display
         private static void DisplayStation(IBL.BL IBL)
         {
@@ -308,6 +411,7 @@ namespace ConsoleUI_BL
             Console.WriteLine(IBL.DisplayDistanceFromCustomer(location.Longitude, location.Latitude, id));
         }
         #endregion
+
         #region Display_Lists
         private static void Stations(IBL.BL IBL)
         {
@@ -352,71 +456,103 @@ namespace ConsoleUI_BL
                 Console.WriteLine(AvailStat.ToString());
         }
         #endregion
+
         #region Request
         private static int RequestID()
+        {
+            bool success;
+            int StationId;
+            do
             {
-                Console.Write("Please enter ID: ");    ///Reciving ID
-                bool input = int.TryParse(Console.ReadLine(), out int StationId);
-                return StationId;
-            }
+                Console.Write("Please enter ID: ");                             ///Reciving ID
+                success = int.TryParse(Console.ReadLine(), out StationId);
+            } while (!success);
+            return StationId;
+        }
+
         private static string RequestStationName()
-            {
-                Console.Write("Please enter station name: ");                 ///Reciving name
-                return Console.ReadLine();
-            }
+        {
+            Console.Write("Please enter station name: ");                       ///Reciving name
+            return Console.ReadLine();
+        }
+
         private static Location RequestLocation()
+        {
+            bool lon, lat;
+            double latitude, longitude;
+            do
             {
-                Console.Write("Enter longitude: ");
-                bool lon = double.TryParse(Console.ReadLine(), out double longitude);    ///Reciving location
                 Console.Write("Enter latitude: ");
-                bool lat = double.TryParse(Console.ReadLine(), out double latitude);
-                Location location = new Location(latitude, longitude);
-                return location;
-            }
+                lat = double.TryParse(Console.ReadLine(), out latitude);
+                Console.Write("Enter longitude: ");
+                lon = double.TryParse(Console.ReadLine(), out longitude);       ///Reciving location
+            } while (!lat || !lon);
+            Location location = new Location(latitude, longitude);
+            return location;
+        }
             
         private static int RequestChargeSlots()
+        {
+            bool success;
+            int ChargeSlots;
+            do
             {
                 Console.Write("Enter number of charge slots:");
-                bool input = int.TryParse(Console.ReadLine(), out int ChargeSlots);
-                return ChargeSlots;
-            }
-
+                success = int.TryParse(Console.ReadLine(), out ChargeSlots);
+            } while (!success);
+            return ChargeSlots;
+        }
 
         private static string RequestModelName()
-            {
-                Console.WriteLine("Enter model name: ");
-                return Console.ReadLine();
-            }
+        {
+            Console.WriteLine("Enter model name: ");
+            return Console.ReadLine();
+        }
+
         private static WeightCategories RequestWeightCategorie()
+        {
+            bool success;
+            int weight;
+            do
             {
                 Console.WriteLine("Enter weight category:\n" +
-                    "0- Light \n1- Medium \n2- Heavy");
-                bool input = int.TryParse(Console.ReadLine(), out int weight);       ///Reciving weight category
-                return (WeightCategories)weight;
-            }
+                "0- Light \n1- Medium \n2- Heavy");
+                success = int.TryParse(Console.ReadLine(), out weight);       ///Reciving weight category
+            } while (!success || weight < 0 || weight > 2);
+            
+            return (WeightCategories)weight;
+        }
+
         private static Priorities RequestPrioritie()
+        {
+            bool success;
+            int priority;
+            do
             {
                 Console.WriteLine("Enter priority category:\n" +
-                   "0- Regular\n 1- Express\n 2- Urgent");
-                bool input = int.TryParse(Console.ReadLine(), out int priority);
-                return (Priorities)priority;      ///Choosing a priority category for the parcel
-            }
-        private static string RequestCustomerName()
-            {
-                Console.Write("Please enter full name: ");                 ///Reciving name
-                return Console.ReadLine();
-            }
-        private static string RequestPhoneNumber()
-            {
-                Console.Write("Please enter phone number: ");  ///Reciving phone number
-                return Console.ReadLine();
-            }
-        
+                    "0- Regular\n 1- Express\n 2- Urgent");
+                success = int.TryParse(Console.ReadLine(), out priority);
+            } while (!success || priority < 0 || priority > 2);
+                
+            return (Priorities)priority;                                    ///Choosing a priority category for the parcel
+        }
 
+        private static string RequestCustomerName()
+        {
+            Console.Write("Please enter full name: ");                      ///Reciving name
+            return Console.ReadLine();
+        }
+
+        private static string RequestPhoneNumber()
+        {
+            Console.Write("Please enter phone number: ");                   ///Reciving phone number
+            return Console.ReadLine();
+        }
+        
         private static int RequestMinutesInCharge()
         {
             bool success;
-            int minutes = 0;
+            int minutes;
             do
             {
                 Console.WriteLine("Please enter amount of minutes in charging");

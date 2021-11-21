@@ -27,7 +27,7 @@ namespace IDAL
                 string sLong = ConvertCoordinates(Longitude), sLatit = ConvertCoordinates(Latitude);    /// Converts the coordinates to be in base 60 (bonus).
                 return ($"{Name} #{ID}:\n" +
                     $"Charge slots available: {ChargeSlots}\n" +
-                    $"Location: (" + sLong + "E, " + sLatit + "N)\n");
+                    $"Location: (" + sLong + "E, " + sLatit + "N)");
             }
             public string ConvertCoordinates(double number)
             {
@@ -42,7 +42,7 @@ namespace IDAL
                 coordinates += result + "\' ";                          /// coordinates holds now the minutes.
                 result = remainder * 60;
                 remainder = result % 10000;
-                result /= 10000;
+                result /= 1000000;
                 coordinates += result + "." + remainder + "\" ";      /// coordinates holds now the seconds.
                 return coordinates;
             }

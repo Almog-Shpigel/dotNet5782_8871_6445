@@ -28,7 +28,7 @@ namespace IBL
             }
             public override string ToString()
             {
-                return $"Name: {Name}, #{ID}, phone number: {Phone}, No. of deliverd: {SentAndDeliverd}, No. of not deliverd: {SentAndNOTDeliverd}, No. of parcels received: {ParcelsRecived}, No. od parcels on the way: {ParcelsOnTheWay}";
+                return $"Name: {Name}, #{ID}, phone number: {Phone},    No. of deliverd: {SentAndDeliverd},     No. of not deliverd: {SentAndNOTDeliverd},  No. of parcels received: {ParcelsRecived},  No. of parcels on the way: {ParcelsOnTheWay}";
             }
         }
     }

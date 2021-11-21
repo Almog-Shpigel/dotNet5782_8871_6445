@@ -37,7 +37,7 @@ namespace IBL
             }
             public override string ToString()
             {
-                return $"Drone #{ID}: model {Model},{Status},{MaxWeight}, location: {CurrentLocation}, battery: {BatteryStatus}";
+                return $"Drone #{ID}:   model   {Model},    {Status},   {MaxWeight},    location: {CurrentLocation},    battery: {BatteryStatus}%";
             }
         }
     }

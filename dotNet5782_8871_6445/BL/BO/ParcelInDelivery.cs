@@ -47,7 +47,7 @@ namespace IBL
             }
             public override string ToString()
             {
-                return $"Parcel #{ID}, {Weight}, {Priority}, {Status}, {Sender}, {Target}, {PickUpLocation}, {TargetLocation}, {DeliveryDistance}";
+                return $"Parcel #{ID},  {Weight},   {Priority}, {Status},   {Sender},   {Target},   {PickUpLocation},   {TargetLocation},   {DeliveryDistance}";
             }
         }
     }

@@ -280,7 +280,7 @@ namespace ConsoleUI_BL
                 ChangeName = false;
             do
             {
-                Console.Write("Enter number of charge slots:");
+                Console.Write("Enter number of charge slots: ");
                 ChargeSlots = Console.ReadLine();
                 if (ChargeSlots == "")
                 {
@@ -292,7 +292,7 @@ namespace ConsoleUI_BL
 
             try
             {
-                    IBL.UpdateStation(id,ChangeName,ChangeSlots,name, slots);
+                IBL.UpdateStation(id,ChangeName,ChangeSlots,name, slots);
             }
             catch (Exception exp) 
             {

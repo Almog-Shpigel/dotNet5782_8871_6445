@@ -570,7 +570,7 @@ namespace IBL
             return battery;
         }
 
-        private static double WeightMultiplier(WeightCategories weight,Double [] BatteryUse)
+        private double WeightMultiplier(WeightCategories weight,Double [] BatteryUse)
         {
             switch (weight)
             {
@@ -586,7 +586,7 @@ namespace IBL
             return BatteryUse[0]; //Empty
         }
 
-        private static double Distance(double x1, double y1, double x2, double y2)
+        private double Distance(double x1, double y1, double x2, double y2)
         {
             x1 = (x1 * Math.PI) / 180;
             y1 = (y1 * Math.PI) / 180;
@@ -596,6 +596,19 @@ namespace IBL
             double result2 = 2 * Math.Asin(Math.Sqrt(result1));
             double radius = 3956;
             return (result2 * radius);
+        }
+        private bool PossibleDelivery(DroneToList drone,Parcel parcel)
+        {
+            double DisDroneSender, DisSenderTarget,DisTargetStation;
+            Customer sender = Data.GetCustomer(parcel.SenderID), target = Data.GetCustomer(parcel.TargetID);
+            Station NearestStatTarget = GetNearestStation(target.Latitude, target.Longitude, Data.GetAllStations());
+            DisDroneSender = Distance(drone.CurrentLocation.Latitude, drone.CurrentLocation.Longitude, sender.Latitude, sender.Longitude);
+            DisSenderTarget = Distance(sender.Latitude, sender.Longitude, target.Latitude, target.Longitude);
+            DisTargetStation = Distance(target.Latitude, target.Longitude, NearestStatTarget.Latitude, NearestStatTarget.Longitude);
+            double total = BatteryUsed[0] * (DisTargetStation + DisDroneSender) + WeightMultiplier(parcel.Weight, BatteryUsed);
+            if (total > drone.BatteryStatus)
+                return false;
+            return true;
         }
         #endregion
     }

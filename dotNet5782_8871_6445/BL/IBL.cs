@@ -28,7 +28,7 @@ namespace IBL
         public void UpdateParcelDeleiveredByDrone(int droneID);
         public void UpdateDroneToBeCharged(int v);
         public void UpdateParcelCollectedByDrone(int v);
-        public void UpdateDroneAvailable(int v1, int v2);
+        public void UpdateDroneAvailable(int v1);
         public void AddNewCustomer(CustomerBL customer);
         public void AddNewStation(StationBL station);
         public void AddNewDrone(DroneBL drone, int StationID);

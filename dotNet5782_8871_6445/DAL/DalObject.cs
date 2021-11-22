@@ -123,6 +123,7 @@ namespace DalObject
                 }
         }
 
+
         public void DroneToBeCharge(int DroneID, int StationID, DateTime start)
         {
             if (!DroneExist(DroneID))
@@ -374,7 +375,15 @@ namespace DalObject
             }
             throw new CustomerExistException("The customer doesn't exists in the data!!");
         }
-
+        public DroneCharge GetDroneCharge(int id)
+        {
+            foreach (DroneCharge drone in DataSource.DroneCharges)
+            {
+                if (drone.DroneID == id)
+                    return drone;
+            }
+            throw new DroneExistException("Drone in charge not exist!");
+        }
         public Parcel GetParcel(int id)
         {
             foreach (Parcel parcel in DataSource.parcels)

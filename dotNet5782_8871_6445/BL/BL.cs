@@ -206,6 +206,9 @@ namespace IBL
 
         public void UpdateDroneToBeCharged(int DroneID)
         {
+            if (DroneID < 100000 || DroneID > 999999)
+                throw new InvalidIDException("Drone ID has to have 6 positive digits.");
+            Drone test = Data.GetDrone(DroneID);    ///Will throw an exception if the drone is not in the data
             Station NearestStat = new();
             DroneToList DroneToBeCharged = new();
             foreach (DroneToList drone in DroneList)
@@ -232,11 +235,9 @@ namespace IBL
             throw new NotImplementedException();
         }
 
-        public void UpdateDroneAvailable(int DroneID, int MinuteCharged) 
+        public void UpdateDroneAvailable(int DroneID) 
         {
             int i = 0;
-            if (MinuteCharged < 0)
-                throw new InvalidTimeChargedException("Time charged can't be a negative number");
             if (DroneID < 100000 || DroneID > 999999)
                 throw new InvalidIDException("Drone ID has to have 6 positive digits.");
             DroneToList DroneToBeAvailable = new DroneToList();
@@ -251,16 +252,35 @@ namespace IBL
             if (DroneToBeAvailable.Status != DroneStatus.Charging)
                 throw new DroneStatusExpetion("Can't release a drone that isn't charging");
             DroneToBeAvailable.Status = DroneStatus.Available;
-            DroneToBeAvailable.BatteryStatus += BatteryUsed[5] * MinuteCharged / 60;
+            DroneCharge DroneInCharge = Data.GetDroneCharge(DroneID);
+            double TimeCharged = DateTime.Now.Subtract(DroneInCharge.Start).TotalHours; 
+            DroneToBeAvailable.BatteryStatus += BatteryUsed[5] * TimeCharged;
             if (DroneToBeAvailable.BatteryStatus > 100)
                 DroneToBeAvailable.BatteryStatus = 100;
             Data.DroneAvailable(DroneID);
             DroneList[i] = DroneToBeAvailable;
         }
 
-        public void UpdateParcelToDrone(int v)
+        public void UpdateParcelToDrone(int DroneID)
         {
-            throw new NotImplementedException();
+            int i = 0;
+            if (DroneID < 100000 || DroneID > 999999)
+                throw new InvalidIDException("Drone ID has to have 6 positive digits.");
+            DroneToList DroneToBeAssign = new DroneToList();
+            for (i = 0; i < DroneList.Count(); i++)
+            {
+                if (DroneList[i].ID == DroneID)
+                {
+                    DroneToBeAssign = DroneList[i];
+                    break;
+                }
+            }
+            if (DroneToBeAssign.Status != DroneStatus.Available)
+                throw new DroneStatusExpetion("Drone is unavailable for a delivery!");
+            foreach (var parcel in Data.GetAllParcels())
+            {
+                ///To do, Amitai needs to do his research
+            }
         }
 
         public void UpdateParcelCollectedByDrone(int v)

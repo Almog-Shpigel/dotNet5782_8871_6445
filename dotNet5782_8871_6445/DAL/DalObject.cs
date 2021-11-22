@@ -38,7 +38,7 @@ namespace DalObject
                 throw new CustomerExistException("The sender ID dosen't exists in the data!!");
             if (!CustomerExist(parcel.TargetID))
                 throw new CustomerExistException("The target ID dosen't exists in the data!!");
-            parcel.ID = ++DataSource.config.ParcelsCounter;
+            parcel.ID = ++DataSource.Config.ParcelsCounter;
             DataSource.parcels.Add(parcel);
         }
 
@@ -58,7 +58,7 @@ namespace DalObject
         {
             Drone drone = GetDrone(id);
             drone.Model = model;
-            for (int i = 0; i < DataSource.drones.Count(); i++)
+            for (int i = 0; i < DataSource.drones.Count; i++)
             {
                 if (DataSource.drones[i].ID == drone.ID)
                     DataSource.drones[i] = drone;
@@ -68,7 +68,7 @@ namespace DalObject
         {
             Station station = GetStation(stationID);
             station.ChargeSlots = slots;
-            for (int i = 0; i < DataSource.stations.Count(); i++)
+            for (int i = 0; i < DataSource.stations.Count; i++)
             {
                 if (DataSource.stations[i].ID == station.ID)
                     DataSource.stations[i] = station;
@@ -78,7 +78,7 @@ namespace DalObject
         {
             Station station = GetStation(stationID);
             station.Name = name;
-            for (int i = 0; i < DataSource.stations.Count(); i++)
+            for (int i = 0; i < DataSource.stations.Count; i++)
             {
                 if (DataSource.stations[i].ID == station.ID)
                     DataSource.stations[i] = station;
@@ -88,7 +88,7 @@ namespace DalObject
         {
             Customer customer = GetCustomer(id);
             customer.Name = name;
-            for (int i = 0; i < DataSource.customers.Count(); i++)
+            for (int i = 0; i < DataSource.customers.Count; i++)
             {
                 if (DataSource.customers[i].ID == customer.ID)
                     DataSource.customers[i] = customer;
@@ -98,7 +98,7 @@ namespace DalObject
         {
             Customer customer = GetCustomer(id);
             customer.Phone ='0'+ phone.ToString();
-            for (int i = 0; i < DataSource.customers.Count(); i++)
+            for (int i = 0; i < DataSource.customers.Count; i++)
             {
                 if (DataSource.customers[i].ID == customer.ID)
                     DataSource.customers[i] = customer;
@@ -112,7 +112,7 @@ namespace DalObject
             for (int j = 0; j < DataSource.DroneCharges.Count; ++j)        ///Going through the array to find the wanted DroneCharged object
                 if(DataSource.DroneCharges[j].DroneID == DroneID)
                     droneCharge = DataSource.DroneCharges[j];
-            Station NewStation = new();
+            Station NewStation;
             DataSource.DroneCharges.Remove(droneCharge);
             for (int i = 0; i < DataSource.stations.Count; ++i)              ///Going through the array to find the wanted station the drone was charged in
                 if(DataSource.stations[i].ID != droneCharge.StationID)
@@ -397,11 +397,11 @@ namespace DalObject
         public double[] GetBatteryUsed()
         {
             double[] BatteryUsed = new double[5];
-            BatteryUsed[0] = DataSource.config.Empty;
-            BatteryUsed[1] = DataSource.config.LightWight;
-            BatteryUsed[2] = DataSource.config.MediumWight;
-            BatteryUsed[3] = DataSource.config.HaevyWight;
-            BatteryUsed[4] = DataSource.config.ChargeRate;
+            BatteryUsed[0] = DataSource.Config.Empty;
+            BatteryUsed[1] = DataSource.Config.LightWight;
+            BatteryUsed[2] = DataSource.Config.MediumWight;
+            BatteryUsed[3] = DataSource.Config.HaevyWight;
+            BatteryUsed[4] = DataSource.Config.ChargeRate;
             return BatteryUsed;
         }
         

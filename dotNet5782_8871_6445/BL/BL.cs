@@ -49,21 +49,20 @@ namespace IBL
 
         private DroneToList InitDroneInDelivery(DroneToList NewDrone, Parcel parcel)
         {
-            double DisDroneTarget, DisTargetStation, MinBattery;
-            Random rand = new Random();
+            double total;
+            Random rand = new();
             NewDrone.Status = DroneStatus.Delivery;
             NewDrone.ParcelID = parcel.ID;
             Customer sender = Data.GetCustomer(parcel.SenderID), target = Data.GetCustomer(parcel.TargetID);
             Station NearestStatTarget = GetNearestStation(target.Latitude, target.Longitude, Data.GetAllStations());
-            Station NearestStatSender = GetNearestStation(sender.Latitude, sender.Longitude, Data.GetAllStations());
+            Station NearestStat = GetNearestStation(sender.Latitude, sender.Longitude, Data.GetAllStations());
             if (parcel.PickedUp == DateTime.MinValue)
-                NewDrone.CurrentLocation = new(NearestStatSender.Latitude, NearestStatSender.Longitude);
+                NewDrone.CurrentLocation = new(NearestStat.Latitude, NearestStat.Longitude);
             else    ///means it did get pickedup
                 NewDrone.CurrentLocation = new(sender.Latitude, sender.Longitude);
-            DisDroneTarget = Distance(NewDrone.CurrentLocation.Latitude, NewDrone.CurrentLocation.Longitude, target.Latitude, target.Longitude);
-            DisTargetStation = Distance(target.Latitude, target.Longitude, NearestStatTarget.Latitude, NearestStatTarget.Longitude);
-            MinBattery = (WeightMultiplier(parcel.Weight, BatteryUsed) * DisDroneTarget) + (BatteryUsed[0] * DisTargetStation);
-            NewDrone.BatteryStatus = RandBatteryStatus(MinBattery, 100);
+
+            total = BatteryUsageCurrStation(NewDrone, parcel.SenderID, parcel.TargetID, NearestStat, parcel.Weight);
+            NewDrone.BatteryStatus = GetRandBatteryStatus(total, 100);
             return NewDrone;
         }
 
@@ -93,7 +92,7 @@ namespace IBL
                     Data.DroneToBeCharge(NewDrone.ID, AllAvailableStations[RandomStation].ID,DateTime.Now);
                     NewDrone.CurrentLocation.Latitude = AllAvailableStations[RandomStation].Latitude;
                     NewDrone.CurrentLocation.Longitude = AllAvailableStations[RandomStation].Longitude;
-                    NewDrone.BatteryStatus = RandBatteryStatus(0,21);
+                    NewDrone.BatteryStatus = GetRandBatteryStatus(0,21);
                     break;
             }
             //NewDrone.Status =(DroneStatus)rand.Next(0,2);
@@ -118,7 +117,7 @@ namespace IBL
         {
             if (DroneBL.ID < 100000 || DroneBL.ID > 999999)
                 throw new InvalidIDException("Drone ID has to have 6 positive digits.");
-            DroneBL.BatteryStatus = RandBatteryStatus(20, 41);
+            DroneBL.BatteryStatus = GetRandBatteryStatus(20, 41);
             DroneBL.Status = DroneStatus.Charging;
             IEnumerable<Station> stations = Data.GetAllStations();
             foreach (Station station in stations)
@@ -240,8 +239,8 @@ namespace IBL
             int i = 0;
             if (DroneID < 100000 || DroneID > 999999)
                 throw new InvalidIDException("Drone ID has to have 6 positive digits.");
-            DroneToList DroneToBeAvailable = new DroneToList();
-            for ( i = 0; i < DroneList.Count(); i++)
+            DroneToList DroneToBeAvailable = new();
+            for ( i = 0; i < DroneList.Count; i++)
             {
                 if (DroneList[i].ID == DroneID)
                 {
@@ -266,8 +265,8 @@ namespace IBL
             int i = 0;
             if (DroneID < 100000 || DroneID > 999999)
                 throw new InvalidIDException("Drone ID has to have 6 positive digits.");
-            DroneToList DroneToBeAssign = new DroneToList();
-            for (i = 0; i < DroneList.Count(); i++)
+            DroneToList DroneToBeAssign = new();
+            for (; i < DroneList.Count; i++)
             {
                 if (DroneList[i].ID == DroneID)
                 {
@@ -277,10 +276,32 @@ namespace IBL
             }
             if (DroneToBeAssign.Status != DroneStatus.Available)
                 throw new DroneStatusExpetion("Drone is unavailable for a delivery!");
+
+            //Need to Lesanen all parcel that are to far and that are not waiting for delivery
+            IEnumerable<Parcel> AllParcels = Data.GetAllParcels();
+            Parcel MaxParcel = AllParcels.First();
             foreach (var parcel in Data.GetAllParcels())
             {
-                ///To do, Amitai needs to do his research
+                if (PossibleDelivery(DroneToBeAssign, parcel))
+                {
+                    if (parcel.Priority > MaxParcel.Priority)
+                        MaxParcel = parcel;
+                    if (parcel.Priority == MaxParcel.Priority)
+                    {
+                        if (parcel.Weight > MaxParcel.Weight && DroneToBeAssign.MaxWeight >= parcel.Weight)
+                            MaxParcel = parcel;
+                        if (parcel.Weight == MaxParcel.Weight && DroneToBeAssign.MaxWeight >= parcel.Weight)
+                        {
+                            if (DistanceDroneCustomer(DroneToBeAssign, parcel.SenderID) < DistanceDroneCustomer(DroneToBeAssign, MaxParcel.SenderID))
+                                MaxParcel = parcel;
+                        }
+                    }
+                }
             }
+            // To do אם נמצאה חבילה מתאימה, יש לעדכן את שכבת הנתונים כלדקמן:
+            //יש לשנות את מצב הרחפן למבצע משלוח
+            //בחבילה יש להוסיף את הרחפן ולעדכן את זמן השיוך
+
         }
 
         public void UpdateParcelCollectedByDrone(int v)
@@ -550,10 +571,10 @@ namespace IBL
         private double RandBatteryToStation(DroneToList drone, Location location, double battery)
         {
             battery = Distance(drone.CurrentLocation.Latitude, drone.CurrentLocation.Longitude, location.Latitude, location.Longitude) * battery;
-            return RandBatteryStatus(battery, 100);
+            return GetRandBatteryStatus(battery, 100);
         }
 
-        private double RandBatteryStatus(double min, double max)
+        private double GetRandBatteryStatus(double min, double max)
         {
             Random rand = new();
             double MinBattery = 0, MaxBattery = 100, swap, battery; 
@@ -570,7 +591,7 @@ namespace IBL
             return battery;
         }
 
-        private double WeightMultiplier(WeightCategories weight,Double [] BatteryUse)
+        private double GetWeightMultiplier(WeightCategories weight,Double [] BatteryUse)
         {
             switch (weight)
             {
@@ -597,18 +618,49 @@ namespace IBL
             double radius = 3956;
             return (result2 * radius);
         }
-        private bool PossibleDelivery(DroneToList drone,Parcel parcel)
+
+        private double DistanceDroneCustomer(DroneToList drone, int CustomerID)
         {
-            double DisDroneSender, DisSenderTarget,DisTargetStation;
+            Customer customer = Data.GetCustomer(CustomerID);
+            return Distance(drone.CurrentLocation.Latitude, drone.CurrentLocation.Longitude, customer.Latitude, customer.Longitude);
+        }
+
+        private double DistanceCustomerCustomer(int SenderID, int TargetID)
+        {
+            Customer sender = Data.GetCustomer(SenderID), target = Data.GetCustomer(TargetID);
+            return Distance(sender.Latitude, sender.Longitude, target.Latitude, target.Longitude);
+        }
+
+        private double DistanceCustomerStation(int CustomerID, Station station)
+        {
+            Customer customer = Data.GetCustomer(CustomerID);
+            return Distance(customer.Latitude, customer.Longitude,station.Latitude, station.Longitude);
+        }
+
+        private bool PossibleDelivery(DroneToList drone, Parcel parcel)
+        {
+            double total;
             Customer sender = Data.GetCustomer(parcel.SenderID), target = Data.GetCustomer(parcel.TargetID);
-            Station NearestStatTarget = GetNearestStation(target.Latitude, target.Longitude, Data.GetAllStations());
-            DisDroneSender = Distance(drone.CurrentLocation.Latitude, drone.CurrentLocation.Longitude, sender.Latitude, sender.Longitude);
-            DisSenderTarget = Distance(sender.Latitude, sender.Longitude, target.Latitude, target.Longitude);
-            DisTargetStation = Distance(target.Latitude, target.Longitude, NearestStatTarget.Latitude, NearestStatTarget.Longitude);
-            double total = BatteryUsed[0] * (DisTargetStation + DisDroneSender) + WeightMultiplier(parcel.Weight, BatteryUsed);
+            Station NearestStat = GetNearestStation(target.Latitude, target.Longitude, Data.GetAllStations());
+            Location SenderLoc, TargetLoc, StationLoc;
+
+            SenderLoc = new(sender.Latitude,sender.Longitude);
+            TargetLoc = new(target.Latitude, target.Longitude);
+            StationLoc = new(NearestStat.Latitude, NearestStat.Longitude);
+            total = BatteryUsageCurrStation(drone, parcel.SenderID, parcel.TargetID, NearestStat, parcel.Weight);
+
             if (total > drone.BatteryStatus)
                 return false;
             return true;
+        }
+
+        private double BatteryUsageCurrStation(DroneToList drone, int SenderID, int TargetID, Station Station, WeightCategories Weight)
+        {
+            double DisDroneSender, DisSenderTarget, DisTargetStation;
+            DisDroneSender = DistanceDroneCustomer(drone, SenderID);
+            DisSenderTarget = DistanceCustomerCustomer(SenderID, TargetID);
+            DisTargetStation = DistanceCustomerStation(TargetID, Station);
+            return BatteryUsed[0] * (DisTargetStation + DisDroneSender) + GetWeightMultiplier(Weight, BatteryUsed) * DisSenderTarget;
         }
         #endregion
     }

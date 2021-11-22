@@ -185,7 +185,7 @@ namespace ConsoleUI_BL
             string name = RequestStationName();
             Location location = RequestLocation();
             int slots = RequestChargeSlots();
-            StationBL NewStation = new StationBL(id, name, slots, location);
+            StationBL NewStation = new(id, name, slots, location);
             try
             {
                 IBL.AddNewStation(NewStation);
@@ -271,9 +271,9 @@ namespace ConsoleUI_BL
         private static void UpdateStation(IBL.BL IBL)
         {
 
-            bool success = true, ChangeName = true, ChangeSlots = true;
+            bool success, ChangeName = true, ChangeSlots = true;
             int slots = 0;
-            string ChargeSlots = "";
+            string ChargeSlots;
             int id = RequestID();
             string name = RequestStationName();
             if (name == "")
@@ -303,8 +303,8 @@ namespace ConsoleUI_BL
 
         private static void UpdateCustomer(IBL.BL IBL)
         {
-            bool successs = true, ChangeName = true, ChangePhone = true ;
-            string phone = "";
+            bool successs, ChangeName = true, ChangePhone = true ;
+            string phone;
             int PhoneNumber = 0;
             int id = RequestID();
             string name = RequestCustomerName();

@@ -9,12 +9,12 @@ namespace DalObject
 {
     public class DataSource
     {
-        internal static List<Drone> drones = new List<Drone>();
-        internal static List<Station> stations = new List<Station>();
-        internal static List<Customer> customers = new List<Customer>();
-        internal static List<Parcel> parcels = new List<Parcel>();
-        internal static List<DroneCharge> DroneCharges = new List<DroneCharge>();
-        internal class config
+        internal static List<Drone> drones = new();
+        internal static List<Station> stations = new();
+        internal static List<Customer> customers = new();
+        internal static List<Parcel> parcels = new();
+        internal static List<DroneCharge> DroneCharges = new();
+        internal class Config
         {
             internal static int ParcelsCounter = 0;
             /// <summary>
@@ -31,7 +31,7 @@ namespace DalObject
         }
         internal static void Initialize()
         {
-            Random rnd = new Random();
+            Random rnd = new();
             /// MinValue means we haven't assigned yet a drone to the parcel.
             DateTime    Requested = DateTime.Now,
                         Scedualed = DateTime.MinValue,
@@ -40,8 +40,8 @@ namespace DalObject
             /// Initializing 2 stations.
             for (int i = 0; i < 10; i++)         
             {
-                int id = 122000 + stations.Count();      
-                string name = "Station " + stations.Count();
+                int id = 122000 + stations.Count;      
+                string name = "Station " + stations.Count;
                 double latitude = (31 + ((double)rnd.Next(9999, 100000) / 100000)); ///Jerusalem area
                 double longitude = (35 + ((double)rnd.Next(9999, 100000) / 100000)); ///Jerusalem area
                 int chargeSlot = rnd.Next(10);
@@ -52,7 +52,7 @@ namespace DalObject
             for (int i = 0; i < 5; i++)         
             {
                 int id = 669000 + drones.Count();
-                string model = ((IDAL.DO.DroneModels)rnd.Next(3)) + " " + drones.Count();
+                string model = ((IDAL.DO.DroneModels)rnd.Next(3)) + " " + drones.Count;
                 IDAL.DO.WeightCategories weight = (IDAL.DO.WeightCategories)rnd.Next(3);
                 Drone NewDrone = new Drone(id, model, weight);
                 drones.Add(NewDrone);
@@ -71,7 +71,7 @@ namespace DalObject
             /// Initializing 10 parcels.
             for (int i = 0; i < 10; i++)
             {
-                int id = 344000 + ++config.ParcelsCounter;
+                int id = 344000 + ++Config.ParcelsCounter;
                 int sender = customers[rnd.Next(10)].ID;
                 int reciver = customers[rnd.Next(10)].ID;
                 while (sender == reciver)

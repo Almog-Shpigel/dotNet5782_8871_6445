@@ -391,10 +391,9 @@ namespace ConsoleUI_BL
         private static void DroneAvailable(IBL.BL IBL)
         {
             int id = RequestID();
-            int MinutesCharged = RequestMinutesCharged();
             try
             {
-                IBL.UpdateDroneAvailable(id, MinutesCharged);
+                IBL.UpdateDroneAvailable(id);
             }
             catch (Exception exp)
             {

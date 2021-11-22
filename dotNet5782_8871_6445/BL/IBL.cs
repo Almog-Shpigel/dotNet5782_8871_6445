@@ -15,7 +15,7 @@ namespace IBL
         public List<ParcelToList> DispalyAllParcels();
         public List<ParcelToList> DispalyAllUnassignedParcels();
         public List<StationToList> DispalyAllAvailableStations();
-        public string DisplayStation(int StationID);
+        public StationBL DisplayStation(int StationID);
         public string DisplayDrone(int DroneID);
         public string DisplayCustomer(int CustomerID);
         public string DisplayParcel(int ParcelID);
@@ -32,7 +32,6 @@ namespace IBL
         public void AddNewCustomer(CustomerBL customer);
         public void AddNewStation(StationBL station);
         public void AddNewDrone(DroneBL drone, int StationID);
-        public void AddNewParcel(ParcelBL parcel);
-        //public List<string> PrintAllAvailableStations(); // I'm not sure what this is for...
+        public void AddNewParcel(ParcelBL parcel);      
     }
 }

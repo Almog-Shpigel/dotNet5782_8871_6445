@@ -391,10 +391,10 @@ namespace ConsoleUI_BL
         private static void DroneAvailable(IBL.BL IBL)
         {
             int id = RequestID();
-            int MinutesInCharge = RequestMinutesInCharge();
+            int MinutesCharged = RequestMinutesCharged();
             try
             {
-                IBL.UpdateDroneAvailable(id, MinutesInCharge);
+                IBL.UpdateDroneAvailable(id, MinutesCharged);
             }
             catch (Exception exp)
             {
@@ -408,7 +408,7 @@ namespace ConsoleUI_BL
         private static void DisplayStation(IBL.BL IBL)
         {
             int id = RequestID();
-            Console.WriteLine(IBL.DisplayStation(id));
+            Console.WriteLine(IBL.DisplayStation(id).ToString());
         }
 
         private static void DisplayDrone(IBL.BL IBL)
@@ -581,7 +581,7 @@ namespace ConsoleUI_BL
             return Console.ReadLine();
         }
         
-        private static int RequestMinutesInCharge()
+        private static int RequestMinutesCharged()
         {
             bool success;
             int minutes;

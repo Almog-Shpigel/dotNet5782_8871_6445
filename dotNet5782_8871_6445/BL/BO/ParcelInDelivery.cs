@@ -47,7 +47,11 @@ namespace IBL
             }
             public override string ToString()
             {
-                return $"Parcel #{ID},  {Weight},   {Priority}, {Status},   {Sender},   {Target},   {PickUpLocation},   {TargetLocation},   {DeliveryDistance}";
+                return $"Parcel #{ID}:\n" +
+                    $"{Weight}, {Priority}, {Status}." +
+                    $"From {Sender} to {Target}.\n" +
+                    $"Sent from: {PickUpLocation} , Sent to: {TargetLocation}.\n" +
+                    $"Overall distance: {DeliveryDistance} km";
             }
         }
     }

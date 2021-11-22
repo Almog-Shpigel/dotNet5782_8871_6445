@@ -30,8 +30,8 @@ namespace IBL
                 return ($"{Name} #{ID}:\n" +
                     $"Phone number:     {Phone}\n" +
                     $"Location:         {Location}\n" +
-                    $"No. of parcel sent:       {ParcelesSentByCustomer}\n" +
-                    $"No. of parcel received:   {ParcelesSentToCustomer}");
+                    $"Parcel sent:       {ParcelesSentByCustomer}\n" +
+                    $"Parcel received:   {ParcelesSentToCustomer}");
             }
         }
     }

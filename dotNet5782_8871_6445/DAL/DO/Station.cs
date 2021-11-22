@@ -34,15 +34,16 @@ namespace IDAL
                 int result, remainder;
                 string coordinates;
                 result = (int)number;
-                coordinates = result +""+ (char)176 + " " ;                            /// coordinates holds now the degrees.
+                coordinates = result + "" + (char)176 + " ";                            /// coordinates holds now the degrees.
                 result = (int)((number - result) * 10000);
-                result = result * 60;
+                result *= 60;
                 remainder = result % 10000;
                 result /= 10000;
                 coordinates += result + "\' ";                          /// coordinates holds now the minutes.
                 result = remainder * 60;
                 remainder = result % 10000;
-                result /= 1000000;
+                remainder /= 100;
+                result /= 10000;
                 coordinates += result + "." + remainder + "\" ";      /// coordinates holds now the seconds.
                 return coordinates;
             }

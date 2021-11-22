@@ -46,9 +46,9 @@ namespace IBL
                     $"Parcel weight:    {Weight}\n" +
                     $"Parcel priority:  {Priority}\n" +
                     $"Time Requested:   {TimeRequested}\n" +
-                    $"Scheduled:        {Scheduled}\n" +
-                    $"Picked up:        {PickedUp}\n" +
-                    $"Delivered:        {Delivered}\n";
+                    $"Time Scheduled:        {Scheduled}\n" +
+                    $"Time Picked up:        {PickedUp}\n" +
+                    $"Time Delivered:        {Delivered}\n";
             }
         }
     }

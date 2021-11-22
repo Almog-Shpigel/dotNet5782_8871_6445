@@ -56,8 +56,6 @@ namespace DalObject
         #region Update
         public void UpdateDroneName(int id, string model)
         {
-            if (!DroneExist(id))
-                throw new DroneExistException("The drone dosen't exists in the data!!");
             Drone drone = GetDrone(id);
             drone.Model = model;
             for (int i = 0; i < DataSource.drones.Count(); i++)
@@ -68,8 +66,6 @@ namespace DalObject
         }
         public void UpdateStationSlots(int stationID,int slots)
         {
-            if (!StationExist(stationID))
-                throw new StationExistException("The station dosen't exists in the data!!");
             Station station = GetStation(stationID);
             station.ChargeSlots = slots;
             for (int i = 0; i < DataSource.stations.Count(); i++)
@@ -80,8 +76,6 @@ namespace DalObject
         }
         public void UpdateStationName(int stationID, string name)
         {
-            if(!StationExist(stationID))
-                throw new StationExistException("The station dosen't exists in the data!!");
             Station station = GetStation(stationID);
             station.Name = name;
             for (int i = 0; i < DataSource.stations.Count(); i++)
@@ -92,11 +86,9 @@ namespace DalObject
         }
         public void UpdateCustomerName(int id, string name)
         {
-            if (!CustomerExist(id))
-                throw new CustomerExistException("The customer doesn't exists in the data!!");
             Customer customer = GetCustomer(id);
             customer.Name = name;
-            for (int i = 0; i < DataSource.stations.Count(); i++)
+            for (int i = 0; i < DataSource.customers.Count(); i++)
             {
                 if (DataSource.customers[i].ID == customer.ID)
                     DataSource.customers[i] = customer;
@@ -104,11 +96,9 @@ namespace DalObject
         }
         public void UpdateCustomerPhone(int id, int phone)
         {
-            if (!CustomerExist(id))
-                throw new CustomerExistException("The customer doesn't exists in the data!!");
             Customer customer = GetCustomer(id);
             customer.Phone ='0'+ phone.ToString();
-            for (int i = 0; i < DataSource.stations.Count(); i++)
+            for (int i = 0; i < DataSource.customers.Count(); i++)
             {
                 if (DataSource.customers[i].ID == customer.ID)
                     DataSource.customers[i] = customer;
@@ -119,16 +109,19 @@ namespace DalObject
             if(!DroneExist(DroneID))
                     throw new DroneExistException("The drone dosen't exists in the data!!");
 
-            int j = 0;
-            while (DataSource.droneCharges[j].DroneID != DroneID) ///Going through the array to find the wanted DroneCharged object
-                ++j;
-            int StationId = DataSource.droneCharges[j].StationID;
-            j = 0;
-            while (DataSource.stations[j].ID != StationId) ///Going through the array to find the wanted station the drone was charged in
-                ++j;
-            Station NewStation = DataSource.stations[j];
-            NewStation.ChargeSlots++;
-            DataSource.stations[j]=NewStation; ///Freeing a space for other drones
+            DroneCharge droneCharge = new();
+            for (int j = 0; j < DataSource.DroneCharges.Count; ++j)        ///Going through the array to find the wanted DroneCharged object
+                if(DataSource.DroneCharges[j].DroneID == DroneID)
+                    droneCharge = DataSource.DroneCharges[j];
+            Station NewStation = new();
+            DataSource.DroneCharges.Remove(droneCharge);
+            for (int i = 0; i < DataSource.stations.Count; ++i)              ///Going through the array to find the wanted station the drone was charged in
+                if(DataSource.stations[i].ID != droneCharge.StationID)
+                {
+                    NewStation = DataSource.stations[i];
+                    NewStation.ChargeSlots++;
+                    DataSource.stations[i] = NewStation;                        ///Freeing a space for other drones
+                }
         }
 
         public void DroneToBeCharge(int DroneID, int StationID, DateTime start)
@@ -139,14 +132,24 @@ namespace DalObject
             if (!StationExist(StationID))
                 throw new StationExistException("The station dosen't exists in the data!!");
 
+            if (DroneIsCharging(DroneID))
+                throw new DroneExistException("The drone is already being charged ");
             int i = 0;
-            DroneCharge NewCharge = new DroneCharge(DroneID, StationID, start);
-            DataSource.droneCharges.Add(NewCharge);
+            DroneCharge NewCharge = new(DroneID, StationID, start);
+            DataSource.DroneCharges.Add(NewCharge);
             while (DataSource.stations[i].ID != StationID)      ///Finding the wanted station
                 ++i;
             Station NewStation = DataSource.stations[i];
             NewStation.ChargeSlots--;
             DataSource.stations[i] = NewStation;                ///one slot was taken by the drone we chose
+        }
+
+        private bool DroneIsCharging(int droneID)
+        {
+            foreach (DroneCharge drone in GetAllDronesCharge())
+                if (drone.DroneID == droneID)
+                    return true;
+            return false;
         }
 
         public void ParcelDeleivery(int ParcelID)
@@ -235,89 +238,88 @@ namespace DalObject
         #endregion
 
         #region Display
-        public string DisplayDrone(int DroneID)
-        {
-            int i = 0;
-            while (DataSource.drones[i].ID != DroneID)  ///Going through the array to find the wanted drone
-                ++i;
-            return DataSource.drones[i].ToString();
-        }
+        //public string DisplayDrone(int DroneID)
+        //{
+        //    int i = 0;
+        //    while (DataSource.drones[i].ID != DroneID)  ///Going through the array to find the wanted drone
+        //        ++i;
+        //    return DataSource.drones[i].ToString();
+        //}
 
-        public string DisplayCustomer(int CustomerID)
-        {
-            int j = 0;
-            while (DataSource.customers[j].ID != CustomerID) ///Going through the array to find the wanted customer
-                ++j;
-            return DataSource.customers[j].ToString();
-        }
+        //public string DisplayCustomer(int CustomerID)
+        //{
+        //    int j = 0;
+        //    while (DataSource.customers[j].ID != CustomerID) ///Going through the array to find the wanted customer
+        //        ++j;
+        //    return DataSource.customers[j].ToString();
+        //}
 
-        public string DisplayParcel(int ParcelID)
-        {
-            int j = 0;
-            while (DataSource.parcels[j].ID != ParcelID) ///Going through the array to find the wanted parcel
-                ++j;
-            return DataSource.parcels[j].ToString();
-        }
+        //public string DisplayParcel(int ParcelID)
+        //{
+        //    int j = 0;
+        //    while (DataSource.parcels[j].ID != ParcelID) ///Going through the array to find the wanted parcel
+        //        ++j;
+        //    return DataSource.parcels[j].ToString();
+        //}
 
-        public string DisplayStation(int StationID)
-        {
-            int j = 0;
-            while (DataSource.stations[j].ID != StationID) ///Going through the array to find the wanted station
-                ++j;
-            return DataSource.stations[j].ToString();
-        }
+        //public string DisplayStation(int StationID)
+        //{
+        //    int j = 0;
+        //    while (DataSource.stations[j].ID != StationID) ///Going through the array to find the wanted station
+        //        ++j;
+        //    return DataSource.stations[j].ToString();
+        //}
         #endregion
 
         #region Print
-        public IEnumerable<string> PrintAllStations()
-        {
-            List <string> StationsList = new List<string>();
-            for (int i = 0; i < DataSource.stations.Count(); i++)
-                StationsList.Add(DataSource.stations[i].ToString());
-            return StationsList;
-        }
-        public IEnumerable<string> PrintAllDrones()
-        {
-            List<string> DronesList = new List<string>();
-            for (int i = 0; i < DataSource.drones.Count(); i++)
-                DronesList.Add(DataSource.drones[i].ToString());
-            return DronesList;
-        }
-        public IEnumerable<string> PrintAllCustomers()
-        {
-            List<string> CustomerList = new List<string>();
-            for (int i = 0; i < DataSource.customers.Count(); i++)
-                CustomerList.Add(DataSource.customers[i].ToString());
-            return CustomerList;
-        }
-        public IEnumerable<string> PrintAllParcels()
-        {
-            List<string> ParcelsList = new List<string>();
-            for (int i = 0; i < DataSource.parcels.Count(); i++)
-                ParcelsList.Add(DataSource.parcels[i].ToString());
-            return ParcelsList;
-        }
-        public IEnumerable<string> PrintAllUnassignedParcels()
-        {
-            List<string> UnassignedParcelsList = new List<string>();
-            for (int i = 0; i < DataSource.parcels.Count(); i++)
-                if (DataSource.parcels[i].DroneID == 0) ///If DroneID is 0 it means the parcel hasn't been assigned yet
-                    UnassignedParcelsList.Add(DataSource.parcels[i].ToString());
-            return UnassignedParcelsList;
-        }
-        
-        public IEnumerable<string> PrintAllAvailableStations()
-        {
-            List<string> AvailableStationsList = new List<string>();
-            for (int i = 0; i < DataSource.stations.Count(); i++) 
-                if (DataSource.stations[i].ChargeSlots > 0)
-                    AvailableStationsList.Add(DataSource.stations[i].ToString());                
-            return AvailableStationsList;
-        }
+        //public IEnumerable<string> PrintAllStations()
+        //{
+        //    List <string> StationsList = new List<string>();
+        //    for (int i = 0; i < DataSource.stations.Count(); i++)
+        //        StationsList.Add(DataSource.stations[i].ToString());
+        //    return StationsList;
+        //}
+        //public IEnumerable<string> PrintAllDrones()
+        //{
+        //    List<string> DronesList = new List<string>();
+        //    for (int i = 0; i < DataSource.drones.Count(); i++)
+        //        DronesList.Add(DataSource.drones[i].ToString());
+        //    return DronesList;
+        //}
+        //public IEnumerable<string> PrintAllCustomers()
+        //{
+        //    List<string> CustomerList = new List<string>();
+        //    for (int i = 0; i < DataSource.customers.Count(); i++)
+        //        CustomerList.Add(DataSource.customers[i].ToString());
+        //    return CustomerList;
+        //}
+        //public IEnumerable<string> PrintAllParcels()
+        //{
+        //    List<string> ParcelsList = new List<string>();
+        //    for (int i = 0; i < DataSource.parcels.Count(); i++)
+        //        ParcelsList.Add(DataSource.parcels[i].ToString());
+        //    return ParcelsList;
+        //}
+        //public IEnumerable<string> PrintAllUnassignedParcels()
+        //{
+        //    List<string> UnassignedParcelsList = new List<string>();
+        //    for (int i = 0; i < DataSource.parcels.Count(); i++)
+        //        if (DataSource.parcels[i].DroneID == 0) ///If DroneID is 0 it means the parcel hasn't been assigned yet
+        //            UnassignedParcelsList.Add(DataSource.parcels[i].ToString());
+        //    return UnassignedParcelsList;
+        //}
 
-
+        //public IEnumerable<string> PrintAllAvailableStations()
+        //{
+        //    List<string> AvailableStationsList = new List<string>();
+        //    for (int i = 0; i < DataSource.stations.Count(); i++) 
+        //        if (DataSource.stations[i].ChargeSlots > 0)
+        //            AvailableStationsList.Add(DataSource.stations[i].ToString());                
+        //    return AvailableStationsList;
+        //}
         #endregion Print
 
+        #region Get
         public IEnumerable<Parcel> GetAllParcels()
         {
             return DataSource.parcels;
@@ -340,7 +342,7 @@ namespace DalObject
 
         public IEnumerable<DroneCharge> GetAllDronesCharge()
         {
-            return DataSource.droneCharges;
+            return DataSource.DroneCharges;
         }
 
         public Drone GetDrone(int id)
@@ -350,7 +352,7 @@ namespace DalObject
                 if (drone.ID == id)
                     return drone;
             }
-            throw new DroneExistException("Drone not exist!");
+            throw new DroneExistException("The drone dosen't exists in the data!!");
         }
 
         public Station GetStation(int id)
@@ -360,7 +362,7 @@ namespace DalObject
                 if (station.ID == id)
                     return station;
             }
-            throw new StationExistException("Station not exist!");
+            throw new StationExistException("The station dosen't exists in the data!!");
          
         }
 
@@ -371,7 +373,7 @@ namespace DalObject
                 if (customer.ID == id)
                     return customer;
             }
-            throw new CustomerExistException("Customer not exist!");
+            throw new CustomerExistException("The customer doesn't exists in the data!!");
         }
 
         public Parcel GetParcel(int id)
@@ -426,5 +428,6 @@ namespace DalObject
                     return true;
             return false;
         }
+        #endregion
     }
 }

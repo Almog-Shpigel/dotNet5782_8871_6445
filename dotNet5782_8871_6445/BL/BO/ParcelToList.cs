@@ -29,7 +29,9 @@ namespace IBL
             }
             public override string ToString()
             {
-                return $"Parcel #{ID},  {Weight},   {Priority}, {Status},   sent by {SenderName} to {TargetName}";
+                return $"Parcel #{ID}:\n" +
+                    $"{Weight}, {Priority}, {Status}.\n" +
+                    $"sent by {SenderName} to {TargetName}";
             }
         }
     }

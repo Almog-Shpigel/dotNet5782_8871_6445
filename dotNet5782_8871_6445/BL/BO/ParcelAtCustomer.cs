@@ -14,7 +14,6 @@ namespace IBL
        public class ParcelAtCustomer
         {
             public int ID { get; set; }
-
             public WeightCategories Weight { get; set; }
             public Priorities Priority { get; set; }
             public ParcelStatus Status { get; set; }
@@ -28,7 +27,13 @@ namespace IBL
                 Status = status;
                 Customer = customer;
             }
-            //TO DO: ToString()
+            public override string ToString()
+            {
+                return $"Parcel #{ID}\n" +
+                    $"Weight: {Weight}\n" +
+                    $"Priority: {Priority}\n" +
+                    $"Customer: {Customer}";
+            }
         }
     }
 }

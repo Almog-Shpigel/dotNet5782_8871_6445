@@ -25,7 +25,9 @@ namespace IBL
             }
             public override string ToString()
             {
-                return $"{Name} #{ID},  Name: {Name} No. of available charge slots: {AvailableChargeSlots},  No. of used charge slots: {UsedChargeSlots}";
+                return $"{Name} #{ID},  Name: {Name}\n" +
+                    $"No. of charge slots: \n" +
+                    $"Available: {AvailableChargeSlots} Used: {UsedChargeSlots}\n";
             }
         }
     }

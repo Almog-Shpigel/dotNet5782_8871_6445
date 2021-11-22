@@ -29,16 +29,20 @@ namespace IBL
             foreach (Drone drone in Data.GetAllDrones())
             {
                 DroneToList NewDrone = new();
+                Parcel NewParcel = new(); 
                 NewDrone.ID = drone.ID;
                 NewDrone.Model = drone.Model;
                 NewDrone.MaxWeight = drone.MaxWeight;
                 foreach (Parcel parcel in Data.GetAllParcels())
                 {
-                    if (parcel.DroneID == drone.ID && parcel.Delivered == DateTime.MaxValue)
-                        NewDrone = InitDroneInDelivery(NewDrone,  parcel);
-                    else ///Not in delivery
-                        NewDrone = InitDroneNOTinDelivery(NewDrone);
+                    if (parcel.DroneID == drone.ID && parcel.Delivered == DateTime.MinValue)
+                        NewParcel = parcel;
                 }
+                if (NewParcel.DroneID == drone.ID && NewParcel.Delivered == DateTime.MinValue)
+                    NewDrone = InitDroneInDelivery(NewDrone, NewParcel);
+                else ///Not in delivery
+                    NewDrone = InitDroneNOTinDelivery(NewDrone);
+                
                 DroneList.Add(NewDrone); 
             }
         }
@@ -50,9 +54,9 @@ namespace IBL
             NewDrone.Status = DroneStatus.Delivery;
             NewDrone.ParcelID = parcel.ID;
             Customer sender = Data.GetCustomer(parcel.SenderID), target = Data.GetCustomer(parcel.TargetID);
-            Station NearestStatTarget = NearestStation(target.Latitude, target.Longitude, Data.GetAllStations());
-            Station NearestStatSender = NearestStation(sender.Latitude, sender.Longitude, Data.GetAllStations());
-            if (parcel.PickedUp == DateTime.MaxValue)
+            Station NearestStatTarget = GetNearestStation(target.Latitude, target.Longitude, Data.GetAllStations());
+            Station NearestStatSender = GetNearestStation(sender.Latitude, sender.Longitude, Data.GetAllStations());
+            if (parcel.PickedUp == DateTime.MinValue)
                 NewDrone.CurrentLocation = new(NearestStatSender.Latitude, NearestStatSender.Longitude);
             else    ///means it did get pickedup
                 NewDrone.CurrentLocation = new(sender.Latitude, sender.Longitude);
@@ -80,7 +84,7 @@ namespace IBL
                     RandomCustomer = rand.Next(0, AllPastCustomers.Count());
                     NewDrone.CurrentLocation.Latitude = AllPastCustomers[RandomCustomer].Latitude;
                     NewDrone.CurrentLocation.Longitude = AllPastCustomers[RandomCustomer].Longitude;
-                    nearest = NearestStation(NewDrone.CurrentLocation.Latitude, NewDrone.CurrentLocation.Longitude, Data.GetAllStations());
+                    nearest = GetNearestStation(NewDrone.CurrentLocation.Latitude, NewDrone.CurrentLocation.Longitude, Data.GetAllStations());
                     NewDrone.BatteryStatus = RandBatteryToStation(NewDrone, new Location(nearest.Latitude,nearest.Longitude), BatteryUsed[0]);
                     break;
                 case DroneStatus.Charging:
@@ -92,210 +96,180 @@ namespace IBL
                     NewDrone.BatteryStatus = RandBatteryStatus(0,21);
                     break;
             }
-            NewDrone.Status =(DroneStatus)rand.Next(0,2);
+            //NewDrone.Status =(DroneStatus)rand.Next(0,2);
 
             return NewDrone;
         }
 
-        private double RandBatteryToStation(DroneToList drone, Location location, double battery)
+        #region Add
+        public void AddNewStation(StationBL StationBO)
         {
-            battery = Distance(drone.CurrentLocation.Latitude, drone.CurrentLocation.Longitude, location.Latitude, location.Longitude) * battery;
-            return RandBatteryStatus(battery, 100);
+            if (StationBO.ID < 100000 || StationBO.ID > 999999)
+                throw new InvalidIDException("Invalid station ID number. Must have 6 digits");
+            if (StationBO.ChargeSlots < 0)
+                throw new InvalidSlotsException("Charge slots can't be a negative number");
+            if ((int)StationBO.Location.Latitude != 31 || (int)StationBO.Location.Longitude != 35)
+                throw new OutOfRangeLocationException("The location is outside of Jerusalem"); ///We assume for now that all the locations are inside Jerusalem
+            Station StationDO = new(StationBO.ID, StationBO.Name, StationBO.ChargeSlots, StationBO.Location.Latitude, StationBO.Location.Longitude);
+            Data.AddNewStation(StationDO);
         }
 
-        private double RandBatteryStatus(double min, double max)
+        public void AddNewDrone(DroneBL DroneBL, int StationID) ///Reciving a drone with name,id and weight, and a staion id to sent it to charge there
         {
-            Random rand = new();
-            double MinBattery = 0, MaxBattery = 100, swap; 
-            if (min > max) { swap = min; min = max; max = swap; }
-            if (min >= MaxBattery)
-                return MaxBattery;
-            if (max <= MinBattery)
-                return MinBattery;
-            double remider = (int)(min + max + rand.Next(50));
-            remider /= 100;
-            return rand.Next((int)min, (int)max) + remider;
-        }
-
-        private List<Customer> GetPastCustomers()
-        {
-            List<Customer> PastCustomersList = new();
-            foreach (Parcel parcel in Data.GetAllParcels())
-                if (parcel.Delivered !=DateTime.MaxValue)
-                    PastCustomersList.Add(Data.GetCustomer(parcel.TargetID));
-            return PastCustomersList;
-        }
-
-        private List<Station> GetAllAvailableStations()
-        {
-            List<Station> AvailableStationsList = new();
-            foreach (Station station in Data.GetAllStations())
-                if (station.ChargeSlots > 0)
-                    AvailableStationsList.Add(station);
-            return AvailableStationsList;
-        }
-
-        /// <summary>
-        /// The function returns the location of the nearest available station.
-        /// <para>
-        /// If there is no available station, the function will <b>throw</b> an StationExistException.
-        /// </para>
-        /// </summary>
-        /// <returns></returns>
-        private Station NearestStation(double latitude, double longitude, IEnumerable<Station> AllStation)
-        {
-            if (AllStation.Count() == 0)
-                throw new NoAvailableStation("There are no station available.");
-            Station NearestStation = new(AllStation.First().ID,
-                AllStation.First().Name,
-                AllStation.First().ChargeSlots,
-                AllStation.First().Latitude,
-                AllStation.First().Longitude);
-
-            double distance, MinDistance;
-            MinDistance = Distance(latitude, longitude, NearestStation.Latitude, NearestStation.Longitude);
-            foreach (Station station in AllStation)
-            {
-                distance = Distance(latitude, longitude, station.Latitude, station.Longitude);
-                if (distance < MinDistance)
+            if (DroneBL.ID < 100000 || DroneBL.ID > 999999)
+                throw new InvalidIDException("Drone ID has to have 6 positive digits.");
+            DroneBL.BatteryStatus = RandBatteryStatus(20, 41);
+            DroneBL.Status = DroneStatus.Charging;
+            IEnumerable<Station> stations = Data.GetAllStations();
+            foreach (Station station in stations)
+                if (station.ID == StationID)
                 {
-                    MinDistance = distance;
-                    NearestStation = new(station.ID, station.Name, station.ChargeSlots, station.Latitude, station.Longitude);
+                    if (station.ChargeSlots <= 0)
+                        throw new InvalidSlotsException("There are no slots available at this station.");
+                    DroneBL.CurrentLocation = new(station.Latitude, station.Longitude);
+                }
+            Drone NewDrone = new Drone(DroneBL.ID, DroneBL.Model, DroneBL.MaxWeight);
+            Data.AddNewDrone(NewDrone, StationID);              ///Sending the new drone to the data
+            DroneToList NewDroneToList = new DroneToList(DroneBL.ID, DroneBL.Model, DroneBL.MaxWeight, DroneBL.BatteryStatus, DroneBL.Status, DroneBL.CurrentLocation, 0);
+            DroneList.Add(NewDroneToList);      ///Saving a logic version of the new drone
+        }
+
+        public void AddNewCustomer(CustomerBL customer)
+        {
+            if (customer.ID < 100000000 || customer.ID > 999999999)
+                throw new InvalidIDException("Invalid customer ID number");
+            char str = customer.Phone[0];
+            bool success = int.TryParse(customer.Phone, out int PhoneNumber);
+            if (!success || str != '0' || PhoneNumber < 500000000 || PhoneNumber > 599999999) ///Checking if the number starts with a '05' and contain 10 numbers
+                throw new InvalidPhoneNumberException("Invalid phone number");
+            if ((int)customer.Location.Latitude != 31 || (int)customer.Location.Longitude != 35)
+                throw new OutOfRangeLocationException("The location is outside of Jerusalem"); ///We assume for now that all the locations
+            Customer NewCustomer = new Customer(customer.ID, customer.Name, customer.Phone, customer.Location.Latitude, customer.Location.Longitude);
+            Data.AddNewCustomer(NewCustomer);
+        }
+
+        public void AddNewParcel(ParcelBL parcel)
+        {
+            if (parcel.Sender.ID < 100000000 || parcel.Sender.ID > 999999999)
+                throw new InvalidIDException("Invalid sender ID number");
+            if (parcel.Target.ID < 100000000 || parcel.Target.ID > 999999999)
+                throw new InvalidIDException("Invalid receiver ID number");
+            Parcel ParcelDO = new Parcel(parcel.ID, parcel.Sender.ID, parcel.Target.ID, 0, parcel.Weight, parcel.Priority, parcel.TimeRequested, parcel.Scheduled, parcel.PickedUp, parcel.Delivered);
+            Data.AddNewParcel(ParcelDO);
+        }
+        #endregion
+
+        #region Update
+        public void UpdateDroneName(int id, string model)
+        {
+            if (id < 100000 || id > 999999)
+                throw new InvalidIDException("Drone ID has to have 6 positive digits.");
+            Data.UpdateDroneName(id, model);
+        }
+
+        public void UpdateStation(int StationID, bool ChangeName, bool ChangeSlots, string name, int slots)
+        {
+            if (StationID < 100000 || StationID > 999999)
+                throw new InvalidIDException("Invalid station ID number. Must have 6 digits");
+            if (ChangeName)
+                Data.UpdateStationName(StationID, name);
+            if (ChangeSlots)
+            {
+                Station station = Data.GetStation(StationID);
+                IEnumerable<DroneCharge> AllDroneCharge = Data.GetAllDronesCharge();
+                int ChargeCounter = 0;
+                foreach (var drone in AllDroneCharge)
+                {
+                    if (drone.StationID == StationID)
+                        ChargeCounter++;
+                }
+                if (ChargeCounter > slots)
+                    throw new InvalidSlotsException("Charge slots can't be less than the number of currently charging drones in the station");
+                Data.UpdateStationSlots(StationID, slots);
+            }
+        }
+
+        public void UpdateCustomer(int id, bool changeName, bool changePhone, string name, int phone)
+        {
+            if (id < 100000000 || id > 999999999)
+                throw new InvalidIDException("Customer ID has to have 9 positive digits.");
+            if (changePhone)
+            {
+                if (phone < 500000000 || phone > 599999999)
+                    throw new InvalidPhoneNumberException("Invalid phone number");
+                Data.UpdateCustomerPhone(id, phone);
+            }
+            if (changeName)
+                Data.UpdateCustomerName(id, name);
+
+        }
+
+        public void UpdateDroneToBeCharged(int DroneID)
+        {
+            Station NearestStat = new();
+            DroneToList DroneToBeCharged = new();
+            foreach (DroneToList drone in DroneList)
+            {
+                if (drone.ID == DroneID)
+                {
+                    if (drone.Status != DroneStatus.Available)
+                        throw new DroneStatusExpetion("Drone is not availbale");
+                    NearestStat = GetNearestStation(drone.CurrentLocation.Latitude, drone.CurrentLocation.Longitude, GetAllAvailableStations());
+
+                    if (drone.BatteryStatus < Distance(drone.CurrentLocation.Latitude, drone.CurrentLocation.Longitude, NearestStat.Latitude, NearestStat.Longitude) * BatteryUsed[0])
+                        throw new NotEnoughBatteryExpetion("There is not enough battery to reach the nearest station.");
+                    drone.BatteryStatus -= Distance(drone.CurrentLocation.Latitude, drone.CurrentLocation.Longitude, NearestStat.Latitude, NearestStat.Longitude) * BatteryUsed[0];
+                    drone.CurrentLocation = new(NearestStat.Latitude, NearestStat.Longitude);
+                    drone.Status = DroneStatus.Charging;
+                    Data.DroneToBeCharge(DroneID, NearestStat.ID, DateTime.Now);
                 }
             }
-            return NearestStation;           
         }
 
-        public List<StationToList> DispalyAllStations()
+        public void UpdateParcelDeleiveredByDrone(int DroneID)
         {
-            List<StationToList> stations = new();
-            foreach (Station station in Data.GetAllStations())
-            {
-                StationToList NewStation = new();
-                NewStation.ID = station.ID;
-                NewStation.Name = station.Name;
-                NewStation.AvailableChargeSlots = station.ChargeSlots;
-                foreach (IDAL.DO.DroneCharge drone in Data.GetAllDronesCharge())
-                {
-                    if (drone.StationID == NewStation.ID)
-                        NewStation.UsedChargeSlots++;
-                }
-                stations.Add(NewStation);
-            }
-            return stations;
+            throw new NotImplementedException();
         }
 
-        public List<DroneToList> DispalyAllDrones()
+        public void UpdateDroneAvailable(int DroneID, int MinuteCharged)
         {
-            return DroneList;
+            throw new NotImplementedException();
         }
 
-        public List<CustomerToList> DispalyAllCustomers()
+        public void UpdateParcelToDrone(int v)
         {
-            List<CustomerToList> customers = new();
-            foreach (Customer customer in Data.GetAllCustomers())
-            {
-                CustomerToList NewCustomer = new();
-                NewCustomer.ID = customer.ID;
-                NewCustomer.Name = customer.Name;
-                NewCustomer.Phone = customer.Phone;
-                foreach (Parcel parcel in Data.GetAllParcels())
-                {
-                    if (parcel.TargetID == customer.ID)
-                    {
-                        if (parcel.Delivered == DateTime.MaxValue)
-                            NewCustomer.ParcelsOnTheWay++;
-                        else
-                            NewCustomer.ParcelsRecived++;
-                    }
-                    if (parcel.SenderID == customer.ID)
-                    {
-                        if (parcel.Delivered == DateTime.MaxValue)
-                            NewCustomer.SentAndNOTDeliverd++;
-                        else
-                            NewCustomer.SentAndDeliverd++;
-                    }
-                }
-                customers.Add(NewCustomer);
-            }
-            return customers;
+            throw new NotImplementedException();
         }
 
-        public List<ParcelToList> DispalyAllParcels()
+        public void UpdateParcelCollectedByDrone(int v)
         {
-            List<ParcelToList> parcels = new();
-            foreach (Parcel parcel in Data.GetAllParcels())
-            {
-                ParcelToList NewParcel = new();
-                NewParcel.ID = parcel.ID;
-                NewParcel.Priority = parcel.Priority;
-                NewParcel.TargetName = Data.GetCustomer(parcel.TargetID).Name;
-                NewParcel.SenderName = Data.GetCustomer(parcel.SenderID).Name;
-                NewParcel.Weight = parcel.Weight;
-                if (parcel.Delivered != DateTime.MaxValue)
-                    NewParcel.Status = ParcelStatus.Delivered;
-                else if (parcel.PickedUp != DateTime.MaxValue)
-                    NewParcel.Status = ParcelStatus.PickedUp;
-                else if (parcel.Scheduled != DateTime.MaxValue)
-                    NewParcel.Status = ParcelStatus.Scheduled;
-                else
-                    NewParcel.Status = ParcelStatus.Requested;
-                parcels.Add(NewParcel);
-            }
-            return parcels;
+            throw new NotImplementedException();
         }
+        #endregion
 
-        public List<ParcelToList> DispalyAllUnassignedParcels()
+        #region Display
+        public StationBL DisplayStation(int StationID)
         {
-            List<ParcelToList> UnassignedParcels = new();
-            foreach (Parcel parcel in Data.GetAllParcels())
-            {
-                ParcelToList NewParcel = new();
-                if (parcel.DroneID != 0)
-                {
-                    NewParcel.ID = parcel.ID;
-                    NewParcel.Priority = parcel.Priority;
-                    NewParcel.TargetName = Data.GetCustomer(parcel.TargetID).Name;
-                    NewParcel.SenderName = Data.GetCustomer(parcel.SenderID).Name;
-                    NewParcel.Weight = parcel.Weight;
-                    if (parcel.Delivered != DateTime.MaxValue)
-                        NewParcel.Status = ParcelStatus.Delivered;
-                    else if (parcel.PickedUp != DateTime.MaxValue)
-                        NewParcel.Status = ParcelStatus.PickedUp;
-                    else if (parcel.Scheduled != DateTime.MaxValue)
-                        NewParcel.Status = ParcelStatus.Scheduled;
-                    else
-                        NewParcel.Status = ParcelStatus.Requested;
-                    UnassignedParcels.Add(NewParcel);
-                }
-            }
-            return UnassignedParcels;
-        }
-
-        public List<StationToList> DispalyAllAvailableStations()
-        {
-            List<StationToList> AvailableStations = new();
-            foreach (Station station in Data.GetAllStations())
-            {
-                StationToList NewStation = new();
-                NewStation.ID = station.ID;
-                NewStation.Name = station.Name;
-                NewStation.AvailableChargeSlots = station.ChargeSlots;
-                foreach (IDAL.DO.DroneCharge drone in Data.GetAllDronesCharge())
-                {
-                    if (drone.StationID == station.ID)
-                        NewStation.UsedChargeSlots++;
-                }
-                AvailableStations.Add(NewStation);
-            }
-            return AvailableStations;
-        }
-
-        public string DisplayStation(int StationID)
-        {
+            
             foreach (Station station in Data.GetAllStations())
                 if (station.ID == StationID)
-                    return station.ToString();
+                {
+                    Location location = new(station.Latitude, station.Longitude);
+                    StationBL StationToPrint = new(station.ID,station.Name,station.ChargeSlots, location);
+                    foreach (DroneCharge DroneCharge in Data.GetAllDronesCharge())
+                    {
+                        foreach (DroneToList DroneItem in DroneList)
+                        {
+                            if(DroneItem.ID == DroneCharge.DroneID && DroneCharge.StationID == StationID)
+                            {
+                                DroneChargeBL drone = new(DroneCharge.DroneID, DroneItem.BatteryStatus);
+                                StationToPrint.ChargingDrones.Add(drone);
+                            }
+                        }
+                    }
+                    
+                    return StationToPrint;
+                }
             throw new StationExistException();
         }
 
@@ -350,113 +324,208 @@ namespace IBL
 
             return "The distance is: " + Distance(longitude1, latitude1, longitude2, latitude2) + " km";
         }
+        #endregion
 
-        public void UpdateDroneName(int id, string model)
+        #region Display All
+        public List<StationToList> DispalyAllStations()
         {
-            if (id < 100000 || id > 999999)
-                throw new InvalidIDException("Drone ID has to have 6 positive digits.");
-            Data.UpdateDroneName(id, model);
-        }
-
-        public void UpdateStation(int StationID, bool ChangeName , bool ChangeSlots ,string name, int slots) 
-        {
-            if (StationID < 100000 || StationID > 999999)
-                throw new InvalidIDException("Invalid station ID number. Must have 6 digits");
-            if (ChangeName)
-                Data.UpdateStationName(StationID, name);
-            if (ChangeSlots)
+            List<StationToList> stations = new();
+            foreach (Station station in Data.GetAllStations())
             {
-                Station station = Data.GetStation(StationID);
-                IEnumerable<DroneCharge> AllDroneCharge = Data.GetAllDronesCharge();
-                int ChargeCounter = 0;
-                foreach (var drone in AllDroneCharge)
+                StationToList NewStation = new();
+                NewStation.ID = station.ID;
+                NewStation.Name = station.Name;
+                NewStation.AvailableChargeSlots = station.ChargeSlots;
+                foreach (IDAL.DO.DroneCharge drone in Data.GetAllDronesCharge())
                 {
-                    if (drone.StationID == StationID)
-                        ChargeCounter++;
+                    if (drone.StationID == NewStation.ID)
+                        NewStation.UsedChargeSlots++;
                 }
-                if (ChargeCounter > slots)
-                    throw new InvalidSlotsException("Charge slots can't be less than the number of currently charging drones in the station");
-                Data.UpdateStationSlots(StationID, slots);
-            }  
-        }
-
-        public void UpdateCustomer(int id, bool changeName, bool changePhone, string name, int phone)
-        {
-            if (id < 100000000 || id > 999999999)
-                throw new InvalidIDException("Customer ID has to have 9 positive digits.");
-            if (changePhone)
-            {
-                if (phone < 500000000 || phone > 599999999)
-                    throw new InvalidPhoneNumberException("Invalid phone number");
-                Data.UpdateCustomerPhone(id, phone);
+                stations.Add(NewStation);
             }
-            if (changeName)
-                Data.UpdateCustomerName(id, name);
-
+            return stations;
         }
 
-        public void UpdateParcelToDrone(int v)
+        public List<DroneToList> DispalyAllDrones()
         {
-            throw new NotImplementedException();
+            return DroneList;
         }
 
-        public void UpdateParcelCollectedByDrone(int v)
+        public List<CustomerToList> DispalyAllCustomers()
         {
-            throw new NotImplementedException();
-        }
-
-        public void AddNewStation(StationBL StationBO)
-        {
-            if (StationBO.ID < 100000 || StationBO.ID > 999999)
-                throw new InvalidIDException("Invalid station ID number. Must have 6 digits");
-            if (StationBO.ChargeSlots < 0)
-                throw new InvalidSlotsException("Charge slots can't be a negative number");
-            if ((int)StationBO.Location.Latitude != 31 || (int)StationBO.Location.Longitude != 35)
-                throw new OutOfRangeLocationException("The location is outside of Jerusalem"); ///We assume for now that all the locations are inside Jerusalem
-            Station StationDO = new(StationBO.ID, StationBO.Name, StationBO.ChargeSlots, StationBO.Location.Latitude ,StationBO.Location.Longitude);
-            Data.AddNewStation(StationDO);
-        }
-        public void AddNewDrone(DroneBL DroneBL, int StationID) //Reciving a drone with name,id and weight, and a staion id to sent it to charge there
-        {
-            if (DroneBL.ID < 100000 || DroneBL.ID > 999999)
-                throw new InvalidIDException("Drone ID has to have 6 positive digits.");
-            DroneBL.BatteryStatus = RandBatteryStatus(20, 41);
-            DroneBL.Status = DroneStatus.Charging;
-            IEnumerable<Station> stations = Data.GetAllStations();
-            foreach (Station station in stations)
-                if (station.ID == StationID)
+            List<CustomerToList> customers = new();
+            foreach (Customer customer in Data.GetAllCustomers())
+            {
+                CustomerToList NewCustomer = new();
+                NewCustomer.ID = customer.ID;
+                NewCustomer.Name = customer.Name;
+                NewCustomer.Phone = customer.Phone;
+                foreach (Parcel parcel in Data.GetAllParcels())
                 {
-                    if (station.ChargeSlots <= 0)
-                        throw new InvalidSlotsException("There are no slots available at this station.");
-                    DroneBL.CurrentLocation = new(station.Latitude, station.Longitude);
+                    if (parcel.TargetID == customer.ID)
+                    {
+                        if (parcel.Delivered == DateTime.MinValue)
+                            NewCustomer.ParcelsOnTheWay++;
+                        else
+                            NewCustomer.ParcelsRecived++;
+                    }
+                    if (parcel.SenderID == customer.ID)
+                    {
+                        if (parcel.Delivered == DateTime.MinValue)
+                            NewCustomer.SentAndNOTDeliverd++;
+                        else
+                            NewCustomer.SentAndDeliverd++;
+                    }
                 }
-            Drone NewDrone = new Drone(DroneBL.ID, DroneBL.Model, DroneBL.MaxWeight);
-            Data.AddNewDrone(NewDrone, StationID);              ///Sending the new drone to the data
-            DroneToList NewDroneToList = new DroneToList(DroneBL.ID, DroneBL.Model, DroneBL.MaxWeight, DroneBL.BatteryStatus, DroneBL.Status, DroneBL.CurrentLocation, 0);
-            DroneList.Add(NewDroneToList);      ///Saving a logic version of the new drone
-        }
-        public void AddNewCustomer(CustomerBL customer)
-        {
-            if (customer.ID < 100000000 || customer.ID > 999999999)
-                throw new InvalidIDException("Invalid customer ID number");
-            char str = customer.Phone[0];
-            bool success = int.TryParse(customer.Phone, out int PhoneNumber);
-            if (!success || str != '0' || PhoneNumber < 500000000 || PhoneNumber > 599999999) ///Checking if the number starts with a '05' and contain 10 numbers
-                throw new InvalidPhoneNumberException("Invalid phone number");
-            if ((int)customer.Location.Latitude != 31 || (int)customer.Location.Longitude != 35)
-                throw new OutOfRangeLocationException("The location is outside of Jerusalem"); ///We assume for now that all the locations
-            Customer NewCustomer = new Customer(customer.ID, customer.Name, customer.Phone, customer.Location.Latitude, customer.Location.Longitude);
-            Data.AddNewCustomer(NewCustomer);
+                customers.Add(NewCustomer);
+            }
+            return customers;
         }
 
-        public void AddNewParcel(ParcelBL parcel)
+        public List<ParcelToList> DispalyAllParcels()
         {
-            if (parcel.Sender.ID < 100000000 || parcel.Sender.ID > 999999999)
-                throw new InvalidIDException("Invalid sender ID number");
-            if (parcel.Target.ID < 100000000 || parcel.Target.ID > 999999999)
-                throw new InvalidIDException("Invalid receiver ID number");
-            Parcel ParcelDO = new Parcel(parcel.ID, parcel.Sender.ID, parcel.Target.ID, 0, parcel.Weight, parcel.Priority, parcel.TimeRequested, parcel.Scheduled, parcel.PickedUp, parcel.Delivered);
-            Data.AddNewParcel(ParcelDO);
+            List<ParcelToList> parcels = new();
+            foreach (Parcel parcel in Data.GetAllParcels())
+            {
+                ParcelToList NewParcel = new();
+                NewParcel.ID = parcel.ID;
+                NewParcel.Priority = parcel.Priority;
+                NewParcel.TargetName = Data.GetCustomer(parcel.TargetID).Name;
+                NewParcel.SenderName = Data.GetCustomer(parcel.SenderID).Name;
+                NewParcel.Weight = parcel.Weight;
+                if (parcel.Delivered != DateTime.MinValue)
+                    NewParcel.Status = ParcelStatus.Delivered;
+                else if (parcel.PickedUp != DateTime.MinValue)
+                    NewParcel.Status = ParcelStatus.PickedUp;
+                else if (parcel.Scheduled != DateTime.MinValue)
+                    NewParcel.Status = ParcelStatus.Scheduled;
+                else
+                    NewParcel.Status = ParcelStatus.Requested;
+                parcels.Add(NewParcel);
+            }
+            return parcels;
+        }
+
+        public List<ParcelToList> DispalyAllUnassignedParcels()
+        {
+            List<ParcelToList> UnassignedParcels = new();
+            foreach (Parcel parcel in Data.GetAllParcels())
+            {
+                ParcelToList NewParcel = new();
+                if (parcel.DroneID != 0)
+                {
+                    NewParcel.ID = parcel.ID;
+                    NewParcel.Priority = parcel.Priority;
+                    NewParcel.TargetName = Data.GetCustomer(parcel.TargetID).Name;
+                    NewParcel.SenderName = Data.GetCustomer(parcel.SenderID).Name;
+                    NewParcel.Weight = parcel.Weight;
+                    if (parcel.Delivered != DateTime.MinValue)
+                        NewParcel.Status = ParcelStatus.Delivered;
+                    else if (parcel.PickedUp != DateTime.MinValue)
+                        NewParcel.Status = ParcelStatus.PickedUp;
+                    else if (parcel.Scheduled != DateTime.MinValue)
+                        NewParcel.Status = ParcelStatus.Scheduled;
+                    else
+                        NewParcel.Status = ParcelStatus.Requested;
+                    UnassignedParcels.Add(NewParcel);
+                }
+            }
+            return UnassignedParcels;
+        }
+
+        public List<StationToList> DispalyAllAvailableStations()
+        {
+            List<StationToList> AvailableStations = new();
+            foreach (Station station in Data.GetAllStations())
+            {
+                StationToList NewStation = new();
+                NewStation.ID = station.ID;
+                NewStation.Name = station.Name;
+                NewStation.AvailableChargeSlots = station.ChargeSlots;
+                foreach (IDAL.DO.DroneCharge drone in Data.GetAllDronesCharge())
+                {
+                    if (drone.StationID == station.ID)
+                        NewStation.UsedChargeSlots++;
+                }
+                AvailableStations.Add(NewStation);
+            }
+            return AvailableStations;
+        }
+        #endregion
+
+        #region Get
+        private List<Customer> GetPastCustomers()
+        {
+            List<Customer> PastCustomersList = new();
+            foreach (Parcel parcel in Data.GetAllParcels())
+                if (parcel.Delivered != DateTime.MinValue)
+                    PastCustomersList.Add(Data.GetCustomer(parcel.TargetID));
+            return PastCustomersList;
+        }
+
+        private List<Station> GetAllAvailableStations()
+        {
+            List<Station> AvailableStationsList = new();
+            foreach (Station station in Data.GetAllStations())
+                if (station.ChargeSlots > 0)
+                    AvailableStationsList.Add(station);
+            return AvailableStationsList;
+        }
+
+        /// <summary>
+        /// The function returns the location of the nearest available station.
+        /// <para>
+        /// If there is no available station, the function will <b>throw</b> an StationExistException.
+        /// </para>
+        /// </summary>
+        /// <returns></returns>
+        private Station GetNearestStation(double latitude, double longitude, IEnumerable<Station> AllStation)
+        {
+            if (AllStation.Count() == 0)
+                throw new NoAvailableStation("There are no station available.");
+            Station GetNearestStation = new(AllStation.First().ID,
+                AllStation.First().Name,
+                AllStation.First().ChargeSlots,
+                AllStation.First().Latitude,
+                AllStation.First().Longitude);
+
+            double distance, MinDistance;
+            MinDistance = Distance(latitude, longitude, GetNearestStation.Latitude, GetNearestStation.Longitude);
+            foreach (Station station in AllStation)
+            {
+                distance = Distance(latitude, longitude, station.Latitude, station.Longitude);
+                if (distance < MinDistance)
+                {
+                    MinDistance = distance;
+                    GetNearestStation = new(station.ID, station.Name, station.ChargeSlots, station.Latitude, station.Longitude);
+                }
+            }
+            return GetNearestStation;
+        }
+        #endregion
+
+        #region Calculations
+        private double RandBatteryToStation(DroneToList drone, Location location, double battery)
+        {
+            battery = Distance(drone.CurrentLocation.Latitude, drone.CurrentLocation.Longitude, location.Latitude, location.Longitude) * battery;
+            return RandBatteryStatus(battery, 100);
+        }
+
+        private double RandBatteryStatus(double min, double max)
+        {
+            Random rand = new();
+            double MinBattery = 0, MaxBattery = 100, swap, battery; 
+            if (min > max) { swap = min; min = max; max = swap; }
+            if (min >= MaxBattery)
+                return MaxBattery;
+            if (max <= MinBattery)
+                return MinBattery;
+            double remider = (int)min + (int)max + rand.Next(50);
+            remider /= 100;
+            battery = rand.Next((int)min, (int)max) + remider;
+            if (battery > MaxBattery)
+                return MaxBattery;
+            return battery;
         }
 
         private static double WeightMultiplier(WeightCategories weight,Double [] BatteryUse)
@@ -486,45 +555,6 @@ namespace IBL
             double radius = 3956;
             return (result2 * radius);
         }
-
-        public void UpdateParcelDeleiveredByDrone(int DroneID)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void UpdateDroneToBeCharged(int DroneID)
-        {
-            Station NearestStat = new();
-            DroneToList DroneToBeCharged = new();
-            foreach (DroneToList drone in DroneList)
-            {
-                if (drone.ID == DroneID)
-                {
-                    if (drone.Status != DroneStatus.Available)
-                        throw new DroneStatusExpetion("Drone is not availbale");
-                    NearestStat = NearestStation(drone.CurrentLocation.Latitude, drone.CurrentLocation.Longitude, GetAllAvailableStations());
-
-                    if (drone.BatteryStatus < Distance(drone.CurrentLocation.Latitude, drone.CurrentLocation.Longitude, NearestStat.Latitude, NearestStat.Longitude) * BatteryUsed[0])
-                        throw new NotEnoughBattaryExpetion("There is not enough battary to reach the nearest station.");
-                    drone.BatteryStatus -= Distance(drone.CurrentLocation.Latitude, drone.CurrentLocation.Longitude, NearestStat.Latitude, NearestStat.Longitude) * BatteryUsed[0];
-                    drone.CurrentLocation = new(NearestStat.Latitude, NearestStat.Longitude);
-                    drone.Status = DroneStatus.Charging;
-                    Data.DroneToBeCharge(DroneID,NearestStat.ID, DateTime.Now);
-                }
-            }
-        }
-
-        public void UpdateDroneAvailable(int v1, int v2)
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<string> PrintAllAvailableStations()
-        {
-            throw new NotImplementedException();
-        }
-
-        
-
+        #endregion
     }
 }

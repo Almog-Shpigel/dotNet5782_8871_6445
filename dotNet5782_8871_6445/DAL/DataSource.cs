@@ -13,7 +13,7 @@ namespace DalObject
         internal static List<Station> stations = new List<Station>();
         internal static List<Customer> customers = new List<Customer>();
         internal static List<Parcel> parcels = new List<Parcel>();
-        internal static List<DroneCharge> droneCharges = new List<DroneCharge>();
+        internal static List<DroneCharge> DroneCharges = new List<DroneCharge>();
         internal class config
         {
             internal static int ParcelsCounter = 0;
@@ -32,11 +32,11 @@ namespace DalObject
         internal static void Initialize()
         {
             Random rnd = new Random();
-            /// MaxValue means we haven't assigned yet a drone to the parcel.
+            /// MinValue means we haven't assigned yet a drone to the parcel.
             DateTime    Requested = DateTime.Now,
-                        Scedualed = DateTime.MaxValue,
-                        PickedUp = DateTime.MaxValue,
-                        Deliverd = DateTime.MaxValue;
+                        Scedualed = DateTime.MinValue,
+                        PickedUp = DateTime.MinValue,
+                        Deliverd = DateTime.MinValue;
             /// Initializing 2 stations.
             for (int i = 0; i < 10; i++)         
             {
@@ -60,7 +60,7 @@ namespace DalObject
             /// Initializing 10 customers.
             for (int i = 0; i < 10; i++)        
             {
-                int id = rnd.Next(99999, 1000000);
+                int id = rnd.Next(100000000, 1000000000);
                 string phone = "05" + rnd.Next(10000000, 99999999);
                 string name = ((IDAL.DO.CustomerNames)rnd.Next(17)).ToString();
                 double latitude = (31 + ((double)rnd.Next(9999, 100000) / 100000));
@@ -86,19 +86,29 @@ namespace DalObject
             /// Pairing parcels to drones.
             for (int i = 0; i < 5; i++)
             {
+                int rand;
+                Parcel NewParcel = new Parcel();
+                do
+                {
+                    rand = rnd.Next(10);
+                    NewParcel = parcels[rand];
+                } while (parcels[rand].DroneID != 0 );
+
+                /// Making sure the drones weight can carry the parcel.
+                Drone drone = new(drones[i].ID, drones[i].Model, drones[i].MaxWeight);
+                if (drone.MaxWeight < NewParcel.Weight)
+                {
+                    drone.MaxWeight = NewParcel.Weight;
+                    drones[i] = drone;
+                }
+
                 switch (rnd.Next(2, 5))
                 {
                     case 4: Deliverd = Requested.AddMinutes(rnd.Next(40, 60)); goto case 3; 
                     case 3: PickedUp = Requested.AddMinutes(rnd.Next(15, 30)); goto case 2;
                     case 2: Scedualed = Requested.AddMinutes(rnd.Next(3, 10)); break;
                 }
-                int rand;
-                do
-                {
-                    rand = rnd.Next(10);
-                } while (parcels[rand].DroneID != 0);
-                Parcel NewParcel = new Parcel();
-                NewParcel = parcels[rand];
+
                 NewParcel.DroneID = drones[i].ID;
                 NewParcel.Scheduled = Scedualed;
                 NewParcel.PickedUp = PickedUp;

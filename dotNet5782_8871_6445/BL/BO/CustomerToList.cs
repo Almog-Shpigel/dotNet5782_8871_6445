@@ -17,9 +17,9 @@ namespace IBL
             public int SentAndNOTDeliverd { get; set; }
             public int ParcelsRecived { get; set; }
             public int ParcelsOnTheWay { get; set; }
-            public CustomerToList(int iD = 0, string name = "", string phone = "", int delivered = 0, int NotDelivered = 0, int recived = 0)
+            public CustomerToList(int id = 0, string name = "", string phone = "", int delivered = 0, int NotDelivered = 0, int recived = 0)
             {
-                ID = iD;
+                ID = id;
                 Name = name;
                 Phone = phone;
                 SentAndDeliverd = delivered;
@@ -28,7 +28,8 @@ namespace IBL
             }
             public override string ToString()
             {
-                return $"Name: {Name}, #{ID}, phone number: {Phone},    No. of deliverd: {SentAndDeliverd},     No. of not deliverd: {SentAndNOTDeliverd},  No. of parcels received: {ParcelsRecived},  No. of parcels on the way: {ParcelsOnTheWay}";
+                return $"Name: {Name}, #{ID}\n" +
+                    $"phone number: {Phone}\tDeliverd: {SentAndDeliverd}    Not deliverd: {SentAndNOTDeliverd}  Parcels received: {ParcelsRecived}  Parcels on the way: {ParcelsOnTheWay}";
             }
         }
     }

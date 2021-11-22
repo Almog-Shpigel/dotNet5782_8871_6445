@@ -34,7 +34,12 @@ namespace IBL
 
             public override string ToString()
             {
-                return ($"{Model} #{ID}:    Max Weight: {MaxWeight},    battery status: {BatteryStatus}%,  Drone status: {Status}, parcel in delivery: {Parcel},   loctaion: {CurrentLocation}");
+                return ($"{Model} #{ID}:\n" +
+                    $"Max Weight: {MaxWeight}\n" +
+                    $"Loctaion: {CurrentLocation}\n" +
+                    $"Battery status: {BatteryStatus}%\n" +
+                    $"Drone status: {Status}\n" +
+                    $"Parcel in delivery: {Parcel}");
             }
 
         }

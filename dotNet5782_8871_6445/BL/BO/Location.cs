@@ -16,7 +16,7 @@ namespace IBL
             public override string ToString()
             {
                 string sLong = ConvertCoordinates(Longitude), sLatit = ConvertCoordinates(Latitude);    /// Converts the coordinates to be in base 60 (bonus).
-                return $" (" + sLatit + " E, " + sLong + " N)";
+                return $" (" + sLatit + "N, " + sLong + "E)";
             }
             public string ConvertCoordinates(double number)
             {

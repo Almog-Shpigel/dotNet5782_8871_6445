@@ -222,6 +222,7 @@ namespace IBL
                     drone.CurrentLocation = new(NearestStat.Latitude, NearestStat.Longitude);
                     drone.Status = DroneStatus.Charging;
                     Data.DroneToBeCharge(DroneID, NearestStat.ID, DateTime.Now);
+                    
                 }
             }
         }
@@ -231,9 +232,30 @@ namespace IBL
             throw new NotImplementedException();
         }
 
-        public void UpdateDroneAvailable(int DroneID, int MinuteCharged)
+        public void UpdateDroneAvailable(int DroneID, int MinuteCharged) 
         {
-            throw new NotImplementedException();
+            int i = 0;
+            if (MinuteCharged < 0)
+                throw new InvalidTimeChargedException("Time charged can't be a negative number");
+            if (DroneID < 100000 || DroneID > 999999)
+                throw new InvalidIDException("Drone ID has to have 6 positive digits.");
+            DroneToList DroneToBeAvailable = new DroneToList();
+            for ( i = 0; i < DroneList.Count(); i++)
+            {
+                if (DroneList[i].ID == DroneID)
+                {
+                    DroneToBeAvailable = DroneList[i];
+                    break;
+                }
+            }
+            if (DroneToBeAvailable.Status != DroneStatus.Charging)
+                throw new DroneStatusExpetion("Can't release a drone that isn't charging");
+            DroneToBeAvailable.Status = DroneStatus.Available;
+            DroneToBeAvailable.BatteryStatus += BatteryUsed[5] * MinuteCharged / 60;
+            if (DroneToBeAvailable.BatteryStatus > 100)
+                DroneToBeAvailable.BatteryStatus = 100;
+            Data.DroneAvailable(DroneID);
+            DroneList[i] = DroneToBeAvailable;
         }
 
         public void UpdateParcelToDrone(int v)

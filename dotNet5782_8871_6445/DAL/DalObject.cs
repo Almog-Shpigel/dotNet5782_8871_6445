@@ -108,7 +108,6 @@ namespace DalObject
         {
             if(!DroneExist(DroneID))
                     throw new DroneExistException("The drone dosen't exists in the data!!");
-
             DroneCharge droneCharge = new();
             for (int j = 0; j < DataSource.DroneCharges.Count; ++j)        ///Going through the array to find the wanted DroneCharged object
                 if(DataSource.DroneCharges[j].DroneID == DroneID)

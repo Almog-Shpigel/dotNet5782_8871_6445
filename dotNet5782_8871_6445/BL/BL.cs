@@ -26,43 +26,43 @@ namespace IBL
             DroneList = new List<DroneToList>();
             BatteryUsed = Data.GetBatteryUsed();
 
-            foreach (Drone drone in Data.GetAllDrones())
+            foreach (Drone drone in Data.GetAllDrones())        ///Initiallizing all of the drones in our data, saving them as DroneToList drones in the logic layer
             {
                 DroneToList NewDrone = new();
                 Parcel NewParcel = new(); 
-                NewDrone.ID = drone.ID;
+                NewDrone.ID = drone.ID;                         ///Copying relevent information from the data
                 NewDrone.Model = drone.Model;
                 NewDrone.MaxWeight = drone.MaxWeight;
                 foreach (Parcel parcel in Data.GetAllParcels())
                 {
-                    if (parcel.DroneID == drone.ID && parcel.Delivered == DateTime.MinValue)
+                    if (parcel.DroneID == drone.ID && parcel.Delivered == DateTime.MinValue)    ///Checking if the drone is in the middle of a delivery
                         NewParcel = parcel;
                 }
-                if (NewParcel.DroneID == drone.ID && NewParcel.Delivered == DateTime.MinValue)
+                if (NewParcel.DroneID == drone.ID && NewParcel.Delivered == DateTime.MinValue)  ///Drone in the middle of a delivery
                     NewDrone = InitDroneInDelivery(NewDrone, NewParcel);
-                else ///Not in delivery
+                else                                                                            ///Not in delivery
                     NewDrone = InitDroneNOTinDelivery(NewDrone);
                 
                 DroneList.Add(NewDrone); 
             }
         }
 
-        private DroneToList InitDroneInDelivery(DroneToList NewDrone, Parcel parcel)
+        private DroneToList InitDroneInDelivery(DroneToList NewDrone, Parcel parcel)    ///Function to initialize a drone in delivery
         {
             double total;
             Random rand = new();
-            NewDrone.Status = DroneStatus.Delivery;
+            NewDrone.Status = DroneStatus.Delivery;    ///Updating drone's status
             NewDrone.ParcelID = parcel.ID;
             Customer sender = Data.GetCustomer(parcel.SenderID), target = Data.GetCustomer(parcel.TargetID);
             Station NearestStatTarget = GetNearestStation(target.Latitude, target.Longitude, Data.GetAllStations());
             Station NearestStat = GetNearestStation(sender.Latitude, sender.Longitude, Data.GetAllStations());
-            if (parcel.PickedUp == DateTime.MinValue)
+            if (parcel.PickedUp == DateTime.MinValue)      ///Checking if the drone already picked up the parcel or not     
                 NewDrone.CurrentLocation = new(NearestStat.Latitude, NearestStat.Longitude);
             else    ///means it did get pickedup
                 NewDrone.CurrentLocation = new(sender.Latitude, sender.Longitude);
 
-            total = BatteryUsageCurrStation(NewDrone, parcel.SenderID, parcel.TargetID, NearestStat, parcel.Weight);
-            NewDrone.BatteryStatus = GetRandBatteryStatus(total, 100);
+            total = BatteryUsageCurrStation(NewDrone, parcel.SenderID, parcel.TargetID, NearestStat, parcel.Weight); ///Returns the amount of battery needed to complete the delivery
+            NewDrone.BatteryStatus = GetRandBatteryStatus(total, 100);  ///Choosing random battery number between the minimum needed to complete the delivery and full battery
             return NewDrone;
         }
 

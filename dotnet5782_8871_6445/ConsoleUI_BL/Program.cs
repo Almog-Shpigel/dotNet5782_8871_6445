@@ -413,19 +413,19 @@ namespace ConsoleUI_BL
         private static void DisplayDrone(IBL.BL IBL)
         {
             int id = RequestID();
-            Console.WriteLine(IBL.DisplayDrone(id));
+            Console.WriteLine(IBL.DisplayDrone(id).ToString());
         }
 
         private static void DisplayCustomer(IBL.BL IBL)
         {
             int id = RequestID();
-            Console.WriteLine(IBL.DisplayCustomer(id));
+            Console.WriteLine(IBL.DisplayCustomer(id).ToString());
         }
 
         private static void DisplayParcel(IBL.BL IBL)
         {
             int id = RequestID();
-            Console.WriteLine(IBL.DisplayParcel(id));
+            //Console.WriteLine(IBL.DisplayParcel(id).ToString());
         }
 
         private static void DisplayDistanceFromStation(IBL.BL IBL)

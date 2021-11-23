@@ -300,13 +300,7 @@ namespace DalObject
         //        ParcelsList.Add(DataSource.parcels[i].ToString());
         //    return ParcelsList;
         //}
-        //public IEnumerable<string> PrintAllUnassignedParcels()
-        //{
-        //    List<string> UnassignedParcelsList = new List<string>();
-        //    for (int i = 0; i < DataSource.parcels.Count(); i++)
-        //        if (DataSource.parcels[i].DroneID == 0) ///If DroneID is 0 it means the parcel hasn't been assigned yet
-        //            UnassignedParcelsList.Add(DataSource.parcels[i].ToString());
-        //    return UnassignedParcelsList;
+        //
         //}
 
         //public IEnumerable<string> PrintAllAvailableStations()
@@ -344,7 +338,14 @@ namespace DalObject
         {
             return DataSource.DroneCharges;
         }
-
+        public IEnumerable<Parcel> GetAllAvailableParcels()
+        {
+            List<Parcel> AvailabledParcelsList = new List<Parcel>();
+            for (int i = 0; i < DataSource.parcels.Count(); i++)
+                if (DataSource.parcels[i].DroneID == 0) ///If DroneID is 0 it means the parcel hasn't been assigned yet
+                    AvailabledParcelsList.Add(DataSource.parcels[i]);
+            return AvailabledParcelsList;
+        }
         public Drone GetDrone(int id)
         {
             foreach (Drone drone in DataSource.drones)

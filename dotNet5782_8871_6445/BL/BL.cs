@@ -278,9 +278,11 @@ namespace IBL
                 throw new DroneStatusExpetion("Drone is unavailable for a delivery!");
 
             //Need to Lesanen all parcel that are to far and that are not waiting for delivery
-            IEnumerable<Parcel> AllParcels = Data.GetAllParcels();
-            Parcel MaxParcel = AllParcels.First();
-            foreach (var parcel in Data.GetAllParcels())
+            IEnumerable<Parcel> AllAvailableParcels = Data.GetAllAvailableParcels();
+            if (AllAvailableParcels.Count() == 0)
+                throw new NoAvailableParcelsException("There are no parcels to assign at this moment");
+            Parcel MaxParcel = AllAvailableParcels.First();
+            foreach (var parcel in AllAvailableParcels)
             {
                 if (PossibleDelivery(DroneToBeAssign, parcel))
                 {
@@ -298,15 +300,34 @@ namespace IBL
                     }
                 }
             }
-            // To do אם נמצאה חבילה מתאימה, יש לעדכן את שכבת הנתונים כלדקמן:
-            //יש לשנות את מצב הרחפן למבצע משלוח
-            //בחבילה יש להוסיף את הרחפן ולעדכן את זמן השיוך
-
+            if (!PossibleDelivery(DroneToBeAssign, MaxParcel))
+                throw new NoAvailableParcelsException("There are no parcels that can be assign to this drone at this moment");
+            Data.PairParcelToDrone(MaxParcel.ID, DroneToBeAssign.ID);
+            DroneToBeAssign.Status = DroneStatus.Delivery;
+            DroneToBeAssign.ParcelID = MaxParcel.ID;
+            DroneList[i] = DroneToBeAssign;
         }
 
-        public void UpdateParcelCollectedByDrone(int v)
+        public void UpdateParcelCollectedByDrone(int DroneID)
         {
-            throw new NotImplementedException();
+            int i = 0;
+            if (DroneID < 100000 || DroneID > 999999)
+                throw new InvalidIDException("Drone ID has to have 6 positive digits.");
+            DroneToList DroneInDelivery = new();
+            for (; i < DroneList.Count; i++)
+            {
+                if (DroneList[i].ID == DroneID)
+                {
+                    DroneInDelivery = DroneList[i];
+                    break;
+                }
+            }
+            if (DroneInDelivery.Status != DroneStatus.Delivery)
+                throw new DroneNotInDeliveryException("This drone is not in delivery!");
+            Parcel ParcelToBeCollected = Data.GetParcel(DroneInDelivery.ParcelID);
+            if (ParcelToBeCollected.PickedUp != DateTime.MinValue)
+                throw new ParcelTimesException("The parcel has been already collected!");
+
         }
         #endregion
 

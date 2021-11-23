@@ -327,7 +327,10 @@ namespace IBL
             Parcel ParcelToBeCollected = Data.GetParcel(DroneInDelivery.ParcelID);
             if (ParcelToBeCollected.PickedUp != DateTime.MinValue)
                 throw new ParcelTimesException("The parcel has been already collected!");
-
+            Data.ParcelCollected(ParcelToBeCollected.ID);
+            DroneInDelivery.BatteryStatus -= DistanceDroneCustomer(DroneInDelivery, ParcelToBeCollected.SenderID);
+            DroneInDelivery.CurrentLocation.Latitude = Data.GetCustomer(ParcelToBeCollected.SenderID).Latitude;
+            DroneInDelivery.CurrentLocation.Longitude = Data.GetCustomer(ParcelToBeCollected.SenderID).Longitude;
         }
         #endregion
 

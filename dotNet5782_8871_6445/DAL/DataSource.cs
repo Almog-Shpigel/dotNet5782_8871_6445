@@ -37,7 +37,7 @@ namespace DalObject
                         Scedualed = DateTime.MinValue,
                         PickedUp = DateTime.MinValue,
                         Deliverd = DateTime.MinValue;
-            /// Initializing 2 stations.
+            /// Initializing 10 stations.
             for (int i = 0; i < 10; i++)         
             {
                 int id = 122000 + stations.Count;      

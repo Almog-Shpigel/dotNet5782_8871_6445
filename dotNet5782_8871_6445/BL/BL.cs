@@ -26,21 +26,21 @@ namespace IBL
             DroneList = new List<DroneToList>();
             BatteryUsed = Data.GetBatteryUsed();
 
-            foreach (Drone drone in Data.GetAllDrones())        ///Initiallizing all of the drones in our data, saving them as DroneToList drones in the logic layer
+            foreach (Drone drone in Data.GetAllDrones())        
             {
                 DroneToList NewDrone = new();
                 Parcel NewParcel = new(); 
-                NewDrone.ID = drone.ID;                         ///Copying relevent information from the data
+                NewDrone.ID = drone.ID;                         
                 NewDrone.Model = drone.Model;
                 NewDrone.MaxWeight = drone.MaxWeight;
                 foreach (Parcel parcel in Data.GetAllParcels())
                 {
-                    if (parcel.DroneID == drone.ID && parcel.Delivered == DateTime.MinValue)    ///Checking if the drone is in the middle of a delivery
+                    if (parcel.DroneID == drone.ID && parcel.Delivered == DateTime.MinValue)    
                         NewParcel = parcel;
                 }
-                if (NewParcel.DroneID == drone.ID && NewParcel.Delivered == DateTime.MinValue)  ///Drone in the middle of a delivery
+                if (NewParcel.DroneID == drone.ID && NewParcel.Delivered == DateTime.MinValue)  
                     NewDrone = InitDroneInDelivery(NewDrone, NewParcel);
-                else                                                                            ///Not in delivery
+                else                                                                            
                     NewDrone = InitDroneNOTinDelivery(NewDrone);
                 
                 DroneList.Add(NewDrone); 
@@ -360,52 +360,121 @@ namespace IBL
         #region Display
         public StationBL DisplayStation(int StationID)
         {
-            
-            foreach (Station station in Data.GetAllStations())
-                if (station.ID == StationID)
+            Station station = Data.GetStation(StationID); 
+            Location location = new(station.Latitude, station.Longitude);
+            StationBL StationToPrint = new(station.ID,station.Name,station.ChargeSlots, location);
+            foreach (DroneCharge DroneCharge in Data.GetAllDronesCharge())
+            {
+              foreach (DroneToList DroneItem in DroneList)
+              {
+                if(DroneItem.ID == DroneCharge.DroneID && DroneCharge.StationID == StationID)
                 {
-                    Location location = new(station.Latitude, station.Longitude);
-                    StationBL StationToPrint = new(station.ID,station.Name,station.ChargeSlots, location);
-                    foreach (DroneCharge DroneCharge in Data.GetAllDronesCharge())
-                    {
-                        foreach (DroneToList DroneItem in DroneList)
-                        {
-                            if(DroneItem.ID == DroneCharge.DroneID && DroneCharge.StationID == StationID)
-                            {
-                                DroneChargeBL drone = new(DroneCharge.DroneID, DroneItem.BatteryStatus);
-                                StationToPrint.ChargingDrones.Add(drone);
-                            }
-                        }
-                    }
-                    
-                    return StationToPrint;
+                   DroneChargeBL drone = new(DroneCharge.DroneID, DroneItem.BatteryStatus);
+                   StationToPrint.ChargingDrones.Add(drone);
                 }
-            throw new StationExistException();
+              }
+            }           
+        return StationToPrint;
         }
 
-        public string DisplayDrone(int DroneID)
+        public DroneBL DisplayDrone(int DroneID)
         {
-            foreach (Drone drone in Data.GetAllDrones())
+            DroneBL DroneToDisplay = new DroneBL();
+            foreach (DroneToList drone in DroneList)
                 if (drone.ID == DroneID)
-                    return drone.ToString();
+                {
+                    DroneToDisplay.ID = drone.ID;
+                    DroneToDisplay.Model = drone.Model;
+                    DroneToDisplay.MaxWeight = drone.MaxWeight;
+                    DroneToDisplay.Status = drone.Status;
+                    DroneToDisplay.CurrentLocation = drone.CurrentLocation;
+                    DroneToDisplay.BatteryStatus = drone.BatteryStatus;
+                    Parcel parcel = Data.GetParcel(drone.ParcelID);
+                    if(DroneToDisplay.Status == DroneStatus.Delivery)
+                    {
+                        DroneToDisplay.Parcel = InitParcelInDelivery(parcel);
+                    }
+                    return DroneToDisplay;
+                }
             throw new DroneExistException();
         }
 
-        public string DisplayCustomer(int CustomerID)
+        private ParcelInDelivery InitParcelInDelivery(Parcel parcel)
         {
-            foreach (Customer customer in Data.GetAllCustomers())
-                if (customer.ID == CustomerID)
-                    return customer.ToString();
-            throw new CustomerExistException();
+            ParcelInDelivery ParcelDelivery = new ParcelInDelivery();
+            ParcelDelivery.ID = parcel.ID;
+            ParcelDelivery.Priority = parcel.Priority;
+            ParcelDelivery.Weight = parcel.Weight;
+            Customer sender = Data.GetCustomer(parcel.SenderID), target = Data.GetCustomer(parcel.TargetID);
+            ParcelDelivery.Sender.ID = sender.ID;
+            ParcelDelivery.Sender.Name = sender.Name;
+            ParcelDelivery.Target.ID = target.ID;
+            ParcelDelivery.Target.Name = target.Name;
+            ParcelDelivery.PickUpLocation.Latitude = sender.Latitude;
+            ParcelDelivery.PickUpLocation.Longitude = sender.Longitude;
+            ParcelDelivery.TargetLocation.Latitude = target.Latitude;
+            ParcelDelivery.TargetLocation.Longitude = target.Longitude;
+            ParcelDelivery.DeliveryDistance = DistanceCustomerCustomer(sender.ID, target.ID);
+            ParcelDelivery.Status = FindParcelStatus(parcel);
+            return ParcelDelivery;
         }
 
-        public string DisplayParcel(int ParcelID)
+        private bool FindParcelStatus(Parcel parcel)
         {
-            foreach (Parcel parcel in Data.GetAllParcels())
-                if (parcel.ID == ParcelID)
-                    return parcel.ToString();
-            throw new ParcelExistException();
+            if (parcel.Scheduled == DateTime.MinValue || parcel.Delivered != DateTime.MinValue)
+                return false;
+            return true;
         }
+
+        public CustomerBL DisplayCustomer(int CustomerID)
+        {
+            Customer customer = Data.GetCustomer(CustomerID);
+            Location location = new(customer.Latitude, customer.Longitude);
+            CustomerBL CustomerToDisplay = new CustomerBL(customer.ID,customer.Name,customer.Phone,location);
+            foreach (var parcel in Data.GetAllParcels())
+            {
+                if (parcel.SenderID == CustomerToDisplay.ID)
+                    CustomerToDisplay.ParcelesSentByCustomer.Add(CreateParcelAtCustomer(parcel,parcel.TargetID));
+                if (parcel.TargetID == CustomerToDisplay.ID)
+                    CustomerToDisplay.ParcelesSentToCustomer.Add(CreateParcelAtCustomer(parcel,parcel.SenderID));
+            }
+            return CustomerToDisplay;
+            
+        }
+
+        private ParcelAtCustomer CreateParcelAtCustomer(Parcel parcel, int CustomerID)
+        {
+            ParcelStatus status = GetParcelStatus(parcel);
+            Customer cust = Data.GetCustomer(CustomerID);
+            CustomerInParcel customer = new(cust.ID, cust.Name);
+            ParcelAtCustomer NewParcel = new(parcel.ID,parcel.Weight,parcel.Priority,status,customer);
+            return NewParcel;
+
+        }
+/// <summary>
+/// Reciving the parcel's status according to it's updated times.
+/// Requested -> Schedualed -> PickedUp -> Delivered
+/// </summary>
+/// <param name="parcel"></param>
+/// <returns>Parcel status</returns>
+        private ParcelStatus GetParcelStatus(Parcel parcel) 
+        {
+            if (parcel.Scheduled == DateTime.MinValue)
+                return ParcelStatus.Requested;
+            if (parcel.PickedUp == DateTime.MinValue)
+                return ParcelStatus.Scheduled;
+            if (parcel.Delivered == DateTime.MinValue)
+                return ParcelStatus.PickedUp;
+            return ParcelStatus.Delivered;
+        }
+
+        //public ParcelBL DisplayParcel(int ParcelID)
+        //{
+        //    foreach (Parcel parcel in Data.GetAllParcels())
+        //        if (parcel.ID == ParcelID)
+        //            return parcel.ToString();
+        //    throw new ParcelExistException();
+        //}
 
         public string DisplayDistanceFromStation(double longitude1, double latitude1, int StationID)
         {

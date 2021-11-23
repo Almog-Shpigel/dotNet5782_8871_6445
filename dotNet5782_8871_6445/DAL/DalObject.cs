@@ -152,11 +152,10 @@ namespace DalObject
             return false;
         }
 
-        public void ParcelDeleivery(int ParcelID)
+        public void ParcelDelivery(int ParcelID)
         {
             if (!ParcelExist(ParcelID))
                 throw new DroneExistException("The parcel dosen't exists in the data!!");
-
             int i = 0;
             while (DataSource.parcels[i].ID != ParcelID) ///Finding the wanted parcel
                 ++i;

@@ -15,7 +15,7 @@ namespace IDAL
         public void AddNewDrone(Drone drone , int StationID);
         public void DroneAvailable(int DroneID);
         public void DroneToBeCharge(int DroneID, int StationID, DateTime start);
-        public void ParcelDeleivery(int idNum);
+        public void ParcelDelivery(int idNum);
         public void ParcelCollected(int id);
         public void PairParcelToDrone(int ParcelID, int DroneID);
         public double DistanceFromStation(double x1, double y1, int StationID);

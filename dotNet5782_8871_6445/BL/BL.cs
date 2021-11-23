@@ -231,7 +231,29 @@ namespace IBL
 
         public void UpdateParcelDeleiveredByDrone(int DroneID)
         {
-            throw new NotImplementedException();
+            int i = 0;
+            if (DroneID < 100000 || DroneID > 999999)
+                throw new InvalidIDException("Drone ID has to have 6 positive digits.");
+            DroneToList DroneInDelivery = new();
+            for (i = 0; i < DroneList.Count; i++)
+            {
+                if (DroneList[i].ID == DroneID)
+                {
+                    DroneInDelivery = DroneList[i];
+                    break;
+                }
+            }
+            if (DroneInDelivery.Status != DroneStatus.Delivery)
+                throw new DroneStatusExpetion("This drone is not doing a delivery right now");
+            Parcel ParcelToBeDelivered = Data.GetParcel(DroneInDelivery.ParcelID);
+            if (ParcelToBeDelivered.Delivered != DateTime.MinValue || ParcelToBeDelivered.PickedUp == DateTime.MinValue)
+                throw new ParcelTimesException("The drone is not carrying the parcel right now");
+            Data.ParcelDelivery(ParcelToBeDelivered.ID);
+            DroneInDelivery.BatteryStatus -= DistanceDroneCustomer(DroneInDelivery, ParcelToBeDelivered.TargetID);
+            DroneInDelivery.CurrentLocation.Latitude = Data.GetCustomer(ParcelToBeDelivered.TargetID).Latitude;
+            DroneInDelivery.CurrentLocation.Longitude = Data.GetCustomer(ParcelToBeDelivered.TargetID).Longitude;
+            DroneInDelivery.Status = DroneStatus.Available;
+            DroneList[i] = DroneInDelivery;
         }
 
         public void UpdateDroneAvailable(int DroneID) 
@@ -331,6 +353,7 @@ namespace IBL
             DroneInDelivery.BatteryStatus -= DistanceDroneCustomer(DroneInDelivery, ParcelToBeCollected.SenderID);
             DroneInDelivery.CurrentLocation.Latitude = Data.GetCustomer(ParcelToBeCollected.SenderID).Latitude;
             DroneInDelivery.CurrentLocation.Longitude = Data.GetCustomer(ParcelToBeCollected.SenderID).Longitude;
+            DroneList[i] = DroneInDelivery;
         }
         #endregion
 

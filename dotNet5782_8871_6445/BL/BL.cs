@@ -468,13 +468,33 @@ namespace IBL
             return ParcelStatus.Delivered;
         }
 
-        //public ParcelBL DisplayParcel(int ParcelID)
-        //{
-        //    foreach (Parcel parcel in Data.GetAllParcels())
-        //        if (parcel.ID == ParcelID)
-        //            return parcel.ToString();
-        //    throw new ParcelExistException();
-        //}
+        public ParcelBL DisplayParcel(int ParcelID)
+        {
+            Parcel parcel = Data.GetParcel(ParcelID);
+            ParcelBL ParcelToDisplay = new(parcel.SenderID, parcel.TargetID, parcel.Weight, parcel.Priority);
+            ParcelToDisplay.TimeRequested = parcel.TimeRequested;
+            ParcelToDisplay.Scheduled = parcel.Scheduled;
+            ParcelToDisplay.PickedUp = parcel.PickedUp;
+            ParcelToDisplay.Delivered = parcel.Delivered;
+            Customer sender = Data.GetCustomer(parcel.SenderID), target = Data.GetCustomer(parcel.TargetID);
+            ParcelToDisplay.Sender.Name = sender.Name;
+            ParcelToDisplay.Target.Name = target.Name;
+            if (parcel.DroneID != 0)
+                ParcelToDisplay.DroneInParcel = CreateDroneInParcel(parcel.DroneID);
+            return ParcelToDisplay;
+        }
+
+        private DroneInParcel CreateDroneInParcel(int droneID)
+        {
+            DroneToList tempDrone = new DroneToList();
+            foreach (var drone in DroneList)
+            {
+                if (drone.ID == droneID)
+                    tempDrone = drone;
+            }
+            DroneInParcel Drone = new(tempDrone.ID, tempDrone.BatteryStatus, tempDrone.CurrentLocation);
+            return Drone;
+        }
 
         public string DisplayDistanceFromStation(double longitude1, double latitude1, int StationID)
         {

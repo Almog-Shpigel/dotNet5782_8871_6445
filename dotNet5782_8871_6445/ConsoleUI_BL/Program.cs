@@ -425,7 +425,7 @@ namespace ConsoleUI_BL
         private static void DisplayParcel(IBL.BL IBL)
         {
             int id = RequestID();
-            //Console.WriteLine(IBL.DisplayParcel(id).ToString());
+            Console.WriteLine(IBL.DisplayParcel(id).ToString());
         }
 
         private static void DisplayDistanceFromStation(IBL.BL IBL)

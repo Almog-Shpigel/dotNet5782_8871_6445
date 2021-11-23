@@ -18,7 +18,7 @@ namespace IBL
         public StationBL DisplayStation(int StationID);
         public DroneBL DisplayDrone(int DroneID);
         public CustomerBL DisplayCustomer(int CustomerID);
-        //public ParcelBL DisplayParcel(int ParcelID);
+        public ParcelBL DisplayParcel(int ParcelID);
         public string DisplayDistanceFromStation(double longitude1, double latitude1, int StationID);
         public string DisplayDistanceFromCustomer(double longitude1, double latitude1, int CustomerID);
         public void UpdateDroneName(int v1, string v2);

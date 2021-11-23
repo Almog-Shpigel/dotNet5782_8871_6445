@@ -30,7 +30,7 @@ namespace IBL
             public override string ToString()
             {
                 return $"Parcel #{ID}:\n" +
-                    $"Properties: {Weight}, {Priority}, {Status}." +
+                    $"Properties: {Weight}, {Priority}, {Status}. " +
                     $"Sent by {SenderName} to {TargetName}";
             }
         }

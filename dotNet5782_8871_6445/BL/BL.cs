@@ -26,43 +26,43 @@ namespace IBL
             DroneList = new List<DroneToList>();
             BatteryUsed = Data.GetBatteryUsed();
 
-            foreach (Drone drone in Data.GetAllDrones())
+            foreach (Drone drone in Data.GetAllDrones())        ///Initiallizing all of the drones in our data, saving them as DroneToList drones in the logic layer
             {
                 DroneToList NewDrone = new();
                 Parcel NewParcel = new(); 
-                NewDrone.ID = drone.ID;
+                NewDrone.ID = drone.ID;                         ///Copying relevent information from the data
                 NewDrone.Model = drone.Model;
                 NewDrone.MaxWeight = drone.MaxWeight;
                 foreach (Parcel parcel in Data.GetAllParcels())
                 {
-                    if (parcel.DroneID == drone.ID && parcel.Delivered == DateTime.MinValue)
+                    if (parcel.DroneID == drone.ID && parcel.Delivered == DateTime.MinValue)    ///Checking if the drone is in the middle of a delivery
                         NewParcel = parcel;
                 }
-                if (NewParcel.DroneID == drone.ID && NewParcel.Delivered == DateTime.MinValue)
+                if (NewParcel.DroneID == drone.ID && NewParcel.Delivered == DateTime.MinValue)  ///Drone in the middle of a delivery
                     NewDrone = InitDroneInDelivery(NewDrone, NewParcel);
-                else ///Not in delivery
+                else                                                                            ///Not in delivery
                     NewDrone = InitDroneNOTinDelivery(NewDrone);
                 
                 DroneList.Add(NewDrone); 
             }
         }
 
-        private DroneToList InitDroneInDelivery(DroneToList NewDrone, Parcel parcel)
+        private DroneToList InitDroneInDelivery(DroneToList NewDrone, Parcel parcel)    ///Function to initialize a drone in delivery
         {
             double total;
             Random rand = new();
-            NewDrone.Status = DroneStatus.Delivery;
+            NewDrone.Status = DroneStatus.Delivery;    ///Updating drone's status
             NewDrone.ParcelID = parcel.ID;
             Customer sender = Data.GetCustomer(parcel.SenderID), target = Data.GetCustomer(parcel.TargetID);
             Station NearestStatTarget = GetNearestStation(target.Latitude, target.Longitude, Data.GetAllStations());
             Station NearestStat = GetNearestStation(sender.Latitude, sender.Longitude, Data.GetAllStations());
-            if (parcel.PickedUp == DateTime.MinValue)
+            if (parcel.PickedUp == DateTime.MinValue)      ///Checking if the drone already picked up the parcel or not     
                 NewDrone.CurrentLocation = new(NearestStat.Latitude, NearestStat.Longitude);
             else    ///means it did get pickedup
                 NewDrone.CurrentLocation = new(sender.Latitude, sender.Longitude);
 
-            total = BatteryUsageCurrStation(NewDrone, parcel.SenderID, parcel.TargetID, NearestStat, parcel.Weight);
-            NewDrone.BatteryStatus = GetRandBatteryStatus(total, 100);
+            total = BatteryUsageCurrStation(NewDrone, parcel.SenderID, parcel.TargetID, NearestStat, parcel.Weight); ///Returns the amount of battery needed to complete the delivery
+            NewDrone.BatteryStatus = GetRandBatteryStatus(total, 100);  ///Choosing random battery number between the minimum needed to complete the delivery and full battery
             return NewDrone;
         }
 
@@ -231,7 +231,29 @@ namespace IBL
 
         public void UpdateParcelDeleiveredByDrone(int DroneID)
         {
-            throw new NotImplementedException();
+            int i = 0;
+            if (DroneID < 100000 || DroneID > 999999)
+                throw new InvalidIDException("Drone ID has to have 6 positive digits.");
+            DroneToList DroneInDelivery = new();
+            for (i = 0; i < DroneList.Count; i++)
+            {
+                if (DroneList[i].ID == DroneID)
+                {
+                    DroneInDelivery = DroneList[i];
+                    break;
+                }
+            }
+            if (DroneInDelivery.Status != DroneStatus.Delivery)
+                throw new DroneStatusExpetion("This drone is not doing a delivery right now");
+            Parcel ParcelToBeDelivered = Data.GetParcel(DroneInDelivery.ParcelID);
+            if (ParcelToBeDelivered.Delivered != DateTime.MinValue || ParcelToBeDelivered.PickedUp == DateTime.MinValue)
+                throw new ParcelTimesException("The drone is not carrying the parcel right now");
+            Data.ParcelDelivery(ParcelToBeDelivered.ID);
+            DroneInDelivery.BatteryStatus -= DistanceDroneCustomer(DroneInDelivery, ParcelToBeDelivered.TargetID);
+            DroneInDelivery.CurrentLocation.Latitude = Data.GetCustomer(ParcelToBeDelivered.TargetID).Latitude;
+            DroneInDelivery.CurrentLocation.Longitude = Data.GetCustomer(ParcelToBeDelivered.TargetID).Longitude;
+            DroneInDelivery.Status = DroneStatus.Available;
+            DroneList[i] = DroneInDelivery;
         }
 
         public void UpdateDroneAvailable(int DroneID) 
@@ -278,9 +300,11 @@ namespace IBL
                 throw new DroneStatusExpetion("Drone is unavailable for a delivery!");
 
             //Need to Lesanen all parcel that are to far and that are not waiting for delivery
-            IEnumerable<Parcel> AllParcels = Data.GetAllParcels();
-            Parcel MaxParcel = AllParcels.First();
-            foreach (var parcel in Data.GetAllParcels())
+            IEnumerable<Parcel> AllAvailableParcels = Data.GetAllAvailableParcels();
+            if (AllAvailableParcels.Count() == 0)
+                throw new NoAvailableParcelsException("There are no parcels to assign at this moment");
+            Parcel MaxParcel = AllAvailableParcels.First();
+            foreach (var parcel in AllAvailableParcels)
             {
                 if (PossibleDelivery(DroneToBeAssign, parcel))
                 {
@@ -298,15 +322,38 @@ namespace IBL
                     }
                 }
             }
-            // To do אם נמצאה חבילה מתאימה, יש לעדכן את שכבת הנתונים כלדקמן:
-            //יש לשנות את מצב הרחפן למבצע משלוח
-            //בחבילה יש להוסיף את הרחפן ולעדכן את זמן השיוך
-
+            if (!PossibleDelivery(DroneToBeAssign, MaxParcel))
+                throw new NoAvailableParcelsException("There are no parcels that can be assign to this drone at this moment");
+            Data.PairParcelToDrone(MaxParcel.ID, DroneToBeAssign.ID);
+            DroneToBeAssign.Status = DroneStatus.Delivery;
+            DroneToBeAssign.ParcelID = MaxParcel.ID;
+            DroneList[i] = DroneToBeAssign;
         }
 
-        public void UpdateParcelCollectedByDrone(int v)
+        public void UpdateParcelCollectedByDrone(int DroneID)
         {
-            throw new NotImplementedException();
+            int i = 0;
+            if (DroneID < 100000 || DroneID > 999999)
+                throw new InvalidIDException("Drone ID has to have 6 positive digits.");
+            DroneToList DroneInDelivery = new();
+            for (; i < DroneList.Count; i++)
+            {
+                if (DroneList[i].ID == DroneID)
+                {
+                    DroneInDelivery = DroneList[i];
+                    break;
+                }
+            }
+            if (DroneInDelivery.Status != DroneStatus.Delivery)
+                throw new DroneNotInDeliveryException("This drone is not in delivery!");
+            Parcel ParcelToBeCollected = Data.GetParcel(DroneInDelivery.ParcelID);
+            if (ParcelToBeCollected.PickedUp != DateTime.MinValue)
+                throw new ParcelTimesException("The parcel has been already collected!");
+            Data.ParcelCollected(ParcelToBeCollected.ID);
+            DroneInDelivery.BatteryStatus -= DistanceDroneCustomer(DroneInDelivery, ParcelToBeCollected.SenderID);
+            DroneInDelivery.CurrentLocation.Latitude = Data.GetCustomer(ParcelToBeCollected.SenderID).Latitude;
+            DroneInDelivery.CurrentLocation.Longitude = Data.GetCustomer(ParcelToBeCollected.SenderID).Longitude;
+            DroneList[i] = DroneInDelivery;
         }
         #endregion
 

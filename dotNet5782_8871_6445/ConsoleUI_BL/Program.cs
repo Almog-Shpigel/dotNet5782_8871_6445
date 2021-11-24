@@ -415,40 +415,82 @@ namespace ConsoleUI_BL
         #region Display
         private static void DisplayStation(IBL.BL IBL)
         {
-            int id = RequestID();
-            Console.WriteLine(IBL.DisplayStation(id).ToString());
+            try
+            {
+                int id = RequestID();
+                Console.WriteLine(IBL.DisplayStation(id).ToString());
+            }
+            catch (Exception exp)
+            {
+                Console.WriteLine(exp);
+            }
         }
 
         private static void DisplayDrone(IBL.BL IBL)
         {
-            int id = RequestID();
-            Console.WriteLine(IBL.DisplayDrone(id).ToString());
+            try
+            {
+                int id = RequestID();
+                Console.WriteLine(IBL.DisplayDrone(id).ToString());
+            }
+            catch (Exception exp)
+            {
+                Console.WriteLine(exp);
+            }
         }
 
         private static void DisplayCustomer(IBL.BL IBL)
         {
-            int id = RequestID();
-            Console.WriteLine(IBL.DisplayCustomer(id).ToString());
+            try
+            {
+                int id = RequestID();
+                Console.WriteLine(IBL.DisplayCustomer(id).ToString());
+            }
+            catch (Exception exp)
+            {
+                Console.WriteLine(exp);
+            }
         }
 
         private static void DisplayParcel(IBL.BL IBL)
         {
-            int id = RequestID();
-            Console.WriteLine(IBL.DisplayParcel(id).ToString());
+            try
+            {
+                int id = RequestID();
+                Console.WriteLine(IBL.DisplayParcel(id).ToString());
+            }
+            catch (Exception exp)
+            {
+                Console.WriteLine(exp);
+            }
         }
 
         private static void DisplayDistanceFromStation(IBL.BL IBL)
         {
-            int id = RequestID();
-            Location location = RequestLocation();
-            Console.WriteLine(IBL.DisplayDistanceFromStation(location.Longitude, location.Latitude,id));
+            try
+            {
+                int id = RequestID();
+                Location location = RequestLocation();
+                Console.WriteLine(IBL.DisplayDistanceFromStation(location.Longitude, location.Latitude, id));
+            }
+            catch (Exception exp)
+            {
+                Console.WriteLine(exp);
+            }
         }
 
         private static void DisplayDistanceFromCustomer(IBL.BL IBL)
         {
-            int id = RequestID();
-            Location location = RequestLocation();
-            Console.WriteLine(IBL.DisplayDistanceFromCustomer(location.Longitude, location.Latitude, id));
+            try
+            {
+                int id = RequestID();
+                Location location = RequestLocation();
+                Console.WriteLine(IBL.DisplayDistanceFromCustomer(location.Longitude, location.Latitude, id));
+            }
+            catch (Exception exp)
+            {
+                Console.WriteLine(exp);
+            }
         }
         #endregion
 

@@ -27,11 +27,13 @@ namespace IBL
 
             public override string ToString()
             {
+                string StringSentByCustomer = string.Join("", ParcelesSentByCustomer);
+                string StringSentToCustomer = string.Join("", ParcelesSentToCustomer);
                 return ($"{Name} #{ID}:\n" +
                     $"Phone number:     {Phone}\n" +
                     $"Location:         {Location}\n" +
-                    $"Parcel sent:       {ParcelesSentByCustomer}\n" +
-                    $"Parcel received:   {ParcelesSentToCustomer}");
+                    $"Parcel sent:       {StringSentByCustomer}\n" +
+                    $"Parcel received:   {StringSentToCustomer}");
             }
         }
     }

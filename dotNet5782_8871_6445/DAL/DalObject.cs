@@ -38,7 +38,7 @@ namespace DalObject
                 throw new CustomerExistException("The sender ID dosen't exists in the data!!");
             if (!CustomerExist(parcel.TargetID))
                 throw new CustomerExistException("The target ID dosen't exists in the data!!");
-            parcel.ID = ++DataSource.Config.ParcelsCounter;
+            parcel.ID =344000+ ++DataSource.Config.ParcelsCounter;
             DataSource.parcels.Add(parcel);
         }
 
@@ -66,6 +66,7 @@ namespace DalObject
                     break;
                 } 
             }
+            
         }
         public void UpdateStationSlots(int stationID,int slots)
         {

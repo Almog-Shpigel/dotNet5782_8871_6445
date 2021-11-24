@@ -96,7 +96,7 @@ namespace IBL
             foreach (Parcel parcel in Data.GetAllParcels())
             {
                 ParcelToList NewParcel = new();
-                if (parcel.DroneID != 0)
+                if (parcel.DroneID == 0)
                 {
                     NewParcel.ID = parcel.ID;
                     NewParcel.Priority = parcel.Priority;

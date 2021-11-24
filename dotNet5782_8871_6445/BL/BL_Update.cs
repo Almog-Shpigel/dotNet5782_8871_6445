@@ -11,13 +11,30 @@ namespace IBL
 {
     partial class BL
     {
+        /// <summary>
+        /// Updating a drone's model
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="model"></param>
         public void UpdateDroneName(int id, string model)
         {
             if (id < 100000 || id > 999999)
                 throw new InvalidIDException("Drone ID has to have 6 positive digits.");
-            Data.UpdateDroneName(id, model);/// To do: update name also in BO
+            Data.UpdateDroneName(id, model);
+            foreach (var drone in DroneList)
+            {
+                if (drone.ID == id)
+                    drone.Model = model;
+            }
         }
-
+        /// <summary>
+        /// Updating a station's charge slots or name or both, if an empty input recived for either, will not change it
+        /// </summary>
+        /// <param name="StationID"></param>
+        /// <param name="ChangeName"></param>
+        /// <param name="ChangeSlots"></param>
+        /// <param name="name"></param>
+        /// <param name="slots"></param>
         public void UpdateStation(int StationID, bool ChangeName, bool ChangeSlots, string name, int slots)
         {
             if (StationID < 100000 || StationID > 999999)
@@ -39,7 +56,14 @@ namespace IBL
                 Data.UpdateStationSlots(StationID, slots);
             }
         }
-
+        /// <summary>
+        /// Updating a customer's phone number or name or both, if an empty input recived for either, will not change it
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="changeName"></param>
+        /// <param name="changePhone"></param>
+        /// <param name="name"></param>
+        /// <param name="phone"></param>
         public void UpdateCustomer(int id, bool changeName, bool changePhone, string name, int phone)
         {
             if (id < 100000000 || id > 999999999)
@@ -54,7 +78,10 @@ namespace IBL
                 Data.UpdateCustomerName(id, name);
 
         }
-
+        /// <summary>
+        /// Sending the wanted drone to charge at the nearest station that has free charge slots
+        /// </summary>
+        /// <param name="DroneID"></param>
         public void UpdateDroneToBeCharged(int DroneID)
         {
             if (DroneID < 100000 || DroneID > 999999)
@@ -80,7 +107,12 @@ namespace IBL
                 }
             }
         }
-
+        /// <summary>
+        /// Updating that the parcel was delivered to the target by the drone carrying it, updating the drone's location 
+        /// to be at the target customer, substracting the battery used from the last location and updating the drone's status to be
+        /// available again
+        /// </summary>
+        /// <param name="DroneID"></param>
         public void UpdateParcelDeleiveredByDrone(int DroneID)
         {
             int i = 0;
@@ -107,7 +139,11 @@ namespace IBL
             DroneInDelivery.Status = DroneStatus.Available;
             DroneList[i] = DroneInDelivery;
         }
-
+        /// <summary>
+        /// Relasing a drone that is currently charging, changing it's status to be available and deleting the "drone in charge" entity 
+        /// saved in the data layer
+        /// </summary>
+        /// <param name="DroneID"></param>
         public void UpdateDroneAvailable(int DroneID)
         {
             int i = 0;
@@ -133,7 +169,13 @@ namespace IBL
             Data.DroneAvailable(DroneID);
             DroneList[i] = DroneToBeAvailable;
         }
-
+        /// <summary>
+        /// Pairing a parcel to the wanted drone, the parcel will be selected by the next algorithem:
+        /// highest priority, then weight similler to the drone propertie, then the distance between the parcel and the drone.
+        /// all in consider the parcel isn't paired already with a different drone
+        /// and the drone's battery is able to collect the parcel,deliver it and return to a near by station.
+        /// </summary>
+        /// <param name="DroneID"></param>
         public void UpdateParcelToDrone(int DroneID)
         {
             int i = 0;
@@ -151,7 +193,6 @@ namespace IBL
             if (DroneToBeAssign.Status != DroneStatus.Available)
                 throw new DroneStatusExpetion("Drone is unavailable for a delivery!");
 
-            //Need to Lesanen all parcel that are to far and that are not waiting for delivery
             IEnumerable<Parcel> AllAvailableParcels = Data.GetAllAvailableParcels();
             if (AllAvailableParcels.Count() == 0)
                 throw new NoAvailableParcelsException("There are no parcels to assign at this moment");
@@ -181,7 +222,11 @@ namespace IBL
             DroneToBeAssign.ParcelID = MaxParcel.ID;
             DroneList[i] = DroneToBeAssign;
         }
-
+        /// <summary>
+        /// Updating a parcel status to be collected by the drone paired to her. also updating the drone's location
+        /// to be at that target and the battery to substract according to the distance from it's last location
+        /// </summary>
+        /// <param name="DroneID"></param>
         public void UpdateParcelCollectedByDrone(int DroneID)
         {
             int i = 0;

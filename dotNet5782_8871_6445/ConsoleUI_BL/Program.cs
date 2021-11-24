@@ -197,7 +197,7 @@ namespace ConsoleUI_BL
         #region Add
         public static void AddNewStation(IBL.BL IBL)
         {
-            int id = RequestID();
+            int id = RequestID("station");
             string name = RequestStationName();
             Location location = RequestLocation();
             int slots = RequestChargeSlots();
@@ -215,10 +215,10 @@ namespace ConsoleUI_BL
 
         private static void AddNewDrone(IBL.BL IBL)
         {
-            int id = RequestID();
+            int id = RequestID("drone");
             string model = RequestModelName();
             WeightCategories weight = RequestWeightCategorie();
-            int StationID = RequestID();
+            int StationID = RequestID("station");
             DroneBL NewDrone = new DroneBL(id, model, weight);
             try
             {
@@ -233,7 +233,7 @@ namespace ConsoleUI_BL
 
         private static void AddNewCustomer(IBL.BL IBL)
         {
-            int id = RequestID();
+            int id = RequestID("customer");
             string name = RequestCustomerName();
             string phone = RequestPhoneNumber();
             Location location = RequestLocation();
@@ -251,8 +251,8 @@ namespace ConsoleUI_BL
 
         private static void AddNewParcel(IBL.BL IBL)
         {
-            int SenderID = RequestID();
-            int TargetID = RequestID();
+            int SenderID = RequestID("sender");
+            int TargetID = RequestID("target");
             WeightCategories weight = RequestWeightCategorie();
             Priorities priority = RequestPrioritie();
             ParcelBL NewParcel = new ParcelBL(SenderID, TargetID, weight, priority);
@@ -271,7 +271,7 @@ namespace ConsoleUI_BL
         #region Update
         private static void UpdateDroneName(IBL.BL IBL)
         {
-            int id = RequestID();
+            int id = RequestID("drone");
             string model = RequestModelName();
             try
             {
@@ -289,7 +289,7 @@ namespace ConsoleUI_BL
             bool success, ChangeName = true, ChangeSlots = true;
             int slots = 0;
             string ChargeSlots;
-            int id = RequestID();
+            int id = RequestID("station");
             string name = RequestStationName();
             if (name == "")
                 ChangeName = false;
@@ -320,7 +320,7 @@ namespace ConsoleUI_BL
             bool successs, ChangeName = true, ChangePhone = true ;
             string phone;
             int PhoneNumber = 0;
-            int id = RequestID();
+            int id = RequestID("customer");
             string name = RequestCustomerName();
             if (name == "")
                 ChangeName = false;
@@ -347,7 +347,7 @@ namespace ConsoleUI_BL
 
         private static void PairParcelToDrone(IBL.BL IBL)
         {
-            int id = RequestID();
+            int id = RequestID("drone");
             try
             {
                 IBL.UpdateParcelToDrone(id);
@@ -360,7 +360,7 @@ namespace ConsoleUI_BL
 
         private static void ParcelCollectedByDrone(IBL.BL IBL)
         {
-            int id = RequestID();
+            int id = RequestID("drone");
             try
             {
                 IBL.UpdateParcelCollectedByDrone(id);
@@ -373,7 +373,7 @@ namespace ConsoleUI_BL
 
         private static void ParcelDeleiveredByDrone(IBL.BL IBL)
         {
-            int id = RequestID();
+            int id = RequestID("drone");
             try
             {
                 IBL.UpdateParcelDeleiveredByDrone(id);
@@ -386,7 +386,7 @@ namespace ConsoleUI_BL
 
         private static void DroneToBeCharged(IBL.BL IBL)
         {
-            int id = RequestID();
+            int id = RequestID("drone");
             try
             {
                 IBL.UpdateDroneToBeCharged(id);
@@ -399,7 +399,7 @@ namespace ConsoleUI_BL
 
         private static void DroneAvailable(IBL.BL IBL)
         {
-            int id = RequestID();
+            int id = RequestID("drone");
             try
             {
                 IBL.UpdateDroneAvailable(id);
@@ -417,7 +417,7 @@ namespace ConsoleUI_BL
         {
             try
             {
-                int id = RequestID();
+                int id = RequestID("station");
                 Console.WriteLine(IBL.DisplayStation(id).ToString());
             }
             catch (Exception exp)
@@ -430,7 +430,7 @@ namespace ConsoleUI_BL
         {
             try
             {
-                int id = RequestID();
+                int id = RequestID("drone");
                 Console.WriteLine(IBL.DisplayDrone(id).ToString());
             }
             catch (Exception exp)
@@ -443,7 +443,7 @@ namespace ConsoleUI_BL
         {
             try
             {
-                int id = RequestID();
+                int id = RequestID("customer");
                 Console.WriteLine(IBL.DisplayCustomer(id).ToString());
             }
             catch (Exception exp)
@@ -456,7 +456,7 @@ namespace ConsoleUI_BL
         {
             try
             {
-                int id = RequestID();
+                int id = RequestID("parcel");
                 Console.WriteLine(IBL.DisplayParcel(id).ToString());
             }
             catch (Exception exp)
@@ -469,7 +469,7 @@ namespace ConsoleUI_BL
         {
             try
             {
-                int id = RequestID();
+                int id = RequestID("station");
                 Location location = RequestLocation();
                 Console.WriteLine(IBL.DisplayDistanceFromStation(location.Longitude, location.Latitude, id));
             }
@@ -483,7 +483,7 @@ namespace ConsoleUI_BL
         {
             try
             {
-                int id = RequestID();
+                int id = RequestID("customer");
                 Location location = RequestLocation();
                 Console.WriteLine(IBL.DisplayDistanceFromCustomer(location.Longitude, location.Latitude, id));
             }
@@ -540,13 +540,13 @@ namespace ConsoleUI_BL
         #endregion
 
         #region Request
-        private static int RequestID()
+        private static int RequestID(string entity)
         {
             bool success;
             int StationId;
             do
             {
-                Console.Write("Please enter ID: ");                             ///Reciving ID
+                Console.Write($"Please enter {entity} ID: ");                             ///Reciving ID
                 success = int.TryParse(Console.ReadLine(), out StationId);
             } while (!success);
             return StationId;

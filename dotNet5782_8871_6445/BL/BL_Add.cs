@@ -11,6 +11,10 @@ namespace IBL
 {
     partial class BL
     {
+        /// <summary>
+        /// Adding a new station and saving it in the data after checking the id is 6 digits, the charge slots are positive number or 0, and the location is inside Jerusalem area
+        /// </summary>
+        /// <param name="StationBO"></param>
         public void AddNewStation(StationBL StationBO)
         {
             if (StationBO.ID < 100000 || StationBO.ID > 999999)
@@ -22,7 +26,11 @@ namespace IBL
             Station StationDO = new(StationBO.ID, StationBO.Name, StationBO.ChargeSlots, StationBO.Location.Latitude, StationBO.Location.Longitude);
             Data.AddNewStation(StationDO);
         }
-
+        /// <summary>
+        /// Adding a new drone and saving it in the data and in BL after checking the id is 6 digits and station it was send to has free charge slots for it
+        /// </summary>
+        /// <param name="DroneBL"></param>
+        /// <param name="StationID"></param>
         public void AddNewDrone(DroneBL DroneBL, int StationID) ///Reciving a drone with name,id and weight, and a staion id to sent it to charge there
         {
             if (DroneBL.ID < 100000 || DroneBL.ID > 999999)

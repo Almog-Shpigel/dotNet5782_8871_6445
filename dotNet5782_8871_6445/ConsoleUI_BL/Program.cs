@@ -49,17 +49,21 @@ namespace ConsoleUI_BL
         }
         public static void ADD(IBL.BL IBL)       /// Add menu.
         {
-            Console.WriteLine("Please choose one of the following options:\n" +
-                                "1- Add new station. \n" +
-                                "2- Add new drone. \n" +
-                                "3- Add new customer. \n" +
-                                "4- Add new parcel.");
             bool success;
+            string input;
             ADD_CHOICE AddOption;
             do
             {
-                success = ADD_CHOICE.TryParse(Console.ReadLine(), out AddOption);
-            } while (!success);
+                Console.WriteLine("Please choose one of the following options:\n" +
+                                "1- Add new station. \n" +
+                                "2- Add new drone. \n" +
+                                "3- Add new customer. \n" +
+                                "4- Add new parcel. \n" +
+                                "r- Return to the main menu.");
+
+                input = Console.ReadLine();
+                success = ADD_CHOICE.TryParse(input, out AddOption);
+            } while (!success && input != "r");
 
             switch (AddOption)
             {
@@ -71,7 +75,12 @@ namespace ConsoleUI_BL
         }
         public static void UPDATE(IBL.BL IBL)   /// Update menu.
         {
-            Console.WriteLine("Please choose one of the following options:\n" +
+            bool success;
+            string input;
+            UPDATE_CHOICE UpdateOption;
+            do
+            {
+                Console.WriteLine("Please choose one of the following options:\n" +
                                 "1- Update Drone's name. \n" +
                                 "2- Update Station. \n" +
                                 "3- Update Customer. \n" +
@@ -79,13 +88,12 @@ namespace ConsoleUI_BL
                                 "5- Parcel collected by a drone. \n" +
                                 "6- Parcel deleivered to customer. \n" +
                                 "7- Send drone to be charged. \n" +
-                                "8- Realse drone from charging.");
-            bool success;
-            UPDATE_CHOICE UpdateOption;
-            do
-            {
-                success = UPDATE_CHOICE.TryParse(Console.ReadLine(), out UpdateOption);
-            } while (!success);
+                                "8- Realse drone from charging. \n" +
+                                "r- Return to the main menu.");
+
+                input = Console.ReadLine();
+                success = UPDATE_CHOICE.TryParse(input, out UpdateOption);
+            } while (!success && input != "r");
 
             switch (UpdateOption)
             {
@@ -101,19 +109,23 @@ namespace ConsoleUI_BL
         }
         public static void DISPLAY(IBL.BL IBL)   /// Update menu.
         {
-            Console.WriteLine("Please choose one of the following options:\n" +
-                                 "1- Display station.\n" +
-                                 "2- Display drone.\n" +
-                                 "3- Display customer.\n" +
-                                 "4- Display parcel.\n" +
-                                 "5- Display distance from a station.\n" +
-                                 "6- Display distance from a customer.");
             bool success;
+            string input;
             DISPLAY_CHOICE DisplayOption;
             do
             {
-                success = DISPLAY_CHOICE.TryParse(Console.ReadLine(), out DisplayOption);
-            } while (!success);
+                Console.WriteLine("Please choose one of the following options:\n" +
+                             "1- Display station.\n" +
+                             "2- Display drone.\n" +
+                             "3- Display customer.\n" +
+                             "4- Display parcel.\n" +
+                             "5- Display distance from a station.\n" +
+                             "6- Display distance from a customer. \n" +
+                             "r- Return to the main menu.");
+
+                input = Console.ReadLine();
+                success = DISPLAY_CHOICE.TryParse(input, out DisplayOption);
+            } while (!success && input != "r");
 
             switch (DisplayOption)
             {
@@ -128,19 +140,23 @@ namespace ConsoleUI_BL
 
         public static void DISPLAY_DATA(IBL.BL IBL)  /// Data print menu.
         {
-            Console.WriteLine("Please choose one of the following options:\n" +
+            bool success;
+            string input;
+            PRINT_CHOICE PrintOption;
+            do
+            {
+                Console.WriteLine("Please choose one of the following options:\n" +
                                 "1- Display all stations.\n" +
                                 "2- Display all drones.\n" +
                                 "3- Display all customers.\n" +
                                 "4- Display all parcels.\n" +
                                 "5- Display unassigned parcels.\n" +
-                                "6- Display all available stations.");
-            bool success;
-            PRINT_CHOICE PrintOption;
-            do
-            {
-                success = PRINT_CHOICE.TryParse(Console.ReadLine(), out PrintOption);
-            } while (!success);
+                                "6- Display all available stations. \n" +
+                                "r- Return to the main menu.");
+
+                input = Console.ReadLine();
+                success = PRINT_CHOICE.TryParse(input, out PrintOption);
+            } while (!success && input != "r");
 
             switch (PrintOption)
             {
@@ -264,7 +280,6 @@ namespace ConsoleUI_BL
             catch (Exception exp)
             {
                 Console.WriteLine(exp.Message);
-                UpdateDroneName(IBL);
             }
         }
 
@@ -297,7 +312,6 @@ namespace ConsoleUI_BL
             catch (Exception exp) 
             {
                 Console.WriteLine(exp.Message);
-                UpdateStation(IBL);
             }
         }
 
@@ -323,12 +337,11 @@ namespace ConsoleUI_BL
             } while (!successs);
             try
             {
-                IBL.UpdateCustomer(id,ChangeName,ChangePhone, name, PhoneNumber);
+                IBL.UpdateCustomer(id, ChangeName, ChangePhone, name, PhoneNumber);
             }
             catch (Exception exp)
             {
                 Console.WriteLine(exp.Message);
-                UpdateCustomer(IBL);
             }
         }
 
@@ -342,7 +355,6 @@ namespace ConsoleUI_BL
             catch (Exception exp)
             {
                 Console.WriteLine(exp.Message);
-                PairParcelToDrone(IBL);
             }
         }
 
@@ -356,7 +368,6 @@ namespace ConsoleUI_BL
             catch (Exception exp)
             {
                 Console.WriteLine(exp.Message);
-                ParcelCollectedByDrone(IBL);
             }
         }
 
@@ -370,7 +381,6 @@ namespace ConsoleUI_BL
             catch (Exception exp)
             {
                 Console.WriteLine(exp.Message);
-                ParcelDeleiveredByDrone(IBL);
             }
         }
 
@@ -384,7 +394,6 @@ namespace ConsoleUI_BL
             catch (Exception exp)
             {
                 Console.WriteLine(exp.Message);
-                DroneToBeCharged(IBL);
             }
         }
 
@@ -398,7 +407,7 @@ namespace ConsoleUI_BL
             catch (Exception exp)
             {
                 Console.WriteLine(exp.Message);
-                DroneAvailable(IBL);
+                Console.ReadKey();
             }
         }
         #endregion

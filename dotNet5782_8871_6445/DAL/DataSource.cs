@@ -42,8 +42,8 @@ namespace DalObject
             {
                 int id = 122000 + stations.Count;      
                 string name = "Station " + stations.Count;
-                double latitude = (31 + ((double)rnd.Next(9999, 100000) / 100000)); ///Jerusalem area
-                double longitude = (35 + ((double)rnd.Next(9999, 100000) / 100000)); ///Jerusalem area
+                double latitude = (31 + ((double)rnd.Next(7300, 8300) / 10000)); ///Jerusalem area
+                double longitude = (35 + ((double)rnd.Next(1400, 2700) / 10000)); ///Jerusalem area
                 int chargeSlot = rnd.Next(10);
                 Station NewStation = new Station(id, name, chargeSlot, longitude, latitude);
                 stations.Add(NewStation);
@@ -63,8 +63,8 @@ namespace DalObject
                 int id = rnd.Next(100000000, 1000000000);
                 string phone = "05" + rnd.Next(10000000, 99999999);
                 string name = ((IDAL.DO.CustomerNames)rnd.Next(17)).ToString();
-                double latitude = (31 + ((double)rnd.Next(9999, 100000) / 100000));
-                double longitude = (35 + ((double)rnd.Next(9999, 100000) / 100000));
+                double latitude = (31 + ((double)rnd.Next(7300, 8300) / 10000)); ///Jerusalem area
+                double longitude = (35 + ((double)rnd.Next(1400, 2700) / 10000)); ///Jerusalem area
                 Customer NewCustomer = new Customer(id, name, phone, longitude, latitude);
                 customers.Add(NewCustomer);
             }

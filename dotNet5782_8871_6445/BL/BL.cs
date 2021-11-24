@@ -379,20 +379,16 @@ namespace IBL
 
         public DroneBL DisplayDrone(int DroneID)
         {
-            DroneBL DroneToDisplay = new DroneBL();
+            DroneBL DroneToDisplay;
             foreach (DroneToList drone in DroneList)
                 if (drone.ID == DroneID)
                 {
-                    DroneToDisplay.ID = drone.ID;
-                    DroneToDisplay.Model = drone.Model;
-                    DroneToDisplay.MaxWeight = drone.MaxWeight;
-                    DroneToDisplay.Status = drone.Status;
+                    DroneToDisplay = new(drone.ID, drone.Model, drone.MaxWeight, drone.BatteryStatus, drone.Status);
                     DroneToDisplay.CurrentLocation = drone.CurrentLocation;
-                    DroneToDisplay.BatteryStatus = drone.BatteryStatus;
-                    Parcel parcel = Data.GetParcel(drone.ParcelID);
+                    
                     if(DroneToDisplay.Status == DroneStatus.Delivery)
                     {
-                        DroneToDisplay.Parcel = InitParcelInDelivery(parcel);
+                        DroneToDisplay.Parcel = InitParcelInDelivery(Data.GetParcel(drone.ParcelID));
                     }
                     return DroneToDisplay;
                 }
@@ -472,6 +468,7 @@ namespace IBL
         {
             Parcel parcel = Data.GetParcel(ParcelID);
             ParcelBL ParcelToDisplay = new(parcel.SenderID, parcel.TargetID, parcel.Weight, parcel.Priority);
+            ParcelToDisplay.ID = parcel.ID;
             ParcelToDisplay.TimeRequested = parcel.TimeRequested;
             ParcelToDisplay.Scheduled = parcel.Scheduled;
             ParcelToDisplay.PickedUp = parcel.PickedUp;
@@ -742,17 +739,21 @@ namespace IBL
             }
             return BatteryUse[0]; //Empty
         }
-
-        private double Distance(double x1, double y1, double x2, double y2)
+        
+        private double Distance(double lat1, double lon1, double lat2, double lon2)
         {
-            x1 = (x1 * Math.PI) / 180;
-            y1 = (y1 * Math.PI) / 180;
-            x2 = (x2 * Math.PI) / 180;
-            y2 = (y2 * Math.PI) / 180;
-            double result1 = Math.Pow(Math.Sin((x2 - x1) / 2), 2) + Math.Cos(y1) * Math.Cos(y2) * Math.Pow(Math.Sin((y2 - y1) / 2), 2);
-            double result2 = 2 * Math.Asin(Math.Sqrt(result1));
-            double radius = 3956;
-            return (result2 * radius);
+            double rlat1 = Math.PI * lat1 / 180;
+            double rlat2 = Math.PI * lat2 / 180;
+            double theta = lon1 - lon2;
+            double rtheta = Math.PI * theta / 180;
+            double dist =
+                Math.Sin(rlat1) * Math.Sin(rlat2) + Math.Cos(rlat1) *
+                Math.Cos(rlat2) * Math.Cos(rtheta);
+            dist = Math.Acos(dist);
+            dist = dist * 180 / Math.PI;
+            dist = dist * 60 * 1.1515;
+            dist = (int)(dist * 160.9344);
+            return dist / 100;
         }
 
         private double DistanceDroneCustomer(DroneToList drone, int CustomerID)

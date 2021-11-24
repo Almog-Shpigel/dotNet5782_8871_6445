@@ -24,8 +24,7 @@ namespace IBL
             public DateTime PickedUp { get; set; }
             public DateTime Delivered { get; set; }
 
-            public ParcelBL( int sender, int target,
-                          WeightCategories weight, Priorities priority)
+            public ParcelBL( int sender, int target, WeightCategories weight, Priorities priority)
             {
                 Sender = new(sender);
                 Target = new(target);
@@ -39,16 +38,17 @@ namespace IBL
             }
             public override string ToString()
             {
-                return $"Parcel #{ID}:\n" +
-                    $"Sender ID:        {Sender}\n" +
-                    $"Target ID:        {Target}\n" +
-                    $"Drone ID:         {DroneInParcel}\n" +
-                    $"Parcel weight:    {Weight}\n" +
-                    $"Parcel priority:  {Priority}\n" +
-                    $"Time Requested:   {TimeRequested}\n" +
-                    $"Time Scheduled:        {Scheduled}\n" +
-                    $"Time Picked up:        {PickedUp}\n" +
-                    $"Time Delivered:        {Delivered}\n";
+                return  $"Parcel #{ID}:\n" +
+                        $"Sender:\t\t\t{Sender}\n" +
+                        $"Target:\t\t\t{Target}\n" +
+                        $"Assigned Drone:\n" +
+                        $"{DroneInParcel}\n" +
+                        $"Parcel weight:\t\t{Weight}\n" +
+                        $"Parcel priority:\t{Priority}\n" +
+                        $"Time Requested: \t{TimeRequested}\n" +
+                        $"Time Scheduled: \t{Scheduled}\n" +
+                        $"Time Picked up: \t{PickedUp}\n" +
+                        $"Time Delivered: \t{Delivered}\n";
             }
         }
     }

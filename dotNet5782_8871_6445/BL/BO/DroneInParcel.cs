@@ -20,9 +20,8 @@ namespace IBL
         }
         public override string ToString()
         {
-            return $"Drone #{ID}:\n" +
-                $"Location: { CurrentLocation}" +
-                $"Battery status: {BatteryStatus}%";
+            return  $"Drone #{ID}:\n" +
+                    $"Location: {CurrentLocation} Battery: {BatteryStatus}%";
         }
     }
 }

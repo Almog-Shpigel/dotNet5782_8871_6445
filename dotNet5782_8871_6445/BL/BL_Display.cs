@@ -36,7 +36,7 @@ namespace IBL
             foreach (DroneToList drone in DroneList)
                 if (drone.ID == DroneID)
                 {
-                    DroneToDisplay = new(drone.ID, drone.Model, drone.MaxWeight, drone.BatteryStatus, drone.Status);
+                    DroneToDisplay = new(drone.ID, drone.Model, drone.MaxWeight, drone.BatteryStatus, drone.Status); /// battery status needs to be updated every time
                     DroneToDisplay.CurrentLocation = drone.CurrentLocation;
 
                     if (DroneToDisplay.Status == DroneStatus.Delivery)

@@ -15,7 +15,7 @@ namespace IBL
         {
             if (id < 100000 || id > 999999)
                 throw new InvalidIDException("Drone ID has to have 6 positive digits.");
-            Data.UpdateDroneName(id, model);
+            Data.UpdateDroneName(id, model);/// To do: update name also in BO
         }
 
         public void UpdateStation(int StationID, bool ChangeName, bool ChangeSlots, string name, int slots)

@@ -61,7 +61,10 @@ namespace DalObject
             for (int i = 0; i < DataSource.drones.Count; i++)
             {
                 if (DataSource.drones[i].ID == drone.ID)
+                {
                     DataSource.drones[i] = drone;
+                    break;
+                } 
             }
         }
         public void UpdateStationSlots(int stationID,int slots)

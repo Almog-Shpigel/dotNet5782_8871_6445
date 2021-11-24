@@ -11,6 +11,7 @@ namespace IBL
 {
     partial class BL
     {
+        
         public StationBL DisplayStation(int StationID)
         {
             Station station = Data.GetStation(StationID);
@@ -29,7 +30,7 @@ namespace IBL
             }
             return StationToPrint;
         }
-
+        
         public DroneBL DisplayDrone(int DroneID)
         {
             DroneBL DroneToDisplay;
@@ -47,7 +48,11 @@ namespace IBL
                 }
             throw new DroneExistException();
         }
-
+        /// <summary>
+        /// Function that receive a parcel and initialize ParcelInDelivery entity 
+        /// </summary>
+        /// <param name="parcel"></param>
+        /// <returns> ParcelInDelivery entity </returns>
         private ParcelInDelivery InitParcelInDelivery(Parcel parcel)
         {
             ParcelInDelivery ParcelDelivery = new ParcelInDelivery();
@@ -67,14 +72,18 @@ namespace IBL
             ParcelDelivery.Status = FindParcelStatus(parcel);
             return ParcelDelivery;
         }
-
+        /// <summary>
+        /// Return true if the parcel is in the middle of a delivery and false if it's not
+        /// </summary>
+        /// <param name="parcel"></param>
+        /// <returns></returns>
         private bool FindParcelStatus(Parcel parcel)
         {
             if (parcel.Scheduled == DateTime.MinValue || parcel.Delivered != DateTime.MinValue)
                 return false;
             return true;
         }
-
+        
         public CustomerBL DisplayCustomer(int CustomerID)
         {
             Customer customer = Data.GetCustomer(CustomerID);
@@ -90,7 +99,12 @@ namespace IBL
             return CustomerToDisplay;
 
         }
-
+        /// <summary>
+        /// Receive a parcel and customer id and create a ParcelAtCustomer entity
+        /// </summary>
+        /// <param name="parcel"></param>
+        /// <param name="CustomerID"></param>
+        /// <returns>ParcelAtCustomer entity</returns>
         private ParcelAtCustomer CreateParcelAtCustomer(Parcel parcel, int CustomerID)
         {
             ParcelStatus status = GetParcelStatus(parcel);
@@ -101,7 +115,7 @@ namespace IBL
 
         }
         /// <summary>
-        /// Reciving the parcel's status according to it's updated times.
+        /// Receiving the parcel's status according to it's updated times.
         /// Requested -> Schedualed -> PickedUp -> Delivered
         /// </summary>
         /// <param name="parcel"></param>
@@ -116,7 +130,7 @@ namespace IBL
                 return ParcelStatus.PickedUp;
             return ParcelStatus.Delivered;
         }
-
+       
         public ParcelBL DisplayParcel(int ParcelID)
         {
             Parcel parcel = Data.GetParcel(ParcelID);
@@ -133,7 +147,11 @@ namespace IBL
                 ParcelToDisplay.DroneInParcel = CreateDroneInParcel(parcel.DroneID);
             return ParcelToDisplay;
         }
-
+        /// <summary>
+        /// Receive drone id and create a DroneInParcel entity
+        /// </summary>
+        /// <param name="droneID"></param>
+        /// <returns>DroneInParcel entity</returns>
         private DroneInParcel CreateDroneInParcel(int droneID)
         {
             DroneToList tempDrone = new DroneToList();
@@ -145,7 +163,7 @@ namespace IBL
             DroneInParcel Drone = new(tempDrone.ID, tempDrone.BatteryStatus, tempDrone.CurrentLocation);
             return Drone;
         }
-
+        
         public string DisplayDistanceFromStation(double longitude1, double latitude1, int StationID)
         {
             double longitude2 = 0, latitude2 = 0;
@@ -159,7 +177,7 @@ namespace IBL
 
             return "The distance is: " + Distance(longitude1, latitude1, longitude2, latitude2) + " km";
         }
-
+       
         public string DisplayDistanceFromCustomer(double longitude1, double latitude1, int CustomerID)
         {
             double longitude2 = 0, latitude2 = 0;

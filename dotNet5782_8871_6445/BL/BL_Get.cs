@@ -9,6 +9,10 @@ namespace IBL
 {
     partial class BL
     {
+        /// <summary>
+        /// Returns a list of every customer that a parcel was sent to him at some point 
+        /// </summary>
+        /// <returns>list of customer</returns>
         private List<Customer> GetPastCustomers()
         {
             List<Customer> PastCustomersList = new();
@@ -17,7 +21,10 @@ namespace IBL
                     PastCustomersList.Add(Data.GetCustomer(parcel.TargetID));
             return PastCustomersList;
         }
-
+        /// <summary>
+        /// Returns a list of all the stations that has open charge slots
+        /// </summary>
+        /// <returns>list of available stations</returns>
         private List<Station> GetAllAvailableStations()
         {
             List<Station> AvailableStationsList = new();

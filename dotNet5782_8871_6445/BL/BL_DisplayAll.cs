@@ -11,6 +11,7 @@ namespace IBL
 {
     partial class BL
     {
+        
         public List<StationToList> DispalyAllStations()
         {
             List<StationToList> stations = new();
@@ -34,7 +35,7 @@ namespace IBL
         {
             return DroneList;
         }
-
+        
         public List<CustomerToList> DispalyAllCustomers()
         {
             List<CustomerToList> customers = new();
@@ -65,7 +66,7 @@ namespace IBL
             }
             return customers;
         }
-
+        
         public List<ParcelToList> DispalyAllParcels()
         {
             List<ParcelToList> parcels = new();
@@ -89,7 +90,7 @@ namespace IBL
             }
             return parcels;
         }
-
+        
         public List<ParcelToList> DispalyAllUnassignedParcels()
         {
             List<ParcelToList> UnassignedParcels = new();
@@ -116,7 +117,7 @@ namespace IBL
             }
             return UnassignedParcels;
         }
-
+       
         public List<StationToList> DispalyAllAvailableStations()
         {
             List<StationToList> AvailableStations = new();

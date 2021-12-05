@@ -13,15 +13,15 @@ namespace IDAL
             public int DroneID { get; set; }
             public WeightCategories Weight { get; set; }
             public Priorities Priority { get; set; }
-            public DateTime TimeRequested { get; set; }
-            public DateTime Scheduled { get; set; }
-            public DateTime PickedUp { get; set; }
-            public DateTime Delivered { get; set; }
+            public DateTime? TimeRequested { get; set; }
+            public DateTime? Scheduled { get; set; }
+            public DateTime? PickedUp { get; set; }
+            public DateTime? Delivered { get; set; }
 
             public Parcel(int id, int sender, int target, int drone,
                           WeightCategories weight, Priorities priority,
-                          DateTime requested, DateTime schedued,
-                          DateTime pickedUp, DateTime delivered)
+                          DateTime? requested, DateTime? schedued,
+                          DateTime? pickedUp, DateTime? delivered)
             {
                 ID = id;
                 SenderID = sender;

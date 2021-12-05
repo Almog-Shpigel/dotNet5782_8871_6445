@@ -104,7 +104,7 @@ namespace IBL
             if (DroneInDelivery.Status != DroneStatus.Delivery)
                 throw new DroneStatusExpetion("This drone is not doing a delivery right now");
             Parcel ParcelToBeDelivered = Data.GetParcel(DroneInDelivery.ParcelID);
-            if (ParcelToBeDelivered.Delivered != DateTime.MinValue || ParcelToBeDelivered.PickedUp == DateTime.MinValue)
+            if (ParcelToBeDelivered.Delivered != null || ParcelToBeDelivered.PickedUp == null)
                 throw new ParcelTimesException("The drone is not carrying the parcel right now");
             Data.ParcelDelivery(ParcelToBeDelivered.ID);
             DroneInDelivery.BatteryStatus -= DistanceDroneCustomer(DroneInDelivery, ParcelToBeDelivered.TargetID);
@@ -132,7 +132,7 @@ namespace IBL
                 throw new DroneStatusExpetion("Can't release a drone that isn't charging");
             DroneToBeAvailable.Status = DroneStatus.Available;
             DroneCharge DroneInCharge = Data.GetDroneCharge(DroneID);
-            double TimeCharged = DateTime.Now.Subtract(DroneInCharge.Start).TotalHours;
+            double TimeCharged = DateTime.Now.Subtract((DateTime)DroneInCharge.Start).TotalHours;
             DroneToBeAvailable.BatteryStatus += BatteryUsed[4] * TimeCharged;
             if (DroneToBeAvailable.BatteryStatus > 100)
                 DroneToBeAvailable.BatteryStatus = 100;
@@ -204,7 +204,7 @@ namespace IBL
             if (DroneInDelivery.Status != DroneStatus.Delivery)
                 throw new DroneNotInDeliveryException("This drone is not in delivery!");
             Parcel ParcelToBeCollected = Data.GetParcel(DroneInDelivery.ParcelID);
-            if (ParcelToBeCollected.PickedUp != DateTime.MinValue)
+            if (ParcelToBeCollected.PickedUp != null)
                 throw new ParcelTimesException("The parcel has been already collected!");
             Data.ParcelCollected(ParcelToBeCollected.ID);
             DroneInDelivery.BatteryStatus -= DistanceDroneCustomer(DroneInDelivery, ParcelToBeCollected.SenderID);

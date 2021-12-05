@@ -128,7 +128,7 @@ namespace DalObject
         }
 
 
-        public void DroneToBeCharge(int DroneID, int StationID, DateTime start)
+        public void DroneToBeCharge(int DroneID, int StationID, DateTime? start)
         {
             if (!DroneExist(DroneID))
                 throw new DroneExistException("The drone dosen't exists in the data!!");

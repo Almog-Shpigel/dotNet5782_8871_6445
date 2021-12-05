@@ -49,14 +49,14 @@ namespace IBL
                 {
                     if (parcel.TargetID == customer.ID)
                     {
-                        if (parcel.Delivered == DateTime.MinValue)
+                        if (parcel.Delivered == null)
                             NewCustomer.ParcelsOnTheWay++;
                         else
                             NewCustomer.ParcelsRecived++;
                     }
                     if (parcel.SenderID == customer.ID)
                     {
-                        if (parcel.Delivered == DateTime.MinValue)
+                        if (parcel.Delivered == null)
                             NewCustomer.SentAndNOTDeliverd++;
                         else
                             NewCustomer.SentAndDeliverd++;
@@ -78,11 +78,11 @@ namespace IBL
                 NewParcel.TargetName = Data.GetCustomer(parcel.TargetID).Name;
                 NewParcel.SenderName = Data.GetCustomer(parcel.SenderID).Name;
                 NewParcel.Weight = parcel.Weight;
-                if (parcel.Delivered != DateTime.MinValue)
+                if (parcel.Delivered != null)
                     NewParcel.Status = ParcelStatus.Delivered;
-                else if (parcel.PickedUp != DateTime.MinValue)
+                else if (parcel.PickedUp != null)
                     NewParcel.Status = ParcelStatus.PickedUp;
-                else if (parcel.Scheduled != DateTime.MinValue)
+                else if (parcel.Scheduled != null)
                     NewParcel.Status = ParcelStatus.Scheduled;
                 else
                     NewParcel.Status = ParcelStatus.Requested;
@@ -104,11 +104,11 @@ namespace IBL
                     NewParcel.TargetName = Data.GetCustomer(parcel.TargetID).Name;
                     NewParcel.SenderName = Data.GetCustomer(parcel.SenderID).Name;
                     NewParcel.Weight = parcel.Weight;
-                    if (parcel.Delivered != DateTime.MinValue)
+                    if (parcel.Delivered != null)
                         NewParcel.Status = ParcelStatus.Delivered;
-                    else if (parcel.PickedUp != DateTime.MinValue)
+                    else if (parcel.PickedUp != null)
                         NewParcel.Status = ParcelStatus.PickedUp;
-                    else if (parcel.Scheduled != DateTime.MinValue)
+                    else if (parcel.Scheduled != null)
                         NewParcel.Status = ParcelStatus.Scheduled;
                     else
                         NewParcel.Status = ParcelStatus.Requested;

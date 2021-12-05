@@ -8,9 +8,9 @@ namespace IDAL
         {
             public int DroneID { get; set; }
             public int StationID { get; set; }
-            public DateTime Start { get; set; }     /// Yair recommended we'll add the time the drone started charging.
+            public DateTime? Start { get; set; }     /// Yair recommended we'll add the time the drone started charging.
 
-            public DroneCharge(int droneID, int stationID, DateTime start)
+            public DroneCharge(int droneID, int stationID, DateTime? start)
             {
                 DroneID = droneID;
                 StationID = stationID;

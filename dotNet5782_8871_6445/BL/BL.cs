@@ -37,10 +37,10 @@ namespace IBL
                 NewDrone.MaxWeight = drone.MaxWeight;
                 foreach (Parcel parcel in Data.GetAllParcels())
                 {
-                    if (parcel.DroneID == drone.ID && parcel.Delivered == DateTime.MinValue)
+                    if (parcel.DroneID == drone.ID && parcel.Delivered == null)
                         NewParcel = parcel;
                 }
-                if (NewParcel.DroneID == drone.ID && NewParcel.Delivered == DateTime.MinValue)
+                if (NewParcel.DroneID == drone.ID && NewParcel.Delivered == null)
                     NewDrone = InitDroneInDelivery(NewDrone, NewParcel);
                 else
                     NewDrone = InitDroneNOTinDelivery(NewDrone);
@@ -64,7 +64,7 @@ namespace IBL
             Customer sender = Data.GetCustomer(parcel.SenderID), target = Data.GetCustomer(parcel.TargetID);
             Station NearestStatTarget = GetNearestStation(target.Latitude, target.Longitude, Data.GetAllStations());
             Station NearestStat = GetNearestStation(sender.Latitude, sender.Longitude, Data.GetAllStations());
-            if (parcel.PickedUp == DateTime.MinValue)      ///Checking if the drone already picked up the parcel or not     
+            if (parcel.PickedUp == null)      ///Checking if the drone already picked up the parcel or not     
                 NewDrone.CurrentLocation = new(NearestStat.Latitude, NearestStat.Longitude);
             else    ///means it did get pickedup
                 NewDrone.CurrentLocation = new(sender.Latitude, sender.Longitude);

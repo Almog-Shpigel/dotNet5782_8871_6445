@@ -17,7 +17,7 @@ namespace IBL
         {
             List<Customer> PastCustomersList = new();
             foreach (Parcel parcel in Data.GetAllParcels())
-                if (parcel.Delivered != DateTime.MinValue)
+                if (parcel.Delivered != null)
                     PastCustomersList.Add(Data.GetCustomer(parcel.TargetID));
             return PastCustomersList;
         }

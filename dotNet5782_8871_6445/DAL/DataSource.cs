@@ -33,10 +33,10 @@ namespace DalObject
         {
             Random rnd = new();
             /// MinValue means we haven't assigned yet a drone to the parcel.
-            DateTime    Requested = DateTime.Now,
-                        Scedualed = DateTime.MinValue,
-                        PickedUp = DateTime.MinValue,
-                        Deliverd = DateTime.MinValue;
+            DateTime?    Requested = DateTime.Now,
+                        Scedualed = null,
+                        PickedUp =null,
+                        Deliverd = null;
             /// Initializing 10 stations.
             for (int i = 0; i < 10; i++)         
             {
@@ -101,14 +101,12 @@ namespace DalObject
                     drone.MaxWeight = NewParcel.Weight;
                     drones[i] = drone;
                 }
-
-                switch (rnd.Next(2, 5))
-                {
-                    case 4: Deliverd = Requested.AddMinutes(rnd.Next(40, 60)); goto case 3; 
-                    case 3: PickedUp = Requested.AddMinutes(rnd.Next(15, 30)); goto case 2;
-                    case 2: Scedualed = Requested.AddMinutes(rnd.Next(3, 10)); break;
-                }
-
+                //switch (rnd.Next(2, 5)) ///need to fix
+                ////{
+                ////    case 4: Deliverd = Requested.AddMinutes(rnd.Next(40, 60)); goto case 3;
+                ////    case 3: PickedUp = Requested.AddMinutes(rnd.Next(15, 30)); goto case 2;
+                ////    case 2: Scedualed = Requested.AddMinutes(rnd.Next(3, 10)); break;
+                ////}
                 NewParcel.DroneID = drones[i].ID;
                 NewParcel.Scheduled = Scedualed;
                 NewParcel.PickedUp = PickedUp;

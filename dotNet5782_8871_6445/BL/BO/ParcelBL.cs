@@ -19,10 +19,10 @@ namespace IBL
             public WeightCategories Weight { get; set; }
             public Priorities Priority { get; set; }
             public DroneInParcel DroneInParcel { get; set; }
-            public DateTime TimeRequested { get; set; }
-            public DateTime Scheduled { get; set; }
-            public DateTime PickedUp { get; set; }
-            public DateTime Delivered { get; set; }
+            public DateTime? TimeRequested { get; set; }
+            public DateTime? Scheduled { get; set; }
+            public DateTime? PickedUp { get; set; }
+            public DateTime? Delivered { get; set; }
 
             public ParcelBL( int sender, int target, WeightCategories weight, Priorities priority)
             {
@@ -32,9 +32,9 @@ namespace IBL
                 Weight = weight;
                 Priority = priority;
                 TimeRequested = DateTime.Now;
-                Scheduled = DateTime.MinValue;
-                PickedUp = DateTime.MinValue;
-                Delivered = DateTime.MinValue;
+                Scheduled =null;
+                PickedUp =null;
+                Delivered =null;
             }
             public override string ToString()
             {

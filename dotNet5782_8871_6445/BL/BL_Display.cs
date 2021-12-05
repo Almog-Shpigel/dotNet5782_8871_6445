@@ -79,7 +79,7 @@ namespace IBL
         /// <returns></returns>
         private bool FindParcelStatus(Parcel parcel)
         {
-            if (parcel.Scheduled == DateTime.MinValue || parcel.Delivered != DateTime.MinValue)
+            if (parcel.Scheduled == null || parcel.Delivered != null)
                 return false;
             return true;
         }
@@ -122,11 +122,11 @@ namespace IBL
         /// <returns>Parcel status</returns>
         private ParcelStatus GetParcelStatus(Parcel parcel)
         {
-            if (parcel.Scheduled == DateTime.MinValue)
+            if (parcel.Scheduled == null)
                 return ParcelStatus.Requested;
-            if (parcel.PickedUp == DateTime.MinValue)
+            if (parcel.PickedUp == null)
                 return ParcelStatus.Scheduled;
-            if (parcel.Delivered == DateTime.MinValue)
+            if (parcel.Delivered == null)
                 return ParcelStatus.PickedUp;
             return ParcelStatus.Delivered;
         }

@@ -33,7 +33,7 @@ namespace IBL
             if (ChangeSlots)
             {
                 Station station = Data.GetStation(StationID);
-                IEnumerable<DroneCharge> AllDroneCharge = Data.GetAllDronesCharge();
+                IEnumerable<DroneCharge> AllDroneCharge = Data.GetDroneCharge(droneCharge => true);
                 int ChargeCounter = 0;
                 foreach (var drone in AllDroneCharge)
                 {
@@ -157,7 +157,7 @@ namespace IBL
             if (DroneToBeAssign.Status != DroneStatus.Available)
                 throw new DroneStatusExpetion("Drone is unavailable for a delivery!");
 
-            IEnumerable<Parcel> AllAvailableParcels = Data.GetAllAvailableParcels();
+            IEnumerable<Parcel> AllAvailableParcels = Data.GetParcels(parcel => parcel.DroneID == 0);
             if (AllAvailableParcels.Count() == 0)
                 throw new NoAvailableParcelsException("There are no parcels to assign at this moment");
             Parcel MaxParcel = AllAvailableParcels.First();

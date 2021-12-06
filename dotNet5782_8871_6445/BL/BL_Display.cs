@@ -17,7 +17,7 @@ namespace IBL
             Station station = Data.GetStation(StationID);
             Location location = new(station.Latitude, station.Longitude);
             StationBL StationToPrint = new(station.ID, station.Name, station.ChargeSlots, location);
-            foreach (DroneCharge DroneCharge in Data.GetAllDronesCharge())
+            foreach (DroneCharge DroneCharge in Data.GetDroneCharge(droneCharge => true))
             {
                 foreach (DroneToList DroneItem in DroneList)
                 {
@@ -89,7 +89,7 @@ namespace IBL
             Customer customer = Data.GetCustomer(CustomerID);
             Location location = new(customer.Latitude, customer.Longitude);
             CustomerBL CustomerToDisplay = new CustomerBL(customer.ID, customer.Name, customer.Phone, location);
-            foreach (var parcel in Data.GetAllParcels())
+            foreach (var parcel in Data.GetParcels(parcel => true))
             {
                 if (parcel.SenderID == CustomerToDisplay.ID)
                     CustomerToDisplay.ParcelesSentByCustomer.Add(CreateParcelAtCustomer(parcel, parcel.TargetID));
@@ -167,7 +167,7 @@ namespace IBL
         public string DisplayDistanceFromStation(double longitude1, double latitude1, int StationID)
         {
             double longitude2 = 0, latitude2 = 0;
-            IEnumerable<Station> stations = Data.GetAllStations();
+            IEnumerable<Station> stations = Data.GetStations(station => true);
             foreach (Station station in stations)
                 if (station.ID == StationID)
                 {
@@ -181,7 +181,7 @@ namespace IBL
         public string DisplayDistanceFromCustomer(double longitude1, double latitude1, int CustomerID)
         {
             double longitude2 = 0, latitude2 = 0;
-            IEnumerable<Customer> customers = Data.GetAllCustomers();
+            IEnumerable<Customer> customers = Data.GetCustomers(customer => true);
             foreach (Customer customer in customers)
                 if (customer.ID == CustomerID)
                 {

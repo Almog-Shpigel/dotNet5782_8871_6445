@@ -11,7 +11,7 @@
     <Grid>
 
         <Grid.Background>
-            <ImageBrush ImageSource="C:\uj100mdp8ep51.JPG"/>
+            <ImageBrush ImageSource="C:\Delivery-By-Drones.PNG"/>
         </Grid.Background>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20"/>

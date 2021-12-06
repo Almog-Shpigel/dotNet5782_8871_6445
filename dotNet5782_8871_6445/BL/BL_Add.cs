@@ -29,7 +29,7 @@ namespace IBL
                 throw new InvalidIDException("Drone ID has to have 6 positive digits.");
             DroneBL.BatteryStatus = GetRandBatteryStatus(20, 41);
             DroneBL.Status = DroneStatus.Charging;
-            IEnumerable<Station> stations = Data.GetAllStations();
+            IEnumerable<Station> stations = Data.GetStations(station => true);
             foreach (Station station in stations)
                 if (station.ID == StationID)
                 {

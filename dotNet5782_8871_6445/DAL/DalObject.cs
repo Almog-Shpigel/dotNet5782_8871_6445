@@ -150,7 +150,7 @@ namespace DalObject
 
         private bool DroneIsCharging(int droneID)
         {
-            foreach (DroneCharge drone in GetAllDronesCharge())
+            foreach (DroneCharge drone in GetDroneCharge(droneCharge => true))
                 if (drone.DroneID == droneID)
                     return true;
             return false;
@@ -317,10 +317,10 @@ namespace DalObject
         #endregion Print
 
         #region Get
-        public IEnumerable<Parcel> GetAllParcels()
-        {
-            return DataSource.parcels;
-        }
+        //public IEnumerable<Parcel> GetAllParcels()
+        //{
+        //    return DataSource.parcels;
+        //}
 
         public IEnumerable<Parcel> GetParcels(Predicate<Parcel> ParcelPredicate)
         {
@@ -328,47 +328,47 @@ namespace DalObject
             return SelectedParcels;
         }
 
-        public IEnumerable<Station> GetAllStations()
-        {
-            return DataSource.stations;
-        }
+        //public IEnumerable<Station> GetStations(station => true)
+        //{
+        //    return DataSource.stations;
+        //}
 
         public IEnumerable<Station> GetStations(Predicate<Station> StationPredicate)
         {
-            IEnumerable<Station> SelectedStations = DataSource.stations.FindAll(StationPredicate);
+            IEnumerable<Station> SelectedStations = DataSource.stations.Where(station => StationPredicate(station));
             return SelectedStations;
         }
 
-        public IEnumerable<Customer> GetAllCustomers()
-        {
-            return DataSource.customers;
-        }
+        //public IEnumerable<Customer> GetCustomers(customer => true)
+        //{
+        //    return DataSource.customers;
+        //}
 
         public IEnumerable<Customer> GetCustomers(Predicate<Customer> CustomerPredicate)
         {
-            IEnumerable<Customer> SelectedCustomers = DataSource.customers.FindAll(CustomerPredicate);
+            IEnumerable<Customer> SelectedCustomers = DataSource.customers.Where(customer => CustomerPredicate(customer));
             return SelectedCustomers;
         }
 
-        public IEnumerable<Drone> GetAllDrones()
-        {
-            return DataSource.drones;
-        }
+        //public IEnumerable<Drone> GetAllDrones()
+        //{
+        //    return DataSource.drones;
+        //}
 
         public IEnumerable<Drone> GetDrones(Predicate<Drone> DronePredicate)
         {
-            IEnumerable<Drone> SelectedDrones = DataSource.drones.FindAll(DronePredicate);
+            IEnumerable<Drone> SelectedDrones = DataSource.drones.Where(drone => DronePredicate(drone));
             return SelectedDrones;
         }
 
-        public IEnumerable<DroneCharge> GetAllDronesCharge()
-        {
-            return DataSource.DroneCharges;
-        }
+        //public IEnumerable<DroneCharge> GetDroneCharge(droneCharge => true)
+        //{
+        //    return DataSource.DroneCharges;
+        //}
 
         public IEnumerable<DroneCharge> GetDroneCharge(Predicate<DroneCharge> DroneChargePredicate)
         {
-            IEnumerable<DroneCharge> SelectedDroneCharge = DataSource.DroneCharges.FindAll(DroneChargePredicate);
+            IEnumerable<DroneCharge> SelectedDroneCharge = DataSource.DroneCharges.Where(droneCharge => DroneChargePredicate(droneCharge));
             return SelectedDroneCharge;
         }
 

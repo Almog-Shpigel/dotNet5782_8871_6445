@@ -15,13 +15,13 @@ namespace IBL
         public List<StationToList> DispalyAllStations()
         {
             List<StationToList> stations = new();
-            foreach (Station station in Data.GetAllStations())
+            foreach (Station station in Data.GetStations(station => true))
             {
                 StationToList NewStation = new();
                 NewStation.ID = station.ID;
                 NewStation.Name = station.Name;
                 NewStation.AvailableChargeSlots = station.ChargeSlots;
-                foreach (IDAL.DO.DroneCharge drone in Data.GetAllDronesCharge())
+                foreach (IDAL.DO.DroneCharge drone in Data.GetDroneCharge(droneCharge => true))
                 {
                     if (drone.StationID == NewStation.ID)
                         NewStation.UsedChargeSlots++;
@@ -31,21 +31,20 @@ namespace IBL
             return stations;
         }
 
-        public List<DroneToList> DispalyAllDrones()
+        public List<DroneToList> GetDrones(Predicate<DroneToList> DronePredicate)
         {
-            return DroneList;
+            List<DroneToList> SelectedDrones = DroneList.Where(drone => DronePredicate(drone)).ToList();
+            return SelectedDrones;
         }
         
         public List<CustomerToList> DispalyAllCustomers()
         {
             List<CustomerToList> customers = new();
-            foreach (Customer customer in Data.GetAllCustomers())
+            foreach (Customer customer in Data.GetCustomers(customer => true))
             {
-                CustomerToList NewCustomer = new();
-                NewCustomer.ID = customer.ID;
-                NewCustomer.Name = customer.Name;
-                NewCustomer.Phone = customer.Phone;
-                foreach (Parcel parcel in Data.GetAllParcels())
+                CustomerToList NewCustomer = new(customer.ID, customer.Name, customer.Phone);
+                
+                foreach (Parcel parcel in Data.GetParcels(parcel => true))
                 {
                     if (parcel.TargetID == customer.ID)
                     {
@@ -70,7 +69,7 @@ namespace IBL
         public List<ParcelToList> DispalyAllParcels()
         {
             List<ParcelToList> parcels = new();
-            foreach (Parcel parcel in Data.GetAllParcels())
+            foreach (Parcel parcel in Data.GetParcels(parcel => true))
             {
                 ParcelToList NewParcel = new();
                 NewParcel.ID = parcel.ID;
@@ -94,7 +93,7 @@ namespace IBL
         public List<ParcelToList> DispalyAllUnassignedParcels()
         {
             List<ParcelToList> UnassignedParcels = new();
-            foreach (Parcel parcel in Data.GetAllParcels())
+            foreach (Parcel parcel in Data.GetParcels(parcel => true))
             {
                 ParcelToList NewParcel = new();
                 if (parcel.DroneID == 0)
@@ -121,13 +120,13 @@ namespace IBL
         public List<StationToList> DispalyAllAvailableStations()
         {
             List<StationToList> AvailableStations = new();
-            foreach (Station station in Data.GetAllStations())
+            foreach (Station station in Data.GetStations(station => true))
             {
                 StationToList NewStation = new();
                 NewStation.ID = station.ID;
                 NewStation.Name = station.Name;
                 NewStation.AvailableChargeSlots = station.ChargeSlots;
-                foreach (IDAL.DO.DroneCharge drone in Data.GetAllDronesCharge())
+                foreach (IDAL.DO.DroneCharge drone in Data.GetDroneCharge(droneCharge => true))
                 {
                     if (drone.StationID == station.ID)
                         NewStation.UsedChargeSlots++;

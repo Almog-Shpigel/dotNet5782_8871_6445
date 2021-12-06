@@ -26,7 +26,7 @@ namespace PL
         {
             InitializeComponent();
             BLW = IBL;
-            DronesListView.ItemsSource = BLW.DispalyAllDrones();
+            DronesListView.ItemsSource = BLW.GetDrones(drone => true);
             StatusSelector.ItemsSource = Enum.GetValues(typeof(DroneStatus));
             WeightSelector.ItemsSource = Enum.GetValues(typeof(WeightCategories));
         }
@@ -38,12 +38,12 @@ namespace PL
 
         private void StatusSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            DronesListView.ItemsSource = BLW.DispalyAllDrones();
+            DronesListView.ItemsSource = BLW.GetDrones(drone => drone.Status == (DroneStatus)e.AddedItems[0]);
         }
 
         private void WeightSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            DronesListView.ItemsSource = BLW.GetDrones(drone => drone.MaxWeight == (WeightCategories)e.AddedItems[0]);
         }
 
         private void AddNewDroneButton_Click(object sender, RoutedEventArgs e)

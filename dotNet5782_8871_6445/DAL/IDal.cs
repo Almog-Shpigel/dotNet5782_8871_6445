@@ -21,6 +21,7 @@ namespace IDAL
         public double DistanceFromStation(double x1, double y1, int StationID);
         public double DistanceFromCustomer(double x1, double y1, int CustomerID);
         public IEnumerable<Parcel> GetAllParcels();
+        public IEnumerable<Parcel> GetParcels(Predicate<Parcel> ParcelPredicate);
         public IEnumerable<Station> GetAllStations();
         public IEnumerable<Customer> GetAllCustomers();
         public IEnumerable<Drone> GetAllDrones();

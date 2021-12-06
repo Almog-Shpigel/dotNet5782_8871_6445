@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IDAL.DO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using static IBL.BO.EnumsBL;
 
 namespace PL
 {
@@ -19,9 +21,34 @@ namespace PL
     /// </summary>
     public partial class DroneListWindow : Window
     {
-        public DroneListWindow()
+        private IBL.BL BLW;
+        public DroneListWindow(IBL.BL IBL)
         {
             InitializeComponent();
+            BLW = IBL;
+            DronesListView.ItemsSource = BLW.DispalyAllDrones();
+            StatusSelector.ItemsSource = Enum.GetValues(typeof(DroneStatus));
+            WeightSelector.ItemsSource = Enum.GetValues(typeof(WeightCategories));
+        }
+
+        private void DronesListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void StatusSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            DronesListView.ItemsSource = BLW.DispalyAllDrones();
+        }
+
+        private void WeightSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void AddNewDroneButton_Click(object sender, RoutedEventArgs e)
+        {
+            new DroneWindow(BLW).Show();
         }
     }
 }

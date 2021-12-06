@@ -11,10 +11,9 @@ namespace IBL
 {
     partial class BL
     {
-        
         public void AddNewStation(StationBL StationBO)
         {
-            if (StationBO.ID < 100000 || StationBO.ID > 999999)
+            if (StationBO.ID is < 100000 or > 999999)
                 throw new InvalidIDException("Invalid station ID number. Must have 6 digits");
             if (StationBO.ChargeSlots < 0)
                 throw new InvalidSlotsException("Charge slots can't be a negative number");
@@ -26,7 +25,7 @@ namespace IBL
        
         public void AddNewDrone(DroneBL DroneBL, int StationID) ///Reciving a drone with name,id and weight, and a staion id to sent it to charge there
         {
-            if (DroneBL.ID < 100000 || DroneBL.ID > 999999)
+            if (DroneBL.ID is < 100000 or > 999999)
                 throw new InvalidIDException("Drone ID has to have 6 positive digits.");
             DroneBL.BatteryStatus = GetRandBatteryStatus(20, 41);
             DroneBL.Status = DroneStatus.Charging;

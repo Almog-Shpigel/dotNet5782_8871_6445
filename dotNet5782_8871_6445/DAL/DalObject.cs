@@ -322,9 +322,21 @@ namespace DalObject
             return DataSource.parcels;
         }
 
+        public IEnumerable<Parcel> GetParcels(Predicate<Parcel> ParcelPredicate)
+        {
+            IEnumerable<Parcel> SelectedParcels = DataSource.parcels.Where(drone => ParcelPredicate(drone));
+            return SelectedParcels;
+        }
+
         public IEnumerable<Station> GetAllStations()
         {
             return DataSource.stations;
+        }
+
+        public IEnumerable<Station> GetStations(Predicate<Station> StationPredicate)
+        {
+            IEnumerable<Station> SelectedStations = DataSource.stations.FindAll(StationPredicate);
+            return SelectedStations;
         }
 
         public IEnumerable<Customer> GetAllCustomers()
@@ -332,15 +344,42 @@ namespace DalObject
             return DataSource.customers;
         }
 
+        public IEnumerable<Customer> GetCustomers(Predicate<Customer> CustomerPredicate)
+        {
+            IEnumerable<Customer> SelectedCustomers = DataSource.customers.FindAll(CustomerPredicate);
+            return SelectedCustomers;
+        }
+
         public IEnumerable<Drone> GetAllDrones()
         {
             return DataSource.drones;
+        }
+
+        public IEnumerable<Drone> GetDrones(Predicate<Drone> DronePredicate)
+        {
+            IEnumerable<Drone> SelectedDrones = DataSource.drones.FindAll(DronePredicate);
+            return SelectedDrones;
         }
 
         public IEnumerable<DroneCharge> GetAllDronesCharge()
         {
             return DataSource.DroneCharges;
         }
+
+        public IEnumerable<DroneCharge> GetDroneCharge(Predicate<DroneCharge> DroneChargePredicate)
+        {
+            IEnumerable<DroneCharge> SelectedDroneCharge = DataSource.DroneCharges.FindAll(DroneChargePredicate);
+            return SelectedDroneCharge;
+        }
+
+
+
+
+
+
+
+
+
         public IEnumerable<Parcel> GetAllAvailableParcels()
         {
             List<Parcel> AvailabledParcelsList = new List<Parcel>();

@@ -167,7 +167,7 @@ namespace ConsoleUI_BL
                         Console.WriteLine(station.ToString());
                     break;
                 case PRINT_CHOICE.PRINT_DRONES:
-                    List<DroneToList> drones = IBL.DispalyAllDrones();
+                    List<DroneToList> drones = IBL.GetDrones(drone => true);;
                     foreach (var drone in drones)
                         Console.WriteLine(drone.ToString());
                     break;
@@ -505,7 +505,7 @@ namespace ConsoleUI_BL
 
         private static void Drones(IBL.BL IBL)
         {
-            List<DroneToList> drones = IBL.DispalyAllDrones();
+            List<DroneToList> drones = IBL.GetDrones(drone => true);;
             foreach (var drone in drones)
                 Console.WriteLine(drone.ToString());
         }

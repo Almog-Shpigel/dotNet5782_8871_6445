@@ -58,6 +58,10 @@ namespace DalObject
         {
             Drone drone = GetDrone(id);
             drone.Model = model;
+            //foreach(var dr in GetDrones(drone =>true))
+            //{
+
+            //}
             for (int i = 0; i < DataSource.drones.Count; i++)
             {
                 if (DataSource.drones[i].ID == drone.ID)

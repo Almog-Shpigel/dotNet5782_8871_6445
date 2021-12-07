@@ -29,6 +29,7 @@ namespace PL
         private void StartButton_Click(object sender, RoutedEventArgs e)
         {
             new DroneListWindow(IBL).Show();
+            Close();
         }
     }
 }

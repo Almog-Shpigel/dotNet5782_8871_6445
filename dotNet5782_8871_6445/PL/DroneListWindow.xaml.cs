@@ -61,6 +61,7 @@ namespace PL
             var item = sender as ListViewItem;
             if (item != null && item.IsSelected)
             {
+                new DroneWindow(BLW, item).Show();
                 Close();
             }
         }

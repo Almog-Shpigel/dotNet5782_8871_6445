@@ -36,10 +36,16 @@
         </Grid>
 
 
-        <ListView x:Name="DronesListView" Grid.Row="1" SelectionChanged="DronesListView_SelectionChanged" Background="Transparent" BorderBrush="Transparent" FontSize="25">
+        <ListView x:Name="DronesListView" Grid.Row="1" SelectionChanged="DronesListView_SelectionChanged" Background="Transparent" BorderBrush="Transparent" FontSize="15">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=ID}" x:Name="IDHead" Header="ID" Width="120"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=Model}" Header="Model"  Width="120"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=MaxWeight}" Header="Weight"  Width="120"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=BatteryStatus}" Header="Battery"  Width="120"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=Status}" Header="Status"  Width="120"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=ParcelID}" Header="Parcel in delivery"  Width="200"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=CurrentLocation}" Header="Location"  Width="300"/>
                 </GridView>
             </ListView.View>
             <ListView.ItemContainerStyle>

@@ -317,21 +317,12 @@ namespace DalObject
         #endregion Print
 
         #region Get
-        //public IEnumerable<Parcel> GetAllParcels()
-        //{
-        //    return DataSource.parcels;
-        //}
 
         public IEnumerable<Parcel> GetParcels(Predicate<Parcel> ParcelPredicate)
         {
-            IEnumerable<Parcel> SelectedParcels = DataSource.parcels.Where(drone => ParcelPredicate(drone));
+            IEnumerable<Parcel> SelectedParcels = DataSource.parcels.Where(parcel => ParcelPredicate(parcel));
             return SelectedParcels;
         }
-
-        //public IEnumerable<Station> GetStations(station => true)
-        //{
-        //    return DataSource.stations;
-        //}
 
         public IEnumerable<Station> GetStations(Predicate<Station> StationPredicate)
         {
@@ -339,21 +330,11 @@ namespace DalObject
             return SelectedStations;
         }
 
-        //public IEnumerable<Customer> GetCustomers(customer => true)
-        //{
-        //    return DataSource.customers;
-        //}
-
         public IEnumerable<Customer> GetCustomers(Predicate<Customer> CustomerPredicate)
         {
             IEnumerable<Customer> SelectedCustomers = DataSource.customers.Where(customer => CustomerPredicate(customer));
             return SelectedCustomers;
         }
-
-        //public IEnumerable<Drone> GetAllDrones()
-        //{
-        //    return DataSource.drones;
-        //}
 
         public IEnumerable<Drone> GetDrones(Predicate<Drone> DronePredicate)
         {
@@ -361,33 +342,12 @@ namespace DalObject
             return SelectedDrones;
         }
 
-        //public IEnumerable<DroneCharge> GetDroneCharge(droneCharge => true)
-        //{
-        //    return DataSource.DroneCharges;
-        //}
-
         public IEnumerable<DroneCharge> GetDroneCharge(Predicate<DroneCharge> DroneChargePredicate)
         {
             IEnumerable<DroneCharge> SelectedDroneCharge = DataSource.DroneCharges.Where(droneCharge => DroneChargePredicate(droneCharge));
             return SelectedDroneCharge;
         }
 
-
-
-
-
-
-
-
-
-        public IEnumerable<Parcel> GetAllAvailableParcels()
-        {
-            List<Parcel> AvailabledParcelsList = new List<Parcel>();
-            for (int i = 0; i < DataSource.parcels.Count(); i++)
-                if (DataSource.parcels[i].DroneID == 0) ///If DroneID is 0 it means the parcel hasn't been assigned yet
-                    AvailabledParcelsList.Add(DataSource.parcels[i]);
-            return AvailabledParcelsList;
-        }
         public Drone GetDrone(int id)
         {
             foreach (Drone drone in DataSource.drones)

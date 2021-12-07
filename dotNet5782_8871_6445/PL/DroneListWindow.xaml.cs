@@ -50,5 +50,19 @@ namespace PL
         {
             new DroneWindow(BLW).Show();
         }
+
+        private void ExitWindow_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        private void ListViewItem_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            var item = sender as ListViewItem;
+            if (item != null && item.IsSelected)
+            {
+                Close();
+            }
+        }
     }
 }

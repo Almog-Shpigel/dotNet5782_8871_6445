@@ -33,13 +33,8 @@ namespace IBL
             if (ChangeSlots)
             {
                 Station station = Data.GetStation(StationID);
-                IEnumerable<DroneCharge> AllDroneCharge = Data.GetDroneCharge(droneCharge => true);
-                int ChargeCounter = 0;
-                foreach (var drone in AllDroneCharge)
-                {
-                    if (drone.StationID == StationID)
-                        ChargeCounter++;
-                }
+                IEnumerable<DroneCharge> AllDroneCharge = Data.GetDroneCharge(droneCharge => droneCharge.StationID == StationID);
+                int ChargeCounter = AllDroneCharge.Count();
                 if (ChargeCounter > slots)
                     throw new InvalidSlotsException("Charge slots can't be less than the number of currently charging drones in the station");
                 Data.UpdateStationSlots(StationID, slots);

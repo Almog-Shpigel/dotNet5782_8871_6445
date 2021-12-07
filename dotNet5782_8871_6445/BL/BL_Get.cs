@@ -13,10 +13,10 @@ namespace IBL
         /// Returns a list of every customer that a parcel was sent to him at some point 
         /// </summary>
         /// <returns>list of customer</returns>
-        private List<Customer> GetPastCustomers()
+        private IEnumerable<Customer> GetPastCustomers()
         {
-            List<Parcel> DeliverdParcels = Data.GetParcels(parcel => parcel.Delivered != null).ToList();
-            List<Customer> PastCustomersList = DeliverdParcels.Select(parcel=>Data.GetCustomer(parcel.TargetID)).ToList();
+            IEnumerable<Parcel> DeliverdParcels = Data.GetParcels(parcel => parcel.Delivered != null);
+            IEnumerable<Customer> PastCustomersList = DeliverdParcels.Select(parcel=>Data.GetCustomer(parcel.TargetID));
             //foreach (Parcel parcel in Data.GetParcels(parcel => true))
             //    if (parcel.Delivered != null)
             //        PastCustomersList.Add(Data.GetCustomer(parcel.TargetID));
@@ -29,9 +29,6 @@ namespace IBL
         private List<Station> GetAllAvailableStations()
         {
             List<Station> AvailableStationsList = Data.GetStations(station => station.ChargeSlots > 0).ToList();
-            //foreach (Station station in Data.GetStations(station => true))
-            //    if (station.ChargeSlots > 0)
-            //        AvailableStationsList.Add(station);
             return AvailableStationsList;
         }
 

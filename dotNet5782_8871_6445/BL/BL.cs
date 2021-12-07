@@ -81,7 +81,7 @@ namespace IBL
             int RandomStation, RandomCustomer;
             DroneStatus option = (DroneStatus)rand.Next(0, 2);     ///Random status, Available or Charging
             List<Station> AllAvailableStations = GetAllAvailableStations();
-            List<Customer> AllPastCustomers = GetPastCustomers();
+           List<Customer> AllPastCustomers = GetPastCustomers().ToList();
             if (AllPastCustomers.Count() == 0)                      ///We are assuming that the odds that there are no available stations are very unlikley
                 option = DroneStatus.Charging;
             switch (option)

@@ -15,10 +15,11 @@ namespace IBL
         /// <returns>list of customer</returns>
         private List<Customer> GetPastCustomers()
         {
-            List<Customer> PastCustomersList = new();
-            foreach (Parcel parcel in Data.GetAllParcels())
-                if (parcel.Delivered != null)
-                    PastCustomersList.Add(Data.GetCustomer(parcel.TargetID));
+            List<Parcel> DeliverdParcels = Data.GetParcels(parcel => parcel.Delivered != null).ToList();
+            List<Customer> PastCustomersList = DeliverdParcels.Select(parcel=>Data.GetCustomer(parcel.TargetID)).ToList();
+            //foreach (Parcel parcel in Data.GetParcels(parcel => true))
+            //    if (parcel.Delivered != null)
+            //        PastCustomersList.Add(Data.GetCustomer(parcel.TargetID));
             return PastCustomersList;
         }
         /// <summary>
@@ -27,10 +28,10 @@ namespace IBL
         /// <returns>list of available stations</returns>
         private List<Station> GetAllAvailableStations()
         {
-            List<Station> AvailableStationsList = new();
-            foreach (Station station in Data.GetAllStations())
-                if (station.ChargeSlots > 0)
-                    AvailableStationsList.Add(station);
+            List<Station> AvailableStationsList = Data.GetStations(station => station.ChargeSlots > 0).ToList();
+            //foreach (Station station in Data.GetStations(station => true))
+            //    if (station.ChargeSlots > 0)
+            //        AvailableStationsList.Add(station);
             return AvailableStationsList;
         }
 

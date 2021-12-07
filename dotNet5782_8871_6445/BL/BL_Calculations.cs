@@ -131,7 +131,7 @@ namespace IBL
         {
             double total;
             Customer sender = Data.GetCustomer(parcel.SenderID), target = Data.GetCustomer(parcel.TargetID);
-            Station NearestStat = GetNearestStation(target.Latitude, target.Longitude, Data.GetAllStations());
+            Station NearestStat = GetNearestStation(target.Latitude, target.Longitude, Data.GetStations(station => true));
             Location SenderLoc, TargetLoc, StationLoc;
 
             SenderLoc = new(sender.Latitude, sender.Longitude);

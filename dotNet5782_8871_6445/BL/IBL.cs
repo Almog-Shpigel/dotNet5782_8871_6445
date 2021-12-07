@@ -18,7 +18,7 @@ namespace IBL
         /// Returns the list of drones saved in BL
         /// </summary>
         /// <returns></returns>
-        public List<DroneToList> DispalyAllDrones();
+        //public List<DroneToList> GetDrones(drone => true);;
         /// <summary>
         /// Function that recive all the customers from data and create a list of CustomerToList and send it to print in console
         /// </summary>

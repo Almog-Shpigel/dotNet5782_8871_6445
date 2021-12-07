@@ -28,14 +28,14 @@ namespace IBL
             DroneList = new List<DroneToList>();
             BatteryUsed = Data.GetBatteryUsed();
 
-            foreach (Drone drone in Data.GetAllDrones())
+            foreach (Drone drone in Data.GetDrones(drone => true))
             {
                 DroneToList NewDrone = new();
                 Parcel NewParcel = new();
                 NewDrone.ID = drone.ID;
                 NewDrone.Model = drone.Model;
                 NewDrone.MaxWeight = drone.MaxWeight;
-                foreach (Parcel parcel in Data.GetAllParcels())
+                foreach (Parcel parcel in Data.GetParcels(parcel => true))
                 {
                     if (parcel.DroneID == drone.ID && parcel.Delivered == null)
                         NewParcel = parcel;
@@ -62,8 +62,8 @@ namespace IBL
             NewDrone.Status = DroneStatus.Delivery;    ///Updating drone's status
             NewDrone.ParcelID = parcel.ID;
             Customer sender = Data.GetCustomer(parcel.SenderID), target = Data.GetCustomer(parcel.TargetID);
-            Station NearestStatTarget = GetNearestStation(target.Latitude, target.Longitude, Data.GetAllStations());
-            Station NearestStat = GetNearestStation(sender.Latitude, sender.Longitude, Data.GetAllStations());
+            Station NearestStatTarget = GetNearestStation(target.Latitude, target.Longitude, Data.GetStations(station => true));
+            Station NearestStat = GetNearestStation(sender.Latitude, sender.Longitude, Data.GetStations(station => true));
             if (parcel.PickedUp == null)      ///Checking if the drone already picked up the parcel or not     
                 NewDrone.CurrentLocation = new(NearestStat.Latitude, NearestStat.Longitude);
             else    ///means it did get pickedup
@@ -91,7 +91,7 @@ namespace IBL
                     RandomCustomer = rand.Next(0, AllPastCustomers.Count());
                     NewDrone.CurrentLocation.Latitude = AllPastCustomers[RandomCustomer].Latitude;
                     NewDrone.CurrentLocation.Longitude = AllPastCustomers[RandomCustomer].Longitude;
-                    nearest = GetNearestStation(NewDrone.CurrentLocation.Latitude, NewDrone.CurrentLocation.Longitude, Data.GetAllStations());
+                    nearest = GetNearestStation(NewDrone.CurrentLocation.Latitude, NewDrone.CurrentLocation.Longitude, Data.GetStations(station => true));
                     NewDrone.BatteryStatus = RandBatteryToStation(NewDrone, new Location(nearest.Latitude, nearest.Longitude), BatteryUsed[0]);
                     break;
                 case DroneStatus.Charging:

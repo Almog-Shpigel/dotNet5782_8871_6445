@@ -1,12 +1,15 @@
 ﻿<Window x:Class="PL.DroneWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Icon="C:\drone.png"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
-        Title="DroneWindow" Height="450" Width="800">
+        Title="DroneWindow" Height="640" Width="950">
     <Grid>
-        
+        <Grid.Background>
+            <ImageBrush ImageSource="C:\uj100mdp8ep51.JPG"/>
+        </Grid.Background>
     </Grid>
 </Window>

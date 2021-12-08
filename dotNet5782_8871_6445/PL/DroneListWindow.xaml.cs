@@ -48,7 +48,7 @@ namespace PL
 
         private void AddNewDroneButton_Click(object sender, RoutedEventArgs e)
         {
-            new DroneWindow(BLW).Show();
+            new DroneWindow(BLW, e).Show();
         }
 
         private void ExitWindow_Click(object sender, RoutedEventArgs e)

@@ -38,6 +38,7 @@ namespace PL
             InvalidBatteryToCompleteDeliveryBlock.Visibility = Visibility.Collapsed;
             ExistsDroneIDBlock.Visibility =Visibility.Collapsed;
             WeightSelector.ItemsSource = Enum.GetValues(typeof(WeightCategories));
+            StationSelector.ItemsSource = BLW.GetAllAvailableStationsID();
             AddNewDroneButton.IsEnabled = false;
             UpdateLayout();
         }
@@ -53,7 +54,7 @@ namespace PL
             EnterDroneIDBox.Visibility = Visibility.Collapsed;
             EnterModelNameBox.Visibility = Visibility.Collapsed;
             WeightSelector.Visibility = Visibility.Collapsed;
-            EnterStationIDBox.Visibility = Visibility.Collapsed;
+            //EnterStationIDBox.Visibility = Visibility.Collapsed;
             AddNewDroneButton.Visibility = Visibility.Collapsed;
             InvalidDroneIDBlock.Visibility = Visibility.Collapsed;
             InvalidStationIDBlock.Visibility = Visibility.Collapsed;
@@ -78,7 +79,6 @@ namespace PL
 
         private void ButtenEnableCheck()
         {
-           
             UpdateDroneToBeChargedButton.IsEnabled = false;
             UpdateReleaseDroneFromChargeButton.IsEnabled = false;
             UpdateParcelAssignToDroneButton.IsEnabled = false;
@@ -126,11 +126,16 @@ namespace PL
 
         private void EnableButton()
         {
+            //if (InvalidDroneIDBlock.Visibility != Visibility.Visible &&
+            //    EnterDroneIDBox.Text != "" &&
+            //   InvalidStationIDBlock.Visibility != Visibility.Visible &&
+            //   EnterStationIDBox.Text != "" &&
+            //   WeightSelector.SelectedIndex != -1)
+            //    AddNewDroneButton.IsEnabled = true;
             if (InvalidDroneIDBlock.Visibility != Visibility.Visible &&
                 EnterDroneIDBox.Text != "" &&
-               InvalidStationIDBlock.Visibility != Visibility.Visible &&
-               EnterStationIDBox.Text != "" &&
-               WeightSelector.SelectedIndex != -1)
+                StationSelector.SelectedIndex != -1 &&
+                WeightSelector.SelectedIndex != -1)
                 AddNewDroneButton.IsEnabled = true;
         }
 
@@ -140,10 +145,11 @@ namespace PL
             DroneBL drone = new(Convert.ToInt32(EnterDroneIDBox.Text), EnterModelNameBox.Text, weight);
             try
             {
-                BLW.AddNewDrone(drone, Convert.ToInt32(EnterStationIDBox.Text));
+                BLW.AddNewDrone(drone, StationSelector.SelectedIndex);
                 EnterDroneIDBox.IsEnabled = false;
                 EnterModelNameBox.IsEnabled = false;
-                EnterStationIDBox.IsEnabled = false;
+                //EnterStationIDBox.IsEnabled = false;
+                StationSelector.IsEnabled = false;
                 WeightSelector.IsEnabled = false;
                 AddNewDroneButton.IsEnabled = false;
 
@@ -168,14 +174,14 @@ namespace PL
             {
                 InvalidStationIDBlock.Text = exp.Message;
                 InvalidStationIDBlock.Visibility = Visibility.Visible;
-                EnterStationIDBox.Foreground = Brushes.Red;
+                //EnterStationIDBox.Foreground = Brushes.Red;
                 AddNewDroneButton.IsEnabled = false;
             }
             catch(InvalidSlotsException exp)
             {
                 InvalidStationIDBlock.Text = exp.Message;
                 InvalidStationIDBlock.Visibility = Visibility.Visible;
-                EnterStationIDBox.Foreground = Brushes.Red;
+                //EnterStationIDBox.Foreground = Brushes.Red;
                 AddNewDroneButton.IsEnabled = false;
             }           
         }
@@ -197,21 +203,21 @@ namespace PL
             }
         }
 
-        private void EnterStationIDBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (!int.TryParse(EnterStationIDBox.Text, out int StationID))
-            {
-                InvalidStationIDBlock.Visibility = Visibility.Visible;
-                EnterStationIDBox.Foreground = Brushes.Red;
-                AddNewDroneButton.IsEnabled = false;
-            }
-            else
-            {
-                InvalidStationIDBlock.Visibility = Visibility.Collapsed;
-                EnterStationIDBox.Foreground = Brushes.Black;
-                EnableButton();
-            }
-        }
+        //private void EnterStationIDBox_TextChanged(object sender, TextChangedEventArgs e)
+        //{
+        //    if (!int.TryParse(EnterStationIDBox.Text, out int StationID))
+        //    {
+        //        InvalidStationIDBlock.Visibility = Visibility.Visible;
+        //        EnterStationIDBox.Foreground = Brushes.Red;
+        //        AddNewDroneButton.IsEnabled = false;
+        //    }
+        //    else
+        //    {
+        //        InvalidStationIDBlock.Visibility = Visibility.Collapsed;
+        //        EnterStationIDBox.Foreground = Brushes.Black;
+        //        EnableButton();
+        //    }
+        //}
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
@@ -260,6 +266,11 @@ namespace PL
             BLW.UpdateParcelDeleiveredByDrone(Convert.ToInt32(IDBlock.Text));
             ButtenEnableCheck();
             DisplayDroneDetailes();
+        }
+
+        private void StationSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
         }
     }
 }

@@ -31,9 +31,13 @@ namespace IBL
             return stations;
         }
 
-        public List<DroneToList> GetDrones(Predicate<DroneToList> DronePredicate)
+        public List<DroneToList> GetDrones(DroneStatus status, WeightCategories weight)
         {
-            List<DroneToList> SelectedDrones = DroneList.Where(drone => DronePredicate(drone)).ToList();
+            List<DroneToList> SelectedDrones = DroneList;
+            if (weight != WeightCategories.Any && (int)weight != -1)
+                SelectedDrones = SelectedDrones.Where(drone => drone.MaxWeight == weight).ToList();
+            if (status != DroneStatus.Any && (int)status != -1)
+                SelectedDrones = SelectedDrones.Where(drone => drone.Status == status).ToList();
             return SelectedDrones;
         }
         
@@ -117,20 +121,14 @@ namespace IBL
             return UnassignedParcels;
         }
        
-        public List<StationToList> DispalyAllAvailableStations()
+        public List<StationToList> GetAllAvailableStationsToList()
         {
             List<StationToList> AvailableStations = new();
-            foreach (Station station in Data.GetStations(station => true))
+
+            foreach (Station station in Data.GetStations(station => station.ChargeSlots > 0))
             {
-                StationToList NewStation = new();
-                NewStation.ID = station.ID;
-                NewStation.Name = station.Name;
-                NewStation.AvailableChargeSlots = station.ChargeSlots;
-                foreach (IDAL.DO.DroneCharge drone in Data.GetDroneCharge(droneCharge => true))
-                {
-                    if (drone.StationID == station.ID)
-                        NewStation.UsedChargeSlots++;
-                }
+                StationToList NewStation = new(station.ID, station.Name, station.ChargeSlots);
+                NewStation.UsedChargeSlots = Data.GetDroneCharge(droneCharge => droneCharge.StationID == station.ID).Count();
                 AvailableStations.Add(NewStation);
             }
             return AvailableStations;

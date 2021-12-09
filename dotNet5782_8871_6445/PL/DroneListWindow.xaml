@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         Title="Drone List" Height="640" Width="950">
 
-    <Grid Name="MainGrid">
+    <Grid Name="MainGrid" Background="#c9cba3">
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
             <RowDefinition Height="400*"/>

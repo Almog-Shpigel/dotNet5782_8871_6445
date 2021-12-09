@@ -23,13 +23,12 @@ namespace IBL
             return PastCustomersList;
         }
         /// <summary>
-        /// Returns a list of all the stations that has open charge slots
+        /// Returns a list of all the stations that has available charge slots
         /// </summary>
         /// <returns>list of available stations</returns>
-        private List<Station> GetAllAvailableStations()
+        private List<Station> GetAllAvailableStationsDO()
         {
-            List<Station> AvailableStationsList = Data.GetStations(station => station.ChargeSlots > 0).ToList();
-            return AvailableStationsList;
+            return Data.GetStations(station => station.ChargeSlots > 0).ToList();
         }
 
         /// <summary>

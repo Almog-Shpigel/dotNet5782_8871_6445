@@ -97,7 +97,7 @@ namespace IBL
                 {
                     if (drone.Status != DroneStatus.Available)
                         throw new DroneStatusExpetion("Drone is not availbale");
-                    NearestStat = GetNearestStation(drone.CurrentLocation.Latitude, drone.CurrentLocation.Longitude, GetAllAvailableStations());
+                    NearestStat = GetNearestStation(drone.CurrentLocation.Latitude, drone.CurrentLocation.Longitude, GetAllAvailableStationsDO());
 
                     if (drone.BatteryStatus < Distance(drone.CurrentLocation.Latitude, drone.CurrentLocation.Longitude, NearestStat.Latitude, NearestStat.Longitude) * BatteryUsed[0])
                         throw new NotEnoughBatteryExpetion("There is not enough battery to reach the nearest station.");

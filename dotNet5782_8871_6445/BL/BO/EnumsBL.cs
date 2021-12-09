@@ -11,7 +11,7 @@ namespace IBL
         public class EnumsBL
         {
             /// Enums for all the menus:
-            public enum DroneStatus { Available, Charging, Delivery }
+            public enum DroneStatus { Available, Charging, Delivery, Any }
             public enum ParcelStatus { Requested, Scheduled , PickedUp , Delivered }
         }
     }

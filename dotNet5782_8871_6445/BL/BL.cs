@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -48,6 +49,17 @@ namespace IBL
                 DroneList.Add(NewDrone);
             }
         }
+
+        public List<DroneToList> GetDrones()
+        {
+            return DroneList;
+        }
+
+        public IEnumerable GetAllAvailableStationsID()
+        {
+            return GetAllAvailableStationsDO().Select(station => station.ID);
+        }
+
         /// <summary>
         /// Initializing the drone to be in a delivery, giving it location and battery according to the status of the delivery.
         /// Location will be either at the station nearest to the sender or at the sender
@@ -80,8 +92,8 @@ namespace IBL
             Station nearest;
             int RandomStation, RandomCustomer;
             DroneStatus option = (DroneStatus)rand.Next(0, 2);     ///Random status, Available or Charging
-            List<Station> AllAvailableStations = GetAllAvailableStations();
-           List<Customer> AllPastCustomers = GetPastCustomers().ToList();
+            List<Station> AllAvailableStations = GetAllAvailableStationsDO();
+            List<Customer> AllPastCustomers = GetPastCustomers().ToList();
             if (AllPastCustomers.Count() == 0)                      ///We are assuming that the odds that there are no available stations are very unlikley
                 option = DroneStatus.Charging;
             switch (option)

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
         Title="DroneWindow" Height="640" Width="950">
-    <Grid>
+    <Grid Background="#c9cba3">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="30"/>
             <ColumnDefinition Width="160"/>
@@ -47,9 +47,10 @@
         <TextBox   x:Name="UpdateNameBlock" Grid.Column="3" Grid.Row="3" Text="" TextWrapping="Wrap" Width="200" FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Center" Height="35"/>
         
 
-        <TextBox x:Name="EnterDroneIDBox"   Grid.Column="2" Grid.Row="2" Height="35" Width="200" FontSize="25" VerticalAlignment="Center" HorizontalAlignment="Center" Text="" TextWrapping="Wrap" TextChanged="EnterDroneIDBox_TextChanged" />
-        <TextBox x:Name="EnterModelNameBox" Grid.Column="2" Grid.Row="3" Height="35" Width="200" FontSize="25" VerticalAlignment="Center" HorizontalAlignment="Center" Text="" TextWrapping="Wrap" />
-        <TextBox x:Name="EnterStationIDBox" Grid.Column="2" Grid.Row="5" Height="35" Width="200" FontSize="25" VerticalAlignment="Center" HorizontalAlignment="Center" Text="" TextWrapping="Wrap" TextChanged="EnterStationIDBox_TextChanged" />
+        <TextBox x:Name="EnterDroneIDBox"   Grid.Column="2" Grid.Row="2" Height="35" Width="200" FontSize="25" TextWrapping="Wrap" />
+        <TextBox x:Name="EnterModelNameBox" Grid.Column="2" Grid.Row="3" Height="35" Width="200" FontSize="25" TextWrapping="Wrap" />
+        <!--<TextBox x:Name="EnterStationIDBox" Grid.Column="2" Grid.Row="5" Height="35" Width="200" FontSize="25" VerticalAlignment="Center" HorizontalAlignment="Center" Text="" TextWrapping="Wrap" TextChanged="EnterStationIDBox_TextChanged" />-->
+        <ComboBox x:Name="StationSelector"  Grid.Column="2" Grid.Row="5" Height="35" Width="200" FontSize="25" SelectionChanged="StationSelector_SelectionChanged"/>
         <ComboBox x:Name="WeightSelector"   Grid.Column="2" Grid.Row="4" Height="35" Width="200" FontSize="25" VerticalAlignment="Center" HorizontalAlignment="Center" SelectionChanged="WeightSelector_SelectionChanged" Background="Transparent" BorderBrush="Transparent"/>
 
         <TextBlock x:Name="InvalidDroneIDBlock"  Grid.Column="3" Grid.Row="2" FontSize="15" VerticalAlignment="Top" HorizontalAlignment= "Left" Margin="15"

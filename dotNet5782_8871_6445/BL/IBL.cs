@@ -38,7 +38,7 @@ namespace IBL
         /// Function that return all the station who has more than 0 charge slots available
         /// </summary>
         /// <returns>list of available stations</returns>
-        public List<StationToList> DispalyAllAvailableStations();
+        public List<StationToList> GetAllAvailableStationsToList();
         /// <summary>
         /// Receiving a station id and converting the station to a StationBL and print it
         /// </summary>

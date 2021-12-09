@@ -197,7 +197,7 @@ namespace DalObject
             while (DataSource.parcels[i].ID != ParcelID) ///Searching for the wanted parcel
                 ++i;
             Parcel NewParcel = DataSource.parcels[i];
-            NewParcel.PickedUp = DateTime.Now;
+            //NewParcel.PickedUp = DateTime.Now;
             NewParcel.DroneID = DroneID;                ///Pairing the parcel with the ID of the drone chose to take it
             NewParcel.Scheduled = DateTime.Now;         ///Updating the scheduled time for the parcel
             DataSource.parcels[i] = NewParcel;

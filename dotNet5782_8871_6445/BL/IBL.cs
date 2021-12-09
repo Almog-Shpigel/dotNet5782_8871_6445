@@ -110,7 +110,7 @@ namespace IBL
         /// and the drone's battery is able to collect the parcel,deliver it and return to a near by station.
         /// </summary>
         /// <param name="DroneID"></param>
-        public void UpdateParcelToDrone(int DroneID);
+        public void UpdateParcelAssignToDrone(int DroneID);
         /// <summary>
         /// Updating that the parcel was delivered to the target by the drone carrying it, updating the drone's location 
         /// to be at the target customer, substracting the battery used from the last location and updating the drone's status to be

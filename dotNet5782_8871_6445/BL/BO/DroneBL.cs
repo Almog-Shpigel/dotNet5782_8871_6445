@@ -28,7 +28,7 @@ namespace IBL
                 MaxWeight = maxWeight;
                 BatteryStatus = batteryStatus;
                 Status = status;
-                Parcel = null;
+                Parcel = new();
                 CurrentLocation = null;
             }
 

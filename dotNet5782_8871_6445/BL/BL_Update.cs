@@ -16,6 +16,8 @@ namespace IBL
         {
             if (id < 100000 || id > 999999)
                 throw new InvalidIDException("Drone ID has to have 6 positive digits.");
+            if (model == "")
+                return;
             Data.UpdateDroneName(id, model);
             foreach (var drone in DroneList)
             {
@@ -55,7 +57,33 @@ namespace IBL
                 Data.UpdateCustomerName(id, name);
 
         }
-        
+
+        public void UpdateDroneAvailable(int DroneID)
+        {
+            int i = 0;
+            if (DroneID < 100000 || DroneID > 999999)
+                throw new InvalidIDException("Drone ID has to have 6 positive digits.");
+            DroneToList DroneToBeAvailable = new();
+            for (i = 0; i < DroneList.Count; i++)
+            {
+                if (DroneList[i].ID == DroneID)
+                {
+                    DroneToBeAvailable = DroneList[i];
+                    break;
+                }
+            }
+            if (DroneToBeAvailable.Status != DroneStatus.Charging)
+                throw new DroneStatusExpetion("Can't release a drone that isn't charging");
+            DroneToBeAvailable.Status = DroneStatus.Available;
+            DroneCharge DroneInCharge = Data.GetDroneCharge(DroneID);
+            double TimeCharged = DateTime.Now.Subtract((DateTime)DroneInCharge.Start).TotalHours;
+            DroneToBeAvailable.BatteryStatus += BatteryUsed[4] * TimeCharged;
+            if (DroneToBeAvailable.BatteryStatus > 100)
+                DroneToBeAvailable.BatteryStatus = 100;
+            Data.DroneAvailable(DroneID);
+            DroneList[i] = DroneToBeAvailable;
+        }
+
         public void UpdateDroneToBeCharged(int DroneID)
         {
             if (DroneID < 100000 || DroneID > 999999)
@@ -82,60 +110,7 @@ namespace IBL
             }
         }
         
-        public void UpdateParcelDeleiveredByDrone(int DroneID)
-        {
-            int i = 0;
-            if (DroneID < 100000 || DroneID > 999999)
-                throw new InvalidIDException("Drone ID has to have 6 positive digits.");
-            DroneToList DroneInDelivery = new();
-            for (i = 0; i < DroneList.Count; i++)
-            {
-                if (DroneList[i].ID == DroneID)
-                {
-                    DroneInDelivery = DroneList[i];
-                    break;
-                }
-            }
-            if (DroneInDelivery.Status != DroneStatus.Delivery)
-                throw new DroneStatusExpetion("This drone is not doing a delivery right now");
-            Parcel ParcelToBeDelivered = Data.GetParcel(DroneInDelivery.ParcelID);
-            if (ParcelToBeDelivered.Delivered != null || ParcelToBeDelivered.PickedUp == null)
-                throw new ParcelTimesException("The drone is not carrying the parcel right now");
-            Data.ParcelDelivery(ParcelToBeDelivered.ID);
-            DroneInDelivery.BatteryStatus -= DistanceDroneCustomer(DroneInDelivery, ParcelToBeDelivered.TargetID);
-            DroneInDelivery.CurrentLocation.Latitude = Data.GetCustomer(ParcelToBeDelivered.TargetID).Latitude;
-            DroneInDelivery.CurrentLocation.Longitude = Data.GetCustomer(ParcelToBeDelivered.TargetID).Longitude;
-            DroneInDelivery.Status = DroneStatus.Available;
-            DroneList[i] = DroneInDelivery;
-        }
-        
-        public void UpdateDroneAvailable(int DroneID)
-        {
-            int i = 0;
-            if (DroneID < 100000 || DroneID > 999999)
-                throw new InvalidIDException("Drone ID has to have 6 positive digits.");
-            DroneToList DroneToBeAvailable = new();
-            for (i = 0; i < DroneList.Count; i++)
-            {
-                if (DroneList[i].ID == DroneID)
-                {
-                    DroneToBeAvailable = DroneList[i];
-                    break;
-                }
-            }
-            if (DroneToBeAvailable.Status != DroneStatus.Charging)
-                throw new DroneStatusExpetion("Can't release a drone that isn't charging");
-            DroneToBeAvailable.Status = DroneStatus.Available;
-            DroneCharge DroneInCharge = Data.GetDroneCharge(DroneID);
-            double TimeCharged = DateTime.Now.Subtract((DateTime)DroneInCharge.Start).TotalHours;
-            DroneToBeAvailable.BatteryStatus += BatteryUsed[4] * TimeCharged;
-            if (DroneToBeAvailable.BatteryStatus > 100)
-                DroneToBeAvailable.BatteryStatus = 100;
-            Data.DroneAvailable(DroneID);
-            DroneList[i] = DroneToBeAvailable;
-        }
-        
-        public void UpdateParcelToDrone(int DroneID)
+        public void UpdateParcelAssignToDrone(int DroneID)
         {
             int i = 0;
             if (DroneID < 100000 || DroneID > 999999)
@@ -205,6 +180,33 @@ namespace IBL
             DroneInDelivery.BatteryStatus -= DistanceDroneCustomer(DroneInDelivery, ParcelToBeCollected.SenderID);
             DroneInDelivery.CurrentLocation.Latitude = Data.GetCustomer(ParcelToBeCollected.SenderID).Latitude;
             DroneInDelivery.CurrentLocation.Longitude = Data.GetCustomer(ParcelToBeCollected.SenderID).Longitude;
+            DroneList[i] = DroneInDelivery;
+        }
+
+        public void UpdateParcelDeleiveredByDrone(int DroneID)
+        {
+            int i = 0;
+            if (DroneID < 100000 || DroneID > 999999)
+                throw new InvalidIDException("Drone ID has to have 6 positive digits.");
+            DroneToList DroneInDelivery = new();
+            for (i = 0; i < DroneList.Count; i++)
+            {
+                if (DroneList[i].ID == DroneID)
+                {
+                    DroneInDelivery = DroneList[i];
+                    break;
+                }
+            }
+            if (DroneInDelivery.Status != DroneStatus.Delivery)
+                throw new DroneStatusExpetion("This drone is not doing a delivery right now");
+            Parcel ParcelToBeDelivered = Data.GetParcel(DroneInDelivery.ParcelID);
+            if (ParcelToBeDelivered.Delivered != null || ParcelToBeDelivered.PickedUp == null)
+                throw new ParcelTimesException("The drone is not carrying the parcel right now");
+            Data.ParcelDelivery(ParcelToBeDelivered.ID);
+            DroneInDelivery.BatteryStatus -= DistanceDroneCustomer(DroneInDelivery, ParcelToBeDelivered.TargetID);
+            DroneInDelivery.CurrentLocation.Latitude = Data.GetCustomer(ParcelToBeDelivered.TargetID).Latitude;
+            DroneInDelivery.CurrentLocation.Longitude = Data.GetCustomer(ParcelToBeDelivered.TargetID).Longitude;
+            DroneInDelivery.Status = DroneStatus.Available;
             DroneList[i] = DroneInDelivery;
         }
     }

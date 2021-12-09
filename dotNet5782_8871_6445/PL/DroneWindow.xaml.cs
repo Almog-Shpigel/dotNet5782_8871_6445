@@ -78,7 +78,7 @@ namespace PL
 
         private void EnableButton()
         {
-            if(InvalidDroneIDBlock.Visibility != Visibility.Visible &&
+            if (InvalidDroneIDBlock.Visibility != Visibility.Visible &&
                 EnterDroneIDBox.Text != "" &&
                InvalidStationIDBlock.Visibility != Visibility.Visible &&
                EnterStationIDBox.Text != "" &&

@@ -1,4 +1,5 @@
-﻿using IBL.BO;
+﻿using IBL;
+using IBL.BO;
 using IDAL.DO;
 using System;
 using System.Windows;
@@ -75,7 +76,7 @@ namespace PL
 
         private void ButtenEnableCheck()
         {
-            ParcelBL parcel = BLW.DisplayParcel(Drone.ParcelID);
+           
             UpdateDroneToBeChargedButton.IsEnabled = false;
             UpdateReleaseDroneFromChargeButton.IsEnabled = false;
             UpdateParcelAssignToDroneButton.IsEnabled = false;
@@ -92,18 +93,19 @@ namespace PL
                 UpdateDroneToBeChargedButton.IsEnabled = true;
                 UpdateParcelAssignToDroneButton.IsEnabled = true;
                 return;
-            }    
+            }
+            ParcelBL parcel = BLW.DisplayParcel(Drone.ParcelID);
             if (parcel.PickedUp != null)
             {
                 UpdateParcelDeleiveredByDroneButton.IsEnabled = true;
                 return;
             }
-            if(parcel.Scheduled != null)
+            if (parcel.Scheduled != null)
             {
                 UpdateParcelCollectedByDroneButton.IsEnabled = true;
                 return;
             }
-            if(parcel.TimeRequested != null)
+            if (parcel.TimeRequested != null)
                 UpdateParcelCollectedByDroneButton.IsEnabled = true;
         }
 
@@ -138,11 +140,37 @@ namespace PL
             {
                 BLW.AddNewDrone(drone, Convert.ToInt32(EnterStationIDBox.Text));
             }
-            catch (Exception)
+            catch (InvalidIDException exp )
             {
-                //ExistsDroneIDBlock.Text = exp.Message;
-                //ExistsDroneIDBlock.Visibility = Visibility.Visible;
+                InvalidDroneIDBlock.Text = exp.Message;
+                InvalidDroneIDBlock.Visibility = Visibility.Visible;
+                EnterDroneIDBox.Foreground = Brushes.Red;
+                AddNewDroneButton.IsEnabled = false;
             }
+            catch (DroneExistExceptionBL exp)
+            {
+                InvalidDroneIDBlock.Text = exp.Message;
+                InvalidDroneIDBlock.Visibility = Visibility.Visible;
+                EnterDroneIDBox.Foreground = Brushes.Red;
+                AddNewDroneButton.IsEnabled = false;
+            }
+            catch(StationExistExceptionBL exp)
+            {
+                InvalidStationIDBlock.Text = exp.Message;
+                InvalidStationIDBlock.Visibility = Visibility.Visible;
+                EnterStationIDBox.Foreground = Brushes.Red;
+                AddNewDroneButton.IsEnabled = false;
+            }
+            catch(InvalidSlotsException exp)
+            {
+                InvalidStationIDBlock.Text = exp.Message;
+                InvalidStationIDBlock.Visibility = Visibility.Visible;
+                EnterStationIDBox.Foreground = Brushes.Red;
+                AddNewDroneButton.IsEnabled = false;
+            }
+            new DroneListWindow(BLW).Show();
+            Close();
+            
         }
 
         private void EnterDroneIDBox_TextChanged(object sender, TextChangedEventArgs e)

@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace IBL.BO
 {
     [Serializable]
-    internal class InvalidSlotsException : Exception
+    public class InvalidSlotsException : Exception
     {
         public InvalidSlotsException()
         {

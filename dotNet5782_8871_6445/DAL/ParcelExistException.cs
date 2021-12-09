@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace DalObject
 {
     [Serializable]
-    internal class ParcelExistException : Exception
+    public class ParcelExistException : Exception
     {
         public ParcelExistException()
         {
@@ -18,7 +18,7 @@ namespace DalObject
         {
         }
 
-        protected ParcelExistException(SerializationInfo info, StreamingContext context) : base(info, context)
+        public ParcelExistException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
         }
     }

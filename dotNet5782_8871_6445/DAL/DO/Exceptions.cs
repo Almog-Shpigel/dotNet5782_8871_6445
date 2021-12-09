@@ -10,7 +10,7 @@ namespace IDAL
     namespace DO
     {
         [Serializable]
-        internal class IcorrectLoctaionException : Exception
+        public class IcorrectLoctaionException : Exception
         {
             public IcorrectLoctaionException()
             {
@@ -48,7 +48,7 @@ namespace IDAL
             }
         }
         [Serializable]
-        internal class DroneExistException : Exception
+        public class DroneExistException : Exception
         {
             public DroneExistException()
             {
@@ -67,7 +67,7 @@ namespace IDAL
             }
         }
         [Serializable]
-        internal class StationExistException : Exception
+        public class StationExistException : Exception
         {
             public StationExistException()
             {

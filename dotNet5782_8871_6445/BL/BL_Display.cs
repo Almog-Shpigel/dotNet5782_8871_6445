@@ -39,7 +39,8 @@ namespace IBL
                 {
                     DroneToDisplay = new(drone.ID, drone.Model, drone.MaxWeight, drone.BatteryStatus, drone.Status); /// battery status needs to be updated every time
                     DroneToDisplay.CurrentLocation = drone.CurrentLocation;
-
+                    if (drone.ParcelID == 0)
+                        return DroneToDisplay;
                     if (DroneToDisplay.Status == DroneStatus.Delivery)
                     {
                         DroneToDisplay.Parcel = InitParcelInDelivery(Data.GetParcel(drone.ParcelID));

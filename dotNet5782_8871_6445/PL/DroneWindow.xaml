@@ -51,15 +51,13 @@
         <TextBox x:Name="EnterModelNameBox" Grid.Column="2" Grid.Row="3" Height="35" Width="200" FontSize="25" VerticalAlignment="Center" HorizontalAlignment="Center" Text="" TextWrapping="Wrap" />
         <TextBox x:Name="EnterStationIDBox" Grid.Column="2" Grid.Row="5" Height="35" Width="200" FontSize="25" VerticalAlignment="Center" HorizontalAlignment="Center" Text="" TextWrapping="Wrap" TextChanged="EnterStationIDBox_TextChanged" />
         <ComboBox x:Name="WeightSelector"   Grid.Column="2" Grid.Row="4" Height="35" Width="200" FontSize="25" VerticalAlignment="Center" HorizontalAlignment="Center" SelectionChanged="WeightSelector_SelectionChanged" Background="Transparent" BorderBrush="Transparent"/>
-        
-        <TextBlock x:Name="InvalidDroneIDBlock"  Grid.Column="3" Grid.Row="2" FontSize="15" VerticalAlignment="Center" HorizontalAlignment= "Left" Margin="15"
-                   Text=" * please enter a valid number" Foreground="Red"/>
-        <!--<TextBlock x:Name="InvalidWeightBlock"  Grid.Column="3" Grid.Row="4" FontSize="15" VerticalAlignment="Center" HorizontalAlignment= "Left" Margin="15"
-                   Text=" * please choose a category" Foreground="Red"/>-->
-        <TextBlock x:Name="InvalidStationIDBlock"  Grid.Column="3" Grid.Row="5" FontSize="15" VerticalAlignment="Center" HorizontalAlignment= "Left" Margin="15"
-                   Text=" * please enter a valid number" Foreground="Red"/>
-        <TextBlock x:Name="ExistsDroneIDBlock"  Grid.Column="3" Grid.Row="2" FontSize="15" VerticalAlignment="Center" HorizontalAlignment= "Left" Margin="15"
-                   Foreground="Red"/>
+
+        <TextBlock x:Name="InvalidDroneIDBlock"  Grid.Column="3" Grid.Row="2" FontSize="15" VerticalAlignment="Top" HorizontalAlignment= "Left" Margin="15"
+                   Text=" * please enter a valid number" Foreground="Red" TextWrapping="Wrap" Grid.RowSpan="2"/>
+        <TextBlock x:Name="InvalidStationIDBlock"  Grid.Column="3" Grid.Row="5" FontSize="15" VerticalAlignment="Top" HorizontalAlignment= "Left" Margin="15"
+                   Text=" * please enter a valid number" Foreground="Red" TextWrapping="Wrap" Grid.RowSpan="2"/>
+        <TextBlock x:Name="ExistsDroneIDBlock"  Grid.Column="3" Grid.Row="2" FontSize="15" VerticalAlignment="Top" HorizontalAlignment= "Left" Margin="15"
+                   Foreground="Red" TextWrapping="Wrap" Grid.RowSpan="2"/>
 
         <Button x:Name="UpdateNameButton"   Grid.Column="4" Grid.Row="3" Content="Update name" Height="35" Width="150"
                 Click="UpdateNameButton_Click" ClickMode="Release" />

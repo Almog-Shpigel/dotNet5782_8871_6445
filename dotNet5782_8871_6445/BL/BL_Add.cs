@@ -38,9 +38,22 @@ namespace IBL
                     DroneBL.CurrentLocation = new(station.Latitude, station.Longitude);
                 }
             Drone NewDrone = new Drone(DroneBL.ID, DroneBL.Model, DroneBL.MaxWeight);
-            Data.AddNewDrone(NewDrone, StationID);              ///Sending the new drone to the data
+            try
+            {
+                Data.AddNewDrone(NewDrone, StationID);              ///Sending the new drone to the data
+            }
+            catch (DroneExistException exp)
+            {
+                throw new DroneExistExceptionBL(exp.Message);
+            }
+            catch(StationExistException exp)
+            {
+                throw new StationExistExceptionBL(exp.Message);
+            }
+            
             DroneToList NewDroneToList = new DroneToList(DroneBL.ID, DroneBL.Model, DroneBL.MaxWeight, DroneBL.BatteryStatus, DroneBL.Status, DroneBL.CurrentLocation, 0);
             DroneList.Add(NewDroneToList);      ///Saving a logic version of the new drone
+            
         }
         
         public void AddNewCustomer(CustomerBL customer)

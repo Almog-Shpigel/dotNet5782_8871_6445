@@ -167,7 +167,7 @@ namespace ConsoleUI_BL
                         Console.WriteLine(station.ToString());
                     break;
                 case PRINT_CHOICE.PRINT_DRONES:
-                    List<DroneToList> drones = IBL.GetDrones(drone => true);;
+                    List<DroneToList> drones = IBL.GetDrones();
                     foreach (var drone in drones)
                         Console.WriteLine(drone.ToString());
                     break;
@@ -187,7 +187,7 @@ namespace ConsoleUI_BL
                         Console.WriteLine(UnassiPar.ToString());
                     break;
                 case PRINT_CHOICE.PRINT_AVAILABLE_STATIONS:
-                    List<StationToList> AvailStats = IBL.DispalyAllAvailableStations();
+                    List<StationToList> AvailStats = IBL.GetAllAvailableStationsToList();
                     foreach (var AvailStat in AvailStats)
                         Console.WriteLine(AvailStat.ToString());
                     break;
@@ -505,7 +505,7 @@ namespace ConsoleUI_BL
 
         private static void Drones(IBL.BL IBL)
         {
-            List<DroneToList> drones = IBL.GetDrones(drone => true);;
+            List<DroneToList> drones = IBL.GetDrones();
             foreach (var drone in drones)
                 Console.WriteLine(drone.ToString());
         }
@@ -534,7 +534,7 @@ namespace ConsoleUI_BL
 
         private static void AvailableStations(IBL.BL IBL)
         {
-            List<StationToList> AvailStats = IBL.DispalyAllAvailableStations();
+            List<StationToList> AvailStats = IBL.GetAllAvailableStationsToList();
             foreach (var AvailStat in AvailStats)
                 Console.WriteLine(AvailStat.ToString());
         }

@@ -351,7 +351,7 @@ namespace ConsoleUI_BL
             int id = RequestID("drone");
             try
             {
-                IBL.UpdateParcelToDrone(id);
+                IBL.UpdateParcelAssignToDrone(id);
             }
             catch (Exception exp)
             {

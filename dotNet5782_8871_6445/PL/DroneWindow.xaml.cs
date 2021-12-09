@@ -15,6 +15,7 @@ namespace PL
         private ListViewItem item;
         private IBL.BL BLW;
         private IBL.BO.DroneToList Drone;
+        private IBL.BO.DroneBL droneBL;
 
         public DroneWindow(IBL.BL IBL, RoutedEventArgs e)
         {
@@ -45,14 +46,6 @@ namespace PL
             BLW = IBL;
             this.item = item;
             Drone = (IBL.BO.DroneToList)item.DataContext;
-            IBL.BO.DroneBL droneBL = BLW.DisplayDrone(Drone.ID);
-            IDBlock.Text = droneBL.ID.ToString();
-            ModelBlock.Text = droneBL.Model;
-            WeightBlock.Text = droneBL.MaxWeight.ToString();
-            BatteryBlock.Text = droneBL.BatteryStatus.ToString();
-            StatusBlock.Text = droneBL.Status.ToString();
-            ParcelBlock.Text = droneBL.Parcel.ID.ToString();
-            LocationBlock.Text = droneBL.CurrentLocation.ToString();
             
             PrintStationIDBlock.Visibility = Visibility.Collapsed;
             EnterDroneIDBox.Visibility = Visibility.Collapsed;
@@ -63,8 +56,21 @@ namespace PL
             InvalidDroneIDBlock.Visibility = Visibility.Collapsed;
             InvalidStationIDBlock.Visibility = Visibility.Collapsed;
             ExistsDroneIDBlock.Visibility = Visibility.Collapsed;
+            DisplayDroneDetailes();
             ButtenEnableCheck();
             UpdateLayout();
+        }
+
+        private void DisplayDroneDetailes()
+        {
+            droneBL = BLW.DisplayDrone(Drone.ID);
+            IDBlock.Text = droneBL.ID.ToString();
+            ModelBlock.Text = droneBL.Model;
+            WeightBlock.Text = droneBL.MaxWeight.ToString();
+            BatteryBlock.Text = droneBL.BatteryStatus.ToString();
+            StatusBlock.Text = droneBL.Status.ToString();
+            ParcelBlock.Text = droneBL.Parcel.ID.ToString();
+            LocationBlock.Text = droneBL.CurrentLocation.ToString();
         }
 
         private void ButtenEnableCheck()
@@ -104,7 +110,7 @@ namespace PL
         private void UpdateNameButton_Click(object sender, RoutedEventArgs e)
         {
             BLW.UpdateDroneName(Convert.ToInt32(IDBlock.Text), UpdateNameBlock.Text);
-            // ModelBlock.Text = UpdateNameBlock.Text;
+            ModelBlock.Text = BLW.DisplayDrone(Convert.ToInt32(IDBlock.Text)).Model;
             // new DroneListWindow(BLW).Show();
             // Needs to change the button to inform the user the update accured
         }
@@ -182,30 +188,35 @@ namespace PL
         {
             BLW.UpdateDroneToBeCharged(Convert.ToInt32(IDBlock.Text));
             ButtenEnableCheck();
+            DisplayDroneDetailes();
         }
 
         private void UpdateReleaseDroneFromChargeButton_Click(object sender, RoutedEventArgs e)
         {
             BLW.UpdateDroneAvailable(Convert.ToInt32(IDBlock.Text));
             ButtenEnableCheck();
+            DisplayDroneDetailes();
         }
 
         private void UpdateParcelAssignToDroneButton_Click(object sender, RoutedEventArgs e)
         {
             BLW.UpdateParcelAssignToDrone(Convert.ToInt32(IDBlock.Text));
             ButtenEnableCheck();
+            DisplayDroneDetailes();
         }
 
         private void UpdateParcelCollectedByDroneButton_Click(object sender, RoutedEventArgs e)
         {
             BLW.UpdateParcelCollectedByDrone(Convert.ToInt32(IDBlock.Text));
             ButtenEnableCheck();
+            DisplayDroneDetailes();
         }
 
         private void UpdateParcelDeleiveredByDroneButton_Click(object sender, RoutedEventArgs e)
         {
             BLW.UpdateParcelDeleiveredByDrone(Convert.ToInt32(IDBlock.Text));
             ButtenEnableCheck();
+            DisplayDroneDetailes();
         }
     }
 }

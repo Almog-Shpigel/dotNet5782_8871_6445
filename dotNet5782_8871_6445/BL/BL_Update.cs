@@ -129,7 +129,7 @@ namespace IBL
 
             IEnumerable<Parcel> AllAvailableParcels = Data.GetParcels(parcel => parcel.DroneID == 0);
             if (AllAvailableParcels.Count() == 0)
-                throw new NoAvailableParcelsException("There are no parcels to assign at this moment");
+                throw new NoAvailableParcelsException("There are no parcels to assign at this moment.");
             Parcel MaxParcel = AllAvailableParcels.First();
             foreach (var parcel in AllAvailableParcels)
             {
@@ -150,7 +150,7 @@ namespace IBL
                 }
             }
             if (!PossibleDelivery(DroneToBeAssign, MaxParcel))
-                throw new NoAvailableParcelsException("There are no parcels that can be assign to this drone at this moment");
+                throw new NoAvailableParcelsException("There is not enough battery to complete a delivery. Try charging the drone.");
             Data.PairParcelToDrone(MaxParcel.ID, DroneToBeAssign.ID);
             DroneToBeAssign.Status = DroneStatus.Delivery;
             DroneToBeAssign.ParcelID = MaxParcel.ID;

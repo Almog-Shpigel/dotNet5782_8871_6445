@@ -56,6 +56,8 @@
                    Text=" * please enter a valid number" Foreground="Red" TextWrapping="Wrap" Grid.RowSpan="2"/>
         <TextBlock x:Name="InvalidStationIDBlock"  Grid.Column="3" Grid.Row="5" FontSize="15" VerticalAlignment="Top" HorizontalAlignment= "Left" Margin="15"
                    Text=" * please enter a valid number" Foreground="Red" TextWrapping="Wrap" Grid.RowSpan="2"/>
+        <TextBlock x:Name="InvalidBatteryToCompleteDeliveryBlock"  Grid.Column="3" Grid.Row="5" FontSize="15" VerticalAlignment="Top" HorizontalAlignment= "Left" Margin="15"
+                   Text=" * please enter a valid number" Foreground="Red" TextWrapping="Wrap" Grid.RowSpan="2"/>
         <TextBlock x:Name="ExistsDroneIDBlock"  Grid.Column="3" Grid.Row="2" FontSize="15" VerticalAlignment="Top" HorizontalAlignment= "Left" Margin="15"
                    Foreground="Red" TextWrapping="Wrap" Grid.RowSpan="2"/>
 

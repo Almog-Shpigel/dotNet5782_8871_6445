@@ -35,6 +35,7 @@ namespace PL
             PrintLocationBlock.Visibility = Visibility.Collapsed;
             InvalidDroneIDBlock.Visibility = Visibility.Collapsed;
             InvalidStationIDBlock.Visibility = Visibility.Collapsed;
+            InvalidBatteryToCompleteDeliveryBlock.Visibility = Visibility.Collapsed;
             ExistsDroneIDBlock.Visibility =Visibility.Collapsed;
             WeightSelector.ItemsSource = Enum.GetValues(typeof(WeightCategories));
             AddNewDroneButton.IsEnabled = false;
@@ -56,6 +57,7 @@ namespace PL
             AddNewDroneButton.Visibility = Visibility.Collapsed;
             InvalidDroneIDBlock.Visibility = Visibility.Collapsed;
             InvalidStationIDBlock.Visibility = Visibility.Collapsed;
+            InvalidBatteryToCompleteDeliveryBlock.Visibility = Visibility.Collapsed;
             ExistsDroneIDBlock.Visibility = Visibility.Collapsed;
             DisplayDroneDetailes();
             ButtenEnableCheck();
@@ -139,6 +141,14 @@ namespace PL
             try
             {
                 BLW.AddNewDrone(drone, Convert.ToInt32(EnterStationIDBox.Text));
+                EnterDroneIDBox.IsEnabled = false;
+                EnterModelNameBox.IsEnabled = false;
+                EnterStationIDBox.IsEnabled = false;
+                WeightSelector.IsEnabled = false;
+                AddNewDroneButton.IsEnabled = false;
+
+                //new DroneListWindow(BLW).Show();
+                //Close();
             }
             catch (InvalidIDException exp )
             {
@@ -167,10 +177,7 @@ namespace PL
                 InvalidStationIDBlock.Visibility = Visibility.Visible;
                 EnterStationIDBox.Foreground = Brushes.Red;
                 AddNewDroneButton.IsEnabled = false;
-            }
-            new DroneListWindow(BLW).Show();
-            Close();
-            
+            }           
         }
 
         private void EnterDroneIDBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -228,7 +235,15 @@ namespace PL
 
         private void UpdateParcelAssignToDroneButton_Click(object sender, RoutedEventArgs e)
         {
-            BLW.UpdateParcelAssignToDrone(Convert.ToInt32(IDBlock.Text));
+            try
+            {
+                BLW.UpdateParcelAssignToDrone(Convert.ToInt32(IDBlock.Text));
+            }
+            catch (Exception exp)
+            {
+                InvalidBatteryToCompleteDeliveryBlock.Visibility = Visibility.Visible;
+                InvalidBatteryToCompleteDeliveryBlock.Text = exp.Message;
+            }
             ButtenEnableCheck();
             DisplayDroneDetailes();
         }

@@ -60,6 +60,7 @@ namespace PL
             InvalidStationIDBlock.Visibility = Visibility.Collapsed;
             InvalidBatteryToCompleteDeliveryBlock.Visibility = Visibility.Collapsed;
             ExistsDroneIDBlock.Visibility = Visibility.Collapsed;
+            StationSelector.Visibility = Visibility.Collapsed;
             DisplayDroneDetailes();
             ButtenEnableCheck();
             UpdateLayout();
@@ -75,6 +76,7 @@ namespace PL
             StatusBlock.Text = droneBL.Status.ToString();
             ParcelBlock.Text = droneBL.Parcel.ID.ToString();
             LocationBlock.Text = droneBL.CurrentLocation.ToString();
+            
         }
 
         private void ButtenEnableCheck()
@@ -134,8 +136,7 @@ namespace PL
             //    AddNewDroneButton.IsEnabled = true;
             if (InvalidDroneIDBlock.Visibility != Visibility.Visible &&
                 EnterDroneIDBox.Text != "" &&
-                StationSelector.SelectedIndex != -1 &&
-                WeightSelector.SelectedIndex != -1)
+                WeightSelector.SelectedIndex != -1 &&  StationSelector.SelectedIndex != -1 )
                 AddNewDroneButton.IsEnabled = true;
         }
 
@@ -145,7 +146,7 @@ namespace PL
             DroneBL drone = new(Convert.ToInt32(EnterDroneIDBox.Text), EnterModelNameBox.Text, weight);
             try
             {
-                BLW.AddNewDrone(drone, StationSelector.SelectedIndex);
+                BLW.AddNewDrone(drone, Convert.ToInt32(StationSelector.Text));
                 EnterDroneIDBox.IsEnabled = false;
                 EnterModelNameBox.IsEnabled = false;
                 //EnterStationIDBox.IsEnabled = false;

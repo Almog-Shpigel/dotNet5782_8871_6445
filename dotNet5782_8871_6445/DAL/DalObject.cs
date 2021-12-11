@@ -123,7 +123,7 @@ namespace DalObject
             Station NewStation;
             DataSource.DroneCharges.Remove(droneCharge);
             for (int i = 0; i < DataSource.stations.Count; ++i)              ///Going through the array to find the wanted station the drone was charged in
-                if(DataSource.stations[i].ID != droneCharge.StationID)
+                if(DataSource.stations[i].ID == droneCharge.StationID)
                 {
                     NewStation = DataSource.stations[i];
                     NewStation.ChargeSlots++;

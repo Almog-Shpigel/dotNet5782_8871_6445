@@ -90,7 +90,6 @@ namespace IBL
                 throw new InvalidIDException("Drone ID has to have 6 positive digits.");
             Drone test = Data.GetDrone(DroneID);    ///Will throw an exception if the drone is not in the data
             Station NearestStat = new();
-            DroneToList DroneToBeCharged = new();
             foreach (DroneToList drone in DroneList)
             {
                 if (drone.ID == DroneID)
@@ -98,7 +97,6 @@ namespace IBL
                     if (drone.Status != DroneStatus.Available)
                         throw new DroneStatusExpetion("Drone is not availbale");
                     NearestStat = GetNearestStation(drone.CurrentLocation.Latitude, drone.CurrentLocation.Longitude, GetAllAvailableStationsDO());
-
                     if (drone.BatteryStatus < Distance(drone.CurrentLocation.Latitude, drone.CurrentLocation.Longitude, NearestStat.Latitude, NearestStat.Longitude) * BatteryUsed[0])
                         throw new NotEnoughBatteryExpetion("There is not enough battery to reach the nearest station.");
                     drone.BatteryStatus -= Distance(drone.CurrentLocation.Latitude, drone.CurrentLocation.Longitude, NearestStat.Latitude, NearestStat.Longitude) * BatteryUsed[0];
@@ -207,6 +205,7 @@ namespace IBL
             DroneInDelivery.CurrentLocation.Latitude = Data.GetCustomer(ParcelToBeDelivered.TargetID).Latitude;
             DroneInDelivery.CurrentLocation.Longitude = Data.GetCustomer(ParcelToBeDelivered.TargetID).Longitude;
             DroneInDelivery.Status = DroneStatus.Available;
+            DroneInDelivery.ParcelID = 0;
             DroneList[i] = DroneInDelivery;
         }
     }

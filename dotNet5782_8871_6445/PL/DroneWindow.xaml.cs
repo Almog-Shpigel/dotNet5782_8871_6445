@@ -37,7 +37,12 @@ namespace PL
             InvalidStationIDBlock.Visibility = Visibility.Collapsed;
             InvalidBatteryToCompleteDeliveryBlock.Visibility = Visibility.Collapsed;
             ExistsDroneIDBlock.Visibility =Visibility.Collapsed;
-            WeightSelector.ItemsSource = Enum.GetValues(typeof(WeightCategories));
+            WeightCategories[] ARR = new WeightCategories[3];
+            ARR[0] = WeightCategories.Light;
+            ARR[1] = WeightCategories.Medium;
+            ARR[2] = WeightCategories.Heavy;
+            //WeightSelector.ItemsSource = Enum.GetValues(typeof(WeightCategories));
+            WeightSelector.ItemsSource = ARR;
             StationSelector.ItemsSource = BLW.GetAllAvailableStationsID();
             AddNewDroneButton.IsEnabled = false;
             UpdateLayout();
@@ -49,12 +54,10 @@ namespace PL
             BLW = IBL;
             this.item = item;
             Drone = (IBL.BO.DroneToList)item.DataContext;
-            
             PrintStationIDBlock.Visibility = Visibility.Collapsed;
             EnterDroneIDBox.Visibility = Visibility.Collapsed;
             EnterModelNameBox.Visibility = Visibility.Collapsed;
             WeightSelector.Visibility = Visibility.Collapsed;
-            //EnterStationIDBox.Visibility = Visibility.Collapsed;
             AddNewDroneButton.Visibility = Visibility.Collapsed;
             InvalidDroneIDBlock.Visibility = Visibility.Collapsed;
             InvalidStationIDBlock.Visibility = Visibility.Collapsed;
@@ -117,8 +120,6 @@ namespace PL
         {
             BLW.UpdateDroneName(Convert.ToInt32(IDBlock.Text), UpdateNameBlock.Text);
             ModelBlock.Text = BLW.DisplayDrone(Convert.ToInt32(IDBlock.Text)).Model;
-            // new DroneListWindow(BLW).Show();
-            // Needs to change the button to inform the user the update accured
         }
 
         private void WeightSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -128,16 +129,13 @@ namespace PL
 
         private void EnableButton()
         {
-            //if (InvalidDroneIDBlock.Visibility != Visibility.Visible &&
-            //    EnterDroneIDBox.Text != "" &&
-            //   InvalidStationIDBlock.Visibility != Visibility.Visible &&
-            //   EnterStationIDBox.Text != "" &&
-            //   WeightSelector.SelectedIndex != -1)
-            //    AddNewDroneButton.IsEnabled = true;
+
             if (InvalidDroneIDBlock.Visibility != Visibility.Visible &&
                 EnterDroneIDBox.Text != "" &&
-                WeightSelector.SelectedIndex != -1 &&  StationSelector.SelectedIndex != -1 )
+                WeightSelector.SelectedIndex != -1 && StationSelector.SelectedIndex != -1 )
                 AddNewDroneButton.IsEnabled = true;
+            else
+                AddNewDroneButton.IsEnabled = false;
         }
 
         private void AddNewDroneButton_Click(object sender, RoutedEventArgs e)
@@ -149,13 +147,11 @@ namespace PL
                 BLW.AddNewDrone(drone, Convert.ToInt32(StationSelector.Text));
                 EnterDroneIDBox.IsEnabled = false;
                 EnterModelNameBox.IsEnabled = false;
-                //EnterStationIDBox.IsEnabled = false;
+
                 StationSelector.IsEnabled = false;
                 WeightSelector.IsEnabled = false;
                 AddNewDroneButton.IsEnabled = false;
 
-                //new DroneListWindow(BLW).Show();
-                //Close();
             }
             catch (InvalidIDException exp )
             {
@@ -175,16 +171,15 @@ namespace PL
             {
                 InvalidStationIDBlock.Text = exp.Message;
                 InvalidStationIDBlock.Visibility = Visibility.Visible;
-                //EnterStationIDBox.Foreground = Brushes.Red;
                 AddNewDroneButton.IsEnabled = false;
             }
             catch(InvalidSlotsException exp)
             {
                 InvalidStationIDBlock.Text = exp.Message;
                 InvalidStationIDBlock.Visibility = Visibility.Visible;
-                //EnterStationIDBox.Foreground = Brushes.Red;
                 AddNewDroneButton.IsEnabled = false;
-            }           
+            }    
+            
         }
 
         private void EnterDroneIDBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -204,21 +199,6 @@ namespace PL
             }
         }
 
-        //private void EnterStationIDBox_TextChanged(object sender, TextChangedEventArgs e)
-        //{
-        //    if (!int.TryParse(EnterStationIDBox.Text, out int StationID))
-        //    {
-        //        InvalidStationIDBlock.Visibility = Visibility.Visible;
-        //        EnterStationIDBox.Foreground = Brushes.Red;
-        //        AddNewDroneButton.IsEnabled = false;
-        //    }
-        //    else
-        //    {
-        //        InvalidStationIDBlock.Visibility = Visibility.Collapsed;
-        //        EnterStationIDBox.Foreground = Brushes.Black;
-        //        EnableButton();
-        //    }
-        //}
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
@@ -228,9 +208,18 @@ namespace PL
 
         private void UpdateDroneToBeChargedButton_Click(object sender, RoutedEventArgs e)
         {
-            BLW.UpdateDroneToBeCharged(Convert.ToInt32(IDBlock.Text));
-            ButtenEnableCheck();
-            DisplayDroneDetailes();
+            InvalidBatteryToCompleteDeliveryBlock.Visibility = Visibility.Collapsed;
+            try
+            {
+                BLW.UpdateDroneToBeCharged(Convert.ToInt32(IDBlock.Text));
+                ButtenEnableCheck();
+                DisplayDroneDetailes();
+            }
+            catch (Exception exp)
+            {
+                InvalidBatteryToCompleteDeliveryBlock.Text = exp.Message;
+                InvalidBatteryToCompleteDeliveryBlock.Visibility = Visibility.Visible;
+            }
         }
 
         private void UpdateReleaseDroneFromChargeButton_Click(object sender, RoutedEventArgs e)
@@ -271,7 +260,7 @@ namespace PL
 
         private void StationSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
-        }
+            EnableButton();
+        } 
     }
 }

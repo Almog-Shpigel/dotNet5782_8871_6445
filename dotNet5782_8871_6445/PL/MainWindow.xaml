@@ -17,7 +17,10 @@
     #723d46
     #472d30
     -->
-    <Grid Background="#c9cba3">
+    <Grid >
+        <Grid.Background>
+            <ImageBrush ImageSource="/aaa.jpg"/>
+        </Grid.Background>
 
 
         <Grid.ColumnDefinitions>
@@ -32,7 +35,11 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
-        <Image HorizontalAlignment="Left" Stretch="UniformToFill" Margin="0,0,0,0" VerticalAlignment="Top" Grid.ColumnSpan="5" Grid.RowSpan="5" Source="/images/aaa.jpg"/>
+        <Image HorizontalAlignment="Left" Stretch="UniformToFill" Margin="0,0,0,0" VerticalAlignment="Top" Grid.ColumnSpan="5" Grid.RowSpan="5" Source="/images/aaa.jpg">
+            <Image.OpacityMask>
+                <ImageBrush ImageSource="/aaa.jpg"/>
+            </Image.OpacityMask>
+        </Image>
         <TextBlock Grid.Column="1" Grid.Row="1" FontSize="56" HorizontalAlignment="Center" VerticalAlignment="Center"
                    Text="Drone Delivery" Grid.ColumnSpan="4" Foreground="#472d30" FontWeight="ExtraBold"/>
         <Button x:Name="ShowDrones" Content="Start" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" Width="240"

@@ -1,11 +1,11 @@
-﻿using IDAL.DO;
+﻿using DO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IDAL
+namespace DalApi
 { 
     public interface IDal
     {
@@ -20,11 +20,6 @@ namespace IDAL
         public void PairParcelToDrone(int ParcelID, int DroneID);
         public double DistanceFromStation(double x1, double y1, int StationID);
         public double DistanceFromCustomer(double x1, double y1, int CustomerID);
-        //public IEnumerable<Parcel> GetAllParcels();
-        //public IEnumerable<Station> GetStations(station => true);
-        //public IEnumerable<Customer> GetCustomers(customer => true);
-        //public IEnumerable<Drone> GetAllDrones();
-        //public IEnumerable<DroneCharge> GetDroneCharge(droneCharge => true);
         public IEnumerable<Parcel> GetParcels(Predicate<Parcel> ParcelPredicate);
         public IEnumerable<Station> GetStations(Predicate<Station> StationPredicate);
         public IEnumerable<Customer> GetCustomers(Predicate<Customer> CustomerPredicate);

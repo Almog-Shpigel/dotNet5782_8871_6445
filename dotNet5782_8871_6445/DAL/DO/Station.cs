@@ -1,7 +1,7 @@
 ﻿using DalObject;
 using static DalObject.DataSource;
 
-namespace IDAL
+namespace DalApi
 {
     namespace DO
     {

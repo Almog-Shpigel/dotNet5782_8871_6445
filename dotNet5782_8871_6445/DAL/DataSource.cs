@@ -1,4 +1,4 @@
-﻿using IDAL.DO;
+﻿using DO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -52,8 +52,8 @@ namespace DalObject
             for (int i = 0; i < 5; i++)         
             {
                 int id = 669000 + drones.Count();
-                string model = ((IDAL.DO.DroneModels)rnd.Next(3)) + " " + drones.Count;
-                IDAL.DO.WeightCategories weight = (IDAL.DO.WeightCategories)rnd.Next(3);
+                string model = ((DO.DroneModels)rnd.Next(3)) + " " + drones.Count;
+                DO.WeightCategories weight = (DO.WeightCategories)rnd.Next(3);
                 Drone NewDrone = new Drone(id, model, weight);
                 drones.Add(NewDrone);
             }
@@ -62,7 +62,7 @@ namespace DalObject
             {
                 int id = rnd.Next(100000000, 1000000000);
                 string phone = "05" + rnd.Next(10000000, 99999999);
-                string name = ((IDAL.DO.CustomerNames)rnd.Next(17)).ToString();
+                string name = ((DO.CustomerNames)rnd.Next(17)).ToString();
                 double latitude = (31 + ((double)rnd.Next(7300, 8300) / 10000)); ///Jerusalem area
                 double longitude = (35 + ((double)rnd.Next(1400, 2700) / 10000)); ///Jerusalem area
                 Customer NewCustomer = new Customer(id, name, phone, longitude, latitude);
@@ -76,8 +76,8 @@ namespace DalObject
                 int reciver = customers[rnd.Next(10)].ID;
                 while (sender == reciver)
                     reciver = customers[rnd.Next(10)].ID;
-                IDAL.DO.WeightCategories weight = (IDAL.DO.WeightCategories)rnd.Next(3);
-                IDAL.DO.Priorities priority = (IDAL.DO.Priorities)rnd.Next(3);
+                DO.WeightCategories weight = (DO.WeightCategories)rnd.Next(3);
+                DO.Priorities priority = (DO.Priorities)rnd.Next(3);
                 /// droneID = 0 means we haven't assigned yet a drone to the parcel.
                 int droneID = 0;
                 Parcel NewParcel = new Parcel(id, sender, reciver, droneID, weight, priority, Requested, Scedualed, PickedUp, Deliverd);

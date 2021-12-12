@@ -1,5 +1,5 @@
-﻿using IDAL;
-using IDAL.DO;
+﻿using DalApi;
+using DO;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace DalObject
 {
-    public class DalObject :IDal
+     class DalObject :IDal
     {
         public DalObject()
         {

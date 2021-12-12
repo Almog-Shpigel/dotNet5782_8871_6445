@@ -1,6 +1,6 @@
 ﻿
 
-namespace IDAL
+namespace DalApi
 {
     namespace DO
     {

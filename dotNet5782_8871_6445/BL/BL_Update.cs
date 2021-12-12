@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using IBL.BO;
-using IDAL.DO;
+using DO;
 using static IBL.BO.EnumsBL;
 
 namespace IBL

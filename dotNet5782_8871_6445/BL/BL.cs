@@ -6,8 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using DalObject;
 using IBL.BO;
-using IDAL;
-using IDAL.DO;
+using DalApi;
+using DO;
 using static IBL.BO.EnumsBL;
 
 
@@ -15,7 +15,7 @@ namespace IBL
 {
     public partial class BL : IBL
     {
-        private IDal Data;
+        private DalApi Data;
         private List<DroneToList> DroneList;
         private Double[] BatteryUsed;
         private static Random rand = new();

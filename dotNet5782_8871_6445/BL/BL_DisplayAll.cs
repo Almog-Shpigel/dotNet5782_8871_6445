@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using IBL.BO;
-using IDAL.DO;
+using DO;
 using static IBL.BO.EnumsBL;
 
 namespace IBL
@@ -21,7 +21,7 @@ namespace IBL
                 NewStation.ID = station.ID;
                 NewStation.Name = station.Name;
                 NewStation.AvailableChargeSlots = station.ChargeSlots;
-                foreach (IDAL.DO.DroneCharge drone in Data.GetDroneCharge(droneCharge => true))
+                foreach (DO.DroneCharge drone in Data.GetDroneCharge(droneCharge => true))
                 {
                     if (drone.StationID == NewStation.ID)
                         NewStation.UsedChargeSlots++;

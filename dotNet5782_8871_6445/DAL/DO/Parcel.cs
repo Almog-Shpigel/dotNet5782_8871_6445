@@ -1,7 +1,7 @@
-﻿using IDAL.DO;
+﻿using DO;
 using System;
 
-namespace IDAL
+namespace DalApi
 {
     namespace DO
     {

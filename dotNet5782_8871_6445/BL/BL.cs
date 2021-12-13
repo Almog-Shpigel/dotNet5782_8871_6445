@@ -5,17 +5,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DalObject;
-using IBL.BO;
+using BO;
 using DalApi;
 using DO;
-using static IBL.BO.EnumsBL;
+using static BO.EnumsBL;
+using DAL;
 
-
-namespace IBL
+namespace BlApi
 {
     public partial class BL : IBL
     {
-        private DalApi Data;
+        private DalApi.IDal Data;
         private List<DroneToList> DroneList;
         private Double[] BatteryUsed;
         private static Random rand = new();
@@ -25,7 +25,7 @@ namespace IBL
         /// </summary>
         public BL()
         {
-            Data = new DalObject.DalObject();
+            Data = DalFactory.GetDal("DalObject");
             DroneList = new List<DroneToList>();
             BatteryUsed = Data.GetBatteryUsed();
 

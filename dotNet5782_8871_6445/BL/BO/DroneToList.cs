@@ -1,8 +1,7 @@
 ﻿using DO;
-using static IBL.BO.EnumsBL;
+using static BO.EnumsBL;
 
-namespace IBL
-{
+
     namespace BO
     {
         public class DroneToList
@@ -43,4 +42,3 @@ namespace IBL
             }
         }
     }
-}

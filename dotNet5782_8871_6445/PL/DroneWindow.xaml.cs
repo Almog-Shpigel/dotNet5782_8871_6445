@@ -1,10 +1,10 @@
-﻿using IBL;
-using IBL.BO;
+﻿using BO;
 using DO;
 using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using BlApi;
 
 namespace PL
 {
@@ -14,11 +14,11 @@ namespace PL
     public partial class DroneWindow : Window
     {
         private ListViewItem item;
-        private IBL.BL BLW;
-        private IBL.BO.DroneToList Drone;
-        private IBL.BO.DroneBL droneBL;
+        private BlApi.IBL BLW;
+        private BO.DroneToList Drone;
+        private BO.DroneBL droneBL;
 
-        public DroneWindow(IBL.BL IBL, RoutedEventArgs e)
+        public DroneWindow(BlApi.IBL IBL, RoutedEventArgs e)
         {
             InitializeComponent(); // Add drone ctor
             BLW = IBL;
@@ -48,12 +48,12 @@ namespace PL
             UpdateLayout();
         }
 
-        public DroneWindow(IBL.BL IBL, ListViewItem item) // Update drone ctor
+        public DroneWindow(BlApi.IBL IBL, ListViewItem item) // Update drone ctor
         {
             InitializeComponent();
             BLW = IBL;
             this.item = item;
-            Drone = (IBL.BO.DroneToList)item.DataContext;
+            Drone = (BO.DroneToList)item.DataContext;
             PrintStationIDBlock.Visibility = Visibility.Collapsed;
             EnterDroneIDBox.Visibility = Visibility.Collapsed;
             EnterModelNameBox.Visibility = Visibility.Collapsed;

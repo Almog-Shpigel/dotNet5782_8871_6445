@@ -36,6 +36,6 @@ namespace DalApi
         public void UpdateCustomerName(int id, string name);
         public void UpdateCustomerPhone(int id, int phone);
         DroneCharge GetDroneCharge(int droneID);
-        //IEnumerable<Parcel> GetAllAvailableParcels();
+
     }
 }

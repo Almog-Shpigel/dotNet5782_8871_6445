@@ -14,7 +14,7 @@ namespace DAL
            switch(DalType)
             {
                 case "DalObject":
-                    return null;        //Needs to return DalObject type
+                    return new DalObject.DalObject();        //Needs to return DalObject type
                     break;
                 case "DalXml ":
                     return null;        //Needs to return DalXml type

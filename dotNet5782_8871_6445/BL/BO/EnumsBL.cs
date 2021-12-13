@@ -4,8 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IBL
-{
+
     namespace BO
     {
         public class EnumsBL
@@ -15,4 +14,3 @@ namespace IBL
             public enum ParcelStatus { Requested, Scheduled , PickedUp , Delivered }
         }
     }
-}

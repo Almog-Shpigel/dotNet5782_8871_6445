@@ -5,10 +5,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static IBL.BO.EnumsBL;
+using static BO.EnumsBL;
 
-namespace IBL
-{
+
     namespace BO
     {
        public class ParcelBL
@@ -52,4 +51,4 @@ namespace IBL
             }
         }
     }
-}
+

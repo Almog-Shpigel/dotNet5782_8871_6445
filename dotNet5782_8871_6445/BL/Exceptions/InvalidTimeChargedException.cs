@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace IBL
+namespace BO
 {
     [Serializable]
     internal class InvalidTimeChargedException : Exception

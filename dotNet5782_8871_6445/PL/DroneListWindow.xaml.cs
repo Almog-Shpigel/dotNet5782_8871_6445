@@ -12,7 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using static IBL.BO.EnumsBL;
+using static BO.EnumsBL;
 
 namespace PL
 {
@@ -21,8 +21,8 @@ namespace PL
     /// </summary>
     public partial class DroneListWindow : Window
     {
-        private IBL.BL BLW;
-        public DroneListWindow(IBL.BL IBL)
+        private BlApi.IBL BLW;
+        public DroneListWindow(BlApi.IBL IBL)
         {
             InitializeComponent();
             BLW = IBL;

@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace IBL
-{
+
     namespace BO
     {
         [Serializable]
@@ -25,4 +24,4 @@ namespace IBL
             }
         }
     }
-}
+

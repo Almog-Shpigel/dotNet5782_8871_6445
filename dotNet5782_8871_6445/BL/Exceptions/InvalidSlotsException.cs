@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace IBL.BO
+namespace BO
 {
     [Serializable]
     public class InvalidSlotsException : Exception

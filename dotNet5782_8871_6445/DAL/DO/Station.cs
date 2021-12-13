@@ -1,8 +1,7 @@
 ﻿using DalObject;
 using static DalObject.DataSource;
 
-namespace DalApi
-{
+
     namespace DO
     {
         public struct Station
@@ -49,4 +48,3 @@ namespace DalApi
             }
         }
     }
-}

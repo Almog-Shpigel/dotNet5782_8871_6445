@@ -1,9 +1,8 @@
 ﻿using System;
-using IBL.BO;
+using BO;
 using System.Collections.Generic;
 
-namespace IBL
-{
+
     namespace BO
     {
        public class CustomerBL
@@ -38,4 +37,4 @@ namespace IBL
         }
     }
     
-}
+

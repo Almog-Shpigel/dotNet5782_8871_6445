@@ -1,8 +1,7 @@
 ﻿using DO;
 using System;
 
-namespace DalApi
-{
+
     namespace DO
     {
         public struct Parcel
@@ -49,4 +48,3 @@ namespace DalApi
             }
         }
     }
-}

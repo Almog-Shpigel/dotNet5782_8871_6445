@@ -4,8 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DalApi
-{
+
     namespace DO
     {
         /// Enums for all the menus:
@@ -19,4 +18,3 @@ namespace DalApi
         public enum DroneModels { Mavic, Skydio, Phantom }
         public enum CustomerNames { Almog, Devora, Amitai, Alon, Gila, Rachel, Yair, Yishai, Ariel, David, Merav, Yoav, Noam, Efart, Rotem, Dor, Shoshana }
     }
-}

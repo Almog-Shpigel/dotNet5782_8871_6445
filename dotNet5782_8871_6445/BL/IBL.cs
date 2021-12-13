@@ -1,11 +1,14 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using IBL.BO;
+using BO;
+using DO;
+using static BO.EnumsBL;
 
-namespace IBL
+namespace BlApi
 {
     public interface IBL
     {
@@ -14,6 +17,9 @@ namespace IBL
         /// </summary>
         /// <returns></returns>
         public List<StationToList> DispalyAllStations();
+        public List<DroneToList> GetDrones();
+        public List<DroneToList> GetDrones(DroneStatus status, WeightCategories weight);
+
         /// <summary>
         /// Returns the list of drones saved in BL
         /// </summary>
@@ -155,6 +161,7 @@ namespace IBL
         /// Adding new parcel to the data, checking if the sender and the target IDs are valid ( contain 9 digits)
         /// </summary>
         /// <param name="parcel"></param>
-        public void AddNewParcel(ParcelBL parcel);      
+        public void AddNewParcel(ParcelBL parcel);
+        public IEnumerable GetAllAvailableStationsID();
     }
 }

@@ -101,12 +101,7 @@ namespace DalObject
                     drone.MaxWeight = NewParcel.Weight;
                     drones[i] = drone;
                 }
-                //switch (rnd.Next(2, 5)) ///need to fix
-                ////{
-                ////    case 4: Deliverd = Requested.AddMinutes(rnd.Next(40, 60)); goto case 3;
-                ////    case 3: PickedUp = Requested.AddMinutes(rnd.Next(15, 30)); goto case 2;
-                ////    case 2: Scedualed = Requested.AddMinutes(rnd.Next(3, 10)); break;
-                ////}
+
                 NewParcel.DroneID = drones[i].ID;
                 NewParcel.Scheduled = Scedualed;
                 NewParcel.PickedUp = PickedUp;

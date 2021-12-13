@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using IBL.BO;
+using BO;
 using DO;
-using static IBL.BO.EnumsBL;
+using static BO.EnumsBL;
 
-namespace IBL
-{
+
     namespace BO
     {
        public class ParcelAtCustomer
@@ -36,4 +35,4 @@ namespace IBL
             }
         }
     }
-}
+

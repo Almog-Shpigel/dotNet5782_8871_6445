@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace IBL.BO
+namespace BO
 {
     [Serializable]
     internal class InvalidPhoneNumberException : Exception

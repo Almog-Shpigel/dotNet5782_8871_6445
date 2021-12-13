@@ -1,5 +1,4 @@
-﻿namespace DalApi
-{
+﻿
     namespace DO
     {
         public struct Customer
@@ -47,4 +46,3 @@
             }
         }
     }
-}

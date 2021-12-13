@@ -7,19 +7,19 @@ using System.Collections.Generic;
 
 namespace ConsoleUI_BL
 {
-    ////public class Program
-    ////{
-    ////    static void Main(string[] args)
-    ////    {
-    ////        BlApi.IBL IBL = new();
-    ////        int MenuChoice;
-    ////        do
-    ////        {
-    ////            Console.WriteLine("Press anykey to start the program...");
-    ////            Console.ReadKey();
-    ////            Console.Clear();
-    ////            MenuChoice = FirstMenu(IBL);                                /// Receives a Menu choice from the user.
-    ////        } while (MenuChoice != 0);
+    //public class Program
+    //{
+    //    static void Main(string[] args)
+    //    {
+    //        BlApi.IBL IBL = new();
+    //        int MenuChoice;
+    //        do
+    //        {
+    //            Console.WriteLine("Press anykey to start the program...");
+    //            Console.ReadKey();
+    //            Console.Clear();
+    //            MenuChoice = FirstMenu(IBL);                                /// Receives a Menu choice from the user.
+    //        } while (MenuChoice != 0);
     //    }
     //    #region Menues
     //    public static int FirstMenu(IBL.BL IBL)                /// Main program menu.
@@ -102,10 +102,10 @@ namespace ConsoleUI_BL
     //            case UPDATE_CHOICE.STATION: UpdateStation(IBL); break;
     //            case UPDATE_CHOICE.CUSTOMER: UpdateCustomer(IBL); break;
     //            case UPDATE_CHOICE.PARCEL_PAIRING: PairParcelToDrone(IBL); break;
-    //            case UPDATE_CHOICE.PARCEL_COLLECTED: ParcelCollectedByDrone(IBL); break;
+    //            case UPDATE_CHOICE.PARCEL_COLLECTED: UpdateParcelCollectedByDrone(IBL); break;
     //            case UPDATE_CHOICE.PARCEL_DELEIVERY: ParcelDeleiveredByDrone(IBL); break;
-    //            case UPDATE_CHOICE.DRONE_TO_CHARGE: DroneToBeCharged(IBL); break;
-    //            case UPDATE_CHOICE.DRONE_AVAILABLE: DroneAvailable(IBL); break;
+    //            case UPDATE_CHOICE.DRONE_TO_CHARGE: UpdateDroneToBeCharged(IBL); break;
+    //            case UPDATE_CHOICE.DRONE_AVAILABLE: UpdateDroneToBeAvailable(IBL); break;
     //        }
     //    }
     //    public static void DISPLAY(IBL.BL IBL)   /// Update menu.
@@ -359,12 +359,12 @@ namespace ConsoleUI_BL
     //        }
     //    }
 
-    //    private static void ParcelCollectedByDrone(IBL.BL IBL)
+    //    private static void UpdateParcelCollectedByDrone(IBL.BL IBL)
     //    {
     //        int id = RequestID("drone");
     //        try
     //        {
-    //            IBL.UpdateParcelCollectedByDrone(id);
+    //            IBL.UpdateUpdateParcelCollectedByDrone(id);
     //        }
     //        catch (Exception exp)
     //        {
@@ -385,12 +385,12 @@ namespace ConsoleUI_BL
     //        }
     //    }
 
-    //    private static void DroneToBeCharged(IBL.BL IBL)
+    //    private static void UpdateDroneToBeCharged(IBL.BL IBL)
     //    {
     //        int id = RequestID("drone");
     //        try
     //        {
-    //            IBL.UpdateDroneToBeCharged(id);
+    //            IBL.UpdateUpdateDroneToBeCharged(id);
     //        }
     //        catch (Exception exp)
     //        {
@@ -398,12 +398,12 @@ namespace ConsoleUI_BL
     //        }
     //    }
 
-    //    private static void DroneAvailable(IBL.BL IBL)
+    //    private static void UpdateDroneToBeAvailable(IBL.BL IBL)
     //    {
     //        int id = RequestID("drone");
     //        try
     //        {
-    //            IBL.UpdateDroneAvailable(id);
+    //            IBL.UpdateUpdateDroneToBeAvailable(id);
     //        }
     //        catch (Exception exp)
     //        {
@@ -573,7 +573,7 @@ namespace ConsoleUI_BL
     //        Location location = new Location(latitude, longitude);
     //        return location;
     //    }
-            
+
     //    private static int RequestChargeSlots()
     //    {
     //        bool success;
@@ -602,7 +602,7 @@ namespace ConsoleUI_BL
     //            "0- Light \n1- Medium \n2- Heavy");
     //            success = int.TryParse(Console.ReadLine(), out weight);       ///Reciving weight category
     //        } while (!success || weight < 0 || weight > 2);
-            
+
     //        return (WeightCategories)weight;
     //    }
 
@@ -616,7 +616,7 @@ namespace ConsoleUI_BL
     //                "0- Regular\n 1- Express\n 2- Urgent");
     //            success = int.TryParse(Console.ReadLine(), out priority);
     //        } while (!success || priority < 0 || priority > 2);
-                
+
     //        return (Priorities)priority;                                    ///Choosing a priority category for the parcel
     //    }
 
@@ -631,7 +631,7 @@ namespace ConsoleUI_BL
     //        Console.Write("Please enter phone number: ");                   ///Reciving phone number
     //        return Console.ReadLine();
     //    }
-        
+
     //    private static int RequestMinutesCharged()
     //    {
     //        bool success;

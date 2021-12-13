@@ -6,11 +6,8 @@
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
         Title="Main Window" Height="640" Width="950">
-
-    <!--<Window.Background>
-        <ImageBrush ImageSource="/images/aaa.jpg"/>
-    </Window.Background>-->
     <!--
+    Colors:
     #c9cba3
     #ffe1a8
     #e26d5c
@@ -31,21 +28,16 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
-            <RowDefinition Height="200"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="350"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
-        <Image HorizontalAlignment="Left" Stretch="UniformToFill" Margin="0,0,0,0" VerticalAlignment="Top" Grid.ColumnSpan="5" Grid.RowSpan="5" Source="/images/aaa.jpg">
-            <Image.OpacityMask>
-                <ImageBrush ImageSource="/aaa.jpg"/>
-            </Image.OpacityMask>
-        </Image>
-        <TextBlock Grid.Column="1" Grid.Row="1" FontSize="56" HorizontalAlignment="Center" VerticalAlignment="Center"
+
+        <TextBlock Grid.Column="1" Grid.Row="2" FontSize="56" HorizontalAlignment="Center" VerticalAlignment="Center"
                    Text="Drone Delivery" Grid.ColumnSpan="4" Foreground="#472d30" FontWeight="ExtraBold"/>
         <Button x:Name="ShowDrones" Content="Start" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" Width="240"
-                Click="StartButton_Click" ClickMode="Release" Grid.Column="2" Grid.Row="2" FontSize="42" FontWeight="Bold" Background="#ffe1a8" Foreground="#723d46"/>
-        <!--<Image Source="images/aaa.jpg" Stretch="UniformToFill" Grid.ColumnSpan="4" Grid.RowSpan="4" Grid.Column="0" Grid.Row="0"/>-->
-
+                Click="StartButton_Click" ClickMode="Release" Grid.Column="2" Grid.Row="3" FontSize="42" FontWeight="Bold" Background="#ffe1a8" Foreground="#723d46"/>
     </Grid>
 
 </Window>

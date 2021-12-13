@@ -11,7 +11,6 @@ namespace BlApi
 {
     partial class BL
     {
-        
         public void UpdateDroneName(int id, string model)
         {
             if (id < 100000 || id > 999999)
@@ -58,7 +57,7 @@ namespace BlApi
 
         }
 
-        public void UpdateDroneAvailable(int DroneID)
+        public void UpdateDroneToBeAvailable(int DroneID)
         {
             int i = 0;
             if (DroneID < 100000 || DroneID > 999999)
@@ -80,7 +79,7 @@ namespace BlApi
             DroneToBeAvailable.BatteryStatus += BatteryUsed[4] * TimeCharged;
             if (DroneToBeAvailable.BatteryStatus > 100)
                 DroneToBeAvailable.BatteryStatus = 100;
-            Data.DroneAvailable(DroneID);
+            Data.UpdateDroneToBeAvailable(DroneID);
             DroneList[i] = DroneToBeAvailable;
         }
 
@@ -88,22 +87,26 @@ namespace BlApi
         {
             if (DroneID < 100000 || DroneID > 999999)
                 throw new InvalidIDException("Drone ID has to have 6 positive digits.");
-            Drone test = Data.GetDrone(DroneID);    ///Will throw an exception if the drone is not in the data
-            Station NearestStat = new();
+            Drone test = Data.GetDrone(DroneID);            ///Will throw an exception if the drone is not in the data
+            Station NearestStatation;
+            Location NearestStataionLocation;
             foreach (DroneToList drone in DroneList)
             {
                 if (drone.ID == DroneID)
                 {
                     if (drone.Status != DroneStatus.Available)
                         throw new DroneStatusExpetion("Drone is not availbale");
-                    NearestStat = GetNearestStation(drone.CurrentLocation.Latitude, drone.CurrentLocation.Longitude, GetAllAvailableStationsDO());
-                    if (drone.BatteryStatus < Distance(drone.CurrentLocation.Latitude, drone.CurrentLocation.Longitude, NearestStat.Latitude, NearestStat.Longitude) * BatteryUsed[0])
-                        throw new NotEnoughBatteryExpetion("There is not enough battery to reach the nearest station.");
-                    drone.BatteryStatus -= Distance(drone.CurrentLocation.Latitude, drone.CurrentLocation.Longitude, NearestStat.Latitude, NearestStat.Longitude) * BatteryUsed[0];
-                    drone.CurrentLocation = new(NearestStat.Latitude, NearestStat.Longitude);
-                    drone.Status = DroneStatus.Charging;
-                    Data.DroneToBeCharge(DroneID, NearestStat.ID, DateTime.Now);
 
+                    NearestStatation = GetNearestStation(drone.CurrentLocation, GetAllAvailableStationsDO());
+                    NearestStataionLocation = new(NearestStatation.Latitude, NearestStatation.Longitude);
+
+                    if (drone.BatteryStatus < Distance(drone.CurrentLocation, NearestStataionLocation) * BatteryUsed[0])
+                        throw new NotEnoughBatteryExpetion("There is not enough battery to reach the nearest station.");
+
+                    drone.BatteryStatus -= Distance(drone.CurrentLocation, NearestStataionLocation) * BatteryUsed[0];
+                    drone.CurrentLocation = new(NearestStataionLocation.Latitude, NearestStataionLocation.Longitude);
+                    drone.Status = DroneStatus.Charging;
+                    Data.UpdateDroneToBeCharge(DroneID, NearestStatation.ID, DateTime.Now);
                 }
             }
         }
@@ -174,7 +177,7 @@ namespace BlApi
             Parcel ParcelToBeCollected = Data.GetParcel(DroneInDelivery.ParcelID);
             if (ParcelToBeCollected.PickedUp != null)
                 throw new ParcelTimesException("The parcel has been already collected!");
-            Data.ParcelCollected(ParcelToBeCollected.ID);
+            Data.UpdateParcelCollected(ParcelToBeCollected.ID);
             DroneInDelivery.BatteryStatus -= DistanceDroneCustomer(DroneInDelivery, ParcelToBeCollected.SenderID);
             DroneInDelivery.CurrentLocation.Latitude = Data.GetCustomer(ParcelToBeCollected.SenderID).Latitude;
             DroneInDelivery.CurrentLocation.Longitude = Data.GetCustomer(ParcelToBeCollected.SenderID).Longitude;
@@ -200,7 +203,7 @@ namespace BlApi
             Parcel ParcelToBeDelivered = Data.GetParcel(DroneInDelivery.ParcelID);
             if (ParcelToBeDelivered.Delivered != null || ParcelToBeDelivered.PickedUp == null)
                 throw new ParcelTimesException("The drone is not carrying the parcel right now");
-            Data.ParcelDelivery(ParcelToBeDelivered.ID);
+            Data.UpdateParcelInDelivery(ParcelToBeDelivered.ID);
             DroneInDelivery.BatteryStatus -= DistanceDroneCustomer(DroneInDelivery, ParcelToBeDelivered.TargetID);
             DroneInDelivery.CurrentLocation.Latitude = Data.GetCustomer(ParcelToBeDelivered.TargetID).Latitude;
             DroneInDelivery.CurrentLocation.Longitude = Data.GetCustomer(ParcelToBeDelivered.TargetID).Longitude;

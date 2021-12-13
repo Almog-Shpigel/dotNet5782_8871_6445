@@ -11,8 +11,7 @@ namespace BlApi
 {
     partial class BL
     {
-        
-        public StationBL DisplayStation(int StationID)
+        public StationBL GetStation(int StationID)
         {
             Station station = Data.GetStation(StationID);
             Location location = new(station.Latitude, station.Longitude);
@@ -31,7 +30,7 @@ namespace BlApi
             return StationToPrint;
         }
         
-        public DroneBL DisplayDrone(int DroneID)
+        public DroneBL GetDrone(int DroneID)
         {
             DroneBL DroneToDisplay;
             foreach (DroneToList drone in DroneList)
@@ -49,6 +48,7 @@ namespace BlApi
                 }
             throw new DroneExistException();
         }
+
         /// <summary>
         /// Function that receive a parcel and initialize ParcelInDelivery entity 
         /// </summary>
@@ -56,23 +56,24 @@ namespace BlApi
         /// <returns> ParcelInDelivery entity </returns>
         private ParcelInDelivery InitParcelInDelivery(Parcel parcel)
         {
-            ParcelInDelivery ParcelDelivery = new ParcelInDelivery();
-            ParcelDelivery.ID = parcel.ID;
-            ParcelDelivery.Priority = parcel.Priority;
-            ParcelDelivery.Weight = parcel.Weight;
+            ParcelInDelivery UpdateParcelInDelivery = new ParcelInDelivery();
+            UpdateParcelInDelivery.ID = parcel.ID;
+            UpdateParcelInDelivery.Priority = parcel.Priority;
+            UpdateParcelInDelivery.Weight = parcel.Weight;
             Customer sender = Data.GetCustomer(parcel.SenderID), target = Data.GetCustomer(parcel.TargetID);
-            ParcelDelivery.Sender.ID = sender.ID;
-            ParcelDelivery.Sender.Name = sender.Name;
-            ParcelDelivery.Target.ID = target.ID;
-            ParcelDelivery.Target.Name = target.Name;
-            ParcelDelivery.PickUpLocation.Latitude = sender.Latitude;
-            ParcelDelivery.PickUpLocation.Longitude = sender.Longitude;
-            ParcelDelivery.TargetLocation.Latitude = target.Latitude;
-            ParcelDelivery.TargetLocation.Longitude = target.Longitude;
-            ParcelDelivery.DeliveryDistance = DistanceCustomerCustomer(sender.ID, target.ID);
-            ParcelDelivery.Status = FindParcelStatus(parcel);
-            return ParcelDelivery;
+            UpdateParcelInDelivery.Sender.ID = sender.ID;
+            UpdateParcelInDelivery.Sender.Name = sender.Name;
+            UpdateParcelInDelivery.Target.ID = target.ID;
+            UpdateParcelInDelivery.Target.Name = target.Name;
+            UpdateParcelInDelivery.PickUpLocation.Latitude = sender.Latitude;
+            UpdateParcelInDelivery.PickUpLocation.Longitude = sender.Longitude;
+            UpdateParcelInDelivery.TargetLocation.Latitude = target.Latitude;
+            UpdateParcelInDelivery.TargetLocation.Longitude = target.Longitude;
+            UpdateParcelInDelivery.DeliveryDistance = DistanceCustomerCustomer(sender.ID, target.ID);
+            UpdateParcelInDelivery.Status = FindParcelStatus(parcel);
+            return UpdateParcelInDelivery;
         }
+
         /// <summary>
         /// Return true if the parcel is in the middle of a delivery and false if it's not
         /// </summary>
@@ -85,7 +86,7 @@ namespace BlApi
             return true;
         }
         
-        public CustomerBL DisplayCustomer(int CustomerID)
+        public CustomerBL GetCustomer(int CustomerID)
         {
             Customer customer = Data.GetCustomer(CustomerID);
             Location location = new(customer.Latitude, customer.Longitude);
@@ -100,6 +101,7 @@ namespace BlApi
             return CustomerToDisplay;
 
         }
+
         /// <summary>
         /// Receive a parcel and customer id and create a ParcelAtCustomer entity
         /// </summary>
@@ -115,6 +117,7 @@ namespace BlApi
             return NewParcel;
 
         }
+
         /// <summary>
         /// Receiving the parcel's status according to it's updated times.
         /// Requested -> Schedualed -> PickedUp -> Delivered
@@ -132,7 +135,7 @@ namespace BlApi
             return ParcelStatus.Delivered;
         }
        
-        public ParcelBL DisplayParcel(int ParcelID)
+        public ParcelBL GetParcel(int ParcelID)
         {
             Parcel parcel = Data.GetParcel(ParcelID);
             ParcelBL ParcelToDisplay = new(parcel.SenderID, parcel.TargetID, parcel.Weight, parcel.Priority);
@@ -148,6 +151,7 @@ namespace BlApi
                 ParcelToDisplay.DroneInParcel = CreateDroneInParcel(parcel.DroneID);
             return ParcelToDisplay;
         }
+
         /// <summary>
         /// Receive drone id and create a DroneInParcel entity
         /// </summary>
@@ -165,32 +169,18 @@ namespace BlApi
             return Drone;
         }
         
-        public string DisplayDistanceFromStation(double longitude1, double latitude1, int StationID)
+        public string DisplayDistanceFromStation(double latitude, double longitude, int StationID)
         {
-            double longitude2 = 0, latitude2 = 0;
-            IEnumerable<Station> stations = Data.GetStations(station => true);
-            foreach (Station station in stations)
-                if (station.ID == StationID)
-                {
-                    longitude2 = station.Longitude;
-                    latitude2 = station.Latitude;
-                }
-
-            return "The distance is: " + Distance(longitude1, latitude1, longitude2, latitude2) + " km";
+            Station station = Data.GetStation(StationID);
+            Location StationLocation = new(station.Latitude, station.Longitude), location = new(latitude, longitude);
+            return "The distance is: " + Distance(StationLocation, location) + " km";
         }
        
         public string DisplayDistanceFromCustomer(double longitude1, double latitude1, int CustomerID)
         {
-            double longitude2 = 0, latitude2 = 0;
-            IEnumerable<Customer> customers = Data.GetCustomers(customer => true);
-            foreach (Customer customer in customers)
-                if (customer.ID == CustomerID)
-                {
-                    longitude2 = customer.Longitude;
-                    latitude2 = customer.Latitude;
-                }
-
-            return "The distance is: " + Distance(longitude1, latitude1, longitude2, latitude2) + " km";
+            Customer customer = Data.GetCustomer(CustomerID);
+            Location CustomerLocation = new(customer.Latitude, customer.Longitude), location = new(latitude1, longitude1);
+            return "The distance is: " + Distance(CustomerLocation, location) + " km";
         }
     }
 }

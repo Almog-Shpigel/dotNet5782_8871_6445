@@ -11,8 +11,7 @@ namespace BlApi
 {
     partial class BL
     {
-        
-        public List<StationToList> DispalyAllStations()
+        public List<StationToList> GatAllStations()
         {
             List<StationToList> stations = new();
             foreach (Station station in Data.GetStations(station => true))
@@ -41,7 +40,7 @@ namespace BlApi
             return SelectedDrones;
         }
         
-        public List<CustomerToList> DispalyAllCustomers()
+        public List<CustomerToList> GetAllCustomers()
         {
             List<CustomerToList> customers = new();
             foreach (Customer customer in Data.GetCustomers(customer => true))
@@ -70,7 +69,7 @@ namespace BlApi
             return customers;
         }
         
-        public List<ParcelToList> DispalyAllParcels()
+        public List<ParcelToList> GetAllParcels()
         {
             List<ParcelToList> parcels = new();
             foreach (Parcel parcel in Data.GetParcels(parcel => true))
@@ -94,7 +93,7 @@ namespace BlApi
             return parcels;
         }
         
-        public List<ParcelToList> DispalyAllUnassignedParcels()
+        public List<ParcelToList> GetAllUnassignedParcels()
         {
             List<ParcelToList> UnassignedParcels = new();
             foreach (Parcel parcel in Data.GetParcels(parcel => true))

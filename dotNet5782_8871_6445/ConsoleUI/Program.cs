@@ -45,7 +45,7 @@
 //                            case UPDATE_CHOICE.PARCEL_COLLECTED:
 //                                Console.Write("Please enter the ID number of Parcel (6 digits): ");
 //                                input = int.TryParse(Console.ReadLine(), out int id);
-//                                Data.ParcelCollected(id);
+//                                Data.UpdateParcelCollected(id);
 //                                break;
 //                            case UPDATE_CHOICE.PARCEL_DELEIVERY:
 //                                Console.Write("Please enter the ID number of Parcel (6 digits): ");
@@ -60,12 +60,12 @@
 //                                foreach (string item in stations)
 //                                    Console.WriteLine(item);
 //                                input = int.TryParse(Console.ReadLine(), out int station);
-//                                Data.DroneToBeCharge(droneID,station);
+//                                Data.UpdateDroneToBeCharge(droneID,station);
 //                                break;
 //                            case UPDATE_CHOICE.DRONE_AVAILABLE:
 //                                Console.Write("Please enter the ID number of Drone (6 digits): ");
 //                                input = int.TryParse(Console.ReadLine(), out int DroneID);
-//                                Data.DroneAvailable(DroneID);
+//                                Data.UpdateDroneToBeAvailable(DroneID);
 //                                break;
 //                        }
 //                        break;

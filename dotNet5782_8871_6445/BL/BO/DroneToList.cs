@@ -24,7 +24,8 @@ using static BO.EnumsBL;
                 CurrentLocation = new(0,0);
                 ParcelID = 0;
             }
-            public DroneToList(int id , string model, WeightCategories weight, double battery, DroneStatus status, Location location, int ParcelId)
+        public DroneToList(int id = 0, string model = "", WeightCategories weight = WeightCategories.Light,
+            double battery = 0, DroneStatus status = DroneStatus.Charging, Location location = null, int ParcelId = 0)
             {
                 ID = id;
                 Model = model;

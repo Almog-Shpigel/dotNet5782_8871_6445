@@ -1,6 +1,7 @@
 ﻿using DO;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,7 +27,7 @@ namespace PL
         {
             InitializeComponent();
             BLW = IBL;
-            DronesListView.ItemsSource = BLW.GetDrones();
+            DronesListView.ItemsSource = BLW.GetAllDrones();
             StatusSelector.ItemsSource = Enum.GetValues(typeof(DroneStatus));
             WeightSelector.ItemsSource = Enum.GetValues(typeof(WeightCategories));
         }

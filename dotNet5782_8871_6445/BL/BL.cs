@@ -2,11 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DalObject;
 using BO;
-using DalApi;
 using DO;
 using static BO.EnumsBL;
 using DAL;
@@ -26,20 +22,17 @@ namespace BlApi
         public BL()
         {
             Data = DalFactory.GetDal("DalObject");
-            DroneList = new List<DroneToList>();
+            DroneList = new();
             BatteryUsed = Data.GetBatteryUsed();
 
             foreach (Drone drone in Data.GetDrones(drone => true))
             {
-                DroneToList NewDrone = new();
                 Parcel NewParcel = new();
-                NewDrone.ID = drone.ID;
-                NewDrone.Model = drone.Model;
-                NewDrone.MaxWeight = drone.MaxWeight;
-                foreach (Parcel parcel in Data.GetParcels(parcel => true))
+                DroneToList NewDrone = new(drone.ID, drone.Model, drone.MaxWeight);
+                
+                foreach (Parcel parcel in Data.GetParcels(parcel => parcel.DroneID == drone.ID && parcel.Delivered == null))
                 {
-                    if (parcel.DroneID == drone.ID && parcel.Delivered == null)
-                        NewParcel = parcel;
+                    NewParcel = parcel;
                 }
                 if (NewParcel.DroneID == drone.ID && NewParcel.Delivered == null)
                     NewDrone = InitDroneInDelivery(NewDrone, NewParcel);
@@ -50,7 +43,7 @@ namespace BlApi
             }
         }
 
-        public List<DroneToList> GetDrones()
+        public List<DroneToList> GetAllDrones()
         {
             return DroneList;
         }
@@ -67,23 +60,22 @@ namespace BlApi
         /// <param name="NewDrone"></param>
         /// <param name="parcel"></param>
         /// <returns>Drone to list object</returns>
-        private DroneToList InitDroneInDelivery(DroneToList NewDrone, Parcel parcel)   
+        private DroneToList InitDroneInDelivery(DroneToList DroneInDelivery, Parcel parcel)   
         {
-            double total;
-            Random rand = new();
-            NewDrone.Status = DroneStatus.Delivery;    ///Updating drone's status
-            NewDrone.ParcelID = parcel.ID;
+            DroneInDelivery.Status = DroneStatus.Delivery;         ///Updating drone's status
+            DroneInDelivery.ParcelID = parcel.ID;
             Customer sender = Data.GetCustomer(parcel.SenderID), target = Data.GetCustomer(parcel.TargetID);
-            Station NearestStatTarget = GetNearestStation(target.Latitude, target.Longitude, Data.GetStations(station => true));
-            Station NearestStat = GetNearestStation(sender.Latitude, sender.Longitude, Data.GetStations(station => true));
-            if (parcel.PickedUp == null)      ///Checking if the drone already picked up the parcel or not     
-                NewDrone.CurrentLocation = new(NearestStat.Latitude, NearestStat.Longitude);
+            Location SenderLocation = new(sender.Latitude, sender.Longitude), TargetLocation = new(target.Latitude, target.Longitude);
+            Station NearestStationToTarget = GetNearestStation(TargetLocation, Data.GetStations(station => true));
+            Station NearestStationTosender = GetNearestStation(SenderLocation, Data.GetStations(station => true));
+            if (parcel.PickedUp == null)            ///Checking if the drone already picked up the parcel or not     
+                DroneInDelivery.CurrentLocation = new(NearestStationTosender.Latitude, NearestStationTosender.Longitude);
             else    ///means it did get pickedup
-                NewDrone.CurrentLocation = new(sender.Latitude, sender.Longitude);
+                DroneInDelivery.CurrentLocation = SenderLocation;
 
-            total = BatteryUsageCurrStation(NewDrone, parcel.SenderID, parcel.TargetID, NearestStat, parcel.Weight); ///Returns the amount of battery needed to complete the delivery
-            NewDrone.BatteryStatus = GetRandBatteryStatus(total, 100);  ///Choosing random battery number between the minimum needed to complete the delivery and full battery
-            return NewDrone;
+            double total = BatteryUsageCurrStation(DroneInDelivery, parcel.SenderID, parcel.TargetID, NearestStationTosender, parcel.Weight); ///Returns the amount of battery needed to complete the delivery
+            DroneInDelivery.BatteryStatus = GetRandBatteryStatus(total, 100);          ///Choosing random battery number between the minimum needed to complete the delivery and full battery
+            return DroneInDelivery;
         }
 
         private DroneToList InitDroneNOTinDelivery(DroneToList NewDrone)
@@ -103,15 +95,14 @@ namespace BlApi
                     RandomCustomer = rand.Next(0, AllPastCustomers.Count());
                     NewDrone.CurrentLocation.Latitude = AllPastCustomers[RandomCustomer].Latitude;
                     NewDrone.CurrentLocation.Longitude = AllPastCustomers[RandomCustomer].Longitude;
-                    nearest = GetNearestStation(NewDrone.CurrentLocation.Latitude, NewDrone.CurrentLocation.Longitude, Data.GetStations(station => true));
+                    nearest = GetNearestStation(NewDrone.CurrentLocation, Data.GetStations(station => true));
                     NewDrone.BatteryStatus = RandBatteryToStation(NewDrone, new Location(nearest.Latitude, nearest.Longitude), BatteryUsed[0]);
                     break;
                 case DroneStatus.Charging:
                     NewDrone.Status = DroneStatus.Charging;
                     RandomStation = rand.Next(0, AllAvailableStations.Count());
-                    Data.DroneToBeCharge(NewDrone.ID, AllAvailableStations[RandomStation].ID, DateTime.Now);
-                    NewDrone.CurrentLocation.Latitude = AllAvailableStations[RandomStation].Latitude;
-                    NewDrone.CurrentLocation.Longitude = AllAvailableStations[RandomStation].Longitude;
+                    Data.UpdateDroneToBeCharge(NewDrone.ID, AllAvailableStations[RandomStation].ID, DateTime.Now);
+                    NewDrone.CurrentLocation = new(AllAvailableStations[RandomStation].Latitude, AllAvailableStations[RandomStation].Longitude);
                     NewDrone.BatteryStatus = GetRandBatteryStatus(0, 21);
                     break;
             }

@@ -23,6 +23,7 @@ namespace BlApi
             //        PastCustomersList.Add(Data.GetCustomer(parcel.TargetID));
             return PastCustomersList;
         }
+
         /// <summary>
         /// Returns a list of all the stations that has available charge slots
         /// </summary>
@@ -39,28 +40,30 @@ namespace BlApi
         /// </para>
         /// </summary>
         /// <returns></returns>
-        private Station GetNearestStation(double latitude, double longitude, IEnumerable<Station> AllStation)
+        private Station GetNearestStation(Location location, IEnumerable<Station> AllStation)
         {
             if (AllStation.Count() == 0)
                 throw new NoAvailableStation("There are no station available.");
-            Station GetNearestStation = new(AllStation.First().ID,
+            Station NearestStation = new(AllStation.First().ID,
                 AllStation.First().Name,
                 AllStation.First().ChargeSlots,
                 AllStation.First().Latitude,
                 AllStation.First().Longitude);
 
+            Location StationLocation = new(NearestStation.Latitude, NearestStation.Longitude);
             double distance, MinDistance;
-            MinDistance = Distance(latitude, longitude, GetNearestStation.Latitude, GetNearestStation.Longitude);
+            MinDistance = Distance(location, StationLocation);
             foreach (Station station in AllStation)
             {
-                distance = Distance(latitude, longitude, station.Latitude, station.Longitude);
+                StationLocation = new(station.Latitude, station.Longitude);
+                distance = Distance(location, StationLocation);
                 if (distance < MinDistance)
                 {
                     MinDistance = distance;
-                    GetNearestStation = new(station.ID, station.Name, station.ChargeSlots, station.Latitude, station.Longitude);
+                    NearestStation = new(station.ID, station.Name, station.ChargeSlots, station.Latitude, station.Longitude);
                 }
             }
-            return GetNearestStation;
+            return NearestStation;
         }
     }
 }

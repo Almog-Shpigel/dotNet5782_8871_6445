@@ -71,7 +71,7 @@ namespace PL
 
         private void DisplayDroneDetailes()
         {
-            droneBL = BLW.DisplayDrone(Drone.ID);
+            droneBL = BLW.GetDrone(Drone.ID);
             IDBlock.Text = droneBL.ID.ToString();
             ModelBlock.Text = droneBL.Model;
             WeightBlock.Text = droneBL.MaxWeight.ToString();
@@ -101,7 +101,8 @@ namespace PL
                 UpdateParcelAssignToDroneButton.IsEnabled = true;
                 return;
             }
-            ParcelBL parcel = BLW.DisplayParcel(Drone.ParcelID);
+
+            ParcelBL parcel = BLW.GetParcel(Drone.ParcelID);
             if (parcel.PickedUp != null)
             {
                 UpdateParcelDeleiveredByDroneButton.IsEnabled = true;
@@ -119,7 +120,7 @@ namespace PL
         private void UpdateNameButton_Click(object sender, RoutedEventArgs e)
         {
             BLW.UpdateDroneName(Convert.ToInt32(IDBlock.Text), UpdateNameBlock.Text);
-            ModelBlock.Text = BLW.DisplayDrone(Convert.ToInt32(IDBlock.Text)).Model;
+            ModelBlock.Text = BLW.GetDrone(Convert.ToInt32(IDBlock.Text)).Model;
         }
 
         private void WeightSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -224,7 +225,7 @@ namespace PL
 
         private void UpdateReleaseDroneFromChargeButton_Click(object sender, RoutedEventArgs e)
         {
-            BLW.UpdateDroneAvailable(Convert.ToInt32(IDBlock.Text));
+            BLW.UpdateDroneToBeAvailable(Convert.ToInt32(IDBlock.Text));
             ButtenEnableCheck();
             DisplayDroneDetailes();
         }

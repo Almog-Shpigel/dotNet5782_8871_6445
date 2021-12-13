@@ -19,9 +19,10 @@ namespace BlApi
         /// <returns></returns>
         private double RandBatteryToStation(DroneToList drone, Location location, double battery)
         {
-            battery = Distance(drone.CurrentLocation.Latitude, drone.CurrentLocation.Longitude, location.Latitude, location.Longitude) * battery;
+            battery = Distance(drone.CurrentLocation, location) * battery;
             return GetRandBatteryStatus(battery, 100);
         }
+
         /// <summary>
         /// reciving a random battery value from the min and max value recived as paremeters
         /// </summary>
@@ -44,6 +45,7 @@ namespace BlApi
                 return MaxBattery;
             return battery;
         }
+
         /// <summary>
         /// Reciving a paremeter multiplier of battey useage according to the weight given, the larger the weight the larger the battery usage
         /// </summary>
@@ -65,6 +67,7 @@ namespace BlApi
             }
             return BatteryUse[0]; //Empty
         }
+
         /// <summary>
         /// Returns the distance (in km) between 2 points
         /// </summary>
@@ -73,11 +76,11 @@ namespace BlApi
         /// <param name="lat2"></param>
         /// <param name="lon2"></param>
         /// <returns>distance (km)</returns>
-        private double Distance(double lat1, double lon1, double lat2, double lon2)
+        private double Distance(Location location1, Location location2)
         {
-            double rlat1 = Math.PI * lat1 / 180;
-            double rlat2 = Math.PI * lat2 / 180;
-            double theta = lon1 - lon2;
+            double rlat1 = Math.PI * location1.Latitude / 180;
+            double rlat2 = Math.PI * location2.Latitude / 180;
+            double theta = location1.Longitude - location2.Longitude;
             double rtheta = Math.PI * theta / 180;
             double dist =
                 Math.Sin(rlat1) * Math.Sin(rlat2) + Math.Cos(rlat1) *
@@ -88,6 +91,7 @@ namespace BlApi
             dist = (int)(dist * 160.9344);
             return dist / 100;
         }
+
         /// <summary>
         /// Return the distance between a specific drone and a specific customer
         /// </summary>
@@ -97,8 +101,10 @@ namespace BlApi
         private double DistanceDroneCustomer(DroneToList drone, int CustomerID)
         {
             Customer customer = Data.GetCustomer(CustomerID);
-            return Distance(drone.CurrentLocation.Latitude, drone.CurrentLocation.Longitude, customer.Latitude, customer.Longitude);
+            Location CustomerLocation = new(customer.Latitude, customer.Longitude);
+            return Distance(drone.CurrentLocation, CustomerLocation);
         }
+
         /// <summary>
         /// Return the distance between two specific customers
         /// </summary>
@@ -108,8 +114,10 @@ namespace BlApi
         private double DistanceCustomerCustomer(int SenderID, int TargetID)
         {
             Customer sender = Data.GetCustomer(SenderID), target = Data.GetCustomer(TargetID);
-            return Distance(sender.Latitude, sender.Longitude, target.Latitude, target.Longitude);
+            Location SenderLocation = new(sender.Latitude, sender.Longitude), TargetLocation = new(target.Latitude, target.Longitude);
+            return Distance(SenderLocation, TargetLocation);
         }
+
         /// <summary>
         /// Return the distance between a specific customer and a specific station
         /// </summary>
@@ -119,8 +127,10 @@ namespace BlApi
         private double DistanceCustomerStation(int CustomerID, Station station)
         {
             Customer customer = Data.GetCustomer(CustomerID);
-            return Distance(customer.Latitude, customer.Longitude, station.Latitude, station.Longitude);
+            Location CustomerLocation = new(customer.Latitude, customer.Longitude), StationLocation = new(station.Latitude, station.Longitude);
+            return Distance(CustomerLocation, StationLocation);
         }
+
         /// <summary>
         /// Function to check if a drone is capable of doing a delivery, return true if he can or false if can't
         /// </summary>
@@ -131,7 +141,8 @@ namespace BlApi
         {
             double total;
             Customer sender = Data.GetCustomer(parcel.SenderID), target = Data.GetCustomer(parcel.TargetID);
-            Station NearestStat = GetNearestStation(target.Latitude, target.Longitude, Data.GetStations(station => true));
+            Location TargetLocation = new(target.Latitude, target.Longitude);
+            Station NearestStat = GetNearestStation(TargetLocation, Data.GetStations(station => true));
             Location SenderLoc, TargetLoc, StationLoc;
 
             SenderLoc = new(sender.Latitude, sender.Longitude);
@@ -143,6 +154,7 @@ namespace BlApi
                 return false;
             return true;
         }
+
         /// <summary>
         /// Checking if a drone can complete the delivery according to the amount of battery he has and the distance he needs to do for the delivery
         /// </summary>

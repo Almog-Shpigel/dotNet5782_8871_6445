@@ -9,16 +9,14 @@ namespace DAL
 {
     public static class DalFactory
     {
-        public static IDal GetDal(string DalType)
+        public static DalApi.IDal GetDal(string DalType)
         {
-           switch(DalType)
+            switch(DalType)
             {
                 case "DalObject":
-                    return new DalObject.DalObject();        //Needs to return DalObject type
-                    break;
-                case "DalXml ":
-                    return null;        //Needs to return DalXml type
-                    break;
+                    return DalObject.DalObject.GetDalObject();          //Needs to return DalObject type
+                case "DalXml":
+                    return null;                    //Needs to return DalXml type
                 default:
                     throw new InvalidOperationException();
             }

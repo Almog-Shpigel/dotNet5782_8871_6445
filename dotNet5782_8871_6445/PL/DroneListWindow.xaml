@@ -13,9 +13,7 @@
             <RowDefinition Height="40"/>
             <RowDefinition Height="400*"/>
         </Grid.RowDefinitions>
-        <!--<Grid.Background>
-            <ImageBrush ImageSource="C:\uj100mdp8ep51.JPG"/>
-        </Grid.Background>-->
+
         <Grid Name="UpGrid" HorizontalAlignment="Stretch" Height="auto" Grid.Row="0" VerticalAlignment="Stretch" Width="auto">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="15*"/>
@@ -39,13 +37,13 @@
         <ListView x:Name="DronesListView" Grid.Row="1" SelectionChanged="DronesListView_SelectionChanged" Background="Transparent" BorderBrush="Transparent" FontSize="15">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn DisplayMemberBinding="{Binding Path=ID}" x:Name="IDHead" Header="ID" Width="120"/>
-                    <GridViewColumn DisplayMemberBinding="{Binding Path=Model}" Header="Model"  Width="120"/>
-                    <GridViewColumn DisplayMemberBinding="{Binding Path=MaxWeight}" Header="Weight"  Width="120"/>
-                    <GridViewColumn DisplayMemberBinding="{Binding Path=BatteryStatus}" Header="Battery"  Width="120"/>
-                    <GridViewColumn DisplayMemberBinding="{Binding Path=Status}" Header="Status"  Width="120"/>
-                    <GridViewColumn DisplayMemberBinding="{Binding Path=ParcelID}" Header="Parcel in delivery"  Width="200"/>
-                    <GridViewColumn DisplayMemberBinding="{Binding Path=CurrentLocation}" Header="Location"  Width="300"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=ID}" x:Name="IDHead" Header="ID" Width="80"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=Model}" Header="Model"  Width="100"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=MaxWeight}" Header="Weight"  Width="80"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=BatteryStatus}" Header="Battery"  Width="80"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=Status}" Header="Status"  Width="80"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=ParcelID}" Header="Parcel in delivery"  Width="150"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=CurrentLocation}" Header="Location"  Width="180"/>
                 </GridView>
             </ListView.View>
             <ListView.ItemContainerStyle>
@@ -54,7 +52,6 @@
                 </Style>
             </ListView.ItemContainerStyle>
         </ListView>
-
     </Grid>
 </Window>
     

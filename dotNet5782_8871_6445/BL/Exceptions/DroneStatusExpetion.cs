@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace BlApi
+namespace BO
 {
     [Serializable]
     internal class DroneStatusExpetion : Exception

@@ -12,7 +12,7 @@ namespace DalObject
 {
     internal class DalObject : DalApi.IDal
     {
-        private static readonly DalObject Instance = new();
+        internal static readonly DalObject Instance = new();
 
         private DalObject()
         {

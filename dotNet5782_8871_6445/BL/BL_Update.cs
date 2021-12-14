@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BO;
 using DO;
 using static BO.EnumsBL;
@@ -11,81 +9,70 @@ namespace BlApi
 {
     partial class BL
     {
-        public void UpdateDroneName(int id, string model)
+        public void UpdateDroneName(int DroneID, string NewModelName)
         {
-            if (id < 100000 || id > 999999)
+            if (DroneID is < 100000 or > 999999)
                 throw new InvalidIDException("Drone ID has to have 6 positive digits.");
-            if (model == "")
-                return;
-            Data.UpdateDroneName(id, model);
-            foreach (var drone in DroneList)
+            if (NewModelName == "")
+                return;                                     // Do nothing
+            Data.UpdateDroneName(DroneID, NewModelName);
+            foreach (DroneToList drone in DroneList)
             {
-                if (drone.ID == id)
-                    drone.Model = model;
+                if (drone.ID == DroneID)
+                    drone.Model = NewModelName;
             }
         }
         
-        public void UpdateStation(int StationID, bool ChangeName, bool ChangeSlots, string name, int slots)
+        public void UpdateStation(int StationID, bool NameChanged, bool SlotsChanged, string NewStationName, int NewNumberSlots)
         {
-            if (StationID < 100000 || StationID > 999999)
+            if (StationID is < 100000 or > 999999)
                 throw new InvalidIDException("Invalid station ID number. Must have 6 digits");
-            if (ChangeName)
-                Data.UpdateStationName(StationID, name);
-            if (ChangeSlots)
+            if (NameChanged)
+                Data.UpdateStationName(StationID, NewStationName);
+            if (SlotsChanged)
             {
                 Station station = Data.GetStation(StationID);
-                IEnumerable<DroneCharge> AllDroneCharge = Data.GetDroneCharge(droneCharge => droneCharge.StationID == StationID);
-                int ChargeCounter = AllDroneCharge.Count();
-                if (ChargeCounter > slots)
+                IEnumerable<DroneCharge> StationChargeSlots = Data.GetDroneCharge(DroneaInCharge => DroneaInCharge.StationID == StationID);
+                if (StationChargeSlots.Count() > NewNumberSlots)
                     throw new InvalidSlotsException("Charge slots can't be less than the number of currently charging drones in the station");
-                Data.UpdateStationSlots(StationID, slots);
+                Data.UpdateStationSlots(StationID, NewNumberSlots);
             }
         }
        
-        public void UpdateCustomer(int id, bool changeName, bool changePhone, string name, int phone)
+        public void UpdateCustomer(int CustomerID, bool NameChanged, bool PhoneChanged, string NewCustomerName, int NewCustomerPhone)
         {
-            if (id < 100000000 || id > 999999999)
+            if (CustomerID is < 100000000 or > 999999999)
                 throw new InvalidIDException("Customer ID has to have 9 positive digits.");
-            if (changePhone)
-            {
-                if (phone < 500000000 || phone > 599999999)
-                    throw new InvalidPhoneNumberException("Invalid phone number");
-                Data.UpdateCustomerPhone(id, phone);
-            }
-            if (changeName)
-                Data.UpdateCustomerName(id, name);
-
+            if (NewCustomerPhone is < 500000000 or > 599999999)
+                throw new InvalidPhoneNumberException("Invalid phone number");
+            if (PhoneChanged)
+                Data.UpdateCustomerPhone(CustomerID, NewCustomerPhone);
+            if (NameChanged)
+                Data.UpdateCustomerName(CustomerID, NewCustomerName);
         }
 
         public void UpdateDroneToBeAvailable(int DroneID)
         {
-            int i = 0;
-            if (DroneID < 100000 || DroneID > 999999)
+            if (DroneID is < 100000 or > 999999)
                 throw new InvalidIDException("Drone ID has to have 6 positive digits.");
-            DroneToList DroneToBeAvailable = new();
-            for (i = 0; i < DroneList.Count; i++)
-            {
-                if (DroneList[i].ID == DroneID)
-                {
-                    DroneToBeAvailable = DroneList[i];
-                    break;
-                }
-            }
+            DroneToList DroneToBeAvailable = GetDroneToList(DroneID);
             if (DroneToBeAvailable.Status != DroneStatus.Charging)
                 throw new DroneStatusExpetion("Can't release a drone that isn't charging");
+            if (!DroneList.Remove(DroneToBeAvailable))
+                throw new Exception("Can't release drone from charging.");                  /// To Do: change Exception name
+            
             DroneToBeAvailable.Status = DroneStatus.Available;
-            DroneCharge DroneInCharge = Data.GetDroneCharge(DroneID);
-            double TimeCharged = DateTime.Now.Subtract((DateTime)DroneInCharge.Start).TotalHours;
-            DroneToBeAvailable.BatteryStatus += BatteryUsed[4] * TimeCharged;
+            double TimeDifference = (DateTime.Now - (DateTime)Data.GetDroneCharge(DroneID).Start).TotalHours;
+            DroneToBeAvailable.BatteryStatus += BatteryUsed[4] * TimeDifference;
             if (DroneToBeAvailable.BatteryStatus > 100)
                 DroneToBeAvailable.BatteryStatus = 100;
             Data.UpdateDroneToBeAvailable(DroneID);
-            DroneList[i] = DroneToBeAvailable;
+            DroneList.Add(DroneToBeAvailable);
         }
 
         public void UpdateDroneToBeCharged(int DroneID)
         {
-            if (DroneID < 100000 || DroneID > 999999)
+            if (DroneID is < 100000 or > 999999)
                 throw new InvalidIDException("Drone ID has to have 6 positive digits.");
             Drone test = Data.GetDrone(DroneID);            ///Will throw an exception if the drone is not in the data
             Station NearestStatation;

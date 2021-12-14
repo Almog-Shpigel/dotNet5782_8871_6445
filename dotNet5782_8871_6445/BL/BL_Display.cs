@@ -49,6 +49,14 @@ namespace BlApi
             throw new DroneExistException();
         }
 
+        public DroneToList GetDroneToList(int DroneID)
+        {
+            foreach (DroneToList drone in DroneList)
+                if (drone.ID == DroneID)
+                    return drone;
+            throw new DroneExistException();
+        }
+
         /// <summary>
         /// Function that receive a parcel and initialize ParcelInDelivery entity 
         /// </summary>

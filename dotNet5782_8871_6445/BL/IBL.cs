@@ -55,7 +55,7 @@ namespace BlApi
         /// <param name="ChangeSlots"></param>
         /// <param name="name"></param>
         /// <param name="slots"></param>
-        public void UpdateStation(int StationID, bool ChangeName, bool ChangeSlots, string name, int slots);
+        public void UpdateStation(int StationID, bool NameChanged, bool SlotsChanged, string NewStationName, int NewNumberSlots);
 
         /// <summary>
         /// Updating a customer's phone number or name or both, if an empty input recived for either, will not change it
@@ -65,7 +65,7 @@ namespace BlApi
         /// <param name="changePhone"></param>
         /// <param name="name"></param>
         /// <param name="phone"></param>
-        public void UpdateCustomer(int id, bool changeName, bool changePhone, string name, int phone);
+        public void UpdateCustomer(int CustomerID, bool NameChanged, bool PhoneChanged, string NewCustomerName, int NewCustomerPhone);
 
         /// <summary>
         /// Pairing a parcel to the wanted drone, the parcel will be selected by the next algorithem:

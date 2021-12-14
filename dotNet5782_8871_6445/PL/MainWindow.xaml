@@ -38,6 +38,8 @@
                    Text="Drone Delivery" Grid.ColumnSpan="4" Foreground="#472d30" FontWeight="ExtraBold"/>
         <Button x:Name="ShowDrones" Content="Start" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" Width="240"
                 Click="StartButton_Click" ClickMode="Release" Grid.Column="2" Grid.Row="3" FontSize="42" FontWeight="Bold" Background="#ffe1a8" Foreground="#723d46"/>
+        <Button x:Name="ShowMap" Content="Map" HorizontalAlignment="Right" VerticalAlignment="Center" Height="80" Width="240"
+                Click="MapButton_Click" ClickMode="Release" Grid.Column="2" Grid.Row="3" FontSize="42" FontWeight="Bold" Background="#ffe1a8" Foreground="#723d46"/>
     </Grid>
 
 </Window>

@@ -32,5 +32,11 @@ namespace PL
             new DroneListWindow(IBL).Show();
             Close();
         }
+
+        private void MapButton_Click(object sender, RoutedEventArgs e)
+        {
+            new MapWindow().Show();
+            Close();
+        }
     }
 }

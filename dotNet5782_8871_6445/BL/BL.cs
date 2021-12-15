@@ -11,15 +11,16 @@ namespace BlApi
 {
     public partial class BL : IBL
     {
+        internal static readonly BL Instance = new();
         private DalApi.IDal Data;
         private List<DroneToList> DroneList;
         private Double[] BatteryUsed;
-        private static Random rand = new();
 
         /// <summary>
         /// The cunstrucator will initialize all the drones saved in the data layer, saving them as DroneToList objects and saving them in a list located in BL
         /// </summary>
-        public BL()
+        public static BL GetBL() { return Instance; }
+        private BL()
         {
             Data = DalFactory.GetDal("DalObject");
             DroneList = new();

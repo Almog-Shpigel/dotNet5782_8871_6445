@@ -17,41 +17,52 @@ namespace PL
             InitializeComponent();
             Pushpin pin = new();
             BLW = IBL;
-            foreach (var item in IBL.GetAllDrones())
+            foreach (var item in BLW.GetAllDrones())
             {
                 AddPushpin(new(item.CurrentLocation.Longitude, item.CurrentLocation.Latitude), item.ID);
             }
-            foreach (var item in IBL.GatAllStations())
+            foreach (var item in BLW.GatAllStationsDO())
             {
-                //AddPushpin(new(item.lo Longitude, item.Latitude));
+                AddPushpin(new(item.Longitude, item.Latitude), item.ID);
             }
-
         }
 
         public void AddPushpin(Microsoft.Maps.MapControl.WPF.Location latlong, int ID)
         {
-            Pushpin pin = new Pushpin();
+            Pushpin pin = new();
+            ToolTip tt = new();
+            StationBL station;
+            DroneBL drone;
             pin.Location = latlong;
-            pin.MouseDown += PinClicked;
+            //pin.MouseDown += PinClicked;
+            pin.Tag = ID;
+            try
+            {
+                station = BLW.GetStation((int)pin.Tag);
+                tt.Content = station.ToString();
+            }
+            catch (System.Exception)
+            {
+            }
+            try
+            {
+                drone = BLW.GetDrone((int)pin.Tag);
+                tt.Content = drone.ToString();
+            }
+            catch (System.Exception)
+            {
+            }
+            pin.ToolTip = tt;
             myMap.Children.Add(pin);
         }
 
         private void PinClicked(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             Pushpin pin = sender as Pushpin;
-            BO.Location location = new(pin.Location.Latitude, pin.Location.Longitude);
-            //StationBL station = BLW.GetStationByLocation(location);
-            //var item = sender as StationBL;
-            //if (item != null)
-            //{
-            //    new DroneWindow(BLW, e).Show();
-            //}
-            //pin.Content = "Hover over me.";
-            var tt = new ToolTip();
-            tt.Content = "Station info";
+            StationBL station = BLW.GetStation((int)pin.Tag);
+            ToolTip tt = new();
+            tt.Content = station.ToString();
             pin.ToolTip = tt;
-            //myMap.Children.Add(pin);
-            //Add logic on what to do when the pushpin is clicked
         }
 
         private void CloseInfobox_Click(object sender, RoutedEventArgs e)

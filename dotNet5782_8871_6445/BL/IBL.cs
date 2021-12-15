@@ -188,6 +188,8 @@ namespace BlApi
         public string DisplayDistanceFromCustomer(double longitude1, double latitude1, int CustomerID);
 
         public IEnumerable GetAllAvailableStationsID();
+
+        public IEnumerable<Station> GatAllStationsDO();
         #endregion
     }
 }

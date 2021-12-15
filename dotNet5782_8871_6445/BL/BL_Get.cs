@@ -66,6 +66,11 @@ namespace BlApi
             return NearestStation;
         }
 
+        public IEnumerable<Station> GatAllStationsDO()
+        {
+            return Data.GetStations(station => true);
+        }
+
         //public IEnumerable<Location> GetAllDroneLocations()
         //{
         //    return DroneList.Select(drone => drone.CurrentLocation);

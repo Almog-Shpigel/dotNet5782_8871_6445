@@ -8,11 +8,17 @@
         mc:Ignorable="d"
         xmlns:m="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
         Title="MapWindow" Height="450" Width="800">
-    <Grid>
-        <m:Map x:Name="myMap" CredentialsProvider="AqTTbx5Fyl3jocqOWa8mxbnsv-7MqNqBPc5kVABd_psvOsnH-cxtzJ1wUdpdeCxE"
-               Center="31.771170,35.214086" ZoomLevel="13"/>
-        <m:MapPolygon Fill="Blue" Stroke="Green" StrokeThickness="20" 
-                          Locations="31.771170,35.214086" 
-                          Opacity="1.0"/>
+    
+    <Grid x:Name="LayoutRoot" Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="35" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <m:Map x:Name="myMap" Grid.RowSpan="2"
+                    Center="31.771170,35.214086" ZoomLevel="13"
+                    Mode="Road" 
+                    CredentialsProvider="AqTTbx5Fyl3jocqOWa8mxbnsv-7MqNqBPc5kVABd_psvOsnH-cxtzJ1wUdpdeCxE"
+                >
+        </m:Map>
     </Grid>
 </Window>

@@ -18,6 +18,7 @@ namespace BlApi
         /// </summary>
         /// <param name="customer"></param>
         public void AddNewCustomer(CustomerBL customer);
+        public List<Location> GetAllStationsLocations();
 
         /// <summary>
         /// Adding a new station and saving it in the data after checking the id is 6 digits, the charge slots are positive number or 0, and the location is inside Jerusalem area
@@ -187,6 +188,7 @@ namespace BlApi
         public string DisplayDistanceFromCustomer(double longitude1, double latitude1, int CustomerID);
 
         public IEnumerable GetAllAvailableStationsID();
+        public IEnumerable<Location> GetAllDroneLocations();
         #endregion
     }
 }

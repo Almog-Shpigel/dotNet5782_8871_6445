@@ -35,7 +35,7 @@ namespace PL
 
         private void MapButton_Click(object sender, RoutedEventArgs e)
         {
-            new MapWindow().Show();
+            new MapWindow(IBL).Show();
             Close();
         }
     }

@@ -1,4 +1,4 @@
-﻿using Syncfusion.UI.Xaml.Maps;
+﻿using Microsoft.Maps.MapControl.WPF;
 using System.Windows;
 //using Windows.UI.Xaml.Controls.Maps;
 
@@ -9,10 +9,22 @@ namespace PL
     /// </summary>
     public partial class MapWindow : Window
     {
-        public MapWindow()
+        public MapWindow(BlApi.IBL IBL)
         {
             InitializeComponent();
-            //myMap.Focus();
+            Pushpin pin;
+            foreach (var item in IBL.GetAllDroneLocations())
+            {
+                pin = new();
+                pin.Location = new(item.Longitude, item.Latitude);
+                myMap.Children.Add(pin);
+            }
+            foreach (var item in IBL.GetAllStationsLocations())
+            {
+                pin = new();
+                pin.Location = new(item.Longitude, item.Latitude);
+                myMap.Children.Add(pin);
+            }
         }
     }
 }

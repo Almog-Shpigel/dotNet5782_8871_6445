@@ -66,21 +66,21 @@ namespace BlApi
             return NearestStation;
         }
 
-        public IEnumerable<Location> GetAllDroneLocations()
-        {
-            return DroneList.Select(drone => drone.CurrentLocation);
-        }
+        //public IEnumerable<Location> GetAllDroneLocations()
+        //{
+        //    return DroneList.Select(drone => drone.CurrentLocation);
+        //}
 
-        public List<Location> GetAllStationsLocations()
-        {
-            Location NewLocation = new();
-            List<Location> AllLocations = new();
-            foreach (var item in Data.GetStations(station => true))
-            {
-                NewLocation = new(item.Latitude, item.Longitude);
-                AllLocations.Add(NewLocation);
-            }
-            return AllLocations;
-        }
+        //public List<Location> GetAllStationsLocations()
+        //{
+        //    Location NewLocation = new();
+        //    List<Location> AllLocations = new();
+        //    foreach (var item in Data.GetStations(station => true))
+        //    {
+        //        NewLocation = new(item.Latitude, item.Longitude);
+        //        AllLocations.Add(NewLocation);
+        //    }
+        //    return AllLocations;
+        //}
     }
 }

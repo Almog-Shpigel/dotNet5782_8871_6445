@@ -18,13 +18,13 @@ namespace BlApi
         /// </summary>
         /// <param name="customer"></param>
         public void AddNewCustomer(CustomerBL customer);
-        public List<Location> GetAllStationsLocations();
 
         /// <summary>
         /// Adding a new station and saving it in the data after checking the id is 6 digits, the charge slots are positive number or 0, and the location is inside Jerusalem area
         /// </summary>
         /// <param name="StationBO"></param>
         public void AddNewStation(StationBL station);
+
 
         /// <summary>
         /// Adding a new drone and saving it in the data and in BL after checking the id is 6 digits and station it was send to has free charge slots for it
@@ -188,7 +188,6 @@ namespace BlApi
         public string DisplayDistanceFromCustomer(double longitude1, double latitude1, int CustomerID);
 
         public IEnumerable GetAllAvailableStationsID();
-        public IEnumerable<Location> GetAllDroneLocations();
         #endregion
     }
 }

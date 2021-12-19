@@ -12,28 +12,28 @@
     <Grid x:Name="MainGrid" Background="#c9cba3">
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
-            <RowDefinition Height="400*"/>
+            <RowDefinition Height="40*"/>
         </Grid.RowDefinitions>
 
         <Grid x:Name="UpGrid" HorizontalAlignment="Stretch" Height="auto" Grid.Row="0" VerticalAlignment="Stretch" Width="auto">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="15*"/>
-                <ColumnDefinition Width="30*"/>
-                <ColumnDefinition Width="15*"/>
-                <ColumnDefinition Width="30*"/>
-                <ColumnDefinition Width="30*"/>
+               
                 <ColumnDefinition Width="30*"/>
             </Grid.ColumnDefinitions>
-            <TextBlock Grid.Column="0" Grid.Row="0" FontSize="20" Text="Status:" Margin="5,5,0,5"/>
-            <TextBlock Grid.Column="2" Grid.Row="0" FontSize="20" Text="Weight:" Margin="5,5,0,5"/>
-            <ComboBox x:Name="StatusSelector" Height="25" HorizontalAlignment= "Stretch" VerticalAlignment="Center" Grid.Column="1" SelectionChanged="StatusSelector_SelectionChanged" Background="Transparent" BorderBrush="Transparent" FontSize="15"/>
-            <ComboBox x:Name="WeightSelector" Height="25" HorizontalAlignment= "Stretch" VerticalAlignment="Center" Grid.Column="3" SelectionChanged="WeightSelector_SelectionChanged" Background="Transparent" BorderBrush="Transparent" FontSize="15"/>
+            
+            </Grid>
+        <StackPanel Orientation="Horizontal">
+            <TextBlock VerticalAlignment="Center" FontSize="20" Text="Status:" Margin="20,0,0,5"/>
+            <ComboBox x:Name="StatusSelector" HorizontalAlignment= "Stretch" VerticalAlignment="Center" Width="100" SelectionChanged="StatusSelector_SelectionChanged" Background="Transparent" BorderBrush="Transparent" FontSize="15"/>
+            <TextBlock VerticalAlignment="Center" FontSize="20" Text="Weight:" Margin="20,0,0,5"/>
+            <ComboBox x:Name="WeightSelector" HorizontalAlignment= "Stretch" VerticalAlignment="Center" Width="100" SelectionChanged="WeightSelector_SelectionChanged" Background="Transparent" BorderBrush="Transparent" FontSize="15"/>
             <Button x:Name="AddNewDrone" Content="Add new drone" HorizontalAlignment="Center" VerticalAlignment="Center" Height="30" Width="150"
-                Click="AddNewDroneButton_Click" ClickMode="Release" Grid.Column="4" Grid.Row="2" FontSize="15" Margin="15,0,0,0"/>
+                Click="AddNewDroneButton_Click" ClickMode="Release" FontSize="15" Margin="15,0,0,0"/>
             <Button  x:Name="ExitWindow" Content="Close" ClickMode="Release" HorizontalAlignment="Center" VerticalAlignment="Bottom" Height="30" Width="150"
-                 Grid.Row="0" Grid.Column="5" Margin="0,0,0,5" Click="ExitWindow_Click" FontSize="15" Background="Red"/>
-        </Grid>
+                Margin="0,0,0,5" Click="ExitWindow_Click" FontSize="15" Background="Red"/>
 
+        </StackPanel>
 
         <ListView x:Name="DronesListView" Grid.Row="1" SelectionChanged="DronesListView_SelectionChanged" Background="Transparent" BorderBrush="Transparent" FontSize="15">
             <ListView.View>

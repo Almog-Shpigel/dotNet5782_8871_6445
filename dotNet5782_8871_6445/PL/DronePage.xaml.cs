@@ -1,25 +1,33 @@
 ﻿using BO;
 using DO;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
 using System.Windows.Media;
-using BlApi;
-using DalApi;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
 
 namespace PL
 {
     /// <summary>
-    /// Interaction logic for DroneWindow.xaml
+    /// Interaction logic for DronePage.xaml
     /// </summary>
-    public partial class DroneWindow : Window
+    public partial class DronePage : Page
     {
         private ListViewItem item;
         private BlApi.IBL BLW;
         private BO.DroneToList Drone;
         private BO.DroneBL droneBL;
 
-        public DroneWindow(BlApi.IBL IBL, RoutedEventArgs e)
+        public DronePage(BlApi.IBL IBL, RoutedEventArgs e)
         {
             InitializeComponent(); // Add drone ctor
             BLW = IBL;
@@ -37,7 +45,7 @@ namespace PL
             InvalidDroneIDBlock.Visibility = Visibility.Collapsed;
             InvalidStationIDBlock.Visibility = Visibility.Collapsed;
             InvalidBatteryToCompleteDeliveryBlock.Visibility = Visibility.Collapsed;
-            ExistsDroneIDBlock.Visibility =Visibility.Collapsed;
+            ExistsDroneIDBlock.Visibility = Visibility.Collapsed;
             WeightCategories[] ARR = new WeightCategories[3];
             ARR[0] = WeightCategories.Light;
             ARR[1] = WeightCategories.Medium;
@@ -49,7 +57,7 @@ namespace PL
             UpdateLayout();
         }
 
-        public DroneWindow(BlApi.IBL IBL, ListViewItem item) // Update drone ctor
+        public DronePage(BlApi.IBL IBL, ListViewItem item) // Update drone ctor
         {
             InitializeComponent();
             BLW = IBL;
@@ -80,7 +88,7 @@ namespace PL
             StatusBlock.Text = droneBL.Status.ToString();
             ParcelBlock.Text = droneBL.Parcel.ID.ToString();
             LocationBlock.Text = droneBL.CurrentLocation.ToString();
-            
+
         }
 
         private void ButtenEnableCheck()
@@ -134,7 +142,7 @@ namespace PL
 
             if (InvalidDroneIDBlock.Visibility != Visibility.Visible &&
                 EnterDroneIDBox.Text != "" &&
-                WeightSelector.SelectedIndex != -1 && StationSelector.SelectedIndex != -1 )
+                WeightSelector.SelectedIndex != -1 && StationSelector.SelectedIndex != -1)
                 AddNewDroneButton.IsEnabled = true;
             else
                 AddNewDroneButton.IsEnabled = false;
@@ -155,7 +163,7 @@ namespace PL
                 AddNewDroneButton.IsEnabled = false;
 
             }
-            catch (InvalidIDException exp )
+            catch (InvalidIDException exp)
             {
                 InvalidDroneIDBlock.Text = exp.Message;
                 InvalidDroneIDBlock.Visibility = Visibility.Visible;
@@ -169,19 +177,19 @@ namespace PL
                 EnterDroneIDBox.Foreground = Brushes.Red;
                 AddNewDroneButton.IsEnabled = false;
             }
-            catch(StationExistExceptionBL exp)
+            catch (StationExistExceptionBL exp)
             {
                 InvalidStationIDBlock.Text = exp.Message;
                 InvalidStationIDBlock.Visibility = Visibility.Visible;
                 AddNewDroneButton.IsEnabled = false;
             }
-            catch(InvalidSlotsException exp)
+            catch (InvalidSlotsException exp)
             {
                 InvalidStationIDBlock.Text = exp.Message;
                 InvalidStationIDBlock.Visibility = Visibility.Visible;
                 AddNewDroneButton.IsEnabled = false;
-            }    
-            
+            }
+
         }
 
         private void EnterDroneIDBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -204,8 +212,7 @@ namespace PL
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
-            new DroneListWindow(BLW).Show();
-            Close();
+            this.Content = new DroneListWindow(BLW);
         }
 
         private void UpdateDroneToBeChargedButton_Click(object sender, RoutedEventArgs e)
@@ -263,6 +270,11 @@ namespace PL
         private void StationSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             EnableButton();
-        } 
+        }
+
+        private void EnterModelNameBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
     }
 }

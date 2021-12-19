@@ -29,16 +29,25 @@ namespace PL
             InitializeComponent();
         }
 
-        private void StartButton_Click(object sender, RoutedEventArgs e)
+        private void DroneListPageButton_Click(object sender, RoutedEventArgs e)
         {
-            new DroneListWindow(IBL).Show();
-            Close();
+            this.Content = new DroneListPage(IBL);
         }
 
         private void MapButton_Click(object sender, RoutedEventArgs e)
         {
             new MapWindow(IBL).Show();
             Close();
+        }
+
+        private void StationListPageButton_Click(object sender, RoutedEventArgs e)
+        {
+            //this.Content = new StationListPage(IBL);
+        }
+
+        private void CustomerListPageButton_Click(object sender, RoutedEventArgs e)
+        {
+            //this.Content = new CustomerListPage(IBL);
         }
     }
 }

@@ -19,27 +19,25 @@
             <ImageBrush ImageSource="/aaa.jpg"/>
         </Grid.Background>
 
-
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="20"/>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="4*"/>
+            <ColumnDefinition Width="5*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="350"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="20"/>
+            <RowDefinition Height="20*"/>
         </Grid.RowDefinitions>
-
-        <TextBlock Grid.Column="1" Grid.Row="2" FontSize="56" HorizontalAlignment="Center" VerticalAlignment="Center"
-                   Text="Drone Delivery" Grid.ColumnSpan="4" Foreground="#472d30" FontWeight="ExtraBold"/>
-        <Button x:Name="ShowDrones" Content="Start" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" Width="240"
-                Click="StartButton_Click" ClickMode="Release" Grid.Column="2" Grid.Row="3" FontSize="42" FontWeight="Bold" Background="#ffe1a8" Foreground="#723d46"/>
-        <Button x:Name="ShowMap" Content="Map" HorizontalAlignment="Right" VerticalAlignment="Center" Height="80" Width="240"
-                Click="MapButton_Click" ClickMode="Release" Grid.Column="2" Grid.Row="3" FontSize="42" FontWeight="Bold" Background="#ffe1a8" Foreground="#723d46"/>
+        <StackPanel Grid.Column="1" Grid.Row="1" Margin="20,10,20,10">
+            <TextBlock FontSize="56" HorizontalAlignment="Center" VerticalAlignment="Center"
+                   Text="Drone Delivery" Grid.ColumnSpan="2" Foreground="#472d30" FontWeight="ExtraBold" Margin="20,10,20,40"/>
+            <Button x:Name="DroneListPage" Content="Drones" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" Width="240"
+                Click="DroneListPageButton_Click" ClickMode="Release" FontSize="42" FontWeight="Bold" Background="#ffe1a8" Foreground="#723d46" Margin="20,10,20,10"/>
+            <Button x:Name="StationListPage" Content="Stations" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" Width="240"
+                Click="StationListPageButton_Click" ClickMode="Release" FontSize="42" FontWeight="Bold" Background="#ffe1a8" Foreground="#723d46" Margin="20,10,20,10"/>
+            <Button x:Name="CustomerListPage" Content="Customers" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" Width="240"
+                Click="CustomerListPageButton_Click" ClickMode="Release" FontSize="42" FontWeight="Bold" Background="#ffe1a8" Foreground="#723d46" Margin="20,10,20,10"/>
+            <Button x:Name="ShowMap" Content="Map" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" Width="240"
+                Click="MapButton_Click" ClickMode="Release" Grid.Column="2" Grid.Row="3" FontSize="42" FontWeight="Bold" Background="#ffe1a8" Foreground="#723d46" Margin="20,10,20,10"/>
+        </StackPanel>
     </Grid>
-
 </Window>

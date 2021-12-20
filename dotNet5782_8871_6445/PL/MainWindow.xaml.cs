@@ -46,7 +46,7 @@ namespace PL
 
         private void ParcelListPageButton_Click(object sender, RoutedEventArgs e)
         {
-            //this.Content = new ParcelListPage(IBL);
+            this.Content = new ParcelListPage(IBL, Main);
         }
         private void MapButton_Click(object sender, RoutedEventArgs e)
         {

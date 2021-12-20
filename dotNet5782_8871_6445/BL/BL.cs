@@ -44,16 +44,6 @@ namespace BlApi
             }
         }
 
-        public List<DroneToList> GetAllDrones()
-        {
-            return DroneList;
-        }
-
-        public IEnumerable GetAllAvailableStationsID()
-        {
-            return GetAllAvailableStationsDO().Select(station => station.ID);
-        }
-
         /// <summary>
         /// Initializing the drone to be in a delivery, giving it location and battery according to the status of the delivery.
         /// Location will be either at the station nearest to the sender or at the sender

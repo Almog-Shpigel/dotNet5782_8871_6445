@@ -107,10 +107,49 @@ namespace BlApi
         #endregion
 
         #region Get
+        #region Get All
         public List<DroneToList> GetAllDrones();
+
+        /// <summary>
+        /// Function that recive all the parcels from data and create a list of ParcelToList and send it to print in console
+        /// </summary>
+        /// <returns></returns>
+        public List<ParcelToList> GetAllParcels();
+
+        /// <summary>
+        /// Function that recive all the stations from data and create a list of StationToList and send it to print in console
+        /// </summary>
+        /// <returns></returns>
+        public List<StationToList> GetAllStations();
+
+        /// <summary>
+        /// Function that recive all the customers from data and create a list of CustomerToList and send it to print in console
+        /// </summary>
+        /// <returns></returns>
+        public List<CustomerToList> GetAllCustomers();
+
+        public IEnumerable<Station> GatAllStationsDO();
+        #endregion
+
+        #region Get some
+        /// <summary>
+        /// Function that returns all the unassigned parcels by going through the parcels and creating a new list out of the ones that doesn't have a drone paired to them
+        /// </summary>
+        /// <returns></returns>
+        public List<ParcelToList> GetUnassignedParcels();
+
+        /// <summary>
+        /// Function that return all the station who has more than 0 charge slots available
+        /// </summary>
+        /// <returns>list of available stations</returns>
+        public List<StationToList> GetAvailableStations();
 
         public List<DroneToList> GetDrones(DroneStatus status, WeightCategories weight);
 
+        public List<ParcelToList> GetParcels(Priorities priorities, WeightCategories weight);
+        #endregion
+
+        #region Get one
         /// <summary>
         /// Receiving a drone id and converting the drone to a DroneBL and print it
         /// </summary>
@@ -138,37 +177,9 @@ namespace BlApi
         /// <param name="CustomerID"></param>
         /// <returns>CustomerBL to print</returns>
         public CustomerBL GetCustomer(int CustomerID);
+        #endregion
 
-        /// <summary>
-        /// Function that recive all the parcels from data and create a list of ParcelToList and send it to print in console
-        /// </summary>
-        /// <returns></returns>
-        public List<ParcelToList> GetAllParcels();
-
-        /// <summary>
-        /// Function that recive all the stations from data and create a list of StationToList and send it to print in console
-        /// </summary>
-        /// <returns></returns>
-        public List<StationToList> GetAllStations();
-
-        /// <summary>
-        /// Function that recive all the customers from data and create a list of CustomerToList and send it to print in console
-        /// </summary>
-        /// <returns></returns>
-        public List<CustomerToList> GetAllCustomers();
-
-        /// <summary>
-        /// Function that returns all the unassigned parcels by going through the parcels and creating a new list out of the ones that doesn't have a drone paired to them
-        /// </summary>
-        /// <returns></returns>
-        public List<ParcelToList> GetAllUnassignedParcels();
-
-        /// <summary>
-        /// Function that return all the station who has more than 0 charge slots available
-        /// </summary>
-        /// <returns>list of available stations</returns>
-        public List<StationToList> GetAllAvailableStationsToList();
-
+        #region Get other
         /// <summary>
         /// Returns the distance between a point and a specific station
         /// </summary>
@@ -176,7 +187,7 @@ namespace BlApi
         /// <param name="latitude1"></param>
         /// <param name="StationID"></param>
         /// <returns>distance (km)</returns>
-        public string DisplayDistanceFromStation(double longitude1, double latitude1, int StationID);
+        public string GetDistanceFromStation(double latitude, double longitude, int StationID);
 
         /// <summary>
         /// Returns the distance between a point and a specific customer
@@ -185,11 +196,8 @@ namespace BlApi
         /// <param name="latitude1"></param>
         /// <param name="CustomerID"></param>
         /// <returns>distance (km)</returns>
-        public string DisplayDistanceFromCustomer(double longitude1, double latitude1, int CustomerID);
-
-        public IEnumerable GetAllAvailableStationsID();
-
-        public IEnumerable<Station> GatAllStationsDO();
+        public string GetDistanceFromCustomer(double latitude, double longitude, int CustomerID);
+        #endregion
         #endregion
     }
 }

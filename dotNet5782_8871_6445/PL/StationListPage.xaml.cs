@@ -26,9 +26,10 @@ namespace PL
         public StationListPage(BlApi.IBL IBL,Frame Main)
         {
             InitializeComponent();
-            BLW =IBL;
+            BLW = IBL;
             MainFrame = Main;
             StationListView.ItemsSource = BLW.GetAllStations();
+            UpdateLayout();
         }
 
         private void AddNewStationButton_Click(object sender, RoutedEventArgs e)

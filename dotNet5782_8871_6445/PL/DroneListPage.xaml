@@ -23,7 +23,7 @@
             <TextBlock Text="Weight:" Style="{StaticResource TextBlockStyle}"/>
             <ComboBox x:Name="WeightSelector" SelectionChanged="WeightSelector_SelectionChanged" Style="{StaticResource ComboBoxBarStyle}"/>
             <Button x:Name="AddNewDrone" Content="Add new drone" Click="AddNewDroneButton_Click" Style="{StaticResource ButtonBarStyle}"/>
-            <Button  x:Name="BackWindow" Content="Main Window" Click="BackWindow_Click" Style="{StaticResource ButtonBarStyle}" Foreground="Black" Background="Red"/>
+            <Button  x:Name="BackWindow" Content="Main Window" Click="BackWindow_Click" Style="{StaticResource ButtonBarStyle}"/>
         </StackPanel>
 
         <ListView x:Name="DronesListView" Grid.Row="1" SelectionChanged="DronesListView_SelectionChanged" Style="{StaticResource ListViewStyle}">

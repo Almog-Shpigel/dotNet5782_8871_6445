@@ -51,10 +51,10 @@
         <Style TargetType="TextBlock" x:Key="TextBlockPageStyle">
             <Setter Property="HorizontalAlignment" Value="Left" />
             <Setter Property="VerticalAlignment" Value="Center" />
-            <Setter Property="FontSize" Value="25" />
+            <Setter Property="FontSize" Value="20" />
             <Setter Property="FontWeight" Value="Bold" />
             <Setter Property="Foreground" Value="#723d46" />
-            <Setter Property="Margin" Value="10,10,10,0" />
+            <Setter Property="Margin" Value="10,10,15,0" />
         </Style>
         <Style TargetType="TextBlock" x:Key="TextBlockInvalidStyle">
             <Setter Property="HorizontalAlignment" Value="Left" />
@@ -62,15 +62,15 @@
             <Setter Property="FontSize" Value="15" />
             <Setter Property="Foreground" Value="Red" />
             <Setter Property="TextWrapping" Value="Wrap"/>
-            <Setter Property="Margin" Value="10,10,10,0" />
+            <Setter Property="Margin" Value="10,10,10,10" />
         </Style>
         <Style TargetType="TextBox" x:Key="TextBoxStyle">
             <Setter Property="HorizontalAlignment" Value="Center" />
             <Setter Property="VerticalAlignment" Value="Center" />
             <Setter Property="TextWrapping" Value="Wrap"/>
-            <Setter Property="Height" Value="35" />
+            <Setter Property="Height" Value="26" />
             <Setter Property="Width" Value="160" />
-            <Setter Property="FontSize" Value="25" />
+            <Setter Property="FontSize" Value="20" />
             <Setter Property="FontWeight" Value="Bold" />
             <Setter Property="Foreground" Value="#723d46" />
             <Setter Property="Margin" Value="10,10,15,0" />
@@ -89,9 +89,9 @@
         <Style TargetType="ComboBox" x:Key="ComboBoxStyle">
             <Setter Property="HorizontalAlignment" Value="Center" />
             <Setter Property="VerticalAlignment" Value="Center" />
-            <Setter Property="Height" Value="35" />
+            <Setter Property="Height" Value="26" />
             <Setter Property="Width" Value="160" />
-            <Setter Property="FontSize" Value="25" />
+            <Setter Property="FontSize" Value="20" />
             <Setter Property="FontWeight" Value="Bold" />
             <Setter Property="Background" Value="#ffe1a8" />
             <Setter Property="Foreground" Value="#723d46" />
@@ -99,8 +99,10 @@
         </Style>
         <Style TargetType="ListView" x:Key="ListViewStyle">
             <Setter Property="FontSize" Value="20" />
-            <Setter Property="Background" Value="Transparent" />
-            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="Background" Value="#ffe1a8" />
+            <Setter Property="BorderBrush" Value="#723d46" />
+            <Setter Property="BorderThickness" Value="3"/>
+            <Setter Property="Margin" Value="10,10,10,10" />
         </Style>
     </Application.Resources>
 </Application>

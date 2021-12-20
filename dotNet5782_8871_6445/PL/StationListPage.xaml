@@ -19,7 +19,7 @@
         </Grid>
         <StackPanel Orientation="Horizontal">
             <Button x:Name="AddNewStation" Content="Add new station" Click="AddNewStationButton_Click" Style="{StaticResource ButtonBarStyle}"/>
-            <Button  x:Name="BackWindow" Content="Main Window" Click="BackWindow_Click" Style="{StaticResource ButtonBarStyle}" Foreground="Black" Background="Red"/>
+            <Button  x:Name="BackWindow" Content="Main Window" Click="BackWindow_Click" Style="{StaticResource ButtonBarStyle}"/>
         </StackPanel>
 
         <ListView x:Name="StationListView" Grid.Row="1" SelectionChanged="StationListView_SelectionChanged"  Style="{StaticResource ListViewStyle}">

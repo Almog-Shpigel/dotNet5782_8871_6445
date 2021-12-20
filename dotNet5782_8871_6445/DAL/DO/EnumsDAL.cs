@@ -7,7 +7,9 @@
     public enum DISPLAY_CHOICE { DISPLAY_STATION = 1, DISPLAY_DRONE, DISPLAY_CUSTOMER, DISPLAY_PARCEL, DISTANCE_STATION, DISTANCE_CUSTOMER }
     public enum PRINT_CHOICE { PRINT_STATIONS = 1, PRINT_DRONES, PRINT_CUSTOMERS, PRINT_PARCELS, PRINT_UNASSIGNED_PARCELS, PRINT_AVAILABLE_STATIONS }
     public enum WeightCategories { Light, Medium, Heavy, Any }
-    public enum Priorities { Regular, Express, Urgent }
+    public enum Priorities { Regular, Express, Urgent,
+        Any
+    }
     public enum DroneModels { Mavic, Skydio, Phantom }
     public enum CustomerNames { Almog, Devora, Amitai, Alon, Gila, Rachel, Yair, Yishai, Ariel, David, Merav, Yoav, Noam, Efart, Rotem, Dor, Shoshana }
 }

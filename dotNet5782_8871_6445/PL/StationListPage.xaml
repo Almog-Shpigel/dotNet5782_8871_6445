@@ -22,7 +22,7 @@
             <Button  x:Name="BackWindow" Content="Main Window" Click="BackWindow_Click" Style="{StaticResource ButtonBarStyle}" Foreground="Black" Background="Red"/>
         </StackPanel>
 
-        <ListView x:Name="StationListView" Grid.Row="1" SelectionChanged="DronesListView_SelectionChanged"  Style="{StaticResource ListViewStyle}">
+        <ListView x:Name="StationListView" Grid.Row="1" SelectionChanged="StationListView_SelectionChanged"  Style="{StaticResource ListViewStyle}">
             <ListView.View>
                 <GridView>
                     <GridViewColumn DisplayMemberBinding="{Binding ID}" Header="ID" Width="150"  />
@@ -33,10 +33,9 @@
             </ListView.View>
             <ListView.ItemContainerStyle>
                 <Style TargetType="{x:Type ListViewItem}">
-                    
+                    <EventSetter Event="UIElement.PreviewMouseLeftButtonDown" Handler="ListViewItem_PreviewMouseLeftButtonDown" />
                 </Style>
             </ListView.ItemContainerStyle>
-
         </ListView>
     </Grid>
 </Page>

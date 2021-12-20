@@ -20,9 +20,16 @@ namespace PL
     /// </summary>
     public partial class StationPage : Page
     {
-        public StationPage()
+        private ListViewItem item;
+        private BlApi.IBL BLW;
+        private BO.StationToList Station;
+        private BO.StationBL StationBL;
+        public StationPage(BlApi.IBL IBL, ListViewItem item)
         {
             InitializeComponent();
+            BLW = IBL;
+            this.item = item;
+            Station = (BO.StationToList)item.DataContext;
         }
     }
 }

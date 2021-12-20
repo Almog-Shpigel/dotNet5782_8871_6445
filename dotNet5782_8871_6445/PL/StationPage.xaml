@@ -8,7 +8,32 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="StationPage">
 
-    <Grid>
-        
+    <Grid Background="#c9cba3">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="5*"/>
+            <ColumnDefinition Width="50*"/>
+            <ColumnDefinition Width="50*"/>
+            <ColumnDefinition Width="50*"/>
+            <ColumnDefinition Width="45*"/>
+            <ColumnDefinition Width="5*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="2" Grid.Column="1">
+            <TextBlock x:Name="PrintIDblock"        Text="Station ID:"        Style="{StaticResource TextBlockPageStyle}" />
+            <TextBlock x:Name="PrintModelBlock"     Text="Station name:"      Style="{StaticResource TextBlockPageStyle}" />
+            <TextBlock x:Name="PrintWeightBlock"    Text="Available slots:"      Style="{StaticResource TextBlockPageStyle}" />
+            <TextBlock x:Name="PrintLocationBlock"  Text="Location:"        Style="{StaticResource TextBlockPageStyle}" />
+            <TextBlock x:Name="PrintParcelBlock"    Text="Drones charging:"    Style="{StaticResource TextBlockPageStyle}" />
+        </StackPanel>
+        <StackPanel x:Name="ShowDetailsStation" Grid.Row="2" Grid.Column="2">
+            <TextBlock x:Name="IDBlock"  Text="{Binding ID}"       Style="{StaticResource TextBlockPageStyle}" />
+            <TextBlock x:Name="NamelBlock"  Text="{Binding Name}"    Style="{StaticResource TextBlockPageStyle}" />
+            <TextBlock x:Name="AvailableSlotstBlock"   Text="{Binding ChargeSlots}"  Style="{StaticResource TextBlockPageStyle}" />
+            <TextBlock x:Name="LocationBlock" Text="{Binding Location}"  Style="{StaticResource TextBlockPageStyle}" />
+            <TextBlock x:Name="ChargingDronesBlock"  Text="{Binding ChargingDrones}" Style="{StaticResource TextBlockPageStyle}" />
+        </StackPanel>
     </Grid>
 </Page>

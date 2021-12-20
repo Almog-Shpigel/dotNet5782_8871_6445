@@ -21,11 +21,12 @@ namespace PL
     /// </summary>
     public partial class StationListPage : Page
     {
+        private BlApi.IBL BLW;
         private Frame MainFrame;
-        public StationListPage(Frame Main)
+        public StationListPage(BlApi.IBL IBL,Frame Main)
         {
             InitializeComponent();
-            BlApi.IBL BLW = BlFactory.GetBl();
+            BLW =IBL;
             MainFrame = Main;
             StationListView.ItemsSource = BLW.GetAllStations();
         }
@@ -40,7 +41,17 @@ namespace PL
             new MainWindow().Show();// TO DO: to find a way to go back to main window without openning it again
         }
 
-        private void DronesListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void ListViewItem_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            var item = sender as ListViewItem;
+            if (item != null && item.IsSelected)
+            {
+                MainFrame.Content = new StationPage(BLW, item);
+            }
+        }
+    
+
+        private void StationListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
         }

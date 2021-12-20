@@ -149,7 +149,7 @@ namespace BlApi
         /// Function that recive all the stations from data and create a list of StationToList and send it to print in console
         /// </summary>
         /// <returns></returns>
-        public List<StationToList> GatAllStations();
+        public List<StationToList> GetAllStations();
 
         /// <summary>
         /// Function that recive all the customers from data and create a list of CustomerToList and send it to print in console

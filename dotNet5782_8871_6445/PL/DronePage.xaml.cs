@@ -262,5 +262,10 @@ namespace PL
         {
 
         }
+
+        private void UpdateDroneToBeChargedButton_SourceUpdated(object sender, DataTransferEventArgs e)
+        {
+
+        }
     }
 }

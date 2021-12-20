@@ -36,7 +36,7 @@ namespace PL
 
         private void StationListPageButton_Click(object sender, RoutedEventArgs e)
         {
-            //this.Content = new StationListPage(IBL);
+            Main.Content = new StationListPage(Main);
         }
 
         private void CustomerListPageButton_Click(object sender, RoutedEventArgs e)

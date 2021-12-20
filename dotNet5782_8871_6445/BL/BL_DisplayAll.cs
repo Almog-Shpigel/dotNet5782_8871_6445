@@ -11,7 +11,7 @@ namespace BlApi
 {
     partial class BL
     {
-        public List<StationToList> GatAllStations()
+        public List<StationToList> GetAllStations()
         {
             List<StationToList> stations = new();
             foreach (Station station in Data.GetStations(station => true))
@@ -20,11 +20,7 @@ namespace BlApi
                 NewStation.ID = station.ID;
                 NewStation.Name = station.Name;
                 NewStation.AvailableChargeSlots = station.ChargeSlots;
-                foreach (DO.DroneCharge drone in Data.GetDroneCharge(droneCharge => true))
-                {
-                    if (drone.StationID == NewStation.ID)
-                        NewStation.UsedChargeSlots++;
-                }
+                NewStation.UsedChargeSlots = Data.GetDroneCharge(droneCharge => droneCharge.StationID == NewStation.ID).Count();
                 stations.Add(NewStation);
             }
             return stations;

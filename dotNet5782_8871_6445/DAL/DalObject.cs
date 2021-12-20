@@ -170,7 +170,7 @@ namespace DalObject
 
             for (int i = 0; i < DataSource.stations.Count; ++i)         ///Finding the wanted station
             {
-                if (DataSource.stations[i].ID != StationID)
+                if (DataSource.stations[i].ID == StationID)
                 {
                     Station NewStation = DataSource.stations[i];
                     NewStation.ChargeSlots--;

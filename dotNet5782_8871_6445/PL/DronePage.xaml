@@ -42,8 +42,8 @@
         </StackPanel>
         <StackPanel x:Name="ShowDetailsDrone2" Grid.Row="2" Grid.Column="4">
             <Button x:Name="UpdateNameButton" Content="Update name" Click="UpdateNameButton_Click" Style="{StaticResource ButtonPageStyle}" />
-            <Button x:Name="UpdateDroneToBeChargedButton" Content="Send drone to be charged" Click="UpdateDroneToBeChargedButton_Click" Style="{StaticResource ButtonPageStyle}" />
-            <Button x:Name="UpdateReleaseDroneFromChargeButton" Content="Release Drone from charge" Click="UpdateReleaseDroneFromChargeButton_Click" Style="{StaticResource ButtonPageStyle}" />
+            <Button x:Name="UpdateDroneToBeChargedButton"  Content="Send drone to be charged" Click="UpdateDroneToBeChargedButton_Click" Style="{StaticResource ButtonPageStyle}" />
+            <Button x:Name="UpdateReleaseDroneFromChargeButton"  Content="Release Drone from charge" Click="UpdateReleaseDroneFromChargeButton_Click" Style="{StaticResource ButtonPageStyle}" />
             <Button x:Name="UpdateParcelAssignToDroneButton" Content="Assign parcel to drone" Click="UpdateParcelAssignToDroneButton_Click" Style="{StaticResource ButtonPageStyle}"/>
             <Button x:Name="UpdateParcelCollectedByDroneButton" Content="Parcel collected by drone" Click="UpdateParcelCollectedByDroneButton_Click" Style="{StaticResource ButtonPageStyle}" />
             <Button x:Name="UpdateParcelDeleiveredByDroneButton" Content="Parcel deliverd by drone" Click="UpdateParcelDeleiveredByDroneButton_Click" ClickMode="Release" Style="{StaticResource ButtonPageStyle}" />

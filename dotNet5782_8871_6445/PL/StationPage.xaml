@@ -28,13 +28,13 @@
             <TextBlock x:Name="PrintLocationBlock"  Text="Location:"        Style="{StaticResource TextBlockPageStyle}" />
             <TextBlock x:Name="PrintParcelBlock"    Text="Drones charging:"    Style="{StaticResource TextBlockPageStyle}" />
         </StackPanel>
-        <StackPanel x:Name="ShowDetailsStation" Grid.Row="2" Grid.Column="2">
+        <StackPanel x:Name="ShowDetailsStation" Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2">
             <TextBlock x:Name="IDBlock"  Text="{Binding ID}"       Style="{StaticResource TextBlockPageStyle}" />
             <TextBlock x:Name="NamelBlock"  Text="{Binding Name}"    Style="{StaticResource TextBlockPageStyle}" />
             <TextBlock x:Name="AvailableSlotstBlock"   Text="{Binding ChargeSlots}"  Style="{StaticResource TextBlockPageStyle}" />
             <TextBlock x:Name="LocationBlock" Text="{Binding Location}"  Style="{StaticResource TextBlockPageStyle}" />
             <ListView x:Name="DronesListView" Style="{StaticResource ListViewStyle}">
-              
+               
             </ListView>
         </StackPanel>
     </Grid>

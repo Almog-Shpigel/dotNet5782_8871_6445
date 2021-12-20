@@ -26,18 +26,16 @@ namespace PL
         private BlApi.IBL BLW;
         private BO.DroneToList Drone;
         private BO.DroneBL droneBL;
+        Frame Frame;
 
-        public DronePage(BlApi.IBL IBL, RoutedEventArgs e)
+        public DronePage(BlApi.IBL IBL, RoutedEventArgs e, Frame frame)
         {
             InitializeComponent(); // Add drone ctor
             BLW = IBL;
-            UpdateNameButton.Visibility = Visibility.Collapsed;
+            Frame = frame;
+            ShowDetailsDrone1.Visibility = Visibility.Collapsed;
+            ShowDetailsDrone2.Visibility = Visibility.Collapsed;
             UpdateNameBlock.Visibility = Visibility.Collapsed;
-            UpdateDroneToBeChargedButton.Visibility = Visibility.Collapsed;
-            UpdateReleaseDroneFromChargeButton.Visibility = Visibility.Collapsed;
-            UpdateParcelAssignToDroneButton.Visibility = Visibility.Collapsed;
-            UpdateParcelCollectedByDroneButton.Visibility = Visibility.Collapsed;
-            UpdateParcelDeleiveredByDroneButton.Visibility = Visibility.Collapsed;
             PrintBatteryBlock.Visibility = Visibility.Collapsed;
             PrintStatusBlock.Visibility = Visibility.Collapsed;
             PrintParcelBlock.Visibility = Visibility.Collapsed;
@@ -50,7 +48,6 @@ namespace PL
             ARR[0] = WeightCategories.Light;
             ARR[1] = WeightCategories.Medium;
             ARR[2] = WeightCategories.Heavy;
-            //WeightSelector.ItemsSource = Enum.GetValues(typeof(WeightCategories));
             WeightSelector.ItemsSource = ARR;
             StationSelector.ItemsSource = BLW.GetAllAvailableStationsID();
             AddNewDroneButton.IsEnabled = false;
@@ -63,16 +60,12 @@ namespace PL
             BLW = IBL;
             this.item = item;
             Drone = (BO.DroneToList)item.DataContext;
+            NewDroneEnterPanel.Visibility = Visibility.Collapsed;
             PrintStationIDBlock.Visibility = Visibility.Collapsed;
-            EnterDroneIDBox.Visibility = Visibility.Collapsed;
-            EnterModelNameBox.Visibility = Visibility.Collapsed;
-            WeightSelector.Visibility = Visibility.Collapsed;
-            AddNewDroneButton.Visibility = Visibility.Collapsed;
             InvalidDroneIDBlock.Visibility = Visibility.Collapsed;
             InvalidStationIDBlock.Visibility = Visibility.Collapsed;
             InvalidBatteryToCompleteDeliveryBlock.Visibility = Visibility.Collapsed;
             ExistsDroneIDBlock.Visibility = Visibility.Collapsed;
-            StationSelector.Visibility = Visibility.Collapsed;
             DisplayDroneDetailes();
             ButtenEnableCheck();
             UpdateLayout();
@@ -88,7 +81,6 @@ namespace PL
             StatusBlock.Text = droneBL.Status.ToString();
             ParcelBlock.Text = droneBL.Parcel.ID.ToString();
             LocationBlock.Text = droneBL.CurrentLocation.ToString();
-
         }
 
         private void ButtenEnableCheck()
@@ -161,7 +153,7 @@ namespace PL
                 StationSelector.IsEnabled = false;
                 WeightSelector.IsEnabled = false;
                 AddNewDroneButton.IsEnabled = false;
-
+                Frame.Content = new DroneListPage(BLW, Frame);
             }
             catch (InvalidIDException exp)
             {
@@ -189,7 +181,7 @@ namespace PL
                 InvalidStationIDBlock.Visibility = Visibility.Visible;
                 AddNewDroneButton.IsEnabled = false;
             }
-
+            
         }
 
         private void EnterDroneIDBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -207,12 +199,6 @@ namespace PL
                 EnterDroneIDBox.Foreground = Brushes.Black;
                 EnableButton();
             }
-        }
-
-
-        private void CloseButton_Click(object sender, RoutedEventArgs e)
-        {
-            this.Content = new DroneListWindow(BLW);
         }
 
         private void UpdateDroneToBeChargedButton_Click(object sender, RoutedEventArgs e)

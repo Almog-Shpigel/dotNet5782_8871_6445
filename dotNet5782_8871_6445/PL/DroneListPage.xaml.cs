@@ -23,10 +23,12 @@ namespace PL
     public partial class DroneListPage : Page
     {
         private BlApi.IBL BLW;
-        public DroneListPage(BlApi.IBL IBL)
+        private Frame MainFrame;
+        public DroneListPage(BlApi.IBL IBL, Frame Main)
         {
             InitializeComponent();
             BLW = IBL;
+            MainFrame = Main;
             DronesListView.ItemsSource = BLW.GetAllDrones();
             StatusSelector.ItemsSource = Enum.GetValues(typeof(DroneStatus));
             WeightSelector.ItemsSource = Enum.GetValues(typeof(WeightCategories));
@@ -49,7 +51,7 @@ namespace PL
 
         private void AddNewDroneButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Content = new DronePage(BLW, e);
+            MainFrame.Content = new DronePage(BLW, e, MainFrame);
         }
 
         private void ListViewItem_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -57,7 +59,7 @@ namespace PL
             var item = sender as ListViewItem;
             if (item != null && item.IsSelected)
             {
-                this.Content = new DronePage(BLW, item);
+                MainFrame.Content = new DronePage(BLW, item);
             }
         }
 

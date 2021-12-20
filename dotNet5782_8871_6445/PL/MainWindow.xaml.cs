@@ -31,13 +31,7 @@ namespace PL
 
         private void DroneListPageButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Content = new DroneListPage(IBL);
-        }
-
-        private void MapButton_Click(object sender, RoutedEventArgs e)
-        {
-            new MapWindow(IBL).Show();
-            Close();
+            Main.Content = new DroneListPage(IBL, Main);
         }
 
         private void StationListPageButton_Click(object sender, RoutedEventArgs e)
@@ -48,6 +42,16 @@ namespace PL
         private void CustomerListPageButton_Click(object sender, RoutedEventArgs e)
         {
             //this.Content = new CustomerListPage(IBL);
+        }
+
+        private void ParcelListPageButton_Click(object sender, RoutedEventArgs e)
+        {
+            //this.Content = new ParcelListPage(IBL);
+        }
+        private void MapButton_Click(object sender, RoutedEventArgs e)
+        {
+            new MapWindow(IBL).Show();
+            Close();
         }
     }
 }

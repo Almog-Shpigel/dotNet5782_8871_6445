@@ -4,6 +4,103 @@
              xmlns:local="clr-namespace:PL"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <Style TargetType="Button" x:Key="MainWindowButton">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Height" Value="60" />
+            <Setter Property="Width" Value="200" />
+            <Setter Property="ClickMode" Value="Release" />
+            <Setter Property="FontSize" Value="32" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Background" Value="#ffe1a8" />
+            <Setter Property="Foreground" Value="#723d46" />
+            <Setter Property="Margin" Value="20,10,20,10" />
+        </Style>
+        <Style TargetType="Button" x:Key="ButtonBarStyle">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Height" Value="30" />
+            <Setter Property="Width" Value="120" />
+            <Setter Property="ClickMode" Value="Release" />
+            <Setter Property="FontSize" Value="15" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Background" Value="#ffe1a8" />
+            <Setter Property="Foreground" Value="#723d46" />
+            <Setter Property="Margin" Value="10,5,10,5" />
+        </Style>
+        <Style TargetType="Button" x:Key="ButtonPageStyle">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Height" Value="35" />
+            <Setter Property="Width" Value="140" />
+            <Setter Property="ClickMode" Value="Release" />
+            <Setter Property="FontSize" Value="10" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Background" Value="#ffe1a8" />
+            <Setter Property="Foreground" Value="#723d46" />
+            <Setter Property="Margin" Value="15,10,15,0" />
+        </Style>
+        <Style TargetType="TextBlock" x:Key="TextBlockStyle">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="FontSize" Value="17" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Foreground" Value="#723d46" />
+            <Setter Property="Margin" Value="10,5,10,5" />
+        </Style>
+        <Style TargetType="TextBlock" x:Key="TextBlockPageStyle">
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="FontSize" Value="25" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Foreground" Value="#723d46" />
+            <Setter Property="Margin" Value="10,10,10,0" />
+        </Style>
+        <Style TargetType="TextBlock" x:Key="TextBlockInvalidStyle">
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="FontSize" Value="15" />
+            <Setter Property="Foreground" Value="Red" />
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="Margin" Value="10,10,10,0" />
+        </Style>
+        <Style TargetType="TextBox" x:Key="TextBoxStyle">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="Height" Value="35" />
+            <Setter Property="Width" Value="160" />
+            <Setter Property="FontSize" Value="25" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Foreground" Value="#723d46" />
+            <Setter Property="Margin" Value="10,10,15,0" />
+        </Style>
+        <Style TargetType="ComboBox" x:Key="ComboBoxBarStyle">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Height" Value="25" />
+            <Setter Property="Width" Value="140" />
+            <Setter Property="FontSize" Value="15" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Background" Value="#ffe1a8" />
+            <Setter Property="Foreground" Value="#723d46" />
+            <Setter Property="Margin" Value="10,10,15,10" />
+        </Style>
+        <Style TargetType="ComboBox" x:Key="ComboBoxStyle">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Height" Value="35" />
+            <Setter Property="Width" Value="160" />
+            <Setter Property="FontSize" Value="25" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Background" Value="#ffe1a8" />
+            <Setter Property="Foreground" Value="#723d46" />
+            <Setter Property="Margin" Value="10,10,15,0" />
+        </Style>
+        <Style TargetType="ListView" x:Key="ListViewStyle">
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+        </Style>
     </Application.Resources>
 </Application>

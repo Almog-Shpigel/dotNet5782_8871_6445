@@ -27,17 +27,21 @@
             <RowDefinition Height="20"/>
             <RowDefinition Height="20*"/>
         </Grid.RowDefinitions>
+        
         <StackPanel Grid.Column="1" Grid.Row="1" Margin="20,10,20,10">
-            <TextBlock FontSize="56" HorizontalAlignment="Center" VerticalAlignment="Center"
+            <TextBlock FontSize="48" HorizontalAlignment="Center" VerticalAlignment="Center"
                    Text="Drone Delivery" Grid.ColumnSpan="2" Foreground="#472d30" FontWeight="ExtraBold" Margin="20,10,20,40"/>
-            <Button x:Name="DroneListPage" Content="Drones" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" Width="240"
-                Click="DroneListPageButton_Click" ClickMode="Release" FontSize="42" FontWeight="Bold" Background="#ffe1a8" Foreground="#723d46" Margin="20,10,20,10"/>
-            <Button x:Name="StationListPage" Content="Stations" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" Width="240"
-                Click="StationListPageButton_Click" ClickMode="Release" FontSize="42" FontWeight="Bold" Background="#ffe1a8" Foreground="#723d46" Margin="20,10,20,10"/>
-            <Button x:Name="CustomerListPage" Content="Customers" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" Width="240"
-                Click="CustomerListPageButton_Click" ClickMode="Release" FontSize="42" FontWeight="Bold" Background="#ffe1a8" Foreground="#723d46" Margin="20,10,20,10"/>
-            <Button x:Name="ShowMap" Content="Map" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" Width="240"
-                Click="MapButton_Click" ClickMode="Release" Grid.Column="2" Grid.Row="3" FontSize="42" FontWeight="Bold" Background="#ffe1a8" Foreground="#723d46" Margin="20,10,20,10"/>
+            <Button x:Name="DroneListPage" Content="Drones" Click="DroneListPageButton_Click"
+                    Style="{StaticResource MainWindowButton}"/>
+            <Button x:Name="StationListPage" Content="Stations" Click="StationListPageButton_Click"
+                    Style="{StaticResource MainWindowButton}"/>
+            <Button x:Name="CustomerListPage" Content="Customers" Click="CustomerListPageButton_Click"
+                    Style="{StaticResource MainWindowButton}"/>
+            <Button x:Name="ParcelListPage" Content="Parcels" Click="ParcelListPageButton_Click"
+                    Style="{StaticResource MainWindowButton}"/>
+            <Button x:Name="ShowMap" Content="Map" Click="MapButton_Click"
+                    Style="{StaticResource MainWindowButton}"/>
         </StackPanel>
+        <Frame x:Name="Main" Grid.ColumnSpan="4" Grid.RowSpan="4"/>
     </Grid>
 </Window>

@@ -33,7 +33,9 @@
             <TextBlock x:Name="NamelBlock"  Text="{Binding Name}"    Style="{StaticResource TextBlockPageStyle}" />
             <TextBlock x:Name="AvailableSlotstBlock"   Text="{Binding ChargeSlots}"  Style="{StaticResource TextBlockPageStyle}" />
             <TextBlock x:Name="LocationBlock" Text="{Binding Location}"  Style="{StaticResource TextBlockPageStyle}" />
-            <TextBlock x:Name="ChargingDronesBlock"  Text="{Binding ChargingDrones}" Style="{StaticResource TextBlockPageStyle}" />
+            <ListView x:Name="DronesListView" Style="{StaticResource ListViewStyle}">
+              
+            </ListView>
         </StackPanel>
     </Grid>
 </Page>

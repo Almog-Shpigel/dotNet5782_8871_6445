@@ -52,7 +52,7 @@
             <TextBox   x:Name="EnterDroneIDBox" TextChanged="EnterDroneIDBox_TextChanged" Style="{StaticResource TextBoxStyle}" />
             <TextBox   x:Name="EnterModelNameBox" TextChanged="EnterModelNameBox_TextChanged" Style="{StaticResource TextBoxStyle}" />
             <ComboBox  x:Name="WeightSelector" SelectionChanged="WeightSelector_SelectionChanged" Style="{StaticResource ComboBoxStyle}"/>
-            <ComboBox  x:Name="StationSelector" SelectionChanged="StationSelector_SelectionChanged" Style="{StaticResource ComboBoxStyle}"/>
+            <ComboBox  x:Name="StationSelector"  SelectionChanged="StationSelector_SelectionChanged" Style="{StaticResource ComboBoxStyle}"/>
             <Button x:Name="AddNewDroneButton" Content="Add" Click="AddNewDroneButton_Click" Style="{StaticResource ButtonPageStyle}" />
         </StackPanel>
         <StackPanel x:Name="InvalidTextPanel" Grid.Row="2" Grid.Column="3">

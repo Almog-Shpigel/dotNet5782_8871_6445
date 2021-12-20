@@ -30,6 +30,9 @@ namespace PL
             BLW = IBL;
             this.item = item;
             Station = (BO.StationToList)item.DataContext;
+            StationBL = IBL.GetStation(Station.ID);
+            this.DataContext = StationBL;
+            DronesListView.ItemsSource = StationBL.ChargingDrones;
         }
     }
 }

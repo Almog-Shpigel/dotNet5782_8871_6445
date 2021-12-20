@@ -65,7 +65,9 @@ namespace PL
 
         private void BackWindow_Click(object sender, RoutedEventArgs e)
         {
+            //MainFrame.Visibility = Visibility.Collapsed;
             new MainWindow().Show();// TO DO: to find a way to go back to main window without openning it again
+
         }
     }
 }

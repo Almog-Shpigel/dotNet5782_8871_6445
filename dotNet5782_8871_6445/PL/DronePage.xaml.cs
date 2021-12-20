@@ -49,7 +49,7 @@ namespace PL
             ARR[1] = WeightCategories.Medium;
             ARR[2] = WeightCategories.Heavy;
             WeightSelector.ItemsSource = ARR;
-            //StationSelector.ItemsSource = BLW.GetAllAvailableStationsID();
+            StationSelector.ItemsSource = BLW.GetAllStations().Where(station => station.AvailableChargeSlots > 0).Select(station => (string)station.ID.ToString()); ;
             AddNewDroneButton.IsEnabled = false;
             UpdateLayout();
         }

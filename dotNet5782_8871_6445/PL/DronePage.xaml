@@ -32,13 +32,13 @@
             <TextBlock x:Name="PrintStationIDBlock" Text="Station ID:"      Style="{StaticResource TextBlockPageStyle}" />
         </StackPanel>
         <StackPanel x:Name="ShowDetailsDrone1" Grid.Row="2" Grid.Column="2">
-            <TextBlock x:Name="IDBlock"         Style="{StaticResource TextBlockPageStyle}" />
-            <TextBlock x:Name="ModelBlock"      Style="{StaticResource TextBlockPageStyle}" />
-            <TextBlock x:Name="WeightBlock"     Style="{StaticResource TextBlockPageStyle}" />
-            <TextBlock x:Name="BatteryBlock"    Style="{StaticResource TextBlockPageStyle}" />
-            <TextBlock x:Name="StatusBlock"     Style="{StaticResource TextBlockPageStyle}" />
-            <TextBlock x:Name="ParcelBlock"     Style="{StaticResource TextBlockPageStyle}" />
-            <TextBlock x:Name="LocationBlock"   Style="{StaticResource TextBlockPageStyle}" />
+            <TextBlock x:Name="IDBlock"    Text="{Binding ID}"     Style="{StaticResource TextBlockPageStyle}" />
+            <TextBlock x:Name="ModelBlock"    Text="{Binding Model}"    Style="{StaticResource TextBlockPageStyle}" />
+            <TextBlock x:Name="WeightBlock"   Text="{Binding MaxWeight}"    Style="{StaticResource TextBlockPageStyle}" />
+            <TextBlock x:Name="BatteryBlock"    Text="{Binding BatteryStatus}"  Style="{StaticResource TextBlockPageStyle}" />
+            <TextBlock x:Name="StatusBlock"    Text="{Binding Status}"   Style="{StaticResource TextBlockPageStyle}" />
+            <TextBlock x:Name="ParcelBlock"    Text="{Binding Parcel.ID}"   Style="{StaticResource TextBlockPageStyle}" />
+            <TextBlock x:Name="LocationBlock"   Text="{Binding CurrentLocation}"  Style="{StaticResource TextBlockPageStyle}" />
         </StackPanel>
         <StackPanel x:Name="ShowDetailsDrone2" Grid.Row="2" Grid.Column="4">
             <Button x:Name="UpdateNameButton" Content="Update name" Click="UpdateNameButton_Click" Style="{StaticResource ButtonPageStyle}" />

@@ -54,11 +54,12 @@ namespace PL
             UpdateLayout();
         }
 
-        public DronePage(BlApi.IBL IBL, ListViewItem item) // Update drone ctor
+        public DronePage(BlApi.IBL IBL, Frame frame, ListViewItem item) // Update drone ctor
         {
             InitializeComponent();
             BLW = IBL;
             this.item = item;
+            Frame = frame;
             Drone = (BO.DroneToList)item.DataContext;
             NewDroneEnterPanel.Visibility = Visibility.Collapsed;
             PrintStationIDBlock.Visibility = Visibility.Collapsed;
@@ -66,22 +67,24 @@ namespace PL
             InvalidStationIDBlock.Visibility = Visibility.Collapsed;
             InvalidBatteryToCompleteDeliveryBlock.Visibility = Visibility.Collapsed;
             ExistsDroneIDBlock.Visibility = Visibility.Collapsed;
-            DisplayDroneDetailes();
+            droneBL = BLW.GetDrone(Drone.ID);
+            this.DataContext = droneBL;
+            //DisplayDroneDetailes();
             ButtenEnableCheck();
             UpdateLayout();
         }
 
-        private void DisplayDroneDetailes()
-        {
-            droneBL = BLW.GetDrone(Drone.ID);
-            IDBlock.Text = droneBL.ID.ToString();
-            ModelBlock.Text = droneBL.Model;
-            WeightBlock.Text = droneBL.MaxWeight.ToString();
-            BatteryBlock.Text = droneBL.BatteryStatus.ToString();
-            StatusBlock.Text = droneBL.Status.ToString();
-            ParcelBlock.Text = droneBL.Parcel.ID.ToString();
-            LocationBlock.Text = droneBL.CurrentLocation.ToString();
-        }
+        //private void DisplayDroneDetailes()
+        //{
+        //    droneBL = BLW.GetDrone(Drone.ID);
+        //    IDBlock.Text = droneBL.ID.ToString();
+        //    ModelBlock.Text = droneBL.Model;
+        //    WeightBlock.Text = droneBL.MaxWeight.ToString();
+        //    BatteryBlock.Text = droneBL.BatteryStatus.ToString();
+        //    StatusBlock.Text = droneBL.Status.ToString();
+        //    ParcelBlock.Text = droneBL.Parcel.ID.ToString();
+        //    LocationBlock.Text = droneBL.CurrentLocation.ToString();
+        //}
 
         private void ButtenEnableCheck()
         {
@@ -208,7 +211,8 @@ namespace PL
             {
                 BLW.UpdateDroneToBeCharged(Convert.ToInt32(IDBlock.Text));
                 ButtenEnableCheck();
-                DisplayDroneDetailes();
+                DataContext = BLW.GetDrone(Drone.ID);
+                //DisplayDroneDetailes();
             }
             catch (Exception exp)
             {
@@ -221,7 +225,8 @@ namespace PL
         {
             BLW.UpdateDroneToBeAvailable(Convert.ToInt32(IDBlock.Text));
             ButtenEnableCheck();
-            DisplayDroneDetailes();
+            DataContext = BLW.GetDrone(Drone.ID);
+            // DisplayDroneDetailes();
         }
 
         private void UpdateParcelAssignToDroneButton_Click(object sender, RoutedEventArgs e)
@@ -236,21 +241,24 @@ namespace PL
                 InvalidBatteryToCompleteDeliveryBlock.Text = exp.Message;
             }
             ButtenEnableCheck();
-            DisplayDroneDetailes();
+            DataContext = BLW.GetDrone(Drone.ID);
+            //DisplayDroneDetailes();
         }
 
         private void UpdateParcelCollectedByDroneButton_Click(object sender, RoutedEventArgs e)
         {
             BLW.UpdateParcelCollectedByDrone(Convert.ToInt32(IDBlock.Text));
             ButtenEnableCheck();
-            DisplayDroneDetailes();
+            DataContext = BLW.GetDrone(Drone.ID);
+            //DisplayDroneDetailes();
         }
 
         private void UpdateParcelDeleiveredByDroneButton_Click(object sender, RoutedEventArgs e)
         {
             BLW.UpdateParcelDeleiveredByDrone(Convert.ToInt32(IDBlock.Text));
             ButtenEnableCheck();
-            DisplayDroneDetailes();
+            DataContext = BLW.GetDrone(Drone.ID);
+            // DisplayDroneDetailes();
         }
 
         private void StationSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)

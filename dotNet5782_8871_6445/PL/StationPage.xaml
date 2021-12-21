@@ -33,9 +33,17 @@
             <TextBlock x:Name="NamelBlock"  Text="{Binding Name}"    Style="{StaticResource TextBlockPageStyle}" />
             <TextBlock x:Name="AvailableSlotstBlock"   Text="{Binding ChargeSlots}"  Style="{StaticResource TextBlockPageStyle}" />
             <TextBlock x:Name="LocationBlock" Text="{Binding Location}"  Style="{StaticResource TextBlockPageStyle}" />
-            <ListView x:Name="DronesListView" Style="{StaticResource ListViewStyle}">
-               
-            </ListView>
+            <ListView x:Name="DronesListView" Style="{StaticResource ListViewStyle}"></ListView>
+        </StackPanel>
+        <StackPanel x:Name="InvalidTextPanel" Grid.Row="2" Grid.Column="3">
+            <TextBox   x:Name="UpdateNameBlock" Text="" Style="{StaticResource TextBoxStyle}"/>
+            <TextBox   x:Name="UpdateChargeSlotsBlock" TextChanged="EnterChargeSlotsBox_TextChanged" Text="" Style="{StaticResource TextBoxStyle}"/>
+            <TextBlock x:Name="InvalidChargeSlotsBlock"  Style="{StaticResource TextBlockInvalidStyle}"/>
+        </StackPanel>
+        <StackPanel x:Name="ShowDetailsDrone2" Grid.Row="2" Grid.Column="4">
+            <Button x:Name="UpdateNameButton" Content="Update name" Click="UpdateNameButton_Click" Style="{StaticResource ButtonPageStyle}" />
+            <Button x:Name="UpdateChargeSlotsButton"  Content="Update total charge slots" Click="UpdateChargeSlotsButton_Click" Style="{StaticResource ButtonPageStyle}" />
+            <Button x:Name="UpdateDeleteStationButton"  Content="Delete station" Background="Red" Click="UpdateDeleteStationButton_Click" Style="{StaticResource ButtonPageStyle}" />
         </StackPanel>
     </Grid>
 </Page>

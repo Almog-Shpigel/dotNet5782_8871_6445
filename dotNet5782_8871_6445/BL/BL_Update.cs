@@ -23,22 +23,25 @@ namespace BlApi
             }
         }
         
-        public void UpdateStation(int StationID, bool NameChanged, bool SlotsChanged, string NewStationName, int NewNumberSlots)
+
+        public void UpdateStationName(int StationID, string NewStationName)
         {
             if (StationID is < 100000 or > 999999)
                 throw new InvalidIDException("Invalid station ID number. Must have 6 digits");
-            if (NameChanged)
+            if(NewStationName != "")
                 Data.UpdateStationName(StationID, NewStationName);
-            if (SlotsChanged)
-            {
-                Station station = Data.GetStation(StationID);
-                IEnumerable<DroneCharge> StationChargeSlots = Data.GetDroneCharge(DroneaInCharge => DroneaInCharge.StationID == StationID);
-                if (StationChargeSlots.Count() > NewNumberSlots)
-                    throw new InvalidSlotsException("Charge slots can't be less than the number of currently charging drones in the station");
-                Data.UpdateStationSlots(StationID, NewNumberSlots);
-            }
         }
-       
+        public void UpdateStationSlots(int StationID, int NewNumberSlots)
+        {
+            if (StationID is < 100000 or > 999999)
+                throw new InvalidIDException("Invalid station ID number. Must have 6 digits");
+            IEnumerable<DroneCharge> StationChargeSlots = Data.GetDroneCharge(DroneaInCharge => DroneaInCharge.StationID == StationID);
+            if (StationChargeSlots.Count() > NewNumberSlots)
+                throw new InvalidSlotsException("Charge slots can't be less than the number of currently charging drones in the station");
+            Data.UpdateStationSlots(StationID, NewNumberSlots);
+        }
+
+
         public void UpdateCustomer(int CustomerID, bool NameChanged, bool PhoneChanged, string NewCustomerName, int NewCustomerPhone)
         {
             if (CustomerID is < 100000000 or > 999999999)

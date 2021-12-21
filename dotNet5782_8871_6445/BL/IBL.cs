@@ -49,14 +49,18 @@ namespace BlApi
         public void UpdateDroneName(int DroneID, string NewName);
 
         /// <summary>
-        /// Updating a station's charge slots or name or both, if an empty input recived for either, will not change it
+        /// Updating a station's name
         /// </summary>
         /// <param name="StationID"></param>
-        /// <param name="ChangeName"></param>
-        /// <param name="ChangeSlots"></param>
-        /// <param name="name"></param>
-        /// <param name="slots"></param>
-        public void UpdateStation(int StationID, bool NameChanged, bool SlotsChanged, string NewStationName, int NewNumberSlots);
+        /// <param name="NewStationName"></param>
+        void UpdateStationName(int StationID, string NewStationName);
+
+        /// <summary>
+        /// Updating a station's total charging slots
+        /// </summary>
+        /// <param name="StationID"></param>
+        /// <param name="NewStationName"></param>
+        void UpdateStationSlots(int StationID, int NewNumberSlots);
 
         /// <summary>
         /// Updating a customer's phone number or name or both, if an empty input recived for either, will not change it
@@ -197,6 +201,7 @@ namespace BlApi
         /// <param name="CustomerID"></param>
         /// <returns>distance (km)</returns>
         public string GetDistanceFromCustomer(double latitude, double longitude, int CustomerID);
+
         #endregion
         #endregion
     }

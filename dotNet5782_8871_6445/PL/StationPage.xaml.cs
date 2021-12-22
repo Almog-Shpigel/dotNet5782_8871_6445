@@ -21,14 +21,16 @@ namespace PL
     public partial class StationPage : Page
     {
         private ListViewItem item;
+        private Frame MainFrame;
         private BlApi.IBL BLW;
         private BO.StationToList Station;
         private BO.StationBL StationBL;
-        public StationPage(BlApi.IBL IBL, ListViewItem item)
+        public StationPage(BlApi.IBL IBL, ListViewItem item,Frame frame)
         {
             InitializeComponent();
             BLW = IBL;
             this.item = item;
+            MainFrame = frame;
             Station = (BO.StationToList)item.DataContext;
             StationBL = IBL.GetStation(Station.ID);
             DataContext = StationBL;
@@ -45,13 +47,13 @@ namespace PL
         {
             try
             {
-                BLW.UpdateStationSlots(Station.ID, Convert.ToInt32(UpdateChargeSlotsBlock.Text));
+                BLW.UpdateStationSlots(Station.ID, Convert.ToInt32(UpdateChargeSlotsBlock.Text),StationBL.ChargingDrones.Count());
                 DataContext = BLW.GetStation(Station.ID);
             }
             catch (Exception exp)
             {
-                InvalidChargeSlotsBlock.Text = exp.Message;
-                InvalidChargeSlotsBlock.Visibility = Visibility.Visible;
+                InvalidInputBlock.Text = exp.Message;
+                InvalidInputBlock.Visibility = Visibility.Visible;
             }
             
         }
@@ -60,14 +62,14 @@ namespace PL
             int Slots;
             if (!int.TryParse(UpdateChargeSlotsBlock.Text, out Slots))
             {
-                InvalidChargeSlotsBlock.Visibility = Visibility.Visible;
+                InvalidInputBlock.Visibility = Visibility.Visible;
                 UpdateChargeSlotsBlock.Foreground = Brushes.Red;
                 UpdateChargeSlotsButton.IsEnabled = false;
             }
             else
             {
                 UpdateChargeSlotsButton.IsEnabled = true;
-                InvalidChargeSlotsBlock.Visibility = Visibility.Collapsed;
+                InvalidInputBlock.Visibility = Visibility.Collapsed;
                 UpdateChargeSlotsBlock.Foreground = Brushes.Black;
 
 
@@ -76,7 +78,17 @@ namespace PL
 
         private void UpdateDeleteStationButton_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                BLW.DeleteStation(StationBL.ID);
+                MainFrame.Content = new StationListPage(BLW, MainFrame);
+            }
+            catch (Exception exp)
+            {
 
+                InvalidInputBlock.Text = exp.Message;
+                InvalidInputBlock.Visibility = Visibility.Visible;
+            }
         }
 
       

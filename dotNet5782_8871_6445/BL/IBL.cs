@@ -60,7 +60,8 @@ namespace BlApi
         /// </summary>
         /// <param name="StationID"></param>
         /// <param name="NewStationName"></param>
-        void UpdateStationSlots(int StationID, int NewNumberSlots);
+        void UpdateStationSlots(int StationID, int NewNumberSlots , int CurrentlyCharging);
+        void DeleteStation(int iD);
 
         /// <summary>
         /// Updating a customer's phone number or name or both, if an empty input recived for either, will not change it

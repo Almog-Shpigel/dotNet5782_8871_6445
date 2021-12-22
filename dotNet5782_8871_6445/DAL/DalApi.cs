@@ -41,6 +41,7 @@ namespace DalApi
         public Parcel GetParcel(int id);
         public double[] GetBatteryUsed();
         DroneCharge GetDroneCharge(int droneID);
+        void DeleteStation(int stationID);
         #endregion
     }
 }

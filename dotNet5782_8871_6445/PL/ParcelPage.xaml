@@ -34,16 +34,16 @@
             <TextBlock x:Name="PrintDroneInParcelIDBlock"   Text="Drone In Parcel:" Style="{StaticResource TextBlockPageStyle}" />
         </StackPanel>
         <StackPanel x:Name="ShowDetailsDrone1" Grid.Row="2" Grid.Column="2">
-            <TextBlock x:Name="IDBlock"                 Style="{StaticResource TextBlockPageStyle}" />
-            <TextBlock x:Name="SenderBlock"             Style="{StaticResource TextBlockPageStyle}" />
-            <TextBlock x:Name="ReceiverBlock"           Style="{StaticResource TextBlockPageStyle}" />
-            <TextBlock x:Name="WeightBlock"             Style="{StaticResource TextBlockPageStyle}" />
-            <TextBlock x:Name="PriorityBlock"           Style="{StaticResource TextBlockPageStyle}" />
-            <TextBlock x:Name="RequestedBlock"          Style="{StaticResource TextBlockPageStyle}" />
-            <TextBlock x:Name="ScheduledBlock"          Style="{StaticResource TextBlockPageStyle}" />
-            <TextBlock x:Name="PickedUpBlock"           Style="{StaticResource TextBlockPageStyle}" />
-            <TextBlock x:Name="DeliveredBlock"          Style="{StaticResource TextBlockPageStyle}" />
-            <TextBlock x:Name="DroneInParcelIDBlock"    Style="{StaticResource TextBlockPageStyle}" />
+            <TextBlock x:Name="IDBlock"         Text="{Binding ID}"        Style="{StaticResource TextBlockPageStyle}" />
+            <TextBlock x:Name="SenderBlock"       Text="{Binding ID}"       Style="{StaticResource TextBlockPageStyle}" />
+            <TextBlock x:Name="ReceiverBlock"    Text="{Binding ID}"        Style="{StaticResource TextBlockPageStyle}" />
+            <TextBlock x:Name="WeightBlock"       Text="{Binding ID}"       Style="{StaticResource TextBlockPageStyle}" />
+            <TextBlock x:Name="PriorityBlock"      Text="{Binding ID}"      Style="{StaticResource TextBlockPageStyle}" />
+            <TextBlock x:Name="RequestedBlock"     Text="{Binding ID}"      Style="{StaticResource TextBlockPageStyle}" />
+            <TextBlock x:Name="ScheduledBlock"      Text="{Binding ID}"     Style="{StaticResource TextBlockPageStyle}" />
+            <TextBlock x:Name="PickedUpBlock"      Text="{Binding ID}"      Style="{StaticResource TextBlockPageStyle}" />
+            <TextBlock x:Name="DeliveredBlock"     Text="{Binding ID}"      Style="{StaticResource TextBlockPageStyle}" />
+            <TextBlock x:Name="DroneInParcelIDBlock"   Text="{Binding ID}"  Style="{StaticResource TextBlockPageStyle}" />
         </StackPanel>
         <!--<StackPanel x:Name="ShowDetailsDrone2" Grid.Row="2" Grid.Column="4">
             <Button x:Name="UpdateNameButton" Content="Update name" Click="UpdateNameButton_Click" Style="{StaticResource ButtonPageStyle}" />

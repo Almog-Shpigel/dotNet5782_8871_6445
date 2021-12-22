@@ -26,7 +26,7 @@
             <Button  x:Name="BackWindow" Content="Main Window" Click="BackWindow_Click" Style="{StaticResource ButtonBarStyle}"/>
         </StackPanel>
 
-        <ListView x:Name="ParcelListView" Grid.Row="1" SelectionChanged="ParcelListView_SelectionChanged"  Style="{StaticResource ListViewStyle}"
+        <ListView x:Name="ParcelListView"   Grid.Row="1" SelectionChanged="ParcelListView_SelectionChanged"  Style="{StaticResource ListViewStyle}"
                   GridViewColumnHeader.Click="GridViewColumnHeaderClickedHandler">
             <ListView.View>
                 <GridView>
@@ -47,11 +47,11 @@
                     </GroupStyle.HeaderTemplate>
                 </GroupStyle>
             </ListView.GroupStyle>
-            <!--<ListView.ItemContainerStyle>
+            <ListView.ItemContainerStyle>
                 <Style TargetType="{x:Type ListViewItem}">
                     <EventSetter Event="UIElement.PreviewMouseLeftButtonDown" Handler="ListViewItem_PreviewMouseLeftButtonDown" />
                 </Style>
-            </ListView.ItemContainerStyle>-->
+            </ListView.ItemContainerStyle>
         </ListView>
     </Grid>
 </Page>

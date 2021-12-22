@@ -58,12 +58,13 @@ namespace PL
             var item = sender as ListViewItem;
             if (item != null && item.IsSelected)
             {
-                MainFrame.Content = new ParcelPage(BLW, item);
+                MainFrame.Content = new ParcelPage(BLW, item,MainFrame);
             }
         }
         void GridViewColumnHeaderClickedHandler(object sender, RoutedEventArgs e)
         {
-            PropertyGroupDescription groupDescription = new PropertyGroupDescription("SenderName");//TO DO: to make grouping possible for multipole definitions
+            var selected = e.Source.ToString();
+            PropertyGroupDescription groupDescription = new PropertyGroupDescription(selected);//TO DO: to make grouping possible for multipole definitions
             view.GroupDescriptions.Clear();
             view.GroupDescriptions.Add(groupDescription);
         }

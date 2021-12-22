@@ -20,17 +20,25 @@ namespace PL
     /// </summary>
     public partial class ParcelPage : Page
     {
+        private ListViewItem item;
         private BlApi.IBL BLW;
         private Frame MainFrame;
+        private BO.ParcelToList Parcel;
         public ParcelPage(BlApi.IBL IBL, RoutedEventArgs e, Frame Main)
         {
             InitializeComponent();
             BLW = IBL;
             MainFrame = Main;
+           
         }
-        public ParcelPage(BlApi.IBL BLW, ListViewItem item)
+        public ParcelPage(BlApi.IBL IBL, ListViewItem item, Frame Main)
         {
             InitializeComponent();
+            BLW = IBL;
+            this.item = item;
+            MainFrame = Main;
+            Parcel = (BO.ParcelToList)item.DataContext;
+            DataContext = BLW.GetParcel(Parcel.ID);
         }
 
         private void EnterSenderIDBox_TextChanged(object sender, TextChangedEventArgs e)

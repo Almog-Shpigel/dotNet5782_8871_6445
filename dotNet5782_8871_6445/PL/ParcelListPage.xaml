@@ -22,12 +22,23 @@
             <ComboBox x:Name="PrioritySelector" SelectionChanged="PrioritySelector_SelectionChanged" Style="{StaticResource ComboBoxBarStyle}"/>
             <TextBlock Text="Weight:" Style="{StaticResource TextBlockStyle}"/>
             <ComboBox x:Name="WeightSelector" SelectionChanged="WeightSelector_SelectionChanged" Style="{StaticResource ComboBoxBarStyle}"/>
-            <Button x:Name="AddNewParcel" Content="Add new parcel" Click="AddNewParcelButton_Click" Style="{StaticResource ButtonBarStyle}"/>
+            <Button  x:Name="AddNewParcel" Content="Add new parcel" Click="AddNewParcelButton_Click" Style="{StaticResource ButtonBarStyle}"/>
             <Button  x:Name="BackWindow" Content="Main Window" Click="BackWindow_Click" Style="{StaticResource ButtonBarStyle}"/>
         </StackPanel>
-
-        <ListView x:Name="ParcelListView" Grid.Row="1" SelectionChanged="ParcelListView_SelectionChanged"  Style="{StaticResource ListViewStyle}"
-                  GridViewColumnHeader.Click="GridViewColumnHeaderClickedHandler">
+        <DataGrid x:Name="ParcelDataGrid" AutoGenerateColumns="False" EnableRowVirtualization="False"
+                  ItemsSource="{Binding}" RowDetailsVisibilityMode="VisibleWhenSelected" RenderTransformOrigin="0.5,0.5" Grid.Column="1" Grid.Row="2"
+                  SelectionChanged="ParcelListView_SelectionChanged" Style="{StaticResource ParcelDataGrid}" IsReadOnly="True">
+            <DataGrid.Columns>
+                <DataGridTextColumn x:Name="iDColumn" Binding="{Binding ID}" Header="Parcel ID" Width="Auto"/>
+                <DataGridTextColumn x:Name="SenderColumn" Binding="{Binding SenderName}" Header="Sender" Width="Auto"/>
+                <DataGridTextColumn x:Name="nameColumn" Binding="{Binding TargetName}" Header="Receiver" Width="Auto"/>
+                <DataGridTextColumn x:Name="numberColumn" Binding="{Binding Weight}" Header="Weight" Width="Auto"/>
+                <DataGridTextColumn x:Name="semesterColumn" Binding="{Binding Priority}" Header="Priority" Width="Auto"/>
+                <DataGridTextColumn x:Name="yearColumn" Binding="{Binding Status}" Header="Status" Width="Auto"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <!--<ListView x:Name="ParcelListView" Grid.Row="1" SelectionChanged="ParcelListView_SelectionChanged"  Style="{StaticResource ListViewStyle}"
+                  GridViewColumnHeader.Click="GridViewColumnHeaderClickedHandler" ItemsSource="{Binding}">
             <ListView.View>
                 <GridView>
                     <GridViewColumn DisplayMemberBinding="{Binding ID}" Header="ID" Width="100"  />
@@ -52,6 +63,6 @@
                     <EventSetter Event="UIElement.PreviewMouseLeftButtonDown" Handler="ListViewItem_PreviewMouseLeftButtonDown" />
                 </Style>
             </ListView.ItemContainerStyle>
-        </ListView>
+        </ListView>-->
     </Grid>
 </Page>

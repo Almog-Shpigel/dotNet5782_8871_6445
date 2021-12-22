@@ -22,7 +22,8 @@ namespace PL
             BLW = IBL;
             Frame = frame;
 
-            ParcelListView.ItemsSource = BLW.GetAllParcels();
+            ParcelDataGrid.ItemsSource = BLW.GetAllParcels();
+            //ParcelListView.ItemsSource = BLW.GetAllParcels();
             PrioritySelector.ItemsSource = Enum.GetValues(typeof(Priorities));
             WeightSelector.ItemsSource = Enum.GetValues(typeof(WeightCategories));
             
@@ -45,12 +46,13 @@ namespace PL
 
         private void PrioritySelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ParcelListView.ItemsSource = BLW.GetParcels((Priorities)e.AddedItems[0], (WeightCategories)WeightSelector.SelectedIndex);
+            ParcelDataGrid.ItemsSource = BLW.GetParcels((Priorities)e.AddedItems[0], (WeightCategories)WeightSelector.SelectedIndex);
+            //ParcelListView
         }
 
         private void WeightSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ParcelListView.ItemsSource = BLW.GetParcels((Priorities)PrioritySelector.SelectedIndex, (WeightCategories)e.AddedItems[0]);
+            ParcelDataGrid.ItemsSource = BLW.GetParcels((Priorities)PrioritySelector.SelectedIndex, (WeightCategories)e.AddedItems[0]);
         }
 
         private void ListViewItem_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -61,7 +63,8 @@ namespace PL
         }
         void GridViewColumnHeaderClickedHandler(object sender, RoutedEventArgs e)
         {
-            view = (CollectionView)CollectionViewSource.GetDefaultView(ParcelListView.ItemsSource);
+            view = (CollectionView)CollectionViewSource.GetDefaultView(ParcelDataGrid.ItemsSource);
+            //ParcelListView
             string str = e.OriginalSource.ToString();
             PropertyGroupDescription groupDescription = new PropertyGroupDescription(str);//TO DO: to make grouping possible for multipole definitions
             view.GroupDescriptions.Clear();

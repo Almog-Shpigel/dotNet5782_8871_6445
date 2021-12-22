@@ -6,4 +6,7 @@
     <UpgradeBackupLocation>C:\Users\user\source\repos\dotNet5782_8871_6445\testing\dotNet5782_8871_6445\Backup\Targil0\</UpgradeBackupLocation>
     <OldToolsVersion>2.0</OldToolsVersion>
   </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Caliburn.Micro" Version="4.0.173" />
+  </ItemGroup>
 </Project>

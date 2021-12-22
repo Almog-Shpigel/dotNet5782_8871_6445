@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
-        Title="Main Window" Height="640" Width="950">
+        Title="Main Window" Height="640" Width="950" WindowStartupLocation="CenterScreen" WindowState="Normal">
     <!--
     Colors:
     #c9cba3

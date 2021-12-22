@@ -18,7 +18,7 @@ using System.Threading.Tasks;
             }
             public override string ToString()
             {
-                return $"Name: {Name}, #{ID}";
+                return $"{Name} #{ID}";
             }
         }
     }

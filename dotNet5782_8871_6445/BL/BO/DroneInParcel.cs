@@ -20,7 +20,8 @@ using System.Threading.Tasks;
         public override string ToString()
         {
             return  $"Drone #{ID}:\n" +
-                    $"Location: {CurrentLocation} Battery: {BatteryStatus}%";
+                    $"Location: {CurrentLocation}\n" +
+                    $"Battery: {BatteryStatus}%";
         }
     }
 

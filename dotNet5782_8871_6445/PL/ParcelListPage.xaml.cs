@@ -14,23 +14,23 @@ namespace PL
     public partial class ParcelListPage : Page
     {
         private BlApi.IBL BLW;
-        private Frame MainFrame;
+        private Frame Frame;
         CollectionView view;
-        public ParcelListPage(BlApi.IBL IBL, Frame Main)
+        public ParcelListPage(BlApi.IBL IBL, Frame frame)
         {
             InitializeComponent();
             BLW = IBL;
-            MainFrame = Main;
+            Frame = frame;
 
             ParcelListView.ItemsSource = BLW.GetAllParcels();
             PrioritySelector.ItemsSource = Enum.GetValues(typeof(Priorities));
             WeightSelector.ItemsSource = Enum.GetValues(typeof(WeightCategories));
-            view = (CollectionView)CollectionViewSource.GetDefaultView(ParcelListView.ItemsSource);
+            
         }
 
         private void AddNewParcelButton_Click(object sender, RoutedEventArgs e)
         {
-            MainFrame.Content = new ParcelPage(BLW, e, MainFrame);
+            Frame.Content = new ParcelPage(BLW, e, Frame);
         }
 
         private void BackWindow_Click(object sender, RoutedEventArgs e)
@@ -57,14 +57,13 @@ namespace PL
         {
             var item = sender as ListViewItem;
             if (item != null && item.IsSelected)
-            {
-                MainFrame.Content = new ParcelPage(BLW, item,MainFrame);
-            }
+                Frame.Content = new ParcelPage(BLW, item, Frame);
         }
         void GridViewColumnHeaderClickedHandler(object sender, RoutedEventArgs e)
         {
-            var selected = e.Source.ToString();
-            PropertyGroupDescription groupDescription = new PropertyGroupDescription(selected);//TO DO: to make grouping possible for multipole definitions
+            view = (CollectionView)CollectionViewSource.GetDefaultView(ParcelListView.ItemsSource);
+            string str = e.OriginalSource.ToString();
+            PropertyGroupDescription groupDescription = new PropertyGroupDescription(str);//TO DO: to make grouping possible for multipole definitions
             view.GroupDescriptions.Clear();
             view.GroupDescriptions.Add(groupDescription);
         }

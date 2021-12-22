@@ -59,7 +59,7 @@ namespace PL
             var item = sender as ListViewItem;
             if (item != null && item.IsSelected)
             {
-                MainFrame.Content = new DronePage(BLW,MainFrame, item);
+                MainFrame.Content = new DronePage(BLW, MainFrame, item);
             }
         }
 

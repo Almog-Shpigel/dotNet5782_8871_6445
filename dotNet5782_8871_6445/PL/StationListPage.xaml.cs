@@ -23,7 +23,7 @@ namespace PL
     {
         private BlApi.IBL BLW;
         private Frame MainFrame;
-        public StationListPage(BlApi.IBL IBL,Frame Main)
+        public StationListPage(BlApi.IBL IBL, Frame Main)
         {
             InitializeComponent();
             BLW = IBL;

@@ -11,8 +11,8 @@
     <Grid Background="#c9cba3">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="5*"/>
-            <ColumnDefinition Width="45*"/>
-            <ColumnDefinition Width="50*"/>
+            <ColumnDefinition Width="35*"/>
+            <ColumnDefinition Width="70*"/>
             <ColumnDefinition Width="50*"/>
             <ColumnDefinition Width="45*"/>
             <ColumnDefinition Width="5*"/>
@@ -23,37 +23,34 @@
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="2" Grid.Column="1">
             <TextBlock x:Name="PrintIDblock"                Text="Parcel ID:"       Style="{StaticResource TextBlockPageStyle}" />
-            <TextBlock x:Name="PrintSenderBlock"            Text="Sender ID:"       Style="{StaticResource TextBlockPageStyle}" />
-            <TextBlock x:Name="PrintReceiverBlock"          Text="Receiver ID:"     Style="{StaticResource TextBlockPageStyle}" />
+            <TextBlock x:Name="PrintSenderBlock"            Text="Sender:"          Style="{StaticResource TextBlockPageStyle}" />
+            <TextBlock x:Name="PrintReceiverBlock"          Text="Receiver:"        Style="{StaticResource TextBlockPageStyle}" />
             <TextBlock x:Name="PrintWeightBlock"            Text="Weight:"          Style="{StaticResource TextBlockPageStyle}" />
             <TextBlock x:Name="PrintPriorityBlock"          Text="Priority:"        Style="{StaticResource TextBlockPageStyle}" />
             <TextBlock x:Name="PrintRequestedBlock"         Text="Requested:"       Style="{StaticResource TextBlockPageStyle}" />
             <TextBlock x:Name="PrintScheduledBlock"         Text="Scheduled:"       Style="{StaticResource TextBlockPageStyle}" />
             <TextBlock x:Name="PrintPickedUpBlock"          Text="Picked Up:"       Style="{StaticResource TextBlockPageStyle}" />
             <TextBlock x:Name="PrintDeliveredBlock"         Text="Delivered:"       Style="{StaticResource TextBlockPageStyle}" />
-            <TextBlock x:Name="PrintDroneInParcelIDBlock"   Text="Drone In Parcel:" Style="{StaticResource TextBlockPageStyle}" />
+            <TextBlock x:Name="PrintDroneInParcelIDBlock"   Text="Drone In Parcel:" Style="{StaticResource TextBlockPageStyle}" TextWrapping="Wrap"/>
         </StackPanel>
-        <StackPanel x:Name="ShowDetailsDrone1" Grid.Row="2" Grid.Column="2">
-            <TextBlock x:Name="IDBlock"         Text="{Binding ID}"        Style="{StaticResource TextBlockPageStyle}" />
-            <TextBlock x:Name="SenderBlock"       Text="{Binding ID}"       Style="{StaticResource TextBlockPageStyle}" />
-            <TextBlock x:Name="ReceiverBlock"    Text="{Binding ID}"        Style="{StaticResource TextBlockPageStyle}" />
-            <TextBlock x:Name="WeightBlock"       Text="{Binding ID}"       Style="{StaticResource TextBlockPageStyle}" />
-            <TextBlock x:Name="PriorityBlock"      Text="{Binding ID}"      Style="{StaticResource TextBlockPageStyle}" />
-            <TextBlock x:Name="RequestedBlock"     Text="{Binding ID}"      Style="{StaticResource TextBlockPageStyle}" />
-            <TextBlock x:Name="ScheduledBlock"      Text="{Binding ID}"     Style="{StaticResource TextBlockPageStyle}" />
-            <TextBlock x:Name="PickedUpBlock"      Text="{Binding ID}"      Style="{StaticResource TextBlockPageStyle}" />
-            <TextBlock x:Name="DeliveredBlock"     Text="{Binding ID}"      Style="{StaticResource TextBlockPageStyle}" />
-            <TextBlock x:Name="DroneInParcelIDBlock"   Text="{Binding ID}"  Style="{StaticResource TextBlockPageStyle}" />
+        <StackPanel x:Name="ShowDetailsParcel1" Grid.Row="2" Grid.Column="2">
+            <TextBlock x:Name="IDBlock"                 Style="{StaticResource TextBlockPageStyle}" Text="{Binding ID}"/>
+            <TextBlock x:Name="SenderBlock"             Style="{StaticResource TextBlockPageStyle}" Text="{Binding Sender}"/>
+            <TextBlock x:Name="ReceiverBlock"           Style="{StaticResource TextBlockPageStyle}" Text="{Binding Target}"/>
+            <TextBlock x:Name="WeightBlock"             Style="{StaticResource TextBlockPageStyle}" Text="{Binding Weight}"/>
+            <TextBlock x:Name="PriorityBlock"           Style="{StaticResource TextBlockPageStyle}" Text="{Binding Priority}"/>
+            <TextBlock x:Name="RequestedBlock"          Style="{StaticResource TextBlockPageStyle}" Text="{Binding TimeRequested}"/>
+            <TextBlock x:Name="ScheduledBlock"          Style="{StaticResource TextBlockPageStyle}" Text="{Binding Scheduled}"/>
+            <TextBlock x:Name="PickedUpBlock"           Style="{StaticResource TextBlockPageStyle}" Text="{Binding PickedUp}"/>
+            <TextBlock x:Name="DeliveredBlock"          Style="{StaticResource TextBlockPageStyle}" Text="{Binding Delivered}"/>
+            <TextBlock x:Name="DroneInParcelIDBlock"    Style="{StaticResource TextBlockPageStyle}" Text="{Binding DroneInParcel}"/>
         </StackPanel>
-        <!--<StackPanel x:Name="ShowDetailsDrone2" Grid.Row="2" Grid.Column="4">
-            <Button x:Name="UpdateNameButton" Content="Update name" Click="UpdateNameButton_Click" Style="{StaticResource ButtonPageStyle}" />
-            <Button x:Name="UpdateDroneToBeChargedButton"  Content="Send drone to be charged" Click="UpdateDroneToBeChargedButton_Click" Style="{StaticResource ButtonPageStyle}" />
-            <Button x:Name="UpdateReleaseDroneFromChargeButton"  Content="Release Drone from charge" Click="UpdateReleaseDroneFromChargeButton_Click" Style="{StaticResource ButtonPageStyle}" />
-            <Button x:Name="UpdateParcelAssignToDroneButton" Content="Assign parcel to drone" Click="UpdateParcelAssignToDroneButton_Click" Style="{StaticResource ButtonPageStyle}"/>
-            <Button x:Name="UpdateParcelCollectedByDroneButton" Content="Parcel collected by drone" Click="UpdateParcelCollectedByDroneButton_Click" Style="{StaticResource ButtonPageStyle}" />
-            <Button x:Name="UpdateDeleteParcelButton" Content="Delete parcel" Click="UpdateDeleteParcelButton_Click" ClickMode="Release" Style="{StaticResource ButtonPageStyle}" />
-        </StackPanel>-->
-        <StackPanel x:Name="NewDroneEnterPanel" Grid.Row="2" Grid.Column="2">
+        <StackPanel x:Name="ShowDetailsParcel2" Grid.Row="2" Grid.Column="4">
+            <Button x:Name="UpdateParcelCollectedButton" Style="{StaticResource ButtonPageStyle}" Content="Parcel collected" Click="UpdateParcelCollectedButton_Click" />
+            <Button x:Name="UpdateParcelDeliveredButton" Style="{StaticResource ButtonPageStyle}" Content="Parcel delivered" Click="UpdateParcelDeliveredButton_Click" />
+            <Button x:Name="UpdateDeleteParcelButton"    Style="{StaticResource ButtonPageStyle}" Content="Delete parcel" Click="UpdateParcelDeliveredButton_Click" />
+        </StackPanel>
+        <StackPanel x:Name="NewDroneEnterPanel" Grid.Row="2" Grid.Column="3">
             <TextBox    x:Name="EnterSenderIDBox" TextChanged="EnterSenderIDBox_TextChanged" Style="{StaticResource TextBoxStyle}" />
             <TextBox    x:Name="EnterTargetIDBox" TextChanged="EnterTargetIDBox_TextChanged" Style="{StaticResource TextBoxStyle}" />
             <ComboBox   x:Name="WeightSelector" SelectionChanged="WeightSelector_SelectionChanged" Style="{StaticResource ComboBoxStyle}"/>

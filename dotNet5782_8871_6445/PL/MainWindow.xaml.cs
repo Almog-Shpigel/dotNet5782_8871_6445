@@ -41,12 +41,12 @@ namespace PL
 
         private void CustomerListPageButton_Click(object sender, RoutedEventArgs e)
         {
-            //this.Content = new CustomerListPage(IBL);
+            //Main.Content = new CustomerListPage(IBL);
         }
 
         private void ParcelListPageButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Content = new ParcelListPage(IBL, Main);
+            Main.Content = new ParcelListPage(IBL, Main);
         }
         private void MapButton_Click(object sender, RoutedEventArgs e)
         {

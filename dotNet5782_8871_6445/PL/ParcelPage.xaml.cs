@@ -1,17 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace PL
 {
@@ -22,23 +10,28 @@ namespace PL
     {
         private ListViewItem item;
         private BlApi.IBL BLW;
-        private Frame MainFrame;
         private BO.ParcelToList Parcel;
-        public ParcelPage(BlApi.IBL IBL, RoutedEventArgs e, Frame Main)
+        private BO.ParcelBL ParcelBL;
+        Frame Frame;
+
+        public ParcelPage(BlApi.IBL IBL, RoutedEventArgs e, Frame frame)
         {
-            InitializeComponent();
+            InitializeComponent(); // Add drone ctor
             BLW = IBL;
-            MainFrame = Main;
-           
+            Frame = frame;
+            UpdateLayout();
         }
-        public ParcelPage(BlApi.IBL IBL, ListViewItem item, Frame Main)
+
+        public ParcelPage(BlApi.IBL IBL, ListViewItem item, Frame frame) // Update parcel ctor
         {
             InitializeComponent();
             BLW = IBL;
             this.item = item;
-            MainFrame = Main;
+            Frame = frame;
             Parcel = (BO.ParcelToList)item.DataContext;
-            DataContext = BLW.GetParcel(Parcel.ID);
+            ParcelBL = BLW.GetParcel(Parcel.ID);
+            DataContext = ParcelBL;
+            UpdateLayout();
         }
 
         private void EnterSenderIDBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -67,6 +60,16 @@ namespace PL
         }
 
         private void PrioritySelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void UpdateParcelCollectedButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void UpdateParcelDeliveredButton_Click(object sender, RoutedEventArgs e)
         {
 
         }

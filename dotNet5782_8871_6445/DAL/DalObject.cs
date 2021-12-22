@@ -124,6 +124,13 @@ namespace DalObject
                     DataSource.stations[i] = station;
             }
         }
+        public void DeleteStation(int StationID)
+        {
+            if (!StationExist(StationID))
+                throw new StationExistException("The station doesn't exists in the data!!");
+            Station StationToBeDeleted = GetStation(StationID);
+            DataSource.stations.Remove(StationToBeDeleted);
+        }
 
         public void UpdateDroneToBeAvailable(int DroneID)
         {

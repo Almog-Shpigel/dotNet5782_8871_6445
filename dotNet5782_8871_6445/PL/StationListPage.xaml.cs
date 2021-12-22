@@ -47,7 +47,7 @@ namespace PL
             var item = sender as ListViewItem;
             if (item != null && item.IsSelected)
             {
-                MainFrame.Content = new StationPage(BLW, item);
+                MainFrame.Content = new StationPage(BLW, item,MainFrame);
             }
         }
     

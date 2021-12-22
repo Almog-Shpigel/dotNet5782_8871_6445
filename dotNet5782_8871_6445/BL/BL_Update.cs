@@ -31,14 +31,15 @@ namespace BlApi
             if(NewStationName != "")
                 Data.UpdateStationName(StationID, NewStationName);
         }
-        public void UpdateStationSlots(int StationID, int NewNumberSlots)
+        public void UpdateStationSlots(int StationID, int NewNumberSlots, int CurrentlyCharging)
         {
             if (StationID is < 100000 or > 999999)
                 throw new InvalidIDException("Invalid station ID number. Must have 6 digits");
-            IEnumerable<DroneCharge> StationChargeSlots = Data.GetDroneCharge(DroneaInCharge => DroneaInCharge.StationID == StationID);
-            if (StationChargeSlots.Count() > NewNumberSlots)
+            if (NewNumberSlots < 0)
+                throw new InvalidSlotsException("Slots can't be less than a 0");
+            if (CurrentlyCharging > NewNumberSlots)
                 throw new InvalidSlotsException("Charge slots can't be less than the number of currently charging drones in the station");
-            Data.UpdateStationSlots(StationID, NewNumberSlots);
+            Data.UpdateStationSlots(StationID, NewNumberSlots - CurrentlyCharging);
         }
 
 
@@ -200,6 +201,15 @@ namespace BlApi
             DroneInDelivery.Status = DroneStatus.Available;
             DroneInDelivery.ParcelID = 0;
             DroneList[i] = DroneInDelivery;
+        }
+        public void DeleteStation(int StationID)
+        {
+            if (StationID is < 100000 or > 999999)
+                throw new InvalidIDException("Invalid station ID number. Must have 6 digits");
+            StationBL station = GetStation(StationID);
+            if (station.ChargingDrones.Count() != 0)
+                throw new InvalidDeleteException("Can't delete a station that have drones charging in it.");
+            Data.DeleteStation(StationID);
         }
     }
 }

@@ -59,14 +59,15 @@ namespace PL
             var item = sender as ListViewItem;
             if (item != null && item.IsSelected)
             {
-                MainFrame.Content = new DronePage(BLW, MainFrame, item);
+                BO.DroneToList drone = (BO.DroneToList)item.DataContext;
+                MainFrame.Content = new DronePage(BLW, MainFrame,drone.ID );
             }
         }
 
         private void BackWindow_Click(object sender, RoutedEventArgs e)
         {
-            //MainFrame.Visibility = Visibility.Collapsed;
-            new MainWindow().Show();// TO DO: to find a way to go back to main window without openning it again
+
+            NavigationService.Navigate(null);
 
         }
     }

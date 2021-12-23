@@ -44,7 +44,7 @@ namespace DalObject
                 string name = "Station " + stations.Count;
                 double latitude = 31 + ((double)rnd.Next(7300, 8300) / 10000);      ///Jerusalem area
                 double longitude = 35 + ((double)rnd.Next(1400, 2700) / 10000);     ///Jerusalem area
-                int chargeSlot = rnd.Next(10);
+                int chargeSlot = rnd.Next(5,15);
                 Station station = new(id, name, chargeSlot, longitude, latitude);
                 Station NewStation = station;
                 stations.Add(NewStation);

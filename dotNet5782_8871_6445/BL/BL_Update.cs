@@ -88,7 +88,7 @@ namespace BlApi
                     if (drone.Status != DroneStatus.Available)
                         throw new DroneStatusExpetion("Drone is not availbale");
 
-                    NearestStatation = GetNearestStation(drone.CurrentLocation, GetAllAvailableStationsDO());
+                    NearestStatation = GetNearestStation(drone.CurrentLocation, Data.GetStations(station => station.ChargeSlots > 0));
                     NearestStataionLocation = new(NearestStatation.Latitude, NearestStatation.Longitude);
 
                     if (drone.BatteryStatus < Distance(drone.CurrentLocation, NearestStataionLocation) * BatteryUsed[0])

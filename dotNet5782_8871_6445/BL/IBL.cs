@@ -113,25 +113,25 @@ namespace BlApi
 
         #region Get
         #region Get All
-        public List<DroneToList> GetAllDrones();
+        public IEnumerable<DroneToList> GetAllDrones();
 
         /// <summary>
         /// Function that recive all the parcels from data and create a list of ParcelToList and send it to print in console
         /// </summary>
         /// <returns></returns>
-        public List<ParcelToList> GetAllParcels();
+        public IEnumerable<ParcelToList> GetAllParcels();
 
         /// <summary>
         /// Function that recive all the stations from data and create a list of StationToList and send it to print in console
         /// </summary>
         /// <returns></returns>
-        public List<StationToList> GetAllStations();
+        public IEnumerable<StationToList> GetAllStations();
 
         /// <summary>
         /// Function that recive all the customers from data and create a list of CustomerToList and send it to print in console
         /// </summary>
         /// <returns></returns>
-        public List<CustomerToList> GetAllCustomers();
+        public IEnumerable<CustomerToList> GetAllCustomers();
 
         public IEnumerable<Station> GatAllStationsDO();
         #endregion
@@ -141,17 +141,17 @@ namespace BlApi
         /// Function that returns all the unassigned parcels by going through the parcels and creating a new list out of the ones that doesn't have a drone paired to them
         /// </summary>
         /// <returns></returns>
-        public List<ParcelToList> GetUnassignedParcels();
+        public IEnumerable<ParcelToList> GetUnassignedParcels();
 
         /// <summary>
         /// Function that return all the station who has more than 0 charge slots available
         /// </summary>
         /// <returns>list of available stations</returns>
-        public List<StationToList> GetAvailableStations();
+        public IEnumerable<StationToList> GetAvailableStations();
 
-        public List<DroneToList> GetDrones(DroneStatus status, WeightCategories weight);
+        public IEnumerable<DroneToList> GetDrones(DroneStatus status, WeightCategories weight);
 
-        public List<ParcelToList> GetParcels(Priorities priorities, WeightCategories weight);
+        public IEnumerable<ParcelToList> GetParcels(Priorities priorities, WeightCategories weight);
         #endregion
 
         #region Get one

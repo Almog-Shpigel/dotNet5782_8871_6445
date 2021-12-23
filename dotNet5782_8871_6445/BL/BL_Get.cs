@@ -9,12 +9,12 @@ namespace BlApi
     partial class BL
     {
         #region Get All
-        public List<DroneToList> GetAllDrones()
+        public IEnumerable<DroneToList> GetAllDrones()
         {
             return DroneList;
         }
 
-        public List<ParcelToList> GetAllParcels()
+        public IEnumerable<ParcelToList> GetAllParcels()
         {
             List<ParcelToList> parcels = new();
             foreach (Parcel parcel in Data.GetParcels(parcel => true))
@@ -38,7 +38,7 @@ namespace BlApi
             return parcels;
         }
 
-        public List<StationToList> GetAllStations()
+        public IEnumerable<StationToList> GetAllStations()
         {
             List<StationToList> stations = new();
             foreach (Station station in Data.GetStations(station => true))
@@ -53,7 +53,7 @@ namespace BlApi
             return stations;
         }
 
-        public List<CustomerToList> GetAllCustomers()
+        public IEnumerable<CustomerToList> GetAllCustomers()
         {
             List<CustomerToList> customers = new();
             foreach (Customer customer in Data.GetCustomers(customer => true))
@@ -89,78 +89,54 @@ namespace BlApi
         #endregion
 
         #region Get Some
-        public List<ParcelToList> GetUnassignedParcels()
+        public IEnumerable<ParcelToList> GetUnassignedParcels()
         {
-            List<ParcelToList> UnassignedParcels = new();
-            foreach (Parcel parcel in Data.GetParcels(parcel => true))
-            {
-                ParcelToList NewParcel = new();
-                if (parcel.DroneID == 0)
+            IEnumerable<ParcelToList> UnassignedParcels = Data
+                .GetParcels(parcel => parcel.ID == 0)
+                .Select(parcel => new ParcelToList()
                 {
-                    NewParcel.ID = parcel.ID;
-                    NewParcel.Priority = parcel.Priority;
-                    NewParcel.TargetName = Data.GetCustomer(parcel.TargetID).Name;
-                    NewParcel.SenderName = Data.GetCustomer(parcel.SenderID).Name;
-                    NewParcel.Weight = parcel.Weight;
-                    if (parcel.Delivered != null)
-                        NewParcel.Status = ParcelStatus.Delivered;
-                    else if (parcel.PickedUp != null)
-                        NewParcel.Status = ParcelStatus.PickedUp;
-                    else if (parcel.Scheduled != null)
-                        NewParcel.Status = ParcelStatus.Scheduled;
-                    else
-                        NewParcel.Status = ParcelStatus.Requested;
-                    UnassignedParcels.Add(NewParcel);
-                }
-            }
+                    ID = parcel.ID,
+                    SenderName = Data.GetCustomer(parcel.SenderID).Name,
+                    TargetName = Data.GetCustomer(parcel.TargetID).Name,
+                    Weight = parcel.Weight,
+                    Priority = parcel.Priority,
+                    Status = GetParcelStatus(parcel)
+                });
             return UnassignedParcels;
         }
 
-        public List<StationToList> GetAvailableStations()
+        public IEnumerable<StationToList> GetAvailableStations()
         {
-            List<StationToList> AvailableStations = new();
-
-            foreach (Station station in Data.GetStations(station => station.ChargeSlots > 0))
-            {
-                StationToList NewStation = new(station.ID, station.Name, station.ChargeSlots);
-                NewStation.UsedChargeSlots = Data.GetDroneCharge(droneCharge => droneCharge.StationID == station.ID).Count();
-                AvailableStations.Add(NewStation);
-            }
+            IEnumerable<StationToList> AvailableStations = Data
+                .GetStations(station => station.ChargeSlots > 0)
+                .Select(station => new StationToList()
+                {
+                    ID = station.ID,
+                    AvailableChargeSlots = station.ChargeSlots,
+                    Name = station.Name,
+                    UsedChargeSlots = Data.GetDroneCharge(droneCharge => droneCharge.StationID == station.ID).Count()
+                });
             return AvailableStations;
         }
 
-        public List<DroneToList> GetDrones(DroneStatus status, WeightCategories weight)
+        public IEnumerable<DroneToList> GetDrones(DroneStatus status, WeightCategories weight)
         {
-            List<DroneToList> SelectedDrones = DroneList;
-            if (weight != WeightCategories.Any && (int)weight != -1)
-                SelectedDrones = SelectedDrones.Where(drone => drone.MaxWeight == weight).ToList();
-            if (status != DroneStatus.Any && (int)status != -1)
-                SelectedDrones = SelectedDrones.Where(drone => drone.Status == status).ToList();
+            IEnumerable<DroneToList> SelectedDrones = DroneList;
+            if ((int)weight != -1)
+                SelectedDrones = SelectedDrones.Where(drone => drone.MaxWeight == weight);
+            if ((int)status != -1)
+                SelectedDrones = SelectedDrones.Where(drone => drone.Status == status);
             return SelectedDrones;
         }
 
-        public List<ParcelToList> GetParcels(Priorities priorities, WeightCategories weight)
+        public IEnumerable<ParcelToList> GetParcels(Priorities priorities, WeightCategories weight)
         {
-            List<ParcelToList> SelectedParcels = GetAllParcels();
-            if (weight != WeightCategories.Any && (int)weight != -1)
-                SelectedParcels = SelectedParcels.Where(parcel => parcel.Weight == weight).ToList();
-            if (priorities != Priorities.Any && (int)priorities != -1)
-                SelectedParcels = SelectedParcels.Where(parcel => parcel.Priority == priorities).ToList();
+            IEnumerable<ParcelToList> SelectedParcels = GetAllParcels();
+            if ((int)weight != -1)
+                SelectedParcels = SelectedParcels.Where(parcel => parcel.Weight == weight);
+            if ((int)priorities != -1)
+                SelectedParcels = SelectedParcels.Where(parcel => parcel.Priority == priorities);
             return SelectedParcels;
-        }
-
-        /// <summary>
-        /// Returns a list of every customer that a parcel was sent to him at some point 
-        /// </summary>
-        /// <returns>list of customer</returns>
-        private IEnumerable<Customer> GetPastCustomers()
-        {
-            IEnumerable<Parcel> DeliverdParcels = Data.GetParcels(parcel => parcel.Delivered != null);
-            IEnumerable<Customer> PastCustomersList = DeliverdParcels.Select(parcel => Data.GetCustomer(parcel.TargetID));
-            //foreach (Parcel parcel in Data.GetParcels(parcel => true))
-            //    if (parcel.Delivered != null)
-            //        PastCustomersList.Add(Data.GetCustomer(parcel.TargetID));
-            return PastCustomersList;
         }
         #endregion
 
@@ -253,34 +229,12 @@ namespace BlApi
         /// <returns> ParcelInDelivery entity </returns>
         private ParcelInDelivery InitParcelInDelivery(Parcel parcel)
         {
-            ParcelInDelivery UpdateParcelInDelivery = new ParcelInDelivery();
-            UpdateParcelInDelivery.ID = parcel.ID;
-            UpdateParcelInDelivery.Priority = parcel.Priority;
-            UpdateParcelInDelivery.Weight = parcel.Weight;
             Customer sender = Data.GetCustomer(parcel.SenderID), target = Data.GetCustomer(parcel.TargetID);
-            UpdateParcelInDelivery.Sender.ID = sender.ID;
-            UpdateParcelInDelivery.Sender.Name = sender.Name;
-            UpdateParcelInDelivery.Target.ID = target.ID;
-            UpdateParcelInDelivery.Target.Name = target.Name;
-            UpdateParcelInDelivery.PickUpLocation.Latitude = sender.Latitude;
-            UpdateParcelInDelivery.PickUpLocation.Longitude = sender.Longitude;
-            UpdateParcelInDelivery.TargetLocation.Latitude = target.Latitude;
-            UpdateParcelInDelivery.TargetLocation.Longitude = target.Longitude;
-            UpdateParcelInDelivery.DeliveryDistance = DistanceCustomerCustomer(sender.ID, target.ID);
-            UpdateParcelInDelivery.Status = FindParcelStatus(parcel);
+            CustomerInParcel customer1 = new(sender.ID, sender.Name), customer2 = new(target.ID, target.Name);
+            Location pickUpLocation = new(sender.Latitude, sender.Longitude), targetLocation = new(target.Latitude, target.Longitude);
+            double distance = DistanceCustomerCustomer(sender.ID, target.ID);
+            ParcelInDelivery UpdateParcelInDelivery = new(parcel.ID, parcel.Weight, parcel.Priority, customer1, customer2, pickUpLocation, targetLocation, distance);
             return UpdateParcelInDelivery;
-        }
-
-        /// <summary>
-        /// Return true if the parcel is in the middle of a delivery and false if it's not
-        /// </summary>
-        /// <param name="parcel"></param>
-        /// <returns></returns>
-        private bool FindParcelStatus(Parcel parcel)
-        {
-            if (parcel.Scheduled == null || parcel.Delivered != null)
-                return false;
-            return true;
         }
 
         /// <summary>
@@ -323,14 +277,12 @@ namespace BlApi
         /// <returns>DroneInParcel entity</returns>
         private DroneInParcel CreateDroneInParcel(int droneID)
         {
-            DroneToList tempDrone = new DroneToList();
             foreach (var drone in DroneList)
             {
                 if (drone.ID == droneID)
-                    tempDrone = drone;
+                    return new DroneInParcel(drone.ID, drone.BatteryStatus, drone.CurrentLocation);
             }
-            DroneInParcel Drone = new(tempDrone.ID, tempDrone.BatteryStatus, tempDrone.CurrentLocation);
-            return Drone;
+            throw new DroneExistExceptionBL();
         }
 
         public string GetDistanceFromStation(double latitude, double longitude, int StationID)
@@ -345,15 +297,6 @@ namespace BlApi
             Customer customer = Data.GetCustomer(CustomerID);
             Location CustomerLocation = new(customer.Latitude, customer.Longitude), location = new(latitude1, longitude1);
             return "The distance is: " + Distance(CustomerLocation, location) + " km";
-        }
-
-        /// <summary>
-        /// Returns a list of all the stations that has available charge slots
-        /// </summary>
-        /// <returns>list of available stations</returns>
-        private List<Station> GetAllAvailableStationsDO()
-        {
-            return Data.GetStations(station => station.ChargeSlots > 0).ToList();
         }
 
         /// <summary>
@@ -388,23 +331,6 @@ namespace BlApi
             }
             return NearestStation;
         }
-
-        //public IEnumerable<Location> GetAllDroneLocations()
-        //{
-        //    return DroneList.Select(drone => drone.CurrentLocation);
-        //}
-
-        //public List<Location> GetAllStationsLocations()
-        //{
-        //    Location NewLocation = new();
-        //    List<Location> AllLocations = new();
-        //    foreach (var item in Data.GetStations(station => true))
-        //    {
-        //        NewLocation = new(item.Latitude, item.Longitude);
-        //        AllLocations.Add(NewLocation);
-        //    }
-        //    return AllLocations;
-        //}
         #endregion
     }
 }

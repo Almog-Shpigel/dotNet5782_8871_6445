@@ -55,11 +55,11 @@
             <Button x:Name="UpdateDeleteParcelButton"    Style="{StaticResource ButtonPageStyle}" Content="Delete parcel" Click="UpdateParcelDeliveredButton_Click" />
         </StackPanel>
         <StackPanel x:Name="NewParcelEnterPanel" Grid.Row="1" Grid.Column="3">
-            <TextBox    x:Name="EnterSenderIDBox" TextChanged="EnterSenderIDBox_TextChanged" Style="{StaticResource TextBoxStyle}" />
-            <TextBox    x:Name="EnterTargetIDBox" TextChanged="EnterTargetIDBox_TextChanged" Style="{StaticResource TextBoxStyle}" />
-            <ComboBox   x:Name="WeightSelector" SelectionChanged="WeightSelector_SelectionChanged" Style="{StaticResource ComboBoxStyle}"/>
-            <ComboBox   x:Name="PrioritySelector" SelectionChanged="PrioritySelector_SelectionChanged" Style="{StaticResource ComboBoxStyle}" ItemsSource="{Binding Priorities}"/>
-            <Button     x:Name="AddNewParcelButton" Content="Add" Click="AddNewParcelButton_Click" Style="{StaticResource ButtonPageStyle}" IsEnabled="{Binding NotifyOnValidationError=True}"/>
+            <ComboBox x:Name="SenderIDSelector" SelectionChanged="SenderIDSelector_SelectionChanged" Style="{StaticResource ComboBoxStyle}" SelectedValue="{Binding Name}"/>
+            <ComboBox x:Name="TargetIDSelector" SelectionChanged="TargetIDSelector_SelectionChanged" Style="{StaticResource ComboBoxStyle}" />
+            <ComboBox x:Name="WeightSelector"   SelectionChanged="WeightSelector_SelectionChanged"   Style="{StaticResource ComboBoxStyle}"/>
+            <ComboBox x:Name="PrioritySelector" SelectionChanged="PrioritySelector_SelectionChanged" Style="{StaticResource ComboBoxStyle}" ItemsSource="{Binding Priorities}"/>
+            <Button   x:Name="AddNewParcelButton" Content="Add" Click="AddNewParcelButton_Click" Style="{StaticResource ButtonPageStyle}" IsEnabled="{Binding NotifyOnValidationError=True}"/>
         </StackPanel>
         <StackPanel x:Name="InvalidTextPanel" Grid.Row="1" Grid.Column="4">
             <TextBlock x:Name="InvalidSenderIDBlock" Style="{StaticResource TextBlockInvalidStyle}"/>

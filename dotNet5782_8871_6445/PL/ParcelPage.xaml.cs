@@ -1,6 +1,7 @@
 ﻿using BO;
 using DO;
 using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -23,9 +24,10 @@ namespace PL
             InitializeComponent(); // Add parcel ctor
             BLW = IBL;
             Frame = frame;
+            SenderIDSelector.ItemsSource = BLW.GetAllCustomers().Select(customer => (string)customer.ID.ToString());
+            TargetIDSelector.ItemsSource = BLW.GetAllCustomers();
             WeightSelector.ItemsSource = Enum.GetValues(typeof(WeightCategories));
             PrioritySelector.ItemsSource = Enum.GetValues(typeof(Priorities));
-
             PrintIDblock.Visibility = Visibility.Collapsed;
             EnableButton();
             UpdateLayout();
@@ -44,94 +46,47 @@ namespace PL
             UpdateLayout();
         }
 
-        private void EnterSenderIDBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            int senderID;
-            if (!int.TryParse(EnterSenderIDBox.Text, out senderID))
-            {
-                InvalidSenderIDBlock.Visibility = Visibility.Visible;
-                EnterSenderIDBox.Foreground = Brushes.Red;
-                AddNewParcelButton.IsEnabled = false;
-            }
-            else
-            {
-                InvalidSenderIDBlock.Visibility = Visibility.Collapsed;
-                EnterSenderIDBox.Foreground = Brushes.Black;
-                EnableButton();
-            }
-        }
-
-        private void EnterTargetIDBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            int senderID;
-            if (!int.TryParse(EnterSenderIDBox.Text, out senderID))
-            {
-                InvalidTargetIDBlock.Visibility = Visibility.Visible;
-                EnterSenderIDBox.Foreground = Brushes.Red;
-                AddNewParcelButton.IsEnabled = false;
-            }
-            else
-            {
-                InvalidTargetIDBlock.Visibility = Visibility.Collapsed;
-                EnterSenderIDBox.Foreground = Brushes.Black;
-                EnableButton();
-            }
-        }
-
-        private void UpdateDeleteParcelButton_Click(object sender, RoutedEventArgs e)
-        { }
-
         private void EnableButton()
         {
 
-            if (InvalidSenderIDBlock.Visibility != Visibility.Visible &&
-                InvalidTargetIDBlock.Visibility != Visibility.Visible &&
-                EnterSenderIDBox.Text != "" &&
-                EnterTargetIDBox.Text != "" &&
-                WeightSelector.SelectedIndex != -1 &&
-                PrioritySelector.SelectedIndex != -1)
+            if (SenderIDSelector.SelectedIndex != -1
+                && TargetIDSelector.SelectedIndex != -1
+                && WeightSelector.SelectedIndex != -1
+                && PrioritySelector.SelectedIndex != -1)
+            {
                 AddNewParcelButton.IsEnabled = true;
+            }
             else
+            {
                 AddNewParcelButton.IsEnabled = false;
+            }
         }
 
         private void AddNewParcelButton_Click(object sender, RoutedEventArgs e)
         {
             WeightCategories weight = (WeightCategories)Enum.Parse(typeof(WeightCategories), WeightSelector.Text);
             Priorities priority = (Priorities)Enum.Parse(typeof(Priorities), PrioritySelector.Text);
-            ParcelBL parcel = new(Convert.ToInt32(EnterSenderIDBox.Text), Convert.ToInt32(EnterTargetIDBox.Text), weight, priority);
+            ParcelBL parcel = new(Convert.ToInt32(SenderIDSelector.Text), Convert.ToInt32(TargetIDSelector.Text), weight, priority);
             try
             {
                 BLW.AddNewParcel(parcel);
                 Frame.Content = new ParcelListPage(BLW, Frame);
             }
-            catch (InvalidIDException exp)
+            catch (Exception) //TO DO: find a better Exception
             {
-                //InvalidParcelIDBlock.Text = exp.Message;
-                //InvalidDroneIDBlock.Visibility = Visibility.Visible;
-                //EnterDroneIDBox.Foreground = Brushes.Red;
-                //AddNewParcelButton.IsEnabled = false;
+                AddNewParcelButton.IsEnabled = false;
             }
-            catch (DroneExistExceptionBL exp)
-            {
-                //InvalidDroneIDBlock.Text = exp.Message;
-                //InvalidDroneIDBlock.Visibility = Visibility.Visible;
-                //EnterDroneIDBox.Foreground = Brushes.Red;
-                //AddNewParcelButton.IsEnabled = false;
-            }
-            catch (StationExistExceptionBL exp)
-            {
-                //InvalidStationIDBlock.Text = exp.Message;
-                //InvalidStationIDBlock.Visibility = Visibility.Visible;
-                //AddNewParcelButton.IsEnabled = false;
-            }
-            catch (InvalidSlotsException exp)
-            {
-                //InvalidStationIDBlock.Text = exp.Message;
-                //InvalidStationIDBlock.Visibility = Visibility.Visible;
-                //AddNewParcelButton.IsEnabled = false;
-            }
-            Frame.Content = new ParcelListPage(BLW, Frame); //TO DO: erase
+            Frame.Content = new ParcelListPage(BLW, Frame); //TO DO: erase if not needed
+        }
+
+        private void SenderIDSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            EnableButton();
+        }
+
+        private void TargetIDSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            EnableButton();
         }
 
         private void WeightSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)

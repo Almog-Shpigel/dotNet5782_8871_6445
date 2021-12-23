@@ -18,6 +18,8 @@
 
         </Grid>
         <StackPanel Orientation="Horizontal">
+            <!--<TextBlock Text="Order by:" Style="{StaticResource TextBlockStyle}"/>-->
+            <!--<ComboBox x:Name="GroupBy" SelectionChanged="GroupingSelector_SelectionChanged" Style="{StaticResource ComboBoxBarStyle}"/>--> 
             <Button x:Name="AddNewStation" Content="Add new station" Click="AddNewStationButton_Click" Style="{StaticResource ButtonBarStyle}"/>
             <Button  x:Name="BackWindow" Content="Main Window" Click="BackWindow_Click" Style="{StaticResource ButtonBarStyle}"/>
         </StackPanel>

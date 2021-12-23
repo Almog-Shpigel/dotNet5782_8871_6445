@@ -39,7 +39,8 @@ namespace PL
 
         private void BackWindow_Click(object sender, RoutedEventArgs e)
         {
-            new MainWindow().Show();// TO DO: to find a way to go back to main window without openning it again
+            NavigationService.Navigate(null);
+            
         }
 
         private void ListViewItem_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)

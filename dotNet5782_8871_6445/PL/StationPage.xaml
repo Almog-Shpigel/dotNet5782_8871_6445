@@ -33,7 +33,13 @@
             <TextBlock x:Name="NamelBlock"  Text="{Binding Name}"    Style="{StaticResource TextBlockPageStyle}" />
             <TextBlock x:Name="AvailableSlotstBlock"   Text="{Binding ChargeSlots}"  Style="{StaticResource TextBlockPageStyle}" />
             <TextBlock x:Name="LocationBlock" Text="{Binding Location}"  Style="{StaticResource TextBlockPageStyle}" />
-            <ListView x:Name="DronesListView" Style="{StaticResource ListViewStyle}"></ListView>
+            <ListView x:Name="DronesListView" Style="{StaticResource ListViewStyle}">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="{x:Type ListViewItem}">
+                        <EventSetter Event="UIElement.PreviewMouseLeftButtonDown" Handler="ListViewItem_PreviewMouseLeftButtonDown" />
+                    </Style>
+                </ListView.ItemContainerStyle>
+            </ListView>
         </StackPanel>
         <StackPanel x:Name="InvalidTextPanel" Grid.Row="2" Grid.Column="3">
             <TextBox   x:Name="UpdateNameBlock" Text="" Style="{StaticResource TextBoxStyle}"/>

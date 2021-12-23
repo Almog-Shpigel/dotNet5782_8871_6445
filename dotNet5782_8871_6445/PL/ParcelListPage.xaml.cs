@@ -23,10 +23,8 @@ namespace PL
             Frame = frame;
 
             ParcelDataGrid.ItemsSource = BLW.GetAllParcels();
-            //ParcelListView.ItemsSource = BLW.GetAllParcels();
             PrioritySelector.ItemsSource = Enum.GetValues(typeof(Priorities));
-            WeightSelector.ItemsSource = Enum.GetValues(typeof(WeightCategories));
-            
+            WeightSelector.ItemsSource = Enum.GetValues(typeof(WeightCategories));            
         }
 
         private void AddNewParcelButton_Click(object sender, RoutedEventArgs e)
@@ -36,7 +34,7 @@ namespace PL
 
         private void BackWindow_Click(object sender, RoutedEventArgs e)
         {
-            new MainWindow().Show();// TO DO: to find a way to go back to main window without openning it again
+            NavigationService.Navigate(null);
         }
 
         private void ParcelListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -47,7 +45,6 @@ namespace PL
         private void PrioritySelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ParcelDataGrid.ItemsSource = BLW.GetParcels((Priorities)e.AddedItems[0], (WeightCategories)WeightSelector.SelectedIndex);
-            //ParcelListView
         }
 
         private void WeightSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -55,20 +52,13 @@ namespace PL
             ParcelDataGrid.ItemsSource = BLW.GetParcels((Priorities)PrioritySelector.SelectedIndex, (WeightCategories)e.AddedItems[0]);
         }
 
-        private void ListViewItem_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void DataGridRow_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            var item = sender as ListViewItem;
+            var item = sender as DataGridRow;
             if (item != null && item.IsSelected)
+            {
                 Frame.Content = new ParcelPage(BLW, item, Frame);
-        }
-        void GridViewColumnHeaderClickedHandler(object sender, RoutedEventArgs e)
-        {
-            view = (CollectionView)CollectionViewSource.GetDefaultView(ParcelDataGrid.ItemsSource);
-            //ParcelListView
-            string str = e.OriginalSource.ToString();
-            PropertyGroupDescription groupDescription = new PropertyGroupDescription(str);//TO DO: to make grouping possible for multipole definitions
-            view.GroupDescriptions.Clear();
-            view.GroupDescriptions.Add(groupDescription);
+            }
         }
     }
 }

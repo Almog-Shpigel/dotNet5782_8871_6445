@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:PL"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="StationListPage">
+      Title="Station List Page">
 
     <Grid x:Name="MainGrid" Background="#c9cba3">
         <Grid.RowDefinitions>

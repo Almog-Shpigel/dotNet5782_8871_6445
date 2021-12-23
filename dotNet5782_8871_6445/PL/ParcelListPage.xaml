@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:PL"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="ParcelListPage">
+      Title="Parcel List Page">
 
     <Grid x:Name="MainGrid" Background="#c9cba3">
         <Grid.RowDefinitions>
@@ -36,6 +36,11 @@
                 <DataGridTextColumn x:Name="semesterColumn" Binding="{Binding Priority}" Header="Priority" Width="Auto"/>
                 <DataGridTextColumn x:Name="yearColumn" Binding="{Binding Status}" Header="Status" Width="Auto"/>
             </DataGrid.Columns>
+            <DataGrid.ItemContainerStyle>
+                <Style TargetType="{x:Type DataGridRow}">
+                    <EventSetter Event="UIElement.PreviewMouseLeftButtonDown" Handler="DataGridRow_PreviewMouseLeftButtonDown" />
+                </Style>
+            </DataGrid.ItemContainerStyle>
         </DataGrid>
         <!--<ListView x:Name="ParcelListView" Grid.Row="1" SelectionChanged="ParcelListView_SelectionChanged"  Style="{StaticResource ListViewStyle}"
                   GridViewColumnHeader.Click="GridViewColumnHeaderClickedHandler" ItemsSource="{Binding}">

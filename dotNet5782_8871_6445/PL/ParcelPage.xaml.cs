@@ -33,12 +33,12 @@ namespace PL
             UpdateLayout();
         }
 
-        public ParcelPage(BlApi.IBL IBL, ListViewItem item, Frame frame) // Update parcel ctor
+        public ParcelPage(BlApi.IBL IBL, DataGridRow item, Frame frame) // Update parcel ctor
         {
             InitializeComponent();
             NewParcelEnterPanel.Visibility = Visibility.Collapsed;
             BLW = IBL;
-            this.item = item;
+            //this.item = item;
             Frame = frame;
             Parcel = (ParcelToList)item.DataContext;
             ParcelBL = BLW.GetParcel(Parcel.ID);

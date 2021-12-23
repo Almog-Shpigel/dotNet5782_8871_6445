@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:PL"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="DronePage">
+      Title="Drone Page">
 
     <Grid Background="#c9cba3">
         <Grid.ColumnDefinitions>

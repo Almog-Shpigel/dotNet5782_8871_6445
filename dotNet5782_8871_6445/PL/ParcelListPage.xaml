@@ -42,32 +42,5 @@
                 </Style>
             </DataGrid.ItemContainerStyle>
         </DataGrid>
-        <!--<ListView x:Name="ParcelListView" Grid.Row="1" SelectionChanged="ParcelListView_SelectionChanged"  Style="{StaticResource ListViewStyle}"
-                  GridViewColumnHeader.Click="GridViewColumnHeaderClickedHandler" ItemsSource="{Binding}">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn DisplayMemberBinding="{Binding ID}" Header="ID" Width="100"  />
-                    <GridViewColumn DisplayMemberBinding="{Binding SenderName}" Header="Sender" Width="100"/>
-                    <GridViewColumn DisplayMemberBinding="{Binding TargetName}" Header="Receiver" Width="100"/>
-                    <GridViewColumn DisplayMemberBinding="{Binding Weight}" Header="Weight" Width="100"/>
-                    <GridViewColumn DisplayMemberBinding="{Binding Priority}" Header="Priority" Width="100"/>
-                    <GridViewColumn DisplayMemberBinding="{Binding Status}" Header="Status" Width="100"/>
-                </GridView>
-            </ListView.View>
-            <ListView.GroupStyle>
-                <GroupStyle>
-                    <GroupStyle.HeaderTemplate>
-                        <DataTemplate>
-                            <TextBlock FontWeight="Bold" FontSize="14" Text="{Binding SenderName}"/>
-                        </DataTemplate>
-                    </GroupStyle.HeaderTemplate>
-                </GroupStyle>
-            </ListView.GroupStyle>
-            <ListView.ItemContainerStyle>
-                <Style TargetType="{x:Type ListViewItem}">
-                    <EventSetter Event="UIElement.PreviewMouseLeftButtonDown" Handler="ListViewItem_PreviewMouseLeftButtonDown" />
-                </Style>
-            </ListView.ItemContainerStyle>
-        </ListView>-->
     </Grid>
 </Page>

@@ -29,7 +29,7 @@ namespace PL
 
         private void AddNewParcelButton_Click(object sender, RoutedEventArgs e)
         {
-            Frame.Content = new ParcelPage(BLW, e, Frame);
+            Frame.Content = new ParcelPage(e);
         }
 
         private void BackWindow_Click(object sender, RoutedEventArgs e)
@@ -57,7 +57,7 @@ namespace PL
             var item = sender as DataGridRow;
             if (item != null && item.IsSelected)
             {
-                Frame.Content = new ParcelPage(BLW, item, Frame);
+                Frame.Content = new ParcelPage(item);
             }
         }
     }

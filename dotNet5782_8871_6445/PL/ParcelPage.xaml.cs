@@ -1,4 +1,5 @@
-﻿using BO;
+﻿using BL;
+using BO;
 using DO;
 using System;
 using System.Collections.Generic;
@@ -14,22 +15,19 @@ namespace PL
     /// </summary>
     public partial class ParcelPage : Page
     {
-        private DataGridRow item = new();
-        private BlApi.IBL BLW;
-        private BO.ParcelToList Parcel = new();
+        private DataGridRow item;
+        private BlApi.IBL IBL = BlFactory.GetBl();
+        private BO.ParcelToList Parcel;
         private BO.ParcelBL ParcelBL;
         Frame Frame;
 
-        public ParcelPage(BlApi.IBL IBL, RoutedEventArgs e, Frame frame)
+        public ParcelPage(RoutedEventArgs e)
         {
             InitializeComponent(); // Add parcel ctor
-            BLW = IBL;
-            Frame = frame;
-            this.item = item;
             Parcel = (ParcelToList)item.DataContext;
-            ParcelBL = BLW.GetParcel(Parcel.ID);
-            SenderIDSelector.ItemsSource = BLW.GetAllCustomers();
-            TargetIDSelector.ItemsSource = BLW.GetAllCustomers();
+            ParcelBL = IBL.GetParcel(Parcel.ID);
+            SenderIDSelector.ItemsSource = IBL.GetAllCustomers();
+            TargetIDSelector.ItemsSource = IBL.GetAllCustomers();
             WeightSelector.ItemsSource = Enum.GetValues(typeof(WeightCategories));
             PrioritySelector.ItemsSource = Enum.GetValues(typeof(Priorities));
             PrintIDblock.Visibility = Visibility.Collapsed;
@@ -38,15 +36,13 @@ namespace PL
             UpdateLayout();
         }
 
-        public ParcelPage(BlApi.IBL IBL, DataGridRow item, Frame frame) // Update parcel ctor
+        public ParcelPage(DataGridRow item) // Update parcel ctor
         {
             InitializeComponent();
             NewParcelEnterPanel.Visibility = Visibility.Collapsed;
-            BLW = IBL;
             this.item = item;
-            Frame = frame;
             Parcel = (ParcelToList)item.DataContext;
-            ParcelBL = BLW.GetParcel(Parcel.ID);
+            ParcelBL = this.IBL.GetParcel(Parcel.ID);
             DataContext = ParcelBL;
             
             if (ParcelBL.Scheduled == null)
@@ -90,14 +86,13 @@ namespace PL
             ParcelBL parcel = new(ParcelBL.Sender.ID, ParcelBL.Target.ID, weight, priority);
             try
             {
-                BLW.AddNewParcel(parcel);
-                Frame.Content = new ParcelListPage(BLW, Frame);
+                IBL.AddNewParcel(parcel);
+                NavigationService.GoBack();
             }
             catch (Exception) //TO DO: find a better Exception
             {
                 AddNewParcelButton.IsEnabled = false;
             }
-            Frame.Content = new ParcelListPage(BLW, Frame); //TO DO: erase if not needed
         }
 
         private void SenderIDSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -122,14 +117,14 @@ namespace PL
 
         private void UpdateParcelCollectedButton_Click(object sender, RoutedEventArgs e)
         {
-            BLW.UpdateParcelCollectedByDrone(ParcelBL.DroneInParcel.ID);
+            IBL.UpdateParcelCollectedByDrone(ParcelBL.DroneInParcel.ID);
             UpdateParcelCollectedButton.IsEnabled = false;
             UpdateParcelDeliveredButton.IsEnabled = true;
         }
 
         private void UpdateParcelDeliveredButton_Click(object sender, RoutedEventArgs e)
         {
-            BLW.UpdateParcelDeleiveredByDrone(ParcelBL.DroneInParcel.ID);
+            IBL.UpdateParcelDeleiveredByDrone(ParcelBL.DroneInParcel.ID);
             UpdateParcelDeliveredButton.IsEnabled = false;
         }
     }

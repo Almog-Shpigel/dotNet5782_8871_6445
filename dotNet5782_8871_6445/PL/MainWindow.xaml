@@ -42,6 +42,6 @@
             <Button x:Name="ShowMap" Content="Map" Click="MapButton_Click"
                     Style="{StaticResource MainWindowButton}"/>
         </StackPanel>
-        <Frame x:Name="Main" Grid.ColumnSpan="5" Grid.RowSpan="5"/>
+        <Frame x:Name="Main" Grid.ColumnSpan="5" Grid.RowSpan="5" NavigationUIVisibility="Hidden"/>
     </Grid>
 </Window>

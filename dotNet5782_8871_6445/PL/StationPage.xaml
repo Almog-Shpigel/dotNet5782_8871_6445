@@ -26,7 +26,7 @@
             <TextBlock x:Name="PrintModelBlock"     Text="Station name:"      Style="{StaticResource TextBlockPageStyle}" />
             <TextBlock x:Name="PrintWeightBlock"    Text="Available slots:"      Style="{StaticResource TextBlockPageStyle}" />
             <TextBlock x:Name="PrintLocationBlock"  Text="Location:"        Style="{StaticResource TextBlockPageStyle}" />
-            <TextBlock x:Name="PrintParcelBlock"    Text="Drones charging:"    Style="{StaticResource TextBlockPageStyle}" />
+            <TextBlock x:Name="PrintDronsChargingBlock"    Text="Drones charging:"    Style="{StaticResource TextBlockPageStyle}" />
         </StackPanel>
         <StackPanel x:Name="ShowDetailsStation" Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2">
             <TextBlock x:Name="IDBlock"  Text="{Binding ID}"       Style="{StaticResource TextBlockPageStyle}" />
@@ -40,13 +40,21 @@
                     </Style>
                 </ListView.ItemContainerStyle>
             </ListView>
+            </StackPanel>
+            <StackPanel x:Name="AddNewStationPanell" Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="1">
+            <TextBox   x:Name="EnterStationIDBox" TextChanged="EnterStationIDBox_TextChanged" Style="{StaticResource TextBoxStyle}" />
+            <TextBox   x:Name="EnterStationNameBox" TextChanged="EnterStationNameBox_TextChanged" Style="{StaticResource TextBoxStyle}" />
+            <TextBox   x:Name="EnterAvailAbleSlotsBox" TextChanged ="EnterAvailAbleSlotsBox_TextChanged" Style="{StaticResource TextBoxStyle}"/>
+            <TextBox   x:Name="EnterLattitudeBox" TextChanged ="EnterAvailAbleSlotsBox_TextChanged" Style="{StaticResource TextBoxStyle}"/>
+            <TextBox   x:Name="EnterLongitudeBox" TextChanged ="EnterAvailAbleSlotsBox_TextChanged" Style="{StaticResource TextBoxStyle}"/>
+            <Button x:Name="AddNewStationButton" Content="Add" Click="AddNewStationButton_Click" Style="{StaticResource ButtonPageStyle}" />
         </StackPanel>
-        <StackPanel x:Name="InvalidTextPanel" Grid.Row="2" Grid.Column="3">
+        <StackPanel x:Name="UpdateBlocksPanel" Grid.Row="2" Grid.Column="3">
             <TextBox   x:Name="UpdateNameBlock" Text="" Style="{StaticResource TextBoxStyle}"/>
             <TextBox   x:Name="UpdateChargeSlotsBlock" TextChanged="EnterChargeSlotsBox_TextChanged" Text="" Style="{StaticResource TextBoxStyle}"/>
             <TextBlock x:Name="InvalidInputBlock"  Style="{StaticResource TextBlockInvalidStyle}"/>
         </StackPanel>
-        <StackPanel x:Name="ShowDetailsDrone2" Grid.Row="2" Grid.Column="4">
+        <StackPanel x:Name="UpdateStationButtons" Grid.Row="2" Grid.Column="4">
             <Button x:Name="UpdateNameButton" Content="Update name" Click="UpdateNameButton_Click" Style="{StaticResource ButtonPageStyle}" />
             <Button x:Name="UpdateChargeSlotsButton"  Content="Update total charge slots" Click="UpdateChargeSlotsButton_Click" Style="{StaticResource ButtonPageStyle}" />
             <Button x:Name="UpdateDeleteStationButton"  Content="Delete station" Background="Red" Click="UpdateDeleteStationButton_Click" Style="{StaticResource ButtonPageStyle}" />

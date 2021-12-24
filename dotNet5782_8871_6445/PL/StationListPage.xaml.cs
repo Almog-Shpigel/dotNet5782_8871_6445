@@ -34,7 +34,7 @@ namespace PL
 
         private void AddNewStationButton_Click(object sender, RoutedEventArgs e)
         {
-
+            MainFrame.Content = new StationPage(BLW, e, MainFrame);
         }
 
         private void BackWindow_Click(object sender, RoutedEventArgs e)

@@ -14,9 +14,7 @@ namespace PL
     /// </summary>
     public partial class DronePage : Page
     {
-        private ListViewItem item;
         private BlApi.IBL BLW;
-        private BO.DroneToList Drone;
         private BO.DroneBL droneBL;
         Frame Frame;
 

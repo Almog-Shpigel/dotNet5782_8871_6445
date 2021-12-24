@@ -26,10 +26,8 @@ namespace PL
             BLW = IBL;
             Frame = frame;
             this.item = item;
-            Parcel = (ParcelToList)item.DataContext;
-            ParcelBL = BLW.GetParcel(Parcel.ID);
-            SenderIDSelector.ItemsSource = BLW.GetAllCustomers();
-            TargetIDSelector.ItemsSource = BLW.GetAllCustomers();
+            SenderIDSelector.ItemsSource = BLW.GetAllCustomers().Select(item => item.ID);
+            TargetIDSelector.ItemsSource = BLW.GetAllCustomers().Select(item => item.ID);
             WeightSelector.ItemsSource = Enum.GetValues(typeof(WeightCategories));
             PrioritySelector.ItemsSource = Enum.GetValues(typeof(Priorities));
             PrintIDblock.Visibility = Visibility.Collapsed;
@@ -87,7 +85,7 @@ namespace PL
         {
             WeightCategories weight = (WeightCategories)Enum.Parse(typeof(WeightCategories), WeightSelector.Text);
             Priorities priority = (Priorities)Enum.Parse(typeof(Priorities), PrioritySelector.Text);
-            ParcelBL parcel = new(ParcelBL.Sender.ID, ParcelBL.Target.ID, weight, priority);
+            ParcelBL parcel = new(Convert.ToInt32(SenderIDSelector.Text), Convert.ToInt32(TargetIDSelector.Text), weight, priority);
             try
             {
                 BLW.AddNewParcel(parcel);
@@ -133,4 +131,16 @@ namespace PL
             UpdateParcelDeliveredButton.IsEnabled = false;
         }
     }
+    /*<ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock>
+                                <TextBlock.Text>
+                                    <MultiBinding StringFormat="{}#{1} {0}">
+                                        <Binding Path="Name" />
+                                        <Binding Path="ID" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>*/
 }

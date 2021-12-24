@@ -1,6 +1,7 @@
 ﻿using BO;
 using DO;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -13,9 +14,9 @@ namespace PL
     /// </summary>
     public partial class ParcelPage : Page
     {
-        private ListViewItem item;
+        private DataGridRow item = new();
         private BlApi.IBL BLW;
-        private BO.ParcelToList Parcel;
+        private BO.ParcelToList Parcel = new();
         private BO.ParcelBL ParcelBL;
         Frame Frame;
 
@@ -24,11 +25,15 @@ namespace PL
             InitializeComponent(); // Add parcel ctor
             BLW = IBL;
             Frame = frame;
-            SenderIDSelector.ItemsSource = BLW.GetAllCustomers().Select(customer => (string)customer.ID.ToString());
+            this.item = item;
+            Parcel = (ParcelToList)item.DataContext;
+            ParcelBL = BLW.GetParcel(Parcel.ID);
+            SenderIDSelector.ItemsSource = BLW.GetAllCustomers();
             TargetIDSelector.ItemsSource = BLW.GetAllCustomers();
             WeightSelector.ItemsSource = Enum.GetValues(typeof(WeightCategories));
             PrioritySelector.ItemsSource = Enum.GetValues(typeof(Priorities));
             PrintIDblock.Visibility = Visibility.Collapsed;
+            ShowDetailsParcel2.Visibility = Visibility.Collapsed;
             EnableButton();
             UpdateLayout();
         }
@@ -38,11 +43,27 @@ namespace PL
             InitializeComponent();
             NewParcelEnterPanel.Visibility = Visibility.Collapsed;
             BLW = IBL;
-            //this.item = item;
+            this.item = item;
             Frame = frame;
             Parcel = (ParcelToList)item.DataContext;
             ParcelBL = BLW.GetParcel(Parcel.ID);
             DataContext = ParcelBL;
+            
+            if (ParcelBL.Scheduled == null)
+            {
+                UpdateParcelCollectedButton.IsEnabled = false;
+                UpdateParcelDeliveredButton.IsEnabled = false;
+            }
+            else if (ParcelBL.PickedUp == null && ParcelBL.Scheduled != null) 
+            {
+                UpdateParcelCollectedButton.IsEnabled = true;
+                UpdateParcelDeliveredButton.IsEnabled = false;
+            }
+            else if (ParcelBL.Delivered == null && ParcelBL.PickedUp != null)
+            {
+                UpdateParcelCollectedButton.IsEnabled = false;
+                UpdateParcelDeliveredButton.IsEnabled = true;
+            }
             UpdateLayout();
         }
 
@@ -66,7 +87,7 @@ namespace PL
         {
             WeightCategories weight = (WeightCategories)Enum.Parse(typeof(WeightCategories), WeightSelector.Text);
             Priorities priority = (Priorities)Enum.Parse(typeof(Priorities), PrioritySelector.Text);
-            ParcelBL parcel = new(Convert.ToInt32(SenderIDSelector.Text), Convert.ToInt32(TargetIDSelector.Text), weight, priority);
+            ParcelBL parcel = new(ParcelBL.Sender.ID, ParcelBL.Target.ID, weight, priority);
             try
             {
                 BLW.AddNewParcel(parcel);
@@ -101,12 +122,15 @@ namespace PL
 
         private void UpdateParcelCollectedButton_Click(object sender, RoutedEventArgs e)
         {
-
+            BLW.UpdateParcelCollectedByDrone(ParcelBL.DroneInParcel.ID);
+            UpdateParcelCollectedButton.IsEnabled = false;
+            UpdateParcelDeliveredButton.IsEnabled = true;
         }
 
         private void UpdateParcelDeliveredButton_Click(object sender, RoutedEventArgs e)
         {
-
+            BLW.UpdateParcelDeleiveredByDrone(ParcelBL.DroneInParcel.ID);
+            UpdateParcelDeliveredButton.IsEnabled = false;
         }
     }
 }

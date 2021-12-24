@@ -103,7 +103,7 @@ namespace DalObject
                 }
 
                 NewParcel.DroneID = drones[i].ID;
-                NewParcel.Scheduled = Scedualed;
+                NewParcel.Scheduled = DateTime.Now.AddMinutes(10);
                 NewParcel.PickedUp = PickedUp;
                 NewParcel.Delivered = Deliverd;
                 parcels[rand] = NewParcel;

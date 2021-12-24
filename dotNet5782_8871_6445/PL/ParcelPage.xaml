@@ -50,18 +50,44 @@
             <TextBlock x:Name="DroneInParcelIDBlock"    Style="{StaticResource TextBlockPageStyle}" Text="{Binding DroneInParcel}"/>
         </StackPanel>
         <StackPanel x:Name="ShowDetailsParcel2" Grid.Row="1" Grid.Column="4">
-            <Button x:Name="UpdateParcelCollectedButton" Style="{StaticResource ButtonPageStyle}" Content="Parcel collected" Click="UpdateParcelCollectedButton_Click" />
+            <Button x:Name="UpdateParcelCollectedButton" Style="{StaticResource ButtonPageStyle}" Content="Parcel collected" Click="UpdateParcelCollectedButton_Click" IsEnabled="{Binding Delivered}"/>
             <Button x:Name="UpdateParcelDeliveredButton" Style="{StaticResource ButtonPageStyle}" Content="Parcel delivered" Click="UpdateParcelDeliveredButton_Click" />
             <Button x:Name="UpdateDeleteParcelButton"    Style="{StaticResource ButtonPageStyle}" Content="Delete parcel" Click="UpdateParcelDeliveredButton_Click" />
         </StackPanel>
         <StackPanel x:Name="NewParcelEnterPanel" Grid.Row="1" Grid.Column="3">
-            <ComboBox x:Name="SenderIDSelector" SelectionChanged="SenderIDSelector_SelectionChanged" Style="{StaticResource ComboBoxStyle}" SelectedValue="{Binding Name}"/>
-            <ComboBox x:Name="TargetIDSelector" SelectionChanged="TargetIDSelector_SelectionChanged" Style="{StaticResource ComboBoxStyle}" />
+            <ComboBox x:Name="SenderIDSelector" SelectionChanged="SenderIDSelector_SelectionChanged" Style="{StaticResource ComboBoxStyle}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock>
+                            <TextBlock.Text>
+                                <MultiBinding StringFormat="{}#{1} {0}">
+                                    <Binding Path="Name" />
+                                    <Binding Path="ID" />
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <ComboBox x:Name="TargetIDSelector" SelectionChanged="TargetIDSelector_SelectionChanged" Style="{StaticResource ComboBoxStyle}" >
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock>
+                            <TextBlock.Text>
+                                <MultiBinding StringFormat="{}#{1} {0}">
+                                    <Binding Path="Name" />
+                                    <Binding Path="ID" />
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
             <ComboBox x:Name="WeightSelector"   SelectionChanged="WeightSelector_SelectionChanged"   Style="{StaticResource ComboBoxStyle}"/>
             <ComboBox x:Name="PrioritySelector" SelectionChanged="PrioritySelector_SelectionChanged" Style="{StaticResource ComboBoxStyle}" ItemsSource="{Binding Priorities}"/>
             <Button   x:Name="AddNewParcelButton" Content="Add" Click="AddNewParcelButton_Click" Style="{StaticResource ButtonPageStyle}" IsEnabled="{Binding NotifyOnValidationError=True}"/>
         </StackPanel>
-        <StackPanel x:Name="InvalidTextPanel" Grid.Row="1" Grid.Column="4">
+        <StackPanel x:Name="InvalidTextPanel" Grid.Row="1" Grid.Column="5">
             <TextBlock x:Name="InvalidSenderIDBlock" Style="{StaticResource TextBlockInvalidStyle}"/>
             <TextBlock x:Name="InvalidTargetIDBlock" Style="{StaticResource TextBlockInvalidStyle}"/>
         </StackPanel>

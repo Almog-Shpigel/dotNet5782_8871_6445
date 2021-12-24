@@ -1,4 +1,5 @@
-﻿using BO;
+﻿using BL;
+using BO;
 using DO;
 using System;
 using System.Linq;
@@ -14,15 +15,12 @@ namespace PL
     /// </summary>
     public partial class DronePage : Page
     {
-        private BlApi.IBL BLW;
+        private BlApi.IBL IBL = BlFactory.GetBl();
         private BO.DroneBL droneBL;
-        Frame Frame;
 
-        public DronePage(BlApi.IBL IBL, RoutedEventArgs e, Frame frame)
+        public DronePage(RoutedEventArgs e)
         {
             InitializeComponent(); // Add drone ctor
-            BLW = IBL;
-            Frame = frame;
             ShowDetailsDrone1.Visibility = Visibility.Collapsed;
             ShowDetailsDrone2.Visibility = Visibility.Collapsed;
             UpdateNameBlock.Visibility = Visibility.Collapsed;
@@ -39,23 +37,21 @@ namespace PL
             ARR[1] = WeightCategories.Medium;
             ARR[2] = WeightCategories.Heavy;
             WeightSelector.ItemsSource = ARR;
-            StationSelector.ItemsSource = BLW.GetAvailableStations().Select(station => (string)station.ID.ToString());
+            StationSelector.ItemsSource = IBL.GetAvailableStations().Select(station => (string)station.ID.ToString());
             AddNewDroneButton.IsEnabled = false;
             UpdateLayout();
         }
 
-        public DronePage(BlApi.IBL IBL, Frame frame,int DroneID) // Update drone ctor
+        public DronePage(int DroneID) // Update drone ctor
         {
             InitializeComponent();
-            BLW = IBL;
-            Frame = frame;
             NewDroneEnterPanel.Visibility = Visibility.Collapsed;
             PrintStationIDBlock.Visibility = Visibility.Collapsed;
             InvalidDroneIDBlock.Visibility = Visibility.Collapsed;
             InvalidStationIDBlock.Visibility = Visibility.Collapsed;
             InvalidBatteryToCompleteDeliveryBlock.Visibility = Visibility.Collapsed;
             ExistsDroneIDBlock.Visibility = Visibility.Collapsed;
-            droneBL = BLW.GetDrone(DroneID);
+            droneBL = IBL.GetDrone(DroneID);
             this.DataContext = droneBL;
             ButtenEnableCheck();
             UpdateLayout();
@@ -82,7 +78,7 @@ namespace PL
                 return;
             }
 
-            ParcelBL parcel = BLW.GetParcel(droneBL.Parcel.ID);
+            ParcelBL parcel = IBL.GetParcel(droneBL.Parcel.ID);
             if (parcel.PickedUp != null)
             {
                 UpdateParcelDeleiveredByDroneButton.IsEnabled = true;
@@ -99,8 +95,8 @@ namespace PL
 
         private void UpdateNameButton_Click(object sender, RoutedEventArgs e)
         {
-            BLW.UpdateDroneName(Convert.ToInt32(IDBlock.Text), UpdateNameBlock.Text);
-            ModelBlock.Text = BLW.GetDrone(Convert.ToInt32(IDBlock.Text)).Model;
+            IBL.UpdateDroneName(Convert.ToInt32(IDBlock.Text), UpdateNameBlock.Text);
+            ModelBlock.Text = IBL.GetDrone(Convert.ToInt32(IDBlock.Text)).Model;
         }
 
         private void WeightSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -125,14 +121,14 @@ namespace PL
             DroneBL drone = new(Convert.ToInt32(EnterDroneIDBox.Text), EnterModelNameBox.Text, weight);
             try
             {
-                BLW.AddNewDrone(drone, Convert.ToInt32(StationSelector.Text));
+                IBL.AddNewDrone(drone, Convert.ToInt32(StationSelector.Text));
                 EnterDroneIDBox.IsEnabled = false;
                 EnterModelNameBox.IsEnabled = false;
 
                 StationSelector.IsEnabled = false;
                 WeightSelector.IsEnabled = false;
                 AddNewDroneButton.IsEnabled = false;
-                Frame.Content = new DroneListPage(BLW, Frame);
+                NavigationService.GoBack();
             }
             catch (InvalidIDException exp)
             {
@@ -185,8 +181,8 @@ namespace PL
             InvalidBatteryToCompleteDeliveryBlock.Visibility = Visibility.Collapsed;
             try
             {
-                BLW.UpdateDroneToBeCharged(Convert.ToInt32(IDBlock.Text));
-                droneBL = BLW.GetDrone(droneBL.ID);
+                IBL.UpdateDroneToBeCharged(Convert.ToInt32(IDBlock.Text));
+                droneBL = IBL.GetDrone(droneBL.ID);
                 DataContext = droneBL;
                 ButtenEnableCheck();
                 
@@ -201,8 +197,8 @@ namespace PL
 
         private void UpdateReleaseDroneFromChargeButton_Click(object sender, RoutedEventArgs e)
         {
-            BLW.UpdateDroneToBeAvailable(Convert.ToInt32(IDBlock.Text));
-            droneBL = BLW.GetDrone(droneBL.ID);
+            IBL.UpdateDroneToBeAvailable(Convert.ToInt32(IDBlock.Text));
+            droneBL = IBL.GetDrone(droneBL.ID);
             DataContext = droneBL;
             ButtenEnableCheck();
             
@@ -213,8 +209,8 @@ namespace PL
         {
             try
             {
-                BLW.UpdateParcelAssignToDrone(Convert.ToInt32(IDBlock.Text));
-                droneBL = BLW.GetDrone(droneBL.ID);
+                IBL.UpdateParcelAssignToDrone(Convert.ToInt32(IDBlock.Text));
+                droneBL = IBL.GetDrone(droneBL.ID);
                 DataContext = droneBL;
                 ButtenEnableCheck();
                 
@@ -230,8 +226,8 @@ namespace PL
 
         private void UpdateParcelCollectedByDroneButton_Click(object sender, RoutedEventArgs e)
         {
-            BLW.UpdateParcelCollectedByDrone(Convert.ToInt32(IDBlock.Text));
-            droneBL = BLW.GetDrone(droneBL.ID);
+            IBL.UpdateParcelCollectedByDrone(Convert.ToInt32(IDBlock.Text));
+            droneBL = IBL.GetDrone(droneBL.ID);
             DataContext = droneBL;
             ButtenEnableCheck();
             
@@ -240,8 +236,8 @@ namespace PL
 
         private void UpdateParcelDeleiveredByDroneButton_Click(object sender, RoutedEventArgs e)
         {
-            BLW.UpdateParcelDeleiveredByDrone(droneBL.ID);
-            droneBL = BLW.GetDrone(droneBL.ID);
+            IBL.UpdateParcelDeleiveredByDrone(droneBL.ID);
+            droneBL = IBL.GetDrone(droneBL.ID);
             DataContext = droneBL;
             ButtenEnableCheck();
             

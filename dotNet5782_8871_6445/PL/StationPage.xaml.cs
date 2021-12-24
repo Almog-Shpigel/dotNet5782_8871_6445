@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using BL;
 using BlApi;
 using BO;
 
@@ -23,16 +24,13 @@ namespace PL
     public partial class StationPage : Page
     {
         private ListViewItem item;
-        private Frame MainFrame;
-        private BlApi.IBL BLW;
+        private BlApi.IBL IBL = BlFactory.GetBl();
         private BO.StationToList Station;
         private BO.StationBL StationBL;
-        public StationPage(BlApi.IBL IBL, ListViewItem item,Frame frame)
+        public StationPage(ListViewItem item)
         {
             InitializeComponent();
-            BLW = IBL;
             this.item = item;
-            MainFrame = frame;
             Station = (BO.StationToList)item.DataContext;
             StationBL = IBL.GetStation(Station.ID);
             DataContext = StationBL;
@@ -40,11 +38,9 @@ namespace PL
             AddNewStationPanell.Visibility = Visibility.Collapsed;
         }
 
-        public StationPage(IBL bLW, RoutedEventArgs e, Frame mainFrame)
+        public StationPage(RoutedEventArgs e)
         {
             InitializeComponent();
-            BLW = bLW;
-            MainFrame = mainFrame;
             ShowDetailsStation.Visibility = Visibility.Collapsed;
             UpdateBlocksPanel.Visibility = Visibility.Collapsed;
             UpdateNameBlock.Visibility = Visibility.Collapsed;
@@ -72,16 +68,16 @@ namespace PL
 
         private void UpdateNameButton_Click(object sender, RoutedEventArgs e)
         {
-            BLW.UpdateStationName(Convert.ToInt32(IDBlock.Text), UpdateNameBlock.Text);
-            DataContext = BLW.GetStation(Station.ID);
+            IBL.UpdateStationName(Convert.ToInt32(IDBlock.Text), UpdateNameBlock.Text);
+            DataContext = IBL.GetStation(Station.ID);
         }
 
         private void UpdateChargeSlotsButton_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                BLW.UpdateStationSlots(Station.ID, Convert.ToInt32(UpdateChargeSlotsBlock.Text),StationBL.ChargingDrones.Count());
-                DataContext = BLW.GetStation(Station.ID);
+                IBL.UpdateStationSlots(Station.ID, Convert.ToInt32(UpdateChargeSlotsBlock.Text),StationBL.ChargingDrones.Count());
+                DataContext = IBL.GetStation(Station.ID);
             }
             catch (Exception exp)
             {
@@ -113,8 +109,8 @@ namespace PL
         {
             try
             {
-                BLW.DeleteStation(StationBL.ID);
-                MainFrame.Content = new StationListPage(BLW, MainFrame);
+                IBL.DeleteStation(StationBL.ID);
+                NavigationService.GoBack();
             }
             catch (Exception exp)
             {
@@ -129,7 +125,7 @@ namespace PL
             if (item != null && item.IsSelected)
             {
                 BO.DroneChargeBL drone = (BO.DroneChargeBL)item.DataContext;
-                MainFrame.Content = new DronePage(BLW, MainFrame,drone.DroneID);
+                NavigationService.Navigate(new DronePage(drone.DroneID));
             }
         }
 
@@ -163,12 +159,11 @@ namespace PL
                new(Convert.ToDouble(EnterLattitudeBox.Text), Convert.ToDouble(EnterLongitudeBox.Text)));
             try
             {
-                BLW.AddNewStation(NewStation);
-                MainFrame.Content = new StationListPage(BLW, MainFrame);
+                IBL.AddNewStation(NewStation);
+                NavigationService.GoBack();
             }
             catch (Exception exp)
             {
-
                 InvalidInputBlock.Text = exp.Message;
                 InvalidInputBlock.Visibility = Visibility.Visible;
                 EnterStationIDBox.Foreground = Brushes.Red;

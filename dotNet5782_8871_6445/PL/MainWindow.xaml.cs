@@ -36,7 +36,7 @@ namespace PL
 
         private void StationListPageButton_Click(object sender, RoutedEventArgs e)
         {
-            Main.Content = new StationListPage(IBL,Main);
+            Main.Content = new StationListPage(Main);
         }
 
         private void CustomerListPageButton_Click(object sender, RoutedEventArgs e)
@@ -46,11 +46,11 @@ namespace PL
 
         private void ParcelListPageButton_Click(object sender, RoutedEventArgs e)
         {
-            Main.Content = new ParcelListPage(IBL, Main);
+            Main.Content = new ParcelListPage(Main);
         }
         private void MapButton_Click(object sender, RoutedEventArgs e)
         {
-            new MapWindow(IBL).Show();
+            new MapWindow().Show();
             Close();
         }
     }

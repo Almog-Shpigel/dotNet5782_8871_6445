@@ -56,10 +56,32 @@
         </StackPanel>
         <StackPanel x:Name="NewParcelEnterPanel" Grid.Row="1" Grid.Column="3">
             <ComboBox x:Name="SenderIDSelector" Text="{Binding ID}" SelectionChanged="SenderIDSelector_SelectionChanged" Style="{StaticResource ComboBoxStyle}">
-    
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock>
+                            <TextBlock.Text>
+                                <MultiBinding StringFormat="{}{0}">
+                                    <!--<Binding Path="Name" />-->
+                                    <Binding Path="ID" />
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
             </ComboBox>
             <ComboBox x:Name="TargetIDSelector" Text="{Binding ID}" SelectionChanged="TargetIDSelector_SelectionChanged" Style="{StaticResource ComboBoxStyle}" >
-                
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock>
+                            <TextBlock.Text>
+                                <MultiBinding StringFormat="{}{0}">
+                                    <!--<Binding Path="Name" />-->
+                                    <Binding Path="ID" />
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
             </ComboBox>
             <ComboBox x:Name="WeightSelector"   SelectionChanged="WeightSelector_SelectionChanged"   Style="{StaticResource ComboBoxStyle}"/>
             <ComboBox x:Name="PrioritySelector" SelectionChanged="PrioritySelector_SelectionChanged" Style="{StaticResource ComboBoxStyle}" ItemsSource="{Binding Priorities}"/>

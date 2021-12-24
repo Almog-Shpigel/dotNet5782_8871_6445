@@ -21,20 +21,19 @@ namespace PL
     /// </summary>
     public partial class StationListPage : Page
     {
-        private BlApi.IBL BLW;
+        private BlApi.IBL IBL = BlFactory.GetBl();
         private Frame MainFrame;
-        public StationListPage(BlApi.IBL IBL, Frame Main)
+        public StationListPage(Frame Main)
         {
             InitializeComponent();
-            BLW = IBL;
             MainFrame = Main;
-            StationListView.ItemsSource = BLW.GetAllStations();
+            StationListView.ItemsSource = this.IBL.GetAllStations();
             UpdateLayout();
         }
 
         private void AddNewStationButton_Click(object sender, RoutedEventArgs e)
         {
-            MainFrame.Content = new StationPage(BLW, e, MainFrame);
+            MainFrame.Content = new StationPage(e);
         }
 
         private void BackWindow_Click(object sender, RoutedEventArgs e)
@@ -48,7 +47,7 @@ namespace PL
             var item = sender as ListViewItem;
             if (item != null && item.IsSelected)
             {
-                MainFrame.Content = new StationPage(BLW, item,MainFrame);
+                MainFrame.Content = new StationPage(item);
             }
         }
     

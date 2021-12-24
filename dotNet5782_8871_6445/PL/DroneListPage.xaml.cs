@@ -51,7 +51,7 @@ namespace PL
 
         private void AddNewDroneButton_Click(object sender, RoutedEventArgs e)
         {
-            MainFrame.Content = new DronePage(BLW, e, MainFrame);
+            MainFrame.Content = new DronePage(e);
         }
 
         private void ListViewItem_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -60,7 +60,7 @@ namespace PL
             if (item != null && item.IsSelected)
             {
                 BO.DroneToList drone = (BO.DroneToList)item.DataContext;
-                MainFrame.Content = new DronePage(BLW, MainFrame,drone.ID );
+                MainFrame.Content = new DronePage(drone.ID);
             }
         }
 

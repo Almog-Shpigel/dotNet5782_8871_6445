@@ -1,4 +1,5 @@
-﻿using DO;
+﻿using BL;
+using DO;
 using System;
 using System.Windows;
 using System.Windows.Controls;
@@ -13,16 +14,15 @@ namespace PL
     /// </summary>
     public partial class ParcelListPage : Page
     {
-        private BlApi.IBL BLW;
+        private BlApi.IBL IBL = BlFactory.GetBl();
         private Frame Frame;
         CollectionView view;
-        public ParcelListPage(BlApi.IBL IBL, Frame frame)
+        public ParcelListPage(Frame frame)
         {
             InitializeComponent();
-            BLW = IBL;
             Frame = frame;
 
-            ParcelDataGrid.ItemsSource = BLW.GetAllParcels();
+            ParcelDataGrid.ItemsSource = this.IBL.GetAllParcels();
             PrioritySelector.ItemsSource = Enum.GetValues(typeof(Priorities));
             WeightSelector.ItemsSource = Enum.GetValues(typeof(WeightCategories));            
         }
@@ -44,12 +44,12 @@ namespace PL
 
         private void PrioritySelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ParcelDataGrid.ItemsSource = BLW.GetParcels((Priorities)e.AddedItems[0], (WeightCategories)WeightSelector.SelectedIndex);
+            ParcelDataGrid.ItemsSource = IBL.GetParcels((Priorities)e.AddedItems[0], (WeightCategories)WeightSelector.SelectedIndex);
         }
 
         private void WeightSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ParcelDataGrid.ItemsSource = BLW.GetParcels((Priorities)PrioritySelector.SelectedIndex, (WeightCategories)e.AddedItems[0]);
+            ParcelDataGrid.ItemsSource = IBL.GetParcels((Priorities)PrioritySelector.SelectedIndex, (WeightCategories)e.AddedItems[0]);
         }
 
         private void DataGridRow_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)

@@ -24,11 +24,8 @@ namespace PL
         public ParcelPage(RoutedEventArgs e)
         {
             InitializeComponent(); // Add parcel ctor
-            BLW = IBL;
-            Frame = frame;
-            this.item = item;
-            SenderIDSelector.ItemsSource = BLW.GetAllCustomers().Select(item => item.ID);
-            TargetIDSelector.ItemsSource = BLW.GetAllCustomers().Select(item => item.ID);
+            SenderIDSelector.ItemsSource = IBL.GetAllCustomers();
+            TargetIDSelector.ItemsSource = IBL.GetAllCustomers();
             WeightSelector.ItemsSource = Enum.GetValues(typeof(WeightCategories));
             PrioritySelector.ItemsSource = Enum.GetValues(typeof(Priorities));
             PrintIDblock.Visibility = Visibility.Collapsed;
@@ -84,10 +81,12 @@ namespace PL
         {
             WeightCategories weight = (WeightCategories)Enum.Parse(typeof(WeightCategories), WeightSelector.Text);
             Priorities priority = (Priorities)Enum.Parse(typeof(Priorities), PrioritySelector.Text);
-            ParcelBL parcel = new(Convert.ToInt32(SenderIDSelector.Text), Convert.ToInt32(TargetIDSelector.Text), weight, priority);
+            
+            //ParcelToList SenderID = int.Parse(ParcelToList, SenderIDSelector.Text), TragetID = int.Parse(TargetIDSelector.Text);
+            //ParcelBL parcel = new(SenderID, TragetID, weight, priority);//ParcelBL.Sender.ID, ParcelBL.Target.ID,
             try
             {
-                IBL.AddNewParcel(parcel);
+                //IBL.AddNewParcel(parcel);
                 NavigationService.GoBack();
             }
             catch (Exception) //TO DO: find a better Exception
@@ -129,16 +128,4 @@ namespace PL
             UpdateParcelDeliveredButton.IsEnabled = false;
         }
     }
-    /*<ComboBox.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock>
-                                <TextBlock.Text>
-                                    <MultiBinding StringFormat="{}#{1} {0}">
-                                        <Binding Path="Name" />
-                                        <Binding Path="ID" />
-                                    </MultiBinding>
-                                </TextBlock.Text>
-                            </TextBlock>
-                        </DataTemplate>
-                    </ComboBox.ItemTemplate>*/
 }

@@ -1,4 +1,5 @@
-﻿using BO;
+﻿using BL;
+using BO;
 using Microsoft.Maps.MapControl.WPF;
 using System.Windows;
 using System.Windows.Controls;
@@ -11,17 +12,16 @@ namespace PL
     /// </summary>
     public partial class MapWindow : Window
     {
-        private BlApi.IBL BLW;
-        public MapWindow(BlApi.IBL IBL)
+        private BlApi.IBL IBL = BlFactory.GetBl();
+        public MapWindow()
         {
             InitializeComponent();
             Pushpin pin = new();
-            BLW = IBL;
-            foreach (var item in BLW.GetAllDrones())
+            foreach (var item in this.IBL.GetAllDrones())
             {
                 AddPushpin(new(item.CurrentLocation.Longitude, item.CurrentLocation.Latitude), item.ID);
             }
-            foreach (var item in BLW.GatAllStationsDO())
+            foreach (var item in this.IBL.GatAllStationsDO())
             {
                 AddPushpin(new(item.Longitude, item.Latitude), item.ID);
             }
@@ -34,11 +34,10 @@ namespace PL
             StationBL station;
             DroneBL drone;
             pin.Location = latlong;
-            //pin.MouseDown += PinClicked;
             pin.Tag = ID;
             try
             {
-                station = BLW.GetStation((int)pin.Tag);
+                station = IBL.GetStation((int)pin.Tag);
                 tt.Content = station.ToString();
             }
             catch (System.Exception)
@@ -46,7 +45,7 @@ namespace PL
             }
             try
             {
-                drone = BLW.GetDrone((int)pin.Tag);
+                drone = IBL.GetDrone((int)pin.Tag);
                 tt.Content = drone.ToString();
             }
             catch (System.Exception)
@@ -59,7 +58,7 @@ namespace PL
         private void PinClicked(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             Pushpin pin = sender as Pushpin;
-            StationBL station = BLW.GetStation((int)pin.Tag);
+            StationBL station = IBL.GetStation((int)pin.Tag);
             ToolTip tt = new();
             tt.Content = station.ToString();
             pin.ToolTip = tt;

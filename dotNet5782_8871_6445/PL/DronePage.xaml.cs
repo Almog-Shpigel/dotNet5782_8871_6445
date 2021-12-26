@@ -117,45 +117,7 @@ namespace PL
 
         private void AddNewDroneButton_Click(object sender, RoutedEventArgs e)
         {
-            WeightCategories weight = (WeightCategories)Enum.Parse(typeof(WeightCategories), WeightSelector.Text);
-            DroneBL drone = new(Convert.ToInt32(EnterDroneIDBox.Text), EnterModelNameBox.Text, weight);
-            try
-            {
-                IBL.AddNewDrone(drone, Convert.ToInt32(StationSelector.Text));
-                EnterDroneIDBox.IsEnabled = false;
-                EnterModelNameBox.IsEnabled = false;
-
-                StationSelector.IsEnabled = false;
-                WeightSelector.IsEnabled = false;
-                AddNewDroneButton.IsEnabled = false;
-                NavigationService.GoBack();
-            }
-            catch (InvalidIDException exp)
-            {
-                InvalidDroneIDBlock.Text = exp.Message;
-                InvalidDroneIDBlock.Visibility = Visibility.Visible;
-                EnterDroneIDBox.Foreground = Brushes.Red;
-                AddNewDroneButton.IsEnabled = false;
-            }
-            catch (DroneExistExceptionBL exp)
-            {
-                InvalidDroneIDBlock.Text = exp.Message;
-                InvalidDroneIDBlock.Visibility = Visibility.Visible;
-                EnterDroneIDBox.Foreground = Brushes.Red;
-                AddNewDroneButton.IsEnabled = false;
-            }
-            catch (StationExistExceptionBL exp)
-            {
-                InvalidStationIDBlock.Text = exp.Message;
-                InvalidStationIDBlock.Visibility = Visibility.Visible;
-                AddNewDroneButton.IsEnabled = false;
-            }
-            catch (InvalidSlotsException exp)
-            {
-                InvalidStationIDBlock.Text = exp.Message;
-                InvalidStationIDBlock.Visibility = Visibility.Visible;
-                AddNewDroneButton.IsEnabled = false;
-            }
+         
             
         }
 

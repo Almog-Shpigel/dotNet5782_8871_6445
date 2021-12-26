@@ -1,4 +1,5 @@
-﻿using DO;
+﻿using BL;
+using DO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,14 +23,12 @@ namespace PL
     /// </summary>
     public partial class DroneListPage : Page
     {
-        private BlApi.IBL BLW;
+        private BlApi.IBL IBL = BlFactory.GetBl();
         private Frame MainFrame;
-        public DroneListPage(BlApi.IBL IBL, Frame Main)
+        public DroneListPage()
         {
             InitializeComponent();
-            BLW = IBL;
-            MainFrame = Main;
-            DronesListView.ItemsSource = BLW.GetAllDrones();
+            DronesListView.ItemsSource = this.IBL.GetAllDrones();
             StatusSelector.ItemsSource = Enum.GetValues(typeof(DroneStatus));
             WeightSelector.ItemsSource = Enum.GetValues(typeof(WeightCategories));
         }
@@ -41,17 +40,22 @@ namespace PL
 
         private void StatusSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            DronesListView.ItemsSource = BLW.GetDrones((DroneStatus)e.AddedItems[0], (WeightCategories)WeightSelector.SelectedIndex);
+            DronesListView.ItemsSource = IBL.GetDrones((DroneStatus)e.AddedItems[0], (WeightCategories)WeightSelector.SelectedIndex);
         }
 
         private void WeightSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            DronesListView.ItemsSource = BLW.GetDrones((DroneStatus)StatusSelector.SelectedIndex, (WeightCategories)e.AddedItems[0]);
+            DronesListView.ItemsSource = IBL.GetDrones((DroneStatus)StatusSelector.SelectedIndex, (WeightCategories)e.AddedItems[0]);
         }
 
         private void AddNewDroneButton_Click(object sender, RoutedEventArgs e)
         {
-            MainFrame.Content = new DronePage(e);
+            //MainFrame.Content = new DronePage(e);
+        }
+
+        private void DronePage_Closed(object sender, EventArgs e)
+        {
+            DronesListView.ItemsSource = IBL.GetAllDrones();
         }
 
         private void ListViewItem_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)

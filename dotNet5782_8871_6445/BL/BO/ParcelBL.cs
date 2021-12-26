@@ -23,10 +23,10 @@ using static BO.EnumsBL;
             public DateTime? PickedUp { get; set; }
             public DateTime? Delivered { get; set; }
 
-            public ParcelBL( int sender, int target, WeightCategories weight, Priorities priority)
+            public ParcelBL(CustomerInParcel sender, CustomerInParcel target, WeightCategories weight, Priorities priority)
             {
-                Sender = new(sender);
-                Target = new(target);
+                Sender = new(sender.ID,sender.Name);
+                Target = new(target.ID,sender.Name);
                 DroneInParcel = null;
                 Weight = weight;
                 Priority = priority;

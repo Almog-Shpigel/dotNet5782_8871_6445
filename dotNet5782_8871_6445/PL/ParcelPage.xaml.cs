@@ -24,8 +24,8 @@ namespace PL
         public ParcelPage(RoutedEventArgs e)
         {
             InitializeComponent(); // Add parcel ctor
-            SenderIDSelector.ItemsSource = IBL.GetAllCustomers();
-            TargetIDSelector.ItemsSource = IBL.GetAllCustomers();
+            SenderIDSelector.ItemsSource = IBL.GetAllCustomerInParcels();
+            TargetIDSelector.ItemsSource = SenderIDSelector.ItemsSource;
             WeightSelector.ItemsSource = Enum.GetValues(typeof(WeightCategories));
             PrioritySelector.ItemsSource = Enum.GetValues(typeof(Priorities));
             PrintIDblock.Visibility = Visibility.Collapsed;
@@ -81,12 +81,12 @@ namespace PL
         {
             WeightCategories weight = (WeightCategories)Enum.Parse(typeof(WeightCategories), WeightSelector.Text);
             Priorities priority = (Priorities)Enum.Parse(typeof(Priorities), PrioritySelector.Text);
-            
-            //ParcelToList SenderID = int.Parse(ParcelToList, SenderIDSelector.Text), TragetID = int.Parse(TargetIDSelector.Text);
-            //ParcelBL parcel = new(SenderID, TragetID, weight, priority);//ParcelBL.Sender.ID, ParcelBL.Target.ID,
+            CustomerInParcel Sender = (CustomerInParcel)SenderIDSelector.SelectedItem;
+            CustomerInParcel Target = (CustomerInParcel)TargetIDSelector.SelectedItem;
+            ParcelBL parcel = new(Sender, Target, weight, priority);
             try
             {
-                //IBL.AddNewParcel(parcel);
+                IBL.AddNewParcel(parcel);
                 NavigationService.GoBack();
             }
             catch (Exception) //TO DO: find a better Exception

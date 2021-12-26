@@ -163,13 +163,14 @@ namespace BlApi
         public ParcelBL GetParcel(int ParcelID)
         {
             Parcel parcel = Data.GetParcel(ParcelID);
-            ParcelBL ParcelToDisplay = new(parcel.SenderID, parcel.TargetID, parcel.Weight, parcel.Priority);
+            Customer sender = Data.GetCustomer(parcel.SenderID);
+            Customer target = Data.GetCustomer(parcel.TargetID);
+            ParcelBL ParcelToDisplay = new(new(sender.ID,sender.Name), new(target.ID, target.Name), parcel.Weight, parcel.Priority);
             ParcelToDisplay.ID = parcel.ID;
             ParcelToDisplay.TimeRequested = parcel.TimeRequested;
             ParcelToDisplay.Scheduled = parcel.Scheduled;
             ParcelToDisplay.PickedUp = parcel.PickedUp;
             ParcelToDisplay.Delivered = parcel.Delivered;
-            Customer sender = Data.GetCustomer(parcel.SenderID), target = Data.GetCustomer(parcel.TargetID);
             ParcelToDisplay.Sender.Name = sender.Name;
             ParcelToDisplay.Target.Name = target.Name;
             if (parcel.DroneID != 0)
@@ -194,6 +195,11 @@ namespace BlApi
                 }
             }
             return StationToPrint;
+        }
+        public IEnumerable<CustomerInParcel> GetAllCustomerInParcels()
+        {
+            IEnumerable<CustomerInParcel> customers = Data.GetCustomers(item => true).Select(customer => new CustomerInParcel(customer.ID, customer.Name));
+            return customers;
         }
 
         public CustomerBL GetCustomer(int CustomerID)

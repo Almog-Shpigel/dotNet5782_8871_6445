@@ -142,7 +142,7 @@ namespace BlApi
         /// </summary>
         /// <returns></returns>
         public IEnumerable<ParcelToList> GetUnassignedParcels();
-
+        public IEnumerable<CustomerInParcel> GetAllCustomerInParcels();
         /// <summary>
         /// Function that return all the station who has more than 0 charge slots available
         /// </summary>
@@ -202,6 +202,7 @@ namespace BlApi
         /// <param name="CustomerID"></param>
         /// <returns>distance (km)</returns>
         public string GetDistanceFromCustomer(double latitude, double longitude, int CustomerID);
+        
 
         #endregion
         #endregion

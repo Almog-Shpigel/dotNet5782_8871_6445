@@ -88,6 +88,7 @@ namespace PL
             {
                 IBL.AddNewParcel(parcel);
                 NavigationService.GoBack();
+                
             }
             catch (Exception) //TO DO: find a better Exception
             {

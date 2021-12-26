@@ -30,6 +30,7 @@ namespace PL
         private void AddNewParcelButton_Click(object sender, RoutedEventArgs e)
         {
             Frame.Content = new ParcelPage(e);
+            
         }
 
         private void BackWindow_Click(object sender, RoutedEventArgs e)

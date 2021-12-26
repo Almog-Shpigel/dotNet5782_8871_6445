@@ -47,6 +47,7 @@
             <Button x:Name="UpdateParcelAssignToDroneButton" Content="Assign parcel to drone" Click="UpdateParcelAssignToDroneButton_Click" Style="{StaticResource ButtonPageStyle}"/>
             <Button x:Name="UpdateParcelCollectedByDroneButton" Content="Parcel collected by drone" Click="UpdateParcelCollectedByDroneButton_Click" Style="{StaticResource ButtonPageStyle}" />
             <Button x:Name="UpdateParcelDeleiveredByDroneButton" Content="Parcel delivered by drone" Click="UpdateParcelDeleiveredByDroneButton_Click" ClickMode="Release" Style="{StaticResource ButtonPageStyle}" />
+            <Button x:Name="DroneList" Content="Go back to the list" Click="DroneList_Click"  ClickMode="Release" Style="{StaticResource ButtonPageStyle}" />
         </StackPanel>
         <StackPanel x:Name="NewDroneEnterPanel" Grid.Row="2" Grid.Column="2">
             <TextBox   x:Name="EnterDroneIDBox" TextChanged="EnterDroneIDBox_TextChanged" Style="{StaticResource TextBoxStyle}" />

@@ -254,9 +254,10 @@ namespace PL
 
         }
 
-        private void UpdateDroneToBeChargedButton_SourceUpdated(object sender, DataTransferEventArgs e)
-        {
 
+        private void DroneList_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.GoBack();
         }
     }
 }

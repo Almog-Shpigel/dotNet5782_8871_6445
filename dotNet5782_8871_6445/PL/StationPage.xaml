@@ -33,10 +33,10 @@
             <TextBlock x:Name="NamelBlock"  Text="{Binding Name}"    Style="{StaticResource TextBlockPageStyle}" />
             <TextBlock x:Name="AvailableSlotstBlock"   Text="{Binding ChargeSlots}"  Style="{StaticResource TextBlockPageStyle}" />
             <TextBlock x:Name="LocationBlock" Text="{Binding Location}"  Style="{StaticResource TextBlockPageStyle}" />
-            <ListView x:Name="DronesListView" Style="{StaticResource ListViewStyle}">
+            <ListView x:Name="DronesListViewFromStation" Style="{StaticResource ListViewStyle}">
                 <ListView.ItemContainerStyle>
                     <Style TargetType="{x:Type ListViewItem}">
-                        <EventSetter Event="UIElement.PreviewMouseLeftButtonDown" Handler="ListViewItem_PreviewMouseLeftButtonDown" />
+                        <EventSetter Event="MouseDoubleClick" Handler="ListViewItem_MouseDoubleClick" />
                     </Style>
                 </ListView.ItemContainerStyle>
             </ListView>
@@ -47,7 +47,7 @@
             <TextBox   x:Name="EnterAvailAbleSlotsBox" TextChanged ="EnterAvailAbleSlotsBox_TextChanged" Style="{StaticResource TextBoxStyle}"/>
             <TextBox   x:Name="EnterLattitudeBox" TextChanged ="EnterAvailAbleSlotsBox_TextChanged" Style="{StaticResource TextBoxStyle}"/>
             <TextBox   x:Name="EnterLongitudeBox" TextChanged ="EnterAvailAbleSlotsBox_TextChanged" Style="{StaticResource TextBoxStyle}"/>
-            <Button x:Name="AddNewStationButton" Content="Add" Click="AddNewStationButton_Click" Style="{StaticResource ButtonPageStyle}" />
+            <Button x:Name="StationEntityAddButton" Content="Add" Click="StationEntityAddButton_Click" Style="{StaticResource ButtonPageStyle}" />
         </StackPanel>
         <StackPanel x:Name="UpdateBlocksPanel" Grid.Row="2" Grid.Column="3">
             <TextBox   x:Name="UpdateNameBlock" Text="" Style="{StaticResource TextBoxStyle}"/>
@@ -56,8 +56,9 @@
         </StackPanel>
         <StackPanel x:Name="UpdateStationButtons" Grid.Row="2" Grid.Column="4">
             <Button x:Name="UpdateNameButton" Content="Update name" Click="UpdateNameButton_Click" Style="{StaticResource ButtonPageStyle}" />
-            <Button x:Name="UpdateChargeSlotsButton"  Content="Update total charge slots" Click="UpdateChargeSlotsButton_Click" Style="{StaticResource ButtonPageStyle}" />
-            <Button x:Name="UpdateDeleteStationButton"  Content="Delete station" Background="Red" Click="UpdateDeleteStationButton_Click" Style="{StaticResource ButtonPageStyle}" />
+            <Button x:Name="UpdateChargeSlotsButton" Content="Update total charge slots" Click="UpdateChargeSlotsButton_Click" Style="{StaticResource ButtonPageStyle}" />
+            <Button x:Name="UpdateDeleteStationButton" Content="Delete station" Background="Red" Click="UpdateDeleteStationButton_Click" Style="{StaticResource ButtonPageStyle}" />
+            <Button x:Name="StationListGoBackButton" Content="Go back" Click="StationListGoBackButton_Click" Style="{StaticResource ButtonPageStyle}"/>
         </StackPanel>
     </Grid>
 </Page>

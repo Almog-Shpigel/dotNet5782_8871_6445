@@ -23,18 +23,16 @@ namespace PL
     /// </summary>
     public partial class StationPage : Page
     {
-        private ListViewItem item;
-        private BlApi.IBL IBL = BlFactory.GetBl();
-        private BO.StationToList Station;
-        private BO.StationBL StationBL;
-        public StationPage(ListViewItem item)
+        private IBL IBL = BlFactory.GetBl();
+        private StationToList Station;
+        private StationBL StationBL;
+        public StationPage(StationToList item)
         {
             InitializeComponent();
-            this.item = item;
-            Station = (BO.StationToList)item.DataContext;
+            Station = item;
             StationBL = IBL.GetStation(Station.ID);
             DataContext = StationBL;
-            DronesListView.ItemsSource = StationBL.ChargingDrones;
+            DronesListViewFromStation.ItemsSource = StationBL.ChargingDrones;
             AddNewStationPanell.Visibility = Visibility.Collapsed;
         }
 
@@ -58,11 +56,11 @@ namespace PL
                 && EnterAvailAbleSlotsBox.Text != "" && EnterLattitudeBox.Text != "" &&
                 EnterLongitudeBox.Text != "" && InvalidInputBlock.Visibility != Visibility.Visible)
             {
-                AddNewStationButton.IsEnabled = true;
+                StationEntityAddButton.IsEnabled = true;
             }
             else
             {
-                AddNewStationButton.IsEnabled = false;
+                StationEntityAddButton.IsEnabled = false;
             }
         }
 
@@ -100,8 +98,6 @@ namespace PL
                 UpdateChargeSlotsButton.IsEnabled = true;
                 InvalidInputBlock.Visibility = Visibility.Collapsed;
                 UpdateChargeSlotsBlock.Foreground = Brushes.Black;
-
-
             }
         }
 
@@ -114,18 +110,8 @@ namespace PL
             }
             catch (Exception exp)
             {
-
                 InvalidInputBlock.Text = exp.Message;
                 InvalidInputBlock.Visibility = Visibility.Visible;
-            }
-        }
-        private void ListViewItem_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            var item = sender as ListViewItem;
-            if (item != null && item.IsSelected)
-            {
-                BO.DroneChargeBL drone = (BO.DroneChargeBL)item.DataContext;
-                NavigationService.Navigate(new DronePage(drone.DroneID));
             }
         }
 
@@ -137,7 +123,7 @@ namespace PL
                 InvalidInputBlock.Visibility = Visibility.Visible;
                 InvalidInputBlock.Text ="Station id must contain only numbers";
                 EnterStationIDBox.Foreground = Brushes.Red;
-                AddNewStationButton.IsEnabled = false;
+                StationEntityAddButton.IsEnabled = false;
             }
             else
             {
@@ -153,7 +139,7 @@ namespace PL
         }
 
 
-        private void AddNewStationButton_Click(object sender, RoutedEventArgs e)
+        private void StationEntityAddButton_Click(object sender, RoutedEventArgs e)
         {
             StationBL NewStation = new(Convert.ToInt32(EnterStationIDBox.Text), EnterStationNameBox.Text, Convert.ToInt32(EnterAvailAbleSlotsBox.Text),
                new(Convert.ToDouble(EnterLattitudeBox.Text), Convert.ToDouble(EnterLongitudeBox.Text)));
@@ -167,7 +153,7 @@ namespace PL
                 InvalidInputBlock.Text = exp.Message;
                 InvalidInputBlock.Visibility = Visibility.Visible;
                 EnterStationIDBox.Foreground = Brushes.Red;
-                AddNewStationButton.IsEnabled = false;
+                StationEntityAddButton.IsEnabled = false; 
             }
         }
 
@@ -179,7 +165,7 @@ namespace PL
                 InvalidInputBlock.Visibility = Visibility.Visible;
                 InvalidInputBlock.Text = "Available slots must be a number";
                 EnterAvailAbleSlotsBox.Foreground = Brushes.Red;
-                AddNewStationButton.IsEnabled = false;
+                StationEntityAddButton.IsEnabled = false;
             }
             else
             {
@@ -187,6 +173,16 @@ namespace PL
                 EnterStationIDBox.Foreground = Brushes.Black;
                 EnableButton();
             }
+        }
+
+        private void StationListGoBackButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ListViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+
         }
     }
 }

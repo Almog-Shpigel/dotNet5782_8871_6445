@@ -38,7 +38,7 @@ namespace PL
             ARR[2] = WeightCategories.Heavy;
             WeightSelector.ItemsSource = ARR;
             StationSelector.ItemsSource = IBL.GetAvailableStations().Select(station => (string)station.ID.ToString());
-            EntityAddButton.IsEnabled = false;
+            DroneEntityAddButton.IsEnabled = false;
             UpdateLayout();
         }
 
@@ -110,9 +110,9 @@ namespace PL
             if (InvalidDroneIDBlock.Visibility != Visibility.Visible &&
                 EnterDroneIDBox.Text != "" &&
                 WeightSelector.SelectedIndex != -1 && StationSelector.SelectedIndex != -1)
-                EntityAddButton.IsEnabled = true;
+                DroneEntityAddButton.IsEnabled = true;
             else
-                EntityAddButton.IsEnabled = false;
+                DroneEntityAddButton.IsEnabled = false;
         }
 
         private void AddNewDroneButton_Click(object sender, RoutedEventArgs e)
@@ -127,7 +127,7 @@ namespace PL
             {
                 InvalidDroneIDBlock.Visibility = Visibility.Visible;
                 EnterDroneIDBox.Foreground = Brushes.Red;
-                EntityAddButton.IsEnabled = false;
+                DroneEntityAddButton.IsEnabled = false;
             }
             else
             {
@@ -204,12 +204,12 @@ namespace PL
 
         }
 
-        private void EntityAddButton_Click(object sender, RoutedEventArgs e)
+        private void DroneEntityAddButton_Click(object sender, RoutedEventArgs e)
         {
 
         }
 
-        private void GoBackDroneListPage_Click(object sender, RoutedEventArgs e)
+        private void DroneListGoBackButton_Click(object sender, RoutedEventArgs e)
         {
 
         }

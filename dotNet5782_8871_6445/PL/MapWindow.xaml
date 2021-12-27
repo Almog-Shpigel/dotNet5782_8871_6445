@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         xmlns:m="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
         Title="Map Window" Height="450" Width="800">
-    
+
     <Grid x:Name="LayoutRoot" Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="35" />
@@ -17,8 +17,7 @@
         <m:Map x:Name="myMap" Grid.RowSpan="2"
                     Center="31.771170,35.214086" ZoomLevel="13"
                     Mode="Road" 
-                    CredentialsProvider="AqTTbx5Fyl3jocqOWa8mxbnsv-7MqNqBPc5kVABd_psvOsnH-cxtzJ1wUdpdeCxE"
-                >
-        </m:Map>
+                    CredentialsProvider="AqTTbx5Fyl3jocqOWa8mxbnsv-7MqNqBPc5kVABd_psvOsnH-cxtzJ1wUdpdeCxE" />
+        <Button Name="GoBack" Content="Go back" Style="{StaticResource MainWindowButton}" Grid.Row="1" HorizontalAlignment="Left" Margin="10,10,10,10" VerticalAlignment="Bottom" Click="GoBack_Click"/>
     </Grid>
 </Window>

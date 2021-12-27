@@ -27,7 +27,7 @@ namespace PL
             WeightSelector.ItemsSource = Enum.GetValues(typeof(WeightCategories));            
         }
 
-        private void AddNewParcelButton_Click(object sender, RoutedEventArgs e)
+        private void ParcelEntityAddButton_Click(object sender, RoutedEventArgs e)
         {
             Frame.Content = new ParcelPage(e);
             

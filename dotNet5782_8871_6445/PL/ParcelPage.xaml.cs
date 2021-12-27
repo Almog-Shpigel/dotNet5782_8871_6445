@@ -19,7 +19,6 @@ namespace PL
         private BlApi.IBL IBL = BlFactory.GetBl();
         private BO.ParcelToList Parcel;
         private BO.ParcelBL ParcelBL;
-        Frame Frame;
 
         public ParcelPage(RoutedEventArgs e)
         {
@@ -69,15 +68,15 @@ namespace PL
                 && WeightSelector.SelectedIndex != -1
                 && PrioritySelector.SelectedIndex != -1)
             {
-                AddNewParcelButton.IsEnabled = true;
+                ParcelEntityAddButton.IsEnabled = true;
             }
             else
             {
-                AddNewParcelButton.IsEnabled = false;
+                ParcelEntityAddButton.IsEnabled = false;
             }
         }
 
-        private void AddNewParcelButton_Click(object sender, RoutedEventArgs e)
+        private void ParcelEntityAddButton_Click(object sender, RoutedEventArgs e)
         {
             WeightCategories weight = (WeightCategories)Enum.Parse(typeof(WeightCategories), WeightSelector.Text);
             Priorities priority = (Priorities)Enum.Parse(typeof(Priorities), PrioritySelector.Text);
@@ -92,7 +91,7 @@ namespace PL
             }
             catch (Exception) //TO DO: find a better Exception
             {
-                AddNewParcelButton.IsEnabled = false;
+                ParcelEntityAddButton.IsEnabled = false;
             }
         }
 

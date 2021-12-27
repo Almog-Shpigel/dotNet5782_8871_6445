@@ -18,7 +18,7 @@
 
         </Grid>
         <StackPanel Orientation="Horizontal">
-            <Button x:Name="AddNewStation" Content="Add new station" Click="AddNewStationButton_Click" Style="{StaticResource ButtonBarStyle}"/>
+            <Button x:Name="StationListAddButton" Content="Add new station" Click="StationListAddButton_Click" Style="{StaticResource ButtonBarStyle}"/>
             <Button  x:Name="BackWindow" Content="Main Window" Click="BackWindow_Click" Style="{StaticResource ButtonBarStyle}"/>
         </StackPanel>
 
@@ -33,7 +33,7 @@
             </ListView.View>
             <ListView.ItemContainerStyle>
                 <Style TargetType="{x:Type ListViewItem}">
-                    <EventSetter Event="UIElement.PreviewMouseLeftButtonDown" Handler="ListViewItem_PreviewMouseLeftButtonDown" />
+                    <EventSetter Event="MouseDoubleClick" Handler="ListViewItem_MouseDoubleClick" />
                 </Style>
             </ListView.ItemContainerStyle>
         </ListView>

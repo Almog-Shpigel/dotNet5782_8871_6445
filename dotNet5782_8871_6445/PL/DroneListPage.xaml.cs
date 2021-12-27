@@ -32,11 +32,6 @@ namespace PL
             WeightSelector.ItemsSource = Enum.GetValues(typeof(WeightCategories));
         }
 
-        private void DronesListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
         private void StatusSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             DronesListView.ItemsSource = IBL.GetDrones((DroneStatus)e.AddedItems[0], (WeightCategories)WeightSelector.SelectedIndex);
@@ -47,21 +42,17 @@ namespace PL
             DronesListView.ItemsSource = IBL.GetDrones((DroneStatus)StatusSelector.SelectedIndex, (WeightCategories)e.AddedItems[0]);
         }
 
-        private void ListViewItem_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            //var item = sender as ListViewItem;
-            //if (item != null && item.IsSelected)
-            //{
-            //    BO.DroneToList drone = (BO.DroneToList)item.DataContext;
-            //}
-        }
-
         private void BackWindow_Click(object sender, RoutedEventArgs e)
         {
 
         }
 
-        private void ListAddButton_Click(object sender, RoutedEventArgs e)
+        private void DroneListAddButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ListViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
 
         }

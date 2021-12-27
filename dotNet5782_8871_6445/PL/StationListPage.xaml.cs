@@ -22,32 +22,29 @@ namespace PL
     public partial class StationListPage : Page
     {
         private BlApi.IBL IBL = BlFactory.GetBl();
-        private Frame MainFrame;
-        public StationListPage(Frame Main)
+        public StationListPage()
         {
             InitializeComponent();
-            MainFrame = Main;
             StationListView.ItemsSource = this.IBL.GetAllStations();
             UpdateLayout();
         }
 
-        private void AddNewStationButton_Click(object sender, RoutedEventArgs e)
+        private void StationListAddButton_Click(object sender, RoutedEventArgs e)
         {
-            MainFrame.Content = new StationPage(e);
+
         }
 
         private void BackWindow_Click(object sender, RoutedEventArgs e)
         {
-            NavigationService.Navigate(null);
             
         }
 
-        private void ListViewItem_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void ListViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             var item = sender as ListViewItem;
             if (item != null && item.IsSelected)
             {
-                MainFrame.Content = new StationPage(item);
+                //MainFrame.Content = new StationPage(item);
             }
         }
     

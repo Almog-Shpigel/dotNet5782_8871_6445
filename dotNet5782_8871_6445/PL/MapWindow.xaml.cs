@@ -68,5 +68,11 @@ namespace PL
         {
             //Infobox.Visibility = System.Windows.Visibility.Collapsed;
         }
+
+        private void GoBack_Click(object sender, RoutedEventArgs e)
+        {
+            new MainWindow().Show();
+            Close();
+        }
     }
 }

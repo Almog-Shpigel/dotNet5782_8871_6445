@@ -24,11 +24,10 @@ namespace PL
     public partial class DroneListPage : Page
     {
         private BlApi.IBL IBL = BlFactory.GetBl();
-        private Frame MainFrame;
         public DroneListPage()
         {
             InitializeComponent();
-            DronesListView.ItemsSource = this.IBL.GetAllDrones();
+            DronesListView.ItemsSource = IBL.GetAllDrones();
             StatusSelector.ItemsSource = Enum.GetValues(typeof(DroneStatus));
             WeightSelector.ItemsSource = Enum.GetValues(typeof(WeightCategories));
         }
@@ -48,30 +47,22 @@ namespace PL
             DronesListView.ItemsSource = IBL.GetDrones((DroneStatus)StatusSelector.SelectedIndex, (WeightCategories)e.AddedItems[0]);
         }
 
-        private void AddNewDroneButton_Click(object sender, RoutedEventArgs e)
-        {
-            //MainFrame.Content = new DronePage(e);
-        }
-
-        private void DronePage_Closed(object sender, EventArgs e)
-        {
-            DronesListView.ItemsSource = IBL.GetAllDrones();
-        }
-
         private void ListViewItem_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            var item = sender as ListViewItem;
-            if (item != null && item.IsSelected)
-            {
-                BO.DroneToList drone = (BO.DroneToList)item.DataContext;
-                MainFrame.Content = new DronePage(drone.ID);
-            }
+            //var item = sender as ListViewItem;
+            //if (item != null && item.IsSelected)
+            //{
+            //    BO.DroneToList drone = (BO.DroneToList)item.DataContext;
+            //}
         }
 
         private void BackWindow_Click(object sender, RoutedEventArgs e)
         {
 
-            NavigationService.Navigate(null);
+        }
+
+        private void ListAddButton_Click(object sender, RoutedEventArgs e)
+        {
 
         }
     }

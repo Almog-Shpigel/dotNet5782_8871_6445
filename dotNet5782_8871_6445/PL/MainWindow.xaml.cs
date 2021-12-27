@@ -24,6 +24,8 @@ namespace PL
     public partial class MainWindow : Window
     {
         private BlApi.IBL IBL;
+        private DroneListPage droneListPage;
+        private DronePage dronePage;
 
         public MainWindow()
         {
@@ -31,67 +33,112 @@ namespace PL
             InitializeComponent();
         }
 
+        #region Drone
         private void DroneListPageButton_Click(object sender, RoutedEventArgs e)
         {
-            DroneListPage droneList = new DroneListPage();
-            droneList.AddNewDrone.Click += AddNewDrone_Click;
-            this.Content = droneList;
+            droneListPage = new();
+            droneListPage.ListAddButton.Click += ListAddButton_Click;
+            droneListPage.DronesListView.SelectionChanged += DronesListView_SelectionChanged;
+            droneListPage.DronesListView.PreviewMouseLeftButtonDown += DronesListView_PreviewMouseLeftButtonDown; ;
+            droneListPage.BackWindow.Click += BackWindow_Click;
+            Content = droneListPage;
         }
 
-        private void AddNewDrone_Click(object sender, RoutedEventArgs e)
+        #region Add
+
+        private void ListAddButton_Click(object sender, RoutedEventArgs e)
         {
-            DronePage dronePage = new DronePage(e);
-            dronePage.AddNewDroneButton.Click += AddNewDroneButton_Click;
-            this.Content = dronePage;
+            dronePage = new(e);
+            dronePage.EntityAddButton.Click += EntityAddButton_Click;
+            Content = dronePage;
         }
 
-        private void AddNewDroneButton_Click(object sender, RoutedEventArgs e)
+        private void EntityAddButton_Click(object sender, RoutedEventArgs e)
         {
-            DronePage dronePage = new DronePage(e);
-            WeightCategories weight = (WeightCategories)Enum.Parse(typeof(WeightCategories), (string)dronePage.WeightSelector.SelectedItem);
-            DroneBL drone = new(Convert.ToInt32(dronePage.EnterDroneIDBox.Text), dronePage.EnterModelNameBox.Text, weight);
+            DroneListPage droneListPage = new();
+            int DroneID = Convert.ToInt32(dronePage.EnterDroneIDBox.Text), StationID = Convert.ToInt32(dronePage.StationSelector.Text);
+            string name = dronePage.EnterModelNameBox.Text;
+            WeightCategories weight = (WeightCategories)dronePage.WeightSelector.SelectedItem;
+            DroneBL drone = new(DroneID, name, weight);
             try
             {
-                IBL.AddNewDrone(drone, Convert.ToInt32(dronePage.StationSelector.Text));
+                IBL.AddNewDrone(drone, StationID);
                 dronePage.EnterDroneIDBox.IsEnabled = false;
                 dronePage.EnterModelNameBox.IsEnabled = false;
-
                 dronePage.StationSelector.IsEnabled = false;
                 dronePage.WeightSelector.IsEnabled = false;
-                dronePage.AddNewDroneButton.IsEnabled = false;
-                //   NavigationService.GoBack();
+                dronePage.EntityAddButton.IsEnabled = false;
+                Content = droneListPage;
             }
-            catch (Exception ex)
+            catch (InvalidIDException exp)
             {
-
+                dronePage.InvalidDroneIDBlock.Text = exp.Message;
+                dronePage.InvalidDroneIDBlock.Visibility = Visibility.Visible;
+                dronePage.EnterDroneIDBox.Foreground = Brushes.Red;
+                dronePage.EntityAddButton.IsEnabled = false;
             }
-            //catch (InvalidIDException exp)
+            catch (DroneExistExceptionBL exp)
+            {
+                dronePage.InvalidDroneIDBlock.Text = exp.Message;
+                dronePage.InvalidDroneIDBlock.Visibility = Visibility.Visible;
+                dronePage.EnterDroneIDBox.Foreground = Brushes.Red;
+                dronePage.EntityAddButton.IsEnabled = false;
+            }
+            catch (StationExistExceptionBL exp)
+            {
+                dronePage.InvalidStationIDBlock.Text = exp.Message;
+                dronePage.InvalidStationIDBlock.Visibility = Visibility.Visible;
+                dronePage.EntityAddButton.IsEnabled = false;
+            }
+            catch (InvalidSlotsException exp)
+            {
+                dronePage.InvalidStationIDBlock.Text = exp.Message;
+                dronePage.InvalidStationIDBlock.Visibility = Visibility.Visible;
+                dronePage.EntityAddButton.IsEnabled = false;
+            }
+        }
+        #endregion
+
+        #region Update
+        private void DronesListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            DroneToList drone = (DroneToList)e.AddedItems[0];
+            if (drone != null)
+            {
+                dronePage = new(drone.ID);
+                dronePage.GoBackDroneListPage.Click += GoBackDroneListPage_Click;
+                Content = dronePage;
+            }
+        }
+
+        private void DronesListView_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            //DroneToList drone = (DroneToList)e.OriginalSource;
+            //if (drone != null)
             //{
-            //    InvalidDroneIDBlock.Text = exp.Message;
-            //    InvalidDroneIDBlock.Visibility = Visibility.Visible;
-            //    EnterDroneIDBox.Foreground = Brushes.Red;
-            //    AddNewDroneButton.IsEnabled = false;
-            //}
-            //catch (DroneExistExceptionBL exp)
-            //{
-            //    InvalidDroneIDBlock.Text = exp.Message;
-            //    InvalidDroneIDBlock.Visibility = Visibility.Visible;
-            //    EnterDroneIDBox.Foreground = Brushes.Red;
-            //    AddNewDroneButton.IsEnabled = false;
-            //}
-            //catch (StationExistExceptionBL exp)
-            //{
-            //    InvalidStationIDBlock.Text = exp.Message;
-            //    InvalidStationIDBlock.Visibility = Visibility.Visible;
-            //    AddNewDroneButton.IsEnabled = false;
-            //}
-            //catch (InvalidSlotsException exp)
-            //{
-            //    InvalidStationIDBlock.Text = exp.Message;
-            //    InvalidStationIDBlock.Visibility = Visibility.Visible;
-            //    AddNewDroneButton.IsEnabled = false;
+            //    dronePage = new(drone.ID);
+            //    dronePage.GoBackDroneListPage.Click += GoBackDroneListPage_Click;
+            //    Content = dronePage;
             //}
         }
+
+        private void GoBackDroneListPage_Click(object sender, RoutedEventArgs e)
+        {
+            droneListPage = new();
+            Content = droneListPage;
+        }
+        #endregion
+        #endregion
+
+        private void BackWindow_Click(object sender, RoutedEventArgs e)
+        {
+            new MainWindow().Show();
+            Close();
+        }
+
+        
+
+        
 
         private void StationListPageButton_Click(object sender, RoutedEventArgs e)
         {

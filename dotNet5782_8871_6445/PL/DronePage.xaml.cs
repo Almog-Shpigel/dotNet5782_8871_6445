@@ -38,7 +38,7 @@ namespace PL
             ARR[2] = WeightCategories.Heavy;
             WeightSelector.ItemsSource = ARR;
             StationSelector.ItemsSource = IBL.GetAvailableStations().Select(station => (string)station.ID.ToString());
-            AddNewDroneButton.IsEnabled = false;
+            EntityAddButton.IsEnabled = false;
             UpdateLayout();
         }
 
@@ -110,15 +110,14 @@ namespace PL
             if (InvalidDroneIDBlock.Visibility != Visibility.Visible &&
                 EnterDroneIDBox.Text != "" &&
                 WeightSelector.SelectedIndex != -1 && StationSelector.SelectedIndex != -1)
-                AddNewDroneButton.IsEnabled = true;
+                EntityAddButton.IsEnabled = true;
             else
-                AddNewDroneButton.IsEnabled = false;
+                EntityAddButton.IsEnabled = false;
         }
 
         private void AddNewDroneButton_Click(object sender, RoutedEventArgs e)
         {
-         
-            
+
         }
 
         private void EnterDroneIDBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -128,7 +127,7 @@ namespace PL
             {
                 InvalidDroneIDBlock.Visibility = Visibility.Visible;
                 EnterDroneIDBox.Foreground = Brushes.Red;
-                AddNewDroneButton.IsEnabled = false;
+                EntityAddButton.IsEnabled = false;
             }
             else
             {
@@ -147,8 +146,6 @@ namespace PL
                 droneBL = IBL.GetDrone(droneBL.ID);
                 DataContext = droneBL;
                 ButtenEnableCheck();
-                
-                
             }
             catch (Exception exp)
             {
@@ -163,8 +160,6 @@ namespace PL
             droneBL = IBL.GetDrone(droneBL.ID);
             DataContext = droneBL;
             ButtenEnableCheck();
-            
-            
         }
 
         private void UpdateParcelAssignToDroneButton_Click(object sender, RoutedEventArgs e)
@@ -175,15 +170,12 @@ namespace PL
                 droneBL = IBL.GetDrone(droneBL.ID);
                 DataContext = droneBL;
                 ButtenEnableCheck();
-                
             }
             catch (Exception exp)
             {
                 InvalidBatteryToCompleteDeliveryBlock.Visibility = Visibility.Visible;
                 InvalidBatteryToCompleteDeliveryBlock.Text = exp.Message;
             }
-            
-            
         }
 
         private void UpdateParcelCollectedByDroneButton_Click(object sender, RoutedEventArgs e)
@@ -192,8 +184,6 @@ namespace PL
             droneBL = IBL.GetDrone(droneBL.ID);
             DataContext = droneBL;
             ButtenEnableCheck();
-            
-            
         }
 
         private void UpdateParcelDeleiveredByDroneButton_Click(object sender, RoutedEventArgs e)
@@ -202,8 +192,6 @@ namespace PL
             droneBL = IBL.GetDrone(droneBL.ID);
             DataContext = droneBL;
             ButtenEnableCheck();
-            
-            
         }
 
         private void StationSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -216,10 +204,14 @@ namespace PL
 
         }
 
-
-        private void DroneList_Click(object sender, RoutedEventArgs e)
+        private void EntityAddButton_Click(object sender, RoutedEventArgs e)
         {
-            NavigationService.GoBack();
+
+        }
+
+        private void GoBackDroneListPage_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

@@ -110,7 +110,20 @@ namespace PL
         private void CustomerListPageButton_Click(object sender, RoutedEventArgs e)
         {
             customerListPage = new();
-            //customerListPage.CustomerListAddButton.Click
+            customerListPage.CustomerListAddButton.Click += CustomerListAddButton_Click;
+            customerListPage.BackWindow.Click += BackWindow_Click;
+            customerListPage.CustomersListView.MouseDoubleClick += CustomerListView_MouseDoubleClick;
+            Content = customerListPage;
+        }
+
+        private void CustomerListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void CustomerListAddButton_Click(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
         }
         #endregion
 

@@ -8,7 +8,7 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="CustomerListPage">
     <Grid x:Name="MainGrid" Background="#c9cba3">
-        <!--<Grid.RowDefinitions>
+        <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
             <RowDefinition Height="40*"/>
         </Grid.RowDefinitions>
@@ -17,32 +17,29 @@
 
         </Grid>
         <StackPanel Orientation="Horizontal">
-            <TextBlock Text="Status:" Style="{StaticResource TextBlockStyle}"/>
-            <ComboBox x:Name="StatusSelector" SelectionChanged="StatusSelector_SelectionChanged" Style="{StaticResource ComboBoxBarStyle}"/>
-            <TextBlock Text="Weight:" Style="{StaticResource TextBlockStyle}"/>
-            <ComboBox x:Name="WeightSelector" SelectionChanged="WeightSelector_SelectionChanged" Style="{StaticResource ComboBoxBarStyle}"/>
-            <Button x:Name="AddNewDrone" Content="Add new drone" Click="AddNewDroneButton_Click" Style="{StaticResource ButtonBarStyle}"/>
+
+            <Button x:Name="CustomerListAddButton" Content="Add new customer" Click="CustomerListAddButton_Click" Style="{StaticResource ButtonBarStyle}"/>
             <Button  x:Name="BackWindow" Content="Main Window" Click="BackWindow_Click" Style="{StaticResource ButtonBarStyle}"/>
         </StackPanel>
 
-        <ListView x:Name="DronesListView" Grid.Row="1" SelectionChanged="DronesListView_SelectionChanged" Style="{StaticResource ListViewStyle}">
+        <ListView x:Name="CustomersListView" Grid.Row="1" SelectionChanged="CustomerListView_SelectionChanged" Style="{StaticResource ListViewStyle}" Margin="10,6,10,14">
             <ListView.View>
                 <GridView>
                     <GridViewColumn DisplayMemberBinding="{Binding ID}" Header="ID" Width="80"/>
-                    <GridViewColumn DisplayMemberBinding="{Binding Model}" Header="Model"  Width="100"/>
-                    <GridViewColumn DisplayMemberBinding="{Binding MaxWeight}" Header="Weight"  Width="80"/>
-                    <GridViewColumn DisplayMemberBinding="{Binding BatteryStatus}" Header="Battery"  Width="80"/>
-                    <GridViewColumn DisplayMemberBinding="{Binding Status}" Header="Status"  Width="80"/>
-                    <GridViewColumn DisplayMemberBinding="{Binding ParcelID}" Header="Parcel in delivery"  Width="150"/>
-                    <GridViewColumn DisplayMemberBinding="{Binding CurrentLocation}" Header="Location"  Width="180"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Name}" Header="Name"  Width="80"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Phone}" Header="Phone"  Width="100"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding SentAndDeliverd}" Header="Sent and arrived"  Width="150"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding SentAndNOTDeliverd}" Header="Sent on the way"  Width="150"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding ParcelsRecived}" Header="Parcels recived"  Width="150"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding ParcelsOnTheWay}" Header="Parcels on the way"  Width="170"/>
                 </GridView>
             </ListView.View>
             <ListView.ItemContainerStyle>
                 <Style TargetType="{x:Type ListViewItem}">
-                    <EventSetter Event="UIElement.PreviewMouseLeftButtonDown" Handler="ListViewItem_PreviewMouseLeftButtonDown" />
+                    <EventSetter Event="UIElement.PreviewMouseLeftButtonDown" Handler="ListViewItem_MouseDoubleClick" />
                 </Style>
             </ListView.ItemContainerStyle>
 
-        </ListView>-->
+        </ListView>
     </Grid>
 </Page>

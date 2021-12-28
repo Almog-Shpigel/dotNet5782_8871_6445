@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using BL;
 
 namespace PL
 {
@@ -20,9 +21,31 @@ namespace PL
     /// </summary>
     public partial class CustomerListPage : Page
     {
+        private BlApi.IBL IBL = BlFactory.GetBl();
+
         public CustomerListPage()
         {
             InitializeComponent();
+            CustomersListView.ItemsSource = IBL.GetAllCustomers();
+        }
+
+        private void BackWindow_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+        private void CustomerListAddButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ListViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+
+        private void CustomerListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
         }
     }
 }

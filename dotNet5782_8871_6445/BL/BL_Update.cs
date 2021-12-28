@@ -67,9 +67,7 @@ namespace BlApi
             
             double TimeDifference = (DateTime.Now - (DateTime)Data.GetDroneCharge(DroneID).Start).TotalHours;
             DroneToBeAvailable.BatteryStatus += BatteryUsed[4] * TimeDifference;
-            DroneToBeAvailable.BatteryStatus *= 100;
-            DroneToBeAvailable.BatteryStatus = (int)DroneToBeAvailable.BatteryStatus;
-            DroneToBeAvailable.BatteryStatus /= 100;
+            DroneToBeAvailable.BatteryStatus = ((int)DroneToBeAvailable.BatteryStatus*100)/100;
             if (DroneToBeAvailable.BatteryStatus > 100)
                 DroneToBeAvailable.BatteryStatus = 100;
             Data.UpdateDroneToBeAvailable(DroneID);

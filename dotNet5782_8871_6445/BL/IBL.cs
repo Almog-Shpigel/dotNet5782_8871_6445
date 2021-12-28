@@ -63,15 +63,8 @@ namespace BlApi
         void UpdateStationSlots(int StationID, int NewNumberSlots , int CurrentlyCharging);
         void DeleteStation(int iD);
 
-        /// <summary>
-        /// Updating a customer's phone number or name or both, if an empty input recived for either, will not change it
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="changeName"></param>
-        /// <param name="changePhone"></param>
-        /// <param name="name"></param>
-        /// <param name="phone"></param>
-        public void UpdateCustomer(int CustomerID, bool NameChanged, bool PhoneChanged, string NewCustomerName, int NewCustomerPhone);
+        public void UpdateCustomerName(int CustomerID, string NewCustomerName);
+        public void UpdateCustomerPhone(int CustomerID, int NewCustomerPhone);
 
         /// <summary>
         /// Pairing a parcel to the wanted drone, the parcel will be selected by the next algorithem:

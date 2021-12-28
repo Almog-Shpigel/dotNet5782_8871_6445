@@ -8,7 +8,64 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="CustomerPage">
 
-    <Grid>
-        
+    <Grid Background="#c9cba3">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="5*"/>
+            <ColumnDefinition Width="50*"/>
+            <ColumnDefinition Width="50*"/>
+            <ColumnDefinition Width="50*"/>
+            <ColumnDefinition Width="45*"/>
+            <ColumnDefinition Width="5*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="2" Grid.Column="1">
+            <TextBlock x:Name="PrintIDblock"        Text="Customer ID:"        Style="{StaticResource TextBlockPageStyle}" />
+            <TextBlock x:Name="PrintNameBlock"     Text="Customer name:"      Style="{StaticResource TextBlockPageStyle}" />
+            <TextBlock x:Name="PrintPhoneBlock"    Text="Phone number:"      Style="{StaticResource TextBlockPageStyle}" />
+            <TextBlock x:Name="PrintLocationBlock"  Text="Location:"        Style="{StaticResource TextBlockPageStyle}" />
+            <TextBlock x:Name="PrintSentBlock"    Text="Parcels sent:"    Style="{StaticResource TextBlockPageStyle}" />
+            <TextBlock x:Name="PrintReceiveBlock"    Text="Parcel received:"    Style="{StaticResource TextBlockPageStyle}" />
+        </StackPanel>
+        <StackPanel x:Name="ShowDetailsCustomer" Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2">
+            <TextBlock x:Name="IDBlock"  Text="{Binding ID}"       Style="{StaticResource TextBlockPageStyle}" />
+            <TextBlock x:Name="NamelBlock"  Text="{Binding Name}"    Style="{StaticResource TextBlockPageStyle}" />
+            <TextBlock x:Name="AvailableSlotstBlock"   Text="{Binding Phone}"  Style="{StaticResource TextBlockPageStyle}" />
+            <TextBlock x:Name="LocationBlock" Text="{Binding Location}"  Style="{StaticResource TextBlockPageStyle}" />
+            <ListView x:Name="ParcelsSentListViewFromStation" Style="{StaticResource ListViewStyle}">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="{x:Type ListViewItem}">
+                        <EventSetter Event="MouseDoubleClick" Handler="ListViewItem_MouseDoubleClick" />
+                    </Style>
+                </ListView.ItemContainerStyle>
+            </ListView>
+            <ListView x:Name="ParcelsReceivedListViewFromStation" Style="{StaticResource ListViewStyle}">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="{x:Type ListViewItem}">
+                        <EventSetter Event="MouseDoubleClick" Handler="ListViewItem_MouseDoubleClick" />
+                    </Style>
+                </ListView.ItemContainerStyle>
+            </ListView>
+        </StackPanel>
+        <StackPanel x:Name="AddNewCustomerPanell" Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="1">
+            <TextBox   x:Name="EnterCustomerIDBox" TextChanged="EnterCustomerIDBox_TextChanged" Style="{StaticResource TextBoxStyle}" />
+            <TextBox   x:Name="EnterCustomerNameBox" TextChanged="EnterCustomerNameBox_TextChanged" Style="{StaticResource TextBoxStyle}" />
+            <TextBox   x:Name="EnterLattitudeBox" TextChanged ="EnterLattitudeBox_TextChanged" Style="{StaticResource TextBoxStyle}"/>
+            <TextBox   x:Name="EnterLongitudeBox" TextChanged ="EnterLongitudeBox_TextChanged" Style="{StaticResource TextBoxStyle}"/>
+            <Button x:Name="CustomerEntityAddButton" Content="Add" Click="CustomerEntityAddButton_Click" Style="{StaticResource ButtonPageStyle}" />
+        </StackPanel>
+        <StackPanel x:Name="UpdateBlocksPanel" Grid.Row="2" Grid.Column="3">
+            <TextBox   x:Name="UpdateNameBlock" Text="" Style="{StaticResource TextBoxStyle}"/>
+            <TextBox   x:Name="UpdatePhoneBlock" TextChanged="UpdatePhoneBlock_TextChanged" Text="" Style="{StaticResource TextBoxStyle}"/>
+            <TextBlock x:Name="InvalidInputBlock"  Style="{StaticResource TextBlockInvalidStyle}"/>
+        </StackPanel>
+        <StackPanel x:Name="UpdateCustomerButtons" Grid.Row="2" Grid.Column="4">
+            <Button x:Name="UpdateNameButton" Content="Update name" Click="UpdateNameButton_Click" Style="{StaticResource ButtonPageStyle}" />
+            <Button x:Name="UpdatePhoneButton" Content="Update phone number" Click="UpdatePhoneButton_Click" Style="{StaticResource ButtonPageStyle}" />
+            <Button x:Name="CustomerListGoBackButton" Content="Go back" Click="CustomerListGoBackButton_Click" Style="{StaticResource ButtonPageStyle}"/>
+        </StackPanel>
     </Grid>
 </Page>
+

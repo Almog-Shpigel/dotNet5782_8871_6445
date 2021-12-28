@@ -43,16 +43,17 @@ namespace BlApi
         }
 
 
-        public void UpdateCustomer(int CustomerID, bool NameChanged, bool PhoneChanged, string NewCustomerName, int NewCustomerPhone)
+        public void UpdateCustomerName(int CustomerID,string NewCustomerName)
         {
             if (CustomerID is < 100000000 or > 999999999)
                 throw new InvalidIDException("Customer ID has to have 9 positive digits.");
+            Data.UpdateCustomerName(CustomerID, NewCustomerName);
+        }
+        public void UpdateCustomerPhone(int CustomerID, int NewCustomerPhone)
+        {
             if (NewCustomerPhone is < 500000000 or > 599999999)
                 throw new InvalidPhoneNumberException("Invalid phone number");
-            if (PhoneChanged)
-                Data.UpdateCustomerPhone(CustomerID, NewCustomerPhone);
-            if (NameChanged)
-                Data.UpdateCustomerName(CustomerID, NewCustomerName);
+            Data.UpdateCustomerPhone(CustomerID, NewCustomerPhone);
         }
 
         public void UpdateDroneToBeAvailable(int DroneID)
@@ -62,9 +63,6 @@ namespace BlApi
             DroneToList DroneToBeAvailable = GetDroneToList(DroneID);
             if (DroneToBeAvailable.Status != DroneStatus.Charging)
                 throw new DroneStatusExpetion("Can't release a drone that isn't charging");
-            //if (!DroneList.Remove(DroneToBeAvailable))
-            //    throw new Exception("Can't release drone from charging.");                  /// To Do: change Exception name
-            
             double TimeDifference = (DateTime.Now - (DateTime)Data.GetDroneCharge(DroneID).Start).TotalHours;
             DroneToBeAvailable.BatteryStatus += BatteryUsed[4] * TimeDifference;
             DroneToBeAvailable.BatteryStatus = ((int)DroneToBeAvailable.BatteryStatus*100)/100;
@@ -77,7 +75,6 @@ namespace BlApi
                     drone.BatteryStatus = DroneToBeAvailable.BatteryStatus;
                     drone.Status = DroneStatus.Available;
                 }
-            //DroneList.Add(DroneToBeAvailable);
         }
 
         public void UpdateDroneToBeCharged(int DroneID)

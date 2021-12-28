@@ -121,8 +121,8 @@ namespace PL
             CustomerToList customer = (CustomerToList)customerListPage.CustomersListView.SelectedItem;
             if (customer != null)
             {
-                //customerPage = new(customer);
-                //customerPage.CustomerListGoBackButton.Click += StationListPageButton_Click;
+                customerPage = new(customer);
+                customerPage.CustomerListGoBackButton.Click += StationListPageButton_Click;
                 //customerPage.DronesListViewFromStation.MouseDoubleClick += DronesListViewFromStation_MouseDoubleClick;
                 //Content = customerPage;
             };

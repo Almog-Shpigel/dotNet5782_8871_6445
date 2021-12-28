@@ -12,6 +12,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using BL;
+using BlApi;
+using BO;
 
 namespace PL
 {
@@ -20,9 +23,24 @@ namespace PL
     /// </summary>
     public partial class CustomerPage : Page
     {
-        public CustomerPage()
+        private IBL IBL = BlFactory.GetBl();
+        private CustomerBL CustomerBL;
+        private CustomerToList Customer;
+        public CustomerPage(CustomerToList customer)
         {
             InitializeComponent();
+            Customer = customer;
+            CustomerBL = IBL.GetCustomer(Customer.ID);
+            DataContext = CustomerBL;
+            ParcelsSentListViewFromStation.ItemsSource = CustomerBL.ParcelesSentByCustomer;
+            ParcelsReceivedListViewFromStation.ItemsSource = CustomerBL.ParcelesSentToCustomer;
+            AddNewCustomerPanell.Visibility = Visibility.Collapsed;
+        }
+
+        private void UpdateNameButton_Click(object sender, RoutedEventArgs e)
+        {
+            IBL.UpdateCustomerName(Convert.ToInt32(IDBlock.Text), UpdateNameBlock.Text);
+            DataContext = IBL.GetStation(Customer.ID);
         }
     }
 }

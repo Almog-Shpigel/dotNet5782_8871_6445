@@ -236,6 +236,12 @@ namespace BlApi
                     return drone;
             throw new DroneExistException();
         }
+        public ParcelToList GetParcelToList(ParcelAtCustomer parcel)
+        {
+            string target = Data.GetCustomer((Data.GetParcel(parcel.ID).TargetID)).Name;
+            ParcelToList parcelToList = new(parcel.ID, parcel.Customer.Name, target, parcel.Weight, parcel.Priority, parcel.Status);
+            return parcelToList;
+        }
 
         /// <summary>
         /// Function that receive a parcel and initialize ParcelInDelivery entity 

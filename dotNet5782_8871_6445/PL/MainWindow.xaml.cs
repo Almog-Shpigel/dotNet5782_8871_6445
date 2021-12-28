@@ -141,11 +141,30 @@ namespace PL
             CustomerToList customer = (CustomerToList)customerListPage.CustomersListView.SelectedItem;
             if (customer != null)
             {
-                //customerPage = new(customer);
-                //customerPage.CustomerListGoBackButton.Click += StationListPageButton_Click;
-                //customerPage.DronesListViewFromStation.MouseDoubleClick += DronesListViewFromStation_MouseDoubleClick;
-                //Content = customerPage;
+                customerPage = new(customer);
+                customerPage.CustomerListGoBackButton.Click += CustomerListPageButton_Click;
+                customerPage.ParcelSentListViewFromCustomer.MouseDoubleClick += ParcelSentListViewFromCustomer_MouseDoubleClick;
+                customerPage.ParcelReceivedListViewFromCustomer.MouseDoubleClick += ParcelReceiveListViewFromCustomer_MouseDoubleClick;
+                Content = customerPage;
+            };
+        }
+
+        private void ParcelSentListViewFromCustomer_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            ParcelAtCustomer parcelAtCustomer = (ParcelAtCustomer)customerPage.ParcelSentListViewFromCustomer.SelectedItem;
+            ParcelToList parcel = IBL.GetParcelToList(parcelAtCustomer);
+            if(parcel != null)
+            { 
+                parcelPage = new(parcel);
+                parcelPage.ParcelDataGridGoBackButton.Click += ParcelListPageButton_Click;
+                parcelPage.UpdateDeleteParcelButton.Click += ParcelListPageButton_Click;
+                parcelPage.ParcelEntityAddButton.Click += ParcelListPageButton_Click;
+                Content = parcelPage;
             }
+        }
+        private void ParcelReceiveListViewFromCustomer_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            ParcelAtCustomer parcel = (ParcelAtCustomer)customerPage.ParcelReceivedListViewFromCustomer.SelectedItem;
         }
 
         private void CustomerListAddButton_Click(object sender, RoutedEventArgs e)

@@ -28,19 +28,110 @@ namespace PL
         private CustomerToList Customer;
         public CustomerPage(CustomerToList customer)
         {
-            //InitializeComponent();
-            //Customer = customer;
-            //CustomerBL = IBL.GetCustomer(Customer.ID);
-            //DataContext = CustomerBL;
-            //ParcelsSentListViewFromStation.ItemsSource = CustomerBL.ParcelesSentByCustomer;
-            //ParcelsReceivedListViewFromStation.ItemsSource = CustomerBL.ParcelesSentToCustomer;
-            //AddNewCustomerPanell.Visibility = Visibility.Collapsed;
+            InitializeComponent();
+            Customer = customer;
+            CustomerBL = IBL.GetCustomer(Customer.ID);
+            DataContext = CustomerBL;
+            ParcelSentListViewFromCustomer.ItemsSource = CustomerBL.ParcelesSentByCustomer;
+            ParcelSentListViewFromCustomer.ItemsSource = CustomerBL.ParcelesSentToCustomer;
+            AddNewCustomerPanell.Visibility = Visibility.Collapsed;
         }
 
         private void UpdateNameButton_Click(object sender, RoutedEventArgs e)
         {
-            //IBL.UpdateCustomerName(Convert.ToInt32(IDBlock.Text), UpdateNameBlock.Text);
-            //DataContext = IBL.GetStation(Customer.ID);
+            IBL.UpdateCustomerName(Convert.ToInt32(IDBlock.Text), NameBlock.Text);
+            DataContext = IBL.GetCustomer(Customer.ID);
+        }
+
+        private void UpdatePhoneButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                IBL.UpdateCustomerPhone(Customer.ID, Convert.ToInt32(PhoneNumberBlock.Text));
+                DataContext = IBL.GetCustomer(Customer.ID);
+            }
+            catch (Exception exp)
+            {
+                InvalidInputBlock.Text = exp.Message;
+                InvalidInputBlock.Visibility = Visibility.Visible;
+            }
+
+        }
+
+        private void EnterCustomerIDBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            int customerID;
+            if (!int.TryParse(EnterCustomerIDBox.Text, out customerID))
+            {
+                InvalidInputBlock.Visibility = Visibility.Visible;
+                InvalidInputBlock.Text = "Station id must contain only numbers";
+                EnterCustomerIDBox.Foreground = Brushes.Red;
+                CustomerEntityAddButton.IsEnabled = false;
+            }
+            else
+            {
+                InvalidInputBlock.Visibility = Visibility.Collapsed;
+                EnterCustomerIDBox.Foreground = Brushes.Black;
+                EnableButton();
+            }
+        }
+        private void EnterCustomerNameBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            EnableButton();
+        }
+        private void CustomerEntityAddButton_Click(object sender, RoutedEventArgs e)
+        {
+            CustomerBL NewCustomer = new(Convert.ToInt32(EnterCustomerIDBox.Text), EnterCustomerNameBox.Text, EnterCustomerPhoneBox.Text,
+               new(Convert.ToDouble(EnterLattitudeBox.Text), Convert.ToDouble(EnterLongitudeBox.Text)));
+            try
+            {
+                IBL.AddNewCustomer(NewCustomer);
+                NavigationService.GoBack();
+            }
+            catch (Exception exp)
+            {
+                InvalidInputBlock.Text = exp.Message;
+                InvalidInputBlock.Visibility = Visibility.Visible;
+                EnterCustomerIDBox.Foreground = Brushes.Red;
+                CustomerEntityAddButton.IsEnabled = false;
+            }
+        }
+        private void EnableButton()
+        {
+            if (EnterCustomerIDBox.Text != "" && EnterCustomerNameBox.Text != ""
+               && EnterCustomerPhoneBox.Text != "" && EnterLattitudeBox.Text != "" &&
+               EnterLongitudeBox.Text != "" && InvalidInputBlock.Visibility != Visibility.Visible)
+            {
+                CustomerEntityAddButton.IsEnabled = true;
+            }
+            else
+            {
+                CustomerEntityAddButton.IsEnabled = false;
+            }
+        }
+        private void CustomerListGoBackButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+        private void ParcelListViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+        private void EnterCustomerPhoneBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            EnableButton();
+        }
+        private void EnterLattitudeBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            EnableButton();
+        }
+        private void EnterLongitudeBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            EnableButton();
+        }
+        private void UpdatePhoneBlock_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
         }
     }
 }

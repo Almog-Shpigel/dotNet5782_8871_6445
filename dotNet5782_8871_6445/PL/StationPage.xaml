@@ -45,8 +45,8 @@
             <TextBox   x:Name="EnterStationIDBox" TextChanged="EnterStationIDBox_TextChanged" Style="{StaticResource TextBoxStyle}" />
             <TextBox   x:Name="EnterStationNameBox" TextChanged="EnterStationNameBox_TextChanged" Style="{StaticResource TextBoxStyle}" />
             <TextBox   x:Name="EnterAvailAbleSlotsBox" TextChanged ="EnterAvailAbleSlotsBox_TextChanged" Style="{StaticResource TextBoxStyle}"/>
-            <TextBox   x:Name="EnterLattitudeBox" TextChanged ="EnterAvailAbleSlotsBox_TextChanged" Style="{StaticResource TextBoxStyle}"/>
-            <TextBox   x:Name="EnterLongitudeBox" TextChanged ="EnterAvailAbleSlotsBox_TextChanged" Style="{StaticResource TextBoxStyle}"/>
+            <TextBox   x:Name="EnterLattitudeBox" TextChanged ="EnterLattitudeBox_TextChanged" Style="{StaticResource TextBoxStyle}"/>
+            <TextBox   x:Name="EnterLongitudeBox" TextChanged ="EnterLongitudeBox_TextChanged" Style="{StaticResource TextBoxStyle}"/>
             <Button x:Name="StationEntityAddButton" Content="Add" Click="StationEntityAddButton_Click" Style="{StaticResource ButtonPageStyle}" />
         </StackPanel>
         <StackPanel x:Name="UpdateBlocksPanel" Grid.Row="2" Grid.Column="3">

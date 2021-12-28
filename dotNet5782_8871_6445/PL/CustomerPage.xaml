@@ -3,6 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       xmlns:local="clr-namespace:PL"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
@@ -26,25 +27,28 @@
             <TextBlock x:Name="PrintNameBlock"     Text="Customer name:"      Style="{StaticResource TextBlockPageStyle}" />
             <TextBlock x:Name="PrintPhoneBlock"    Text="Phone number:"      Style="{StaticResource TextBlockPageStyle}" />
             <TextBlock x:Name="PrintLocationBlock"  Text="Location:"        Style="{StaticResource TextBlockPageStyle}" />
-            <TextBlock x:Name="PrintSentBlock"    Text="Parcels sent:"    Style="{StaticResource TextBlockPageStyle}" />
-            <TextBlock x:Name="PrintReceiveBlock"    Text="Parcel received:"    Style="{StaticResource TextBlockPageStyle}" />
         </StackPanel>
-        <StackPanel x:Name="ShowDetailsCustomer" Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2">
+        <StackPanel x:Name="ShowDetailsCustomer" Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="1">
             <TextBlock x:Name="IDBlock"  Text="{Binding ID}"       Style="{StaticResource TextBlockPageStyle}" />
-            <TextBlock x:Name="NamelBlock"  Text="{Binding Name}"    Style="{StaticResource TextBlockPageStyle}" />
-            <TextBlock x:Name="AvailableSlotstBlock"   Text="{Binding Phone}"  Style="{StaticResource TextBlockPageStyle}" />
+            <TextBox x:Name="NameBlock"  materialDesign:HintAssist.Hint="{Binding Name}"  />
+            <TextBox x:Name="PhoneNumberBlock"   materialDesign:HintAssist.Hint="{Binding Phone}" />
             <TextBlock x:Name="LocationBlock" Text="{Binding Location}"  Style="{StaticResource TextBlockPageStyle}" />
-            <ListView x:Name="ParcelsSentListViewFromStation" Style="{StaticResource ListViewStyle}">
-                <ListView.ItemContainerStyle>
-                    <Style TargetType="{x:Type ListViewItem}">
-                        <EventSetter Event="MouseDoubleClick" Handler="ListViewItem_MouseDoubleClick" />
-                    </Style>
-                </ListView.ItemContainerStyle>
+            <TextBlock x:Name="InvalidInputBlock"  Style="{StaticResource TextBlockInvalidStyle}"/>
+        </StackPanel>
+        <StackPanel x:Name="ShowParcelsList" Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="1">
+            <TextBlock x:Name="PrintSentBlock"    Text="Parcels sent:"    Style="{StaticResource TextBlockPageStyle}" />
+            <ListView x:Name="ParcelSentListViewFromCustomer" Style="{StaticResource ListViewStyle}">
+              <ListView.ItemContainerStyle>
+                 <Style TargetType="{x:Type ListViewItem}">
+                    <EventSetter Event="MouseDoubleClick" Handler="ParcelListViewItem_MouseDoubleClick" />
+                 </Style>
+              </ListView.ItemContainerStyle>
             </ListView>
-            <ListView x:Name="ParcelsReceivedListViewFromStation" Style="{StaticResource ListViewStyle}">
+            <TextBlock x:Name="PrintReceiveBlock"    Text="Parcel received:"    Style="{StaticResource TextBlockPageStyle}" />
+            <ListView x:Name="ParcelReceivedListViewFromCustomer" Style="{StaticResource ListViewStyle}">
                 <ListView.ItemContainerStyle>
                     <Style TargetType="{x:Type ListViewItem}">
-                        <EventSetter Event="MouseDoubleClick" Handler="ListViewItem_MouseDoubleClick" />
+                        <EventSetter Event="MouseDoubleClick" Handler="ParcelListViewItem_MouseDoubleClick" />
                     </Style>
                 </ListView.ItemContainerStyle>
             </ListView>
@@ -52,14 +56,11 @@
         <StackPanel x:Name="AddNewCustomerPanell" Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="1">
             <TextBox   x:Name="EnterCustomerIDBox" TextChanged="EnterCustomerIDBox_TextChanged" Style="{StaticResource TextBoxStyle}" />
             <TextBox   x:Name="EnterCustomerNameBox" TextChanged="EnterCustomerNameBox_TextChanged" Style="{StaticResource TextBoxStyle}" />
+            <TextBox   x:Name="EnterCustomerPhoneBox" TextChanged="EnterCustomerPhoneBox_TextChanged" Style="{StaticResource TextBoxStyle}" />
             <TextBox   x:Name="EnterLattitudeBox" TextChanged ="EnterLattitudeBox_TextChanged" Style="{StaticResource TextBoxStyle}"/>
             <TextBox   x:Name="EnterLongitudeBox" TextChanged ="EnterLongitudeBox_TextChanged" Style="{StaticResource TextBoxStyle}"/>
             <Button x:Name="CustomerEntityAddButton" Content="Add" Click="CustomerEntityAddButton_Click" Style="{StaticResource ButtonPageStyle}" />
-        </StackPanel>
-        <StackPanel x:Name="UpdateBlocksPanel" Grid.Row="2" Grid.Column="3">
-            <TextBox   x:Name="UpdateNameBlock" Text="" Style="{StaticResource TextBoxStyle}"/>
-            <TextBox   x:Name="UpdatePhoneBlock" TextChanged="UpdatePhoneBlock_TextChanged" Text="" Style="{StaticResource TextBoxStyle}"/>
-            <TextBlock x:Name="InvalidInputBlock"  Style="{StaticResource TextBlockInvalidStyle}"/>
+            
         </StackPanel>
         <StackPanel x:Name="UpdateCustomerButtons" Grid.Row="2" Grid.Column="4">
             <Button x:Name="UpdateNameButton" Content="Update name" Click="UpdateNameButton_Click" Style="{StaticResource ButtonPageStyle}" />

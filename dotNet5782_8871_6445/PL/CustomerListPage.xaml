@@ -25,13 +25,13 @@
         <ListView x:Name="CustomersListView" Grid.Row="1" SelectionChanged="CustomerListView_SelectionChanged" Style="{StaticResource ListViewStyle}" Margin="10,6,10,14">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn DisplayMemberBinding="{Binding ID}" Header="ID" Width="80"/>
-                    <GridViewColumn DisplayMemberBinding="{Binding Name}" Header="Name"  Width="80"/>
-                    <GridViewColumn DisplayMemberBinding="{Binding Phone}" Header="Phone"  Width="100"/>
-                    <GridViewColumn DisplayMemberBinding="{Binding SentAndDeliverd}" Header="Sent and arrived"  Width="150"/>
-                    <GridViewColumn DisplayMemberBinding="{Binding SentAndNOTDeliverd}" Header="Sent on the way"  Width="150"/>
-                    <GridViewColumn DisplayMemberBinding="{Binding ParcelsRecived}" Header="Parcels recived"  Width="150"/>
-                    <GridViewColumn DisplayMemberBinding="{Binding ParcelsOnTheWay}" Header="Parcels on the way"  Width="170"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding ID}" Header="ID" Width="auto"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Name}" Header="Name"  Width="auto"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Phone}" Header="Phone"  Width="auto"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding SentAndDeliverd}"  Header="Sent and arrived"  Width="auto"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding SentAndNOTDeliverd}" Header="Sent on the way"  Width="auto"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding ParcelsRecived}" Header="Parcels recived"  Width="auto"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding ParcelsOnTheWay}" Header="Parcels on the way"  Width="auto"/>
                 </GridView>
             </ListView.View>
             <ListView.ItemContainerStyle>

@@ -28,19 +28,19 @@ namespace PL
         private CustomerToList Customer;
         public CustomerPage(CustomerToList customer)
         {
-            InitializeComponent();
-            Customer = customer;
-            CustomerBL = IBL.GetCustomer(Customer.ID);
-            DataContext = CustomerBL;
-            ParcelsSentListViewFromStation.ItemsSource = CustomerBL.ParcelesSentByCustomer;
-            ParcelsReceivedListViewFromStation.ItemsSource = CustomerBL.ParcelesSentToCustomer;
-            AddNewCustomerPanell.Visibility = Visibility.Collapsed;
+            //InitializeComponent();
+            //Customer = customer;
+            //CustomerBL = IBL.GetCustomer(Customer.ID);
+            //DataContext = CustomerBL;
+            //ParcelsSentListViewFromStation.ItemsSource = CustomerBL.ParcelesSentByCustomer;
+            //ParcelsReceivedListViewFromStation.ItemsSource = CustomerBL.ParcelesSentToCustomer;
+            //AddNewCustomerPanell.Visibility = Visibility.Collapsed;
         }
 
         private void UpdateNameButton_Click(object sender, RoutedEventArgs e)
         {
-            IBL.UpdateCustomerName(Convert.ToInt32(IDBlock.Text), UpdateNameBlock.Text);
-            DataContext = IBL.GetStation(Customer.ID);
+            //IBL.UpdateCustomerName(Convert.ToInt32(IDBlock.Text), UpdateNameBlock.Text);
+            //DataContext = IBL.GetStation(Customer.ID);
         }
     }
 }

@@ -93,11 +93,11 @@ namespace PL
                 UpdateParcelCollectedByDroneButton.IsEnabled = true;
         }
 
-        private void UpdateNameButton_Click(object sender, RoutedEventArgs e)
-        {
-            IBL.UpdateDroneName(Convert.ToInt32(IDBlock.Text), UpdateNameBlock.Text);
-            ModelBlock.Text = IBL.GetDrone(Convert.ToInt32(IDBlock.Text)).Model;
-        }
+        //private void UpdateNameButton_Click(object sender, RoutedEventArgs e)
+        //{
+        //    IBL.UpdateDroneName(Convert.ToInt32(IDBlock.Text), ModelBlock.Text);
+        //    ModelBlock.Text = IBL.GetDrone(Convert.ToInt32(IDBlock.Text)).Model;
+        //}
 
         private void WeightSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -247,6 +247,24 @@ namespace PL
         {
 
         }
-    }
 
+        private void UpdateNameButton_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            MessageBoxResult res = MessageBox.Show("Are you sure you want change the model name?", "Verification", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            if (res == MessageBoxResult.No)
+                return;
+            IBL.UpdateDroneName(Convert.ToInt32(IDBlock.Text), ModelBlock.Text);
+            ModelBlock.Text = IBL.GetDrone(Convert.ToInt32(IDBlock.Text)).Model;
+        }
+
+        private void PreviewParcel_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+
+        }
+
+        private void PreviewInMap_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            MessageBoxResult res = MessageBox.Show("This feature is not implemented yet", "TBD", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+    }
 }

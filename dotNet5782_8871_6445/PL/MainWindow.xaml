@@ -56,7 +56,9 @@
             <Button x:Name="ShowMap" Content="Map" Click="MapButton_Click"
                     Style="{StaticResource MainWindowButton}"/>
         </StackPanel>
-        
+        <!--<Viewbox Grid.RowSpan="2" Width="60" Height="60" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20" >
+            <materialDesign:PackIcon Kind="Logout" Width="30" Height="30" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </Viewbox>-->
         <Frame x:Name="Main" Grid.ColumnSpan="5" Grid.RowSpan="5" NavigationUIVisibility="Hidden"/>
     </Grid>
 </Window>

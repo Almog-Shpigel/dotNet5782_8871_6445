@@ -44,15 +44,33 @@ namespace PL
         {
             dronePage = new(e);
             dronePage.DroneEntityAddButton.Click += DroneListPageButton_Click;
+            
             Content = dronePage;
+        }
+
+        private void PreviewParcel_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            bool success = int.TryParse(dronePage.ParcelBlock.Text, out int ParcelID);
+            if (success)
+            {
+                parcelPage = new(ParcelID);
+                parcelPage.ParcelDataGridGoBackButton.Click += ParcelListPageButton_Click;
+                parcelPage.UpdateDeleteParcelButton.Click += ParcelListPageButton_Click;
+                parcelPage.ParcelEntityAddButton.Click += ParcelListPageButton_Click;
+                Content = parcelPage;
+            }
         }
 
         private void DronesListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             DroneToList drone = (DroneToList)droneListPage.DronesListView.SelectedItem;
-            dronePage = new(drone.ID);
-            dronePage.DroneListGoBackButton.Click += DroneListPageButton_Click;
-            Content = dronePage;
+            if(drone != null)
+            {
+                dronePage = new(drone.ID);
+                dronePage.DroneListGoBackButton.Click += DroneListPageButton_Click;
+                dronePage.PreviewParcel.MouseLeftButtonDown += PreviewParcel_MouseLeftButtonDown;
+                Content = dronePage;
+            }
         }
 
         //private void ParcelListViewFromDrone_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -111,11 +129,11 @@ namespace PL
         #region Customers
         private void CustomerListPageButton_Click(object sender, RoutedEventArgs e)
         {
-            customerListPage = new();
-            customerListPage.CustomerListAddButton.Click += CustomerListAddButton_Click;
-            customerListPage.BackWindow.Click += BackWindow_Click;
-            customerListPage.CustomersListView.MouseDoubleClick += CustomerListView_MouseDoubleClick;
-            Content = customerListPage;
+            //customerListPage = new();
+            //customerListPage.CustomerListAddButton.Click += CustomerListAddButton_Click;
+            //customerListPage.BackWindow.Click += BackWindow_Click;
+            //customerListPage.CustomersListView.MouseDoubleClick += CustomerListView_MouseDoubleClick;
+            //Content = customerListPage;
         }
 
         private void CustomerListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -123,11 +141,11 @@ namespace PL
             CustomerToList customer = (CustomerToList)customerListPage.CustomersListView.SelectedItem;
             if (customer != null)
             {
-                customerPage = new(customer);
-                customerPage.CustomerListGoBackButton.Click += StationListPageButton_Click;
+                //customerPage = new(customer);
+                //customerPage.CustomerListGoBackButton.Click += StationListPageButton_Click;
                 //customerPage.DronesListViewFromStation.MouseDoubleClick += DronesListViewFromStation_MouseDoubleClick;
                 //Content = customerPage;
-            };
+            }
         }
 
         private void CustomerListAddButton_Click(object sender, RoutedEventArgs e)
@@ -151,7 +169,7 @@ namespace PL
             ParcelToList parcel = (ParcelToList)parcelListPage.ParcelDataGrid.SelectedItem;
             if (parcel != null)
             {
-                parcelPage = new(parcel);
+                parcelPage = new(parcel.ID);
                 parcelPage.ParcelDataGridGoBackButton.Click += ParcelListPageButton_Click;
                 parcelPage.UpdateDeleteParcelButton.Click += ParcelListPageButton_Click;
                 parcelPage.ParcelEntityAddButton.Click += ParcelListPageButton_Click;

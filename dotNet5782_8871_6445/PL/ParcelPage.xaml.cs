@@ -32,12 +32,11 @@ namespace PL
             UpdateLayout();
         }
 
-        public ParcelPage(ParcelToList parcel) // Update parcel ctor
+        public ParcelPage(int ParcelID) // Update parcel ctor
         {
             InitializeComponent();
             NewParcelEnterPanel.Visibility = Visibility.Collapsed;
-            Parcel = parcel;
-            ParcelBL = IBL.GetParcel(Parcel.ID);
+            ParcelBL = IBL.GetParcel(ParcelID);
             DataContext = ParcelBL;
             
             if (ParcelBL.Scheduled == null)

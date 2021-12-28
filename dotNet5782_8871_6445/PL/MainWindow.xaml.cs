@@ -118,7 +118,14 @@ namespace PL
 
         private void CustomerListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            throw new NotImplementedException();
+            CustomerToList customer = (CustomerToList)customerListPage.CustomersListView.SelectedItem;
+            if (customer != null)
+            {
+                //customerPage = new(customer);
+                //customerPage.CustomerListGoBackButton.Click += StationListPageButton_Click;
+                //customerPage.DronesListViewFromStation.MouseDoubleClick += DronesListViewFromStation_MouseDoubleClick;
+                //Content = customerPage;
+            };
         }
 
         private void CustomerListAddButton_Click(object sender, RoutedEventArgs e)

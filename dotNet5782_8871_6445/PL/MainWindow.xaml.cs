@@ -25,7 +25,9 @@ namespace PL
         public MainWindow()
         {
             IBL = BlFactory.GetBl();
+            
             InitializeComponent();
+            ManagerPanel.Visibility = Visibility.Collapsed;
         }
 
         #region Drones
@@ -174,7 +176,29 @@ namespace PL
 
         private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
+            int id;
+            if (int.TryParse(txtUserID.Text, out id))
+            {
+                try
+                {
+                    CustomerBL customer = IBL.GetCustomer(id);
+                }
+                catch (InvalidIDException msg)
+                {
+                    //MessageBoxResult res = MessageBox.Show(msg.Message + msg.InnerException.Message, "Verification", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    //if (res == MessageBoxResult.No)
+                    //    return;
+                }
+            }
+            if(rbManager.IsChecked.Value)
+            {
+                LoginPanel.Visibility = Visibility.Collapsed;
+                ManagerPanel.Visibility = Visibility.Visible;
+            }
+            else
+            {
 
+            }
         }
     }
 }

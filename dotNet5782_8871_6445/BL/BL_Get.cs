@@ -204,7 +204,16 @@ namespace BlApi
 
         public CustomerBL GetCustomer(int CustomerID)
         {
-            Customer customer = Data.GetCustomer(CustomerID);
+            Customer customer;
+            try
+            {
+                customer = Data.GetCustomer(CustomerID);
+            }
+            catch (CustomerExistException msg)
+            {
+                throw new InvalidIDException("Wrong id!\n", msg);
+            }
+            
             Location location = new(customer.Latitude, customer.Longitude);
             CustomerBL CustomerToDisplay = new CustomerBL(customer.ID, customer.Name, customer.Phone, location);
             foreach (var parcel in Data.GetParcels(parcel => true))

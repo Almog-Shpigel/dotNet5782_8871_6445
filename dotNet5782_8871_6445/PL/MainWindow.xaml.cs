@@ -1,20 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using BL;
 using BO;
-using DO;
 
 namespace PL
 {
@@ -50,76 +38,31 @@ namespace PL
             Content = droneListPage;
         }
 
-        #region Add
         private void DroneListAddButton_Click(object sender, RoutedEventArgs e)
         {
             dronePage = new(e);
-            dronePage.DroneEntityAddButton.Click += DroneEntityAddButton_Click;
+            dronePage.DroneEntityAddButton.Click += DroneListPageButton_Click;
             Content = dronePage;
         }
 
-        private void DroneEntityAddButton_Click(object sender, RoutedEventArgs e)
-        {
-            int DroneID = Convert.ToInt32(dronePage.EnterDroneIDBox.Text), StationID = Convert.ToInt32(dronePage.StationSelector.Text);
-            string name = dronePage.EnterModelNameBox.Text;
-            WeightCategories weight = (WeightCategories)dronePage.WeightSelector.SelectedItem;
-            DroneBL drone = new(DroneID, name, weight);
-            try
-            {
-                IBL.AddNewDrone(drone, StationID);
-                dronePage.EnterDroneIDBox.IsEnabled = false;
-                dronePage.EnterModelNameBox.IsEnabled = false;
-                dronePage.StationSelector.IsEnabled = false;
-                dronePage.WeightSelector.IsEnabled = false;
-                dronePage.DroneEntityAddButton.IsEnabled = false;
-                Content = droneListPage;
-            }
-            catch (InvalidIDException exp)
-            {
-                dronePage.InvalidDroneIDBlock.Text = exp.Message;
-                dronePage.InvalidDroneIDBlock.Visibility = Visibility.Visible;
-                dronePage.EnterDroneIDBox.Foreground = Brushes.Red;
-                dronePage.DroneEntityAddButton.IsEnabled = false;
-            }
-            catch (DroneExistExceptionBL exp)
-            {
-                dronePage.InvalidDroneIDBlock.Text = exp.Message;
-                dronePage.InvalidDroneIDBlock.Visibility = Visibility.Visible;
-                dronePage.EnterDroneIDBox.Foreground = Brushes.Red;
-                dronePage.DroneEntityAddButton.IsEnabled = false;
-            }
-            catch (StationExistExceptionBL exp)
-            {
-                dronePage.InvalidStationIDBlock.Text = exp.Message;
-                dronePage.InvalidStationIDBlock.Visibility = Visibility.Visible;
-                dronePage.DroneEntityAddButton.IsEnabled = false;
-            }
-            catch (InvalidSlotsException exp)
-            {
-                dronePage.InvalidStationIDBlock.Text = exp.Message;
-                dronePage.InvalidStationIDBlock.Visibility = Visibility.Visible;
-                dronePage.DroneEntityAddButton.IsEnabled = false;
-            }
-        }
-        #endregion
-
-        #region Update
         private void DronesListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             DroneToList drone = (DroneToList)droneListPage.DronesListView.SelectedItem;
-            if (drone != null)
-            {
-                dronePage = new(drone.ID);
-                dronePage.DroneListGoBackButton.Click += DroneListGoBackButton_Click;
-                Content = dronePage;
-            }
+            dronePage = new(drone.ID);
+            dronePage.DroneListGoBackButton.Click += DroneListPageButton_Click;
+            Content = dronePage;
         }
 
-        private void DroneListGoBackButton_Click(object sender, RoutedEventArgs e)
-        {
-            Content = droneListPage;
-        }
-        #endregion
+        //private void ParcelListViewFromDrone_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        //{
+        //    DroneChargeBL drone = (DroneChargeBL)stationPage.DronesListViewFromStation.SelectedItem;
+        //    if (drone != null)
+        //    {
+        //        dronePage = new(drone.DroneID);
+        //        dronePage.DroneListGoBackButton.Click += DroneListPageButton_Click;
+        //        Content = dronePage;
+        //    }
+        //}
         #endregion
 
         #region Stations
@@ -132,29 +75,20 @@ namespace PL
             Content = stationListPage;
         }
 
-        #region Add
         private void StationListAddButton_Click(object sender, RoutedEventArgs e)
         {
             stationPage = new(e);
-            stationPage.StationEntityAddButton.Click += StationEntityAddButton_Click;
-            stationPage.StationListGoBackButton.Click += StationListGoBackButton_Click;
+            stationPage.StationEntityAddButton.Click += StationListPageButton_Click;
             Content = stationPage;
         }
 
-        private void StationEntityAddButton_Click(object sender, RoutedEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-        #endregion
-
-        #region Update
         private void StationListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             StationToList station = (StationToList)stationListPage.StationListView.SelectedItem;
             if (station != null)
             {
                 stationPage = new(station);
-                stationPage.StationListGoBackButton.Click += StationListGoBackButton_Click;
+                stationPage.StationListGoBackButton.Click += StationListPageButton_Click;
                 stationPage.DronesListViewFromStation.MouseDoubleClick += DronesListViewFromStation_MouseDoubleClick;
                 Content = stationPage;
             }
@@ -166,29 +100,48 @@ namespace PL
             if (drone != null)
             {
                 dronePage = new(drone.DroneID);
-                dronePage.DroneListGoBackButton.Click += DroneListGoBackButton_Click;
+                dronePage.DroneListGoBackButton.Click += DroneListPageButton_Click;
                 Content = dronePage;
             }
         }
-
-        private void StationListGoBackButton_Click(object sender, RoutedEventArgs e)
-        {
-            Content = stationListPage;
-        }
-        #endregion
         #endregion
 
         #region Customers
         private void CustomerListPageButton_Click(object sender, RoutedEventArgs e)
         {
-            //Main.Content = new CustomerListPage(IBL);
+            customerListPage = new();
+            //customerListPage.CustomerListAddButton.Click
         }
         #endregion
 
         #region Parcels
         private void ParcelListPageButton_Click(object sender, RoutedEventArgs e)
         {
-            //Main.Content = new ParcelListPage(Main);
+            parcelListPage = new();
+            parcelListPage.ParcelDataGridAddButton.Click += ParcelDataGridAddButton_Click;
+            parcelListPage.BackWindow.Click += BackWindow_Click;
+            parcelListPage.ParcelDataGrid.MouseDoubleClick += ParcelDataGrid_MouseDoubleClick;
+            Content = parcelListPage;
+        }
+
+        private void ParcelDataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            ParcelToList parcel = (ParcelToList)parcelListPage.ParcelDataGrid.SelectedItem;
+            if (parcel != null)
+            {
+                parcelPage = new(parcel);
+                parcelPage.ParcelDataGridGoBackButton.Click += ParcelListPageButton_Click;
+                parcelPage.UpdateDeleteParcelButton.Click += ParcelListPageButton_Click;
+                parcelPage.ParcelEntityAddButton.Click += ParcelListPageButton_Click;
+                Content = parcelPage;
+            }
+        }
+
+        private void ParcelDataGridAddButton_Click(object sender, RoutedEventArgs e)
+        {
+            parcelPage = new(e);
+            parcelPage.ParcelEntityAddButton.Click += ParcelListPageButton_Click;
+            Content = parcelPage;
         }
         #endregion
 

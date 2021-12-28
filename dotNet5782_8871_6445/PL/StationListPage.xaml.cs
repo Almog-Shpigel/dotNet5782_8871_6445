@@ -26,7 +26,6 @@ namespace PL
         {
             InitializeComponent();
             StationListView.ItemsSource = this.IBL.GetAllStations();
-            UpdateLayout();
         }
 
         private void StationListAddButton_Click(object sender, RoutedEventArgs e)
@@ -41,13 +40,8 @@ namespace PL
 
         private void ListViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            var item = sender as ListViewItem;
-            if (item != null && item.IsSelected)
-            {
-                //MainFrame.Content = new StationPage(item);
-            }
+
         }
-    
 
         private void StationListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

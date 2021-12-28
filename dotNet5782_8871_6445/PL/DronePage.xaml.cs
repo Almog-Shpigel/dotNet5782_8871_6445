@@ -115,11 +115,6 @@ namespace PL
                 DroneEntityAddButton.IsEnabled = false;
         }
 
-        private void AddNewDroneButton_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void EnterDroneIDBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             int droneID;
@@ -206,7 +201,46 @@ namespace PL
 
         private void DroneEntityAddButton_Click(object sender, RoutedEventArgs e)
         {
-
+            int DroneID = Convert.ToInt32(EnterDroneIDBox.Text),
+                StationID = Convert.ToInt32(StationSelector.Text);
+            string name = EnterModelNameBox.Text;
+            WeightCategories weight = (WeightCategories)WeightSelector.SelectedItem;
+            DroneBL drone = new(DroneID, name, weight);
+            try
+            {
+                IBL.AddNewDrone(drone, StationID);
+                //EnterDroneIDBox.IsEnabled = false;
+                //EnterModelNameBox.IsEnabled = false;
+                //StationSelector.IsEnabled = false;
+                //WeightSelector.IsEnabled = false;
+                //DroneEntityAddButton.IsEnabled = false;
+            }
+            catch (InvalidIDException exp)
+            {
+                InvalidDroneIDBlock.Text = exp.Message;
+                InvalidDroneIDBlock.Visibility = Visibility.Visible;
+                EnterDroneIDBox.Foreground = Brushes.Red;
+                DroneEntityAddButton.IsEnabled = false;
+            }
+            catch (DroneExistExceptionBL exp)
+            {
+                InvalidDroneIDBlock.Text = exp.Message;
+                InvalidDroneIDBlock.Visibility = Visibility.Visible;
+                EnterDroneIDBox.Foreground = Brushes.Red;
+                DroneEntityAddButton.IsEnabled = false;
+            }
+            catch (StationExistExceptionBL exp)
+            {
+                InvalidStationIDBlock.Text = exp.Message;
+                InvalidStationIDBlock.Visibility = Visibility.Visible;
+                DroneEntityAddButton.IsEnabled = false;
+            }
+            catch (InvalidSlotsException exp)
+            {
+                InvalidStationIDBlock.Text = exp.Message;
+                InvalidStationIDBlock.Visibility = Visibility.Visible;
+                DroneEntityAddButton.IsEnabled = false;
+            }
         }
 
         private void DroneListGoBackButton_Click(object sender, RoutedEventArgs e)
@@ -214,4 +248,5 @@ namespace PL
 
         }
     }
+
 }

@@ -68,6 +68,9 @@ namespace BlApi
             DroneToBeAvailable.Status = DroneStatus.Available;
             double TimeDifference = (DateTime.Now - (DateTime)Data.GetDroneCharge(DroneID).Start).TotalHours;
             DroneToBeAvailable.BatteryStatus += BatteryUsed[4] * TimeDifference;
+            DroneToBeAvailable.BatteryStatus *= 100;
+            DroneToBeAvailable.BatteryStatus = (int)DroneToBeAvailable.BatteryStatus;
+            DroneToBeAvailable.BatteryStatus /= 100;
             if (DroneToBeAvailable.BatteryStatus > 100)
                 DroneToBeAvailable.BatteryStatus = 100;
             Data.UpdateDroneToBeAvailable(DroneID);
@@ -94,7 +97,7 @@ namespace BlApi
                     if (drone.BatteryStatus < Distance(drone.CurrentLocation, NearestStataionLocation) * BatteryUsed[0])
                         throw new NotEnoughBatteryExpetion("There is not enough battery to reach the nearest station.");
 
-                    drone.BatteryStatus -= Distance(drone.CurrentLocation, NearestStataionLocation) * BatteryUsed[0];
+                    drone.BatteryStatus -= (int)Distance(drone.CurrentLocation, NearestStataionLocation) * BatteryUsed[0];
                     drone.CurrentLocation = new(NearestStataionLocation.Latitude, NearestStataionLocation.Longitude);
                     drone.Status = DroneStatus.Charging;
                     Data.UpdateDroneToBeCharge(DroneID, NearestStatation.ID, DateTime.Now);

@@ -53,6 +53,7 @@
             <Button x:Name="UpdateParcelCollectedButton" Style="{StaticResource ButtonPageStyle}" Content="Parcel collected" Click="UpdateParcelCollectedButton_Click" IsEnabled="{Binding Delivered}"/>
             <Button x:Name="UpdateParcelDeliveredButton" Style="{StaticResource ButtonPageStyle}" Content="Parcel delivered" Click="UpdateParcelDeliveredButton_Click" />
             <Button x:Name="UpdateDeleteParcelButton"    Style="{StaticResource ButtonPageStyle}" Content="Delete parcel" Click="UpdateParcelDeliveredButton_Click" />
+            <Button x:Name="ParcelDataGridGoBackButton"     Style="{StaticResource ButtonPageStyle}" Content="Go back" Click="ParcelDataGridGoBackButton_Click"/>
         </StackPanel>
         <StackPanel x:Name="NewParcelEnterPanel" Grid.Row="1" Grid.Column="3">
             <ComboBox x:Name="SenderIDSelector"  SelectionChanged="SenderIDSelector_SelectionChanged" Style="{StaticResource ComboBoxStyle}">

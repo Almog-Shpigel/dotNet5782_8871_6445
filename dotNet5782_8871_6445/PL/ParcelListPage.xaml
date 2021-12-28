@@ -22,12 +22,12 @@
             <ComboBox x:Name="PrioritySelector" SelectionChanged="PrioritySelector_SelectionChanged" Style="{StaticResource ComboBoxBarStyle}"/>
             <TextBlock Text="Weight:" Style="{StaticResource TextBlockStyle}"/>
             <ComboBox x:Name="WeightSelector" SelectionChanged="WeightSelector_SelectionChanged" Style="{StaticResource ComboBoxBarStyle}"/>
-            <Button  x:Name="AddNewParcel" Content="Add new parcel" Click="ParcelEntityAddButton_Click" Style="{StaticResource ButtonBarStyle}"/>
+            <Button  x:Name="ParcelDataGridAddButton" Content="Add new parcel" Click="ParcelDataGridAddButton_Click" Style="{StaticResource ButtonBarStyle}"/>
             <Button  x:Name="BackWindow" Content="Main Window" Click="BackWindow_Click" Style="{StaticResource ButtonBarStyle}"/>
         </StackPanel>
         <DataGrid x:Name="ParcelDataGrid" AutoGenerateColumns="False" EnableRowVirtualization="False"
                   ItemsSource="{Binding}" RowDetailsVisibilityMode="VisibleWhenSelected" RenderTransformOrigin="0.5,0.5" Grid.Column="1" Grid.Row="2"
-                  SelectionChanged="ParcelListView_SelectionChanged" Style="{StaticResource ParcelDataGrid}" IsReadOnly="True">
+                  SelectionChanged="ParcelDataGrid_SelectionChanged" Style="{StaticResource ParcelDataGrid}" IsReadOnly="True">
             <DataGrid.Columns>
                 <DataGridTextColumn x:Name="iDColumn" Binding="{Binding ID}" Header="Parcel ID" Width="Auto"/>
                 <DataGridTextColumn x:Name="SenderColumn" Binding="{Binding SenderName}" Header="Sender" Width="Auto"/>
@@ -38,7 +38,7 @@
             </DataGrid.Columns>
             <DataGrid.ItemContainerStyle>
                 <Style TargetType="{x:Type DataGridRow}">
-                    <EventSetter Event="UIElement.PreviewMouseLeftButtonDown" Handler="DataGridRow_PreviewMouseLeftButtonDown" />
+                    <EventSetter Event="MouseDoubleClick" Handler="DataGridRow_MouseDoubleClick" />
                 </Style>
             </DataGrid.ItemContainerStyle>
         </DataGrid>

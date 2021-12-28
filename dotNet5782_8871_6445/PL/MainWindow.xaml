@@ -29,6 +29,7 @@
         </Grid.RowDefinitions>
         
         <StackPanel Grid.Column="1" Grid.Row="1" Margin="20,10,20,10">
+
             <TextBlock FontSize="48" HorizontalAlignment="Center" VerticalAlignment="Center"
                    Text="Drone Delivery" Grid.ColumnSpan="2" Foreground="#472d30" FontWeight="ExtraBold" Margin="20,10,20,40"/>
             <Button x:Name="DroneListPage" Content="Drones" Click="DroneListPageButton_Click"
@@ -42,6 +43,7 @@
             <Button x:Name="ShowMap" Content="Map" Click="MapButton_Click"
                     Style="{StaticResource MainWindowButton}"/>
         </StackPanel>
+        
         <Frame x:Name="Main" Grid.ColumnSpan="5" Grid.RowSpan="5" NavigationUIVisibility="Hidden"/>
     </Grid>
 </Window>

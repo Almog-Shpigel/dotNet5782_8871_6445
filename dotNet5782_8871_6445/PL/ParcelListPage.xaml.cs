@@ -15,30 +15,26 @@ namespace PL
     public partial class ParcelListPage : Page
     {
         private BlApi.IBL IBL = BlFactory.GetBl();
-        private Frame Frame;
-        CollectionView view;
-        public ParcelListPage(Frame frame)
+
+        public ParcelListPage()
         {
             InitializeComponent();
-            Frame = frame;
-
-            ParcelDataGrid.ItemsSource = this.IBL.GetAllParcels();
+            ParcelDataGrid.ItemsSource = IBL.GetAllParcels();
             PrioritySelector.ItemsSource = Enum.GetValues(typeof(Priorities));
             WeightSelector.ItemsSource = Enum.GetValues(typeof(WeightCategories));            
         }
 
         private void ParcelEntityAddButton_Click(object sender, RoutedEventArgs e)
         {
-            Frame.Content = new ParcelPage(e);
             
         }
 
         private void BackWindow_Click(object sender, RoutedEventArgs e)
         {
-            NavigationService.Navigate(null);
+
         }
 
-        private void ParcelListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void ParcelDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
         }
@@ -53,13 +49,14 @@ namespace PL
             ParcelDataGrid.ItemsSource = IBL.GetParcels((Priorities)PrioritySelector.SelectedIndex, (WeightCategories)e.AddedItems[0]);
         }
 
-        private void DataGridRow_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void DataGridRow_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            var item = sender as DataGridRow;
-            if (item != null && item.IsSelected)
-            {
-                Frame.Content = new ParcelPage(item);
-            }
+
+        }
+
+        private void ParcelDataGridAddButton_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

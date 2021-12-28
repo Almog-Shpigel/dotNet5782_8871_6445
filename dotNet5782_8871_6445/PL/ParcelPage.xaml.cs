@@ -15,10 +15,9 @@ namespace PL
     /// </summary>
     public partial class ParcelPage : Page
     {
-        private DataGridRow item;
         private BlApi.IBL IBL = BlFactory.GetBl();
-        private BO.ParcelToList Parcel;
-        private BO.ParcelBL ParcelBL;
+        private ParcelToList Parcel;
+        private ParcelBL ParcelBL;
 
         public ParcelPage(RoutedEventArgs e)
         {
@@ -33,13 +32,12 @@ namespace PL
             UpdateLayout();
         }
 
-        public ParcelPage(DataGridRow item) // Update parcel ctor
+        public ParcelPage(ParcelToList parcel) // Update parcel ctor
         {
             InitializeComponent();
             NewParcelEnterPanel.Visibility = Visibility.Collapsed;
-            this.item = item;
-            Parcel = (ParcelToList)item.DataContext;
-            ParcelBL = this.IBL.GetParcel(Parcel.ID);
+            Parcel = parcel;
+            ParcelBL = IBL.GetParcel(Parcel.ID);
             DataContext = ParcelBL;
             
             if (ParcelBL.Scheduled == null)
@@ -85,9 +83,7 @@ namespace PL
             ParcelBL parcel = new(Sender, Target, weight, priority);
             try
             {
-                IBL.AddNewParcel(parcel);
-                NavigationService.GoBack();
-                
+                IBL.AddNewParcel(parcel);                
             }
             catch (Exception) //TO DO: find a better Exception
             {
@@ -126,6 +122,11 @@ namespace PL
         {
             IBL.UpdateParcelDeleiveredByDrone(ParcelBL.DroneInParcel.ID);
             UpdateParcelDeliveredButton.IsEnabled = false;
+        }
+
+        private void ParcelDataGridGoBackButton_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

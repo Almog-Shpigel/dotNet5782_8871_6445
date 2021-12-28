@@ -129,11 +129,11 @@ namespace PL
         #region Customers
         private void CustomerListPageButton_Click(object sender, RoutedEventArgs e)
         {
-            //customerListPage = new();
-            //customerListPage.CustomerListAddButton.Click += CustomerListAddButton_Click;
-            //customerListPage.BackWindow.Click += BackWindow_Click;
-            //customerListPage.CustomersListView.MouseDoubleClick += CustomerListView_MouseDoubleClick;
-            //Content = customerListPage;
+            customerListPage = new();
+            customerListPage.CustomerListAddButton.Click += CustomerListAddButton_Click;
+            customerListPage.BackWindow.Click += BackWindow_Click;
+            customerListPage.CustomersListView.MouseDoubleClick += CustomerListView_MouseDoubleClick;
+            Content = customerListPage;
         }
 
         private void CustomerListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -155,7 +155,7 @@ namespace PL
             ParcelToList parcel = IBL.GetParcelToList(parcelAtCustomer);
             if(parcel != null)
             { 
-                parcelPage = new(parcel);
+                parcelPage = new(parcel.ID);
                 parcelPage.ParcelDataGridGoBackButton.Click += ParcelListPageButton_Click;
                 parcelPage.UpdateDeleteParcelButton.Click += ParcelListPageButton_Click;
                 parcelPage.ParcelEntityAddButton.Click += ParcelListPageButton_Click;

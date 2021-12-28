@@ -9,7 +9,7 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="CustomerPage">
 
-    <!--<Grid Background="#c9cba3">
+    <Grid Background="#c9cba3">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="5*"/>
             <ColumnDefinition Width="50*"/>
@@ -67,6 +67,6 @@
             <Button x:Name="UpdatePhoneButton" Content="Update phone number" Click="UpdatePhoneButton_Click" Style="{StaticResource ButtonPageStyle}" />
             <Button x:Name="CustomerListGoBackButton" Content="Go back" Click="CustomerListGoBackButton_Click" Style="{StaticResource ButtonPageStyle}"/>
         </StackPanel>
-    </Grid>-->
+    </Grid>
 </Page>
 

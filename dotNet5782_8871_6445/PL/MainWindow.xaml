@@ -4,16 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="Main Window" Height="640" Width="950" WindowStartupLocation="CenterScreen" WindowState="Normal">
-    <!--
-    Colors:
-    #c9cba3
-    #ffe1a8
-    #e26d5c
-    #723d46
-    #472d30
-    -->
+        Title="Main Window" Height="650" Width="900" WindowStartupLocation="CenterScreen" WindowState="Normal" ResizeMode="CanMinimize">
     <Grid >
         <Grid.Background>
             <ImageBrush ImageSource="/aaa.jpg"/>
@@ -27,10 +20,34 @@
             <RowDefinition Height="20"/>
             <RowDefinition Height="20*"/>
         </Grid.RowDefinitions>
-        
         <StackPanel Grid.Column="1" Grid.Row="1" Margin="20,10,20,10">
-
-            <TextBlock FontSize="48" HorizontalAlignment="Center" VerticalAlignment="Center"
+            <StackPanel Margin="20,40">
+                <TextBlock Text="User Login" Margin="0,20,0,40" Foreground="Black" TextAlignment="Center" FontSize="45" FontWeight="ExtraBold" FontFamily="Cooper black"/>
+                <StackPanel Orientation="Horizontal" Margin="10">
+                    <materialDesign:PackIcon Kind="User" Width="50" Height="50" Margin="20,0"/>
+                    <TextBox x:Name="txtUserID" Margin="10,0" materialDesign:HintAssist.Hint="Enter ID" Width="250" FontSize="30"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="10">
+                    <materialDesign:PackIcon Kind="Lock" Width="50" Height="50" Margin="20,0"/>
+                    <PasswordBox x:Name="txtPassword" Margin="10,0" materialDesign:HintAssist.Hint="********" Width="250" FontSize="30"/>
+                </StackPanel>
+                <StackPanel Margin="50" HorizontalAlignment="Center">
+                    <Button x:Name="LoginButton" Click="LoginButton_Click" Content="Login" Foreground="#472d30" FontSize="25" Width="140" Height="50" Style="{StaticResource MaterialDesignRaisedButton}"
+                            materialDesign:ButtonAssist.CornerRadius="20"
+                            BorderThickness="3" BorderBrush="#c9cba3" Background="#ffe1a8" ToolTip="Login"/>
+                    <!--
+    Colors:
+    #c9cba3
+    #ffe1a8
+    #e26d5c
+    #723d46
+    #472d30
+    -->
+                </StackPanel>
+            </StackPanel>
+        </StackPanel>
+        <StackPanel Grid.Column="1" Grid.Row="1" Margin="20,10,20,10">
+            <!--<TextBlock FontSize="48" HorizontalAlignment="Center" VerticalAlignment="Center"
                    Text="Drone Delivery" Grid.ColumnSpan="2" Foreground="#472d30" FontWeight="ExtraBold" Margin="20,10,20,40"/>
             <Button x:Name="DroneListPage" Content="Drones" Click="DroneListPageButton_Click"
                     Style="{StaticResource MainWindowButton}"/>
@@ -41,7 +58,7 @@
             <Button x:Name="ParcelListPage" Content="Parcels" Click="ParcelListPageButton_Click"
                     Style="{StaticResource MainWindowButton}"/>
             <Button x:Name="ShowMap" Content="Map" Click="MapButton_Click"
-                    Style="{StaticResource MainWindowButton}"/>
+                    Style="{StaticResource MainWindowButton}"/>-->
         </StackPanel>
         
         <Frame x:Name="Main" Grid.ColumnSpan="5" Grid.RowSpan="5" NavigationUIVisibility="Hidden"/>

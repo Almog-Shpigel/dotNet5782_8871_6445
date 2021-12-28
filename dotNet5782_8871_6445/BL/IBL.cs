@@ -127,6 +127,7 @@ namespace BlApi
         public IEnumerable<CustomerToList> GetAllCustomers();
 
         public IEnumerable<Station> GatAllStationsDO();
+        ParcelToList GetParcelToList(ParcelAtCustomer parcel);
         #endregion
 
         #region Get some

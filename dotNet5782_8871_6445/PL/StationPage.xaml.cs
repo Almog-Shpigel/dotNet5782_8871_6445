@@ -188,7 +188,16 @@ namespace PL
 
         private void ListViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-
+            EnableButton();
         }
+        private void EnterLattitudeBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            EnableButton();
+        }
+        private void EnterLongitudeBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            EnableButton();
+        }
+
     }
 }

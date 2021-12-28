@@ -178,5 +178,10 @@ namespace PL
             new MainWindow().Show();
             Close();
         }
+
+        private void LoginButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

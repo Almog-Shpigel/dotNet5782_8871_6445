@@ -174,7 +174,9 @@ namespace PL
 
         private void CustomerListAddButton_Click(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            customerPage = new(e);
+            customerPage.CustomerListGoBackButton.Click += CustomerListPageButton_Click;
+            Content = customerPage;
         }
         #endregion
 

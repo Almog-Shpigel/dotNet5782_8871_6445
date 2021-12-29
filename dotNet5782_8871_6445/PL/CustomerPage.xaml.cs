@@ -26,7 +26,9 @@ namespace PL
         private IBL IBL = BlFactory.GetBl();
         private CustomerBL CustomerBL;
         private CustomerToList Customer;
-        public CustomerPage(CustomerToList customer)
+        private RoutedEventArgs e;
+
+        public CustomerPage(CustomerToList customer) //update ctor
         {
             InitializeComponent();
             Customer = customer;
@@ -35,6 +37,17 @@ namespace PL
             ParcelSentListViewFromCustomer.ItemsSource = CustomerBL.ParcelesSentByCustomer;
             ParcelSentListViewFromCustomer.ItemsSource = CustomerBL.ParcelesSentToCustomer;
             AddNewCustomerPanell.Visibility = Visibility.Collapsed;
+        }
+
+        public CustomerPage(RoutedEventArgs e) //add ctor
+        {
+            InitializeComponent();
+            ShowDetailsCustomer.Visibility = Visibility.Collapsed;
+            ShowParcelsList.Visibility = Visibility.Collapsed;
+            UpdateNameButton.Visibility = Visibility.Collapsed;
+            UpdatePhoneButton.Visibility = Visibility.Collapsed;
+            PrintLattitudeBlock.Text = "Lattitude:";
+            PrintLongitudeBlock.Text = "Longitude:";
         }
 
         private void UpdateNameButton_Click(object sender, RoutedEventArgs e)
@@ -64,7 +77,7 @@ namespace PL
             if (!int.TryParse(EnterCustomerIDBox.Text, out customerID))
             {
                 InvalidInputBlock.Visibility = Visibility.Visible;
-                InvalidInputBlock.Text = "Station id must contain only numbers";
+                InvalidInputBlock.Text = "Customer id must contain only numbers";
                 EnterCustomerIDBox.Foreground = Brushes.Red;
                 CustomerEntityAddButton.IsEnabled = false;
             }
@@ -86,7 +99,10 @@ namespace PL
             try
             {
                 IBL.AddNewCustomer(NewCustomer);
-                NavigationService.GoBack();
+                CustomerEntityAddButton.IsEnabled = false;
+                InvalidInputBlock.Text = "Customer added!";
+                InvalidInputBlock.Visibility = Visibility.Visible;
+                InvalidInputBlock.Foreground = Brushes.Green;
             }
             catch (Exception exp)
             {

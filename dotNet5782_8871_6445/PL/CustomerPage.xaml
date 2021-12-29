@@ -26,14 +26,15 @@
             <TextBlock x:Name="PrintIDblock"        Text="Customer ID:"        Style="{StaticResource TextBlockPageStyle}" />
             <TextBlock x:Name="PrintNameBlock"     Text="Customer name:"      Style="{StaticResource TextBlockPageStyle}" />
             <TextBlock x:Name="PrintPhoneBlock"    Text="Phone number:"      Style="{StaticResource TextBlockPageStyle}" />
-            <TextBlock x:Name="PrintLocationBlock"  Text="Location:"        Style="{StaticResource TextBlockPageStyle}" />
+            <TextBlock x:Name="PrintLattitudeBlock"  Text="Location:"        Style="{StaticResource TextBlockPageStyle}" />
+            <TextBlock x:Name="PrintLongitudeBlock" Text="" Style="{StaticResource TextBlockPageStyle}" />
         </StackPanel>
         <StackPanel x:Name="ShowDetailsCustomer" Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="1">
             <TextBlock x:Name="IDBlock"  Text="{Binding ID}"       Style="{StaticResource TextBlockPageStyle}" />
             <TextBox x:Name="NameBlock"  materialDesign:HintAssist.Hint="{Binding Name}"  />
             <TextBox x:Name="PhoneNumberBlock"   materialDesign:HintAssist.Hint="{Binding Phone}" />
             <TextBlock x:Name="LocationBlock" Text="{Binding Location}"  Style="{StaticResource TextBlockPageStyle}" />
-            <TextBlock x:Name="InvalidInputBlock"  Style="{StaticResource TextBlockInvalidStyle}"/>
+            
         </StackPanel>
         <StackPanel x:Name="ShowParcelsList" Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="1">
             <TextBlock x:Name="PrintSentBlock"    Text="Parcels sent:"    Style="{StaticResource TextBlockPageStyle}" />
@@ -60,7 +61,7 @@
             <TextBox   x:Name="EnterLattitudeBox" TextChanged ="EnterLattitudeBox_TextChanged" Style="{StaticResource TextBoxStyle}"/>
             <TextBox   x:Name="EnterLongitudeBox" TextChanged ="EnterLongitudeBox_TextChanged" Style="{StaticResource TextBoxStyle}"/>
             <Button x:Name="CustomerEntityAddButton" Content="Add" Click="CustomerEntityAddButton_Click" Style="{StaticResource ButtonPageStyle}" />
-            
+            <TextBlock x:Name="InvalidInputBlock"  Style="{StaticResource TextBlockInvalidStyle}"/>
         </StackPanel>
         <StackPanel x:Name="UpdateCustomerButtons" Grid.Row="2" Grid.Column="4">
             <Button x:Name="UpdateNameButton" Content="Update name" Click="UpdateNameButton_Click" Style="{StaticResource ButtonPageStyle}" />

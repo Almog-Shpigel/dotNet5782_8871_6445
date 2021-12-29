@@ -37,7 +37,7 @@
             <TextBlock x:Name="PrintDeliveredBlock"         Text="Delivered:"       Style="{StaticResource TextBlockPageStyle}" />
             <TextBlock x:Name="PrintDroneInParcelIDBlock"   Text="Drone In Parcel:" Style="{StaticResource TextBlockPageStyle}" TextWrapping="Wrap"/>
         </StackPanel>
-        <StackPanel x:Name="ShowDetailsParcel1" Grid.Row="1" Grid.Column="2">
+        <StackPanel x:Name="ShowDetailsParcel1" Grid.Row="1" Grid.Column="2" >
             <TextBlock x:Name="IDBlock"                 Style="{StaticResource TextBlockPageStyle}" Text="{Binding ID}"/>
             <TextBlock x:Name="SenderBlock"             Style="{StaticResource TextBlockPageStyle}" Text="{Binding Sender}"/>
             <TextBlock x:Name="ReceiverBlock"           Style="{StaticResource TextBlockPageStyle}" Text="{Binding Target}"/>

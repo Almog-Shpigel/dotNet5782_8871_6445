@@ -65,19 +65,21 @@ namespace PL
             UpdateParcelAssignToDroneButton.IsEnabled = false;
             UpdateParcelCollectedByDroneButton.IsEnabled = false;
             UpdateParcelDeleiveredByDroneButton.IsEnabled = false;
-
+            PreviewParcel.IsEnabled = true;
             if (droneBL.Status == EnumsBL.DroneStatus.Charging)
             {
                 UpdateReleaseDroneFromChargeButton.IsEnabled = true;
+                PreviewParcel.IsEnabled = false;
                 return;
             }
             if (droneBL.Status == EnumsBL.DroneStatus.Available)
             {
                 UpdateDroneToBeChargedButton.IsEnabled = true;
                 UpdateParcelAssignToDroneButton.IsEnabled = true;
+                PreviewParcel.IsEnabled = false;
                 return;
             }
-
+            
             ParcelBL parcel = IBL.GetParcel(droneBL.Parcel.ID);
             if (parcel.PickedUp != null)
             {

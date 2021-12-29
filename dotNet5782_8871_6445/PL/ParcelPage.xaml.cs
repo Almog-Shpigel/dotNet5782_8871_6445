@@ -115,12 +115,16 @@ namespace PL
             IBL.UpdateParcelCollectedByDrone(ParcelBL.DroneInParcel.ID);
             UpdateParcelCollectedButton.IsEnabled = false;
             UpdateParcelDeliveredButton.IsEnabled = true;
+            ParcelBL = IBL.GetParcel(ParcelBL.ID);
+            DataContext = ParcelBL;
         }
 
         private void UpdateParcelDeliveredButton_Click(object sender, RoutedEventArgs e)
         {
             IBL.UpdateParcelDeleiveredByDrone(ParcelBL.DroneInParcel.ID);
             UpdateParcelDeliveredButton.IsEnabled = false;
+            ParcelBL = IBL.GetParcel(ParcelBL.ID);
+            DataContext = ParcelBL;
         }
 
         private void ParcelDataGridGoBackButton_Click(object sender, RoutedEventArgs e)

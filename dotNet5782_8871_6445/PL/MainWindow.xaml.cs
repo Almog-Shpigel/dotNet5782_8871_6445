@@ -202,6 +202,7 @@ namespace PL
             parcelPage.ParcelEntityAddButton.Click += ParcelListPageButton_Click;
             Content = parcelPage;
         }
+
         #endregion
 
         #region Map

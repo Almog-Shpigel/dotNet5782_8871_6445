@@ -44,7 +44,10 @@ namespace PL
         {
             dronePage = new(e);
             dronePage.DroneEntityAddButton.Click += DroneListPageButton_Click;
-            
+            dronePage.DroneListGoBackButton.Click += DroneListPageButton_Click;
+            dronePage.UpdateButtonsPanel.Visibility = Visibility.Collapsed;
+            dronePage.InvalidDroneIDBlock.Visibility = Visibility.Collapsed;
+            dronePage.IDBox.IsReadOnly = false;
             Content = dronePage;
         }
 
@@ -69,6 +72,7 @@ namespace PL
                 dronePage = new(drone.ID);
                 dronePage.DroneListGoBackButton.Click += DroneListPageButton_Click;
                 dronePage.PreviewParcel.MouseLeftButtonDown += PreviewParcel_MouseLeftButtonDown;
+                dronePage.DroneEntityAddButton.Visibility = Visibility.Collapsed;
                 Content = dronePage;
             }
         }
@@ -162,6 +166,7 @@ namespace PL
                 Content = parcelPage;
             }
         }
+
         private void ParcelReceiveListViewFromCustomer_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             ParcelAtCustomer parcel = (ParcelAtCustomer)customerPage.ParcelReceivedListViewFromCustomer.SelectedItem;

@@ -21,22 +21,7 @@ namespace PL
         public DronePage(RoutedEventArgs e)
         {
             InitializeComponent(); // Add drone ctor
-            ShowDetailsDrone1.Visibility = Visibility.Collapsed;
-            ShowDetailsDrone2.Visibility = Visibility.Collapsed;
-            UpdateNameBlock.Visibility = Visibility.Collapsed;
-            PrintBatteryBlock.Visibility = Visibility.Collapsed;
-            PrintStatusBlock.Visibility = Visibility.Collapsed;
-            PrintParcelBlock.Visibility = Visibility.Collapsed;
-            PrintLocationBlock.Visibility = Visibility.Collapsed;
-            InvalidDroneIDBlock.Visibility = Visibility.Collapsed;
-            InvalidStationIDBlock.Visibility = Visibility.Collapsed;
-            InvalidBatteryToCompleteDeliveryBlock.Visibility = Visibility.Collapsed;
-            ExistsDroneIDBlock.Visibility = Visibility.Collapsed;
-            WeightCategories[] ARR = new WeightCategories[3];
-            ARR[0] = WeightCategories.Light;
-            ARR[1] = WeightCategories.Medium;
-            ARR[2] = WeightCategories.Heavy;
-            WeightSelector.ItemsSource = ARR;
+            WeightSelector.ItemsSource = Enum.GetValues(typeof(WeightCategories));
             StationSelector.ItemsSource = IBL.GetAvailableStations().Select(station => (string)station.ID.ToString());
             DroneEntityAddButton.IsEnabled = false;
             UpdateLayout();
@@ -45,12 +30,6 @@ namespace PL
         public DronePage(int DroneID) // Update drone ctor
         {
             InitializeComponent();
-            NewDroneEnterPanel.Visibility = Visibility.Collapsed;
-            PrintStationIDBlock.Visibility = Visibility.Collapsed;
-            InvalidDroneIDBlock.Visibility = Visibility.Collapsed;
-            InvalidStationIDBlock.Visibility = Visibility.Collapsed;
-            InvalidBatteryToCompleteDeliveryBlock.Visibility = Visibility.Collapsed;
-            ExistsDroneIDBlock.Visibility = Visibility.Collapsed;
             droneBL = IBL.GetDrone(DroneID);
             this.DataContext = droneBL;
             ButtenEnableCheck();
@@ -108,26 +87,26 @@ namespace PL
         {
 
             if (InvalidDroneIDBlock.Visibility != Visibility.Visible &&
-                EnterDroneIDBox.Text != "" &&
+                IDBox.Text != "" &&
                 WeightSelector.SelectedIndex != -1 && StationSelector.SelectedIndex != -1)
                 DroneEntityAddButton.IsEnabled = true;
             else
                 DroneEntityAddButton.IsEnabled = false;
         }
 
-        private void EnterDroneIDBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void IDBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             int droneID;
-            if (!int.TryParse(EnterDroneIDBox.Text, out droneID))
+            if (!int.TryParse(IDBox.Text, out droneID))
             {
                 InvalidDroneIDBlock.Visibility = Visibility.Visible;
-                EnterDroneIDBox.Foreground = Brushes.Red;
+                IDBox.Foreground = Brushes.Red;
                 DroneEntityAddButton.IsEnabled = false;
             }
             else
             {
                 InvalidDroneIDBlock.Visibility = Visibility.Collapsed;
-                EnterDroneIDBox.Foreground = Brushes.Black;
+                IDBox.Foreground = Brushes.Black;
                 EnableButton();
             }
         }
@@ -137,7 +116,7 @@ namespace PL
             InvalidBatteryToCompleteDeliveryBlock.Visibility = Visibility.Collapsed;
             try
             {
-                IBL.UpdateDroneToBeCharged(Convert.ToInt32(IDBlock.Text));
+                IBL.UpdateDroneToBeCharged(Convert.ToInt32(IDBox.Text));
                 droneBL = IBL.GetDrone(droneBL.ID);
                 DataContext = droneBL;
                 ButtenEnableCheck();
@@ -151,7 +130,7 @@ namespace PL
 
         private void UpdateReleaseDroneFromChargeButton_Click(object sender, RoutedEventArgs e)
         {
-            IBL.UpdateDroneToBeAvailable(Convert.ToInt32(IDBlock.Text));
+            IBL.UpdateDroneToBeAvailable(Convert.ToInt32(IDBox.Text));
             droneBL = IBL.GetDrone(droneBL.ID);
             DataContext = droneBL;
             ButtenEnableCheck();
@@ -161,7 +140,7 @@ namespace PL
         {
             try
             {
-                IBL.UpdateParcelAssignToDrone(Convert.ToInt32(IDBlock.Text));
+                IBL.UpdateParcelAssignToDrone(Convert.ToInt32(IDBox.Text));
                 droneBL = IBL.GetDrone(droneBL.ID);
                 DataContext = droneBL;
                 ButtenEnableCheck();
@@ -175,7 +154,7 @@ namespace PL
 
         private void UpdateParcelCollectedByDroneButton_Click(object sender, RoutedEventArgs e)
         {
-            IBL.UpdateParcelCollectedByDrone(Convert.ToInt32(IDBlock.Text));
+            IBL.UpdateParcelCollectedByDrone(Convert.ToInt32(IDBox.Text));
             droneBL = IBL.GetDrone(droneBL.ID);
             DataContext = droneBL;
             ButtenEnableCheck();
@@ -201,41 +180,30 @@ namespace PL
 
         private void DroneEntityAddButton_Click(object sender, RoutedEventArgs e)
         {
-            int DroneID = Convert.ToInt32(EnterDroneIDBox.Text),
+            int DroneID = Convert.ToInt32(IDBox.Text),
                 StationID = Convert.ToInt32(StationSelector.Text);
-            string name = EnterModelNameBox.Text;
+            string name = ModelBlock.Text;
             WeightCategories weight = (WeightCategories)WeightSelector.SelectedItem;
             DroneBL drone = new(DroneID, name, weight);
             try
             {
                 IBL.AddNewDrone(drone, StationID);
-                //EnterDroneIDBox.IsEnabled = false;
-                //EnterModelNameBox.IsEnabled = false;
-                //StationSelector.IsEnabled = false;
-                //WeightSelector.IsEnabled = false;
-                //DroneEntityAddButton.IsEnabled = false;
             }
             catch (InvalidIDException exp)
             {
                 InvalidDroneIDBlock.Text = exp.Message;
                 InvalidDroneIDBlock.Visibility = Visibility.Visible;
-                EnterDroneIDBox.Foreground = Brushes.Red;
+                IDBox.Foreground = Brushes.Red;
                 DroneEntityAddButton.IsEnabled = false;
             }
             catch (DroneExistExceptionBL exp)
             {
                 InvalidDroneIDBlock.Text = exp.Message;
                 InvalidDroneIDBlock.Visibility = Visibility.Visible;
-                EnterDroneIDBox.Foreground = Brushes.Red;
+                IDBox.Foreground = Brushes.Red;
                 DroneEntityAddButton.IsEnabled = false;
             }
             catch (StationExistExceptionBL exp)
-            {
-                InvalidStationIDBlock.Text = exp.Message;
-                InvalidStationIDBlock.Visibility = Visibility.Visible;
-                DroneEntityAddButton.IsEnabled = false;
-            }
-            catch (InvalidSlotsException exp)
             {
                 InvalidStationIDBlock.Text = exp.Message;
                 InvalidStationIDBlock.Visibility = Visibility.Visible;
@@ -253,8 +221,8 @@ namespace PL
             MessageBoxResult res = MessageBox.Show("Are you sure you want change the model name?", "Verification", MessageBoxButton.YesNo, MessageBoxImage.Warning);
             if (res == MessageBoxResult.No)
                 return;
-            IBL.UpdateDroneName(Convert.ToInt32(IDBlock.Text), ModelBlock.Text);
-            ModelBlock.Text = IBL.GetDrone(Convert.ToInt32(IDBlock.Text)).Model;
+            IBL.UpdateDroneName(Convert.ToInt32(IDBox.Text), ModelBlock.Text);
+            ModelBlock.Text = IBL.GetDrone(Convert.ToInt32(IDBox.Text)).Model;
         }
 
         private void PreviewParcel_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)

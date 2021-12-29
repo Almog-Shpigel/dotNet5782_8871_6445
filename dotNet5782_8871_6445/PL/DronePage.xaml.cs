@@ -190,26 +190,33 @@ namespace PL
             try
             {
                 IBL.AddNewDrone(drone, StationID);
+                IDBox.IsEnabled = false;
+                StationSelector.IsEnabled = false;
+                WeightSelector.IsEnabled = false;
+                DroneEntityAddButton.IsEnabled = false;
+                InvalidDroneIDBlock.Text = "Drone added!";
+                InvalidDroneIDBlock.Visibility = Visibility.Visible;
+                InvalidDroneIDBlock.Foreground = Brushes.Green;
             }
             catch (InvalidIDException exp)
             {
                 InvalidDroneIDBlock.Text = exp.Message;
                 InvalidDroneIDBlock.Visibility = Visibility.Visible;
                 IDBox.Foreground = Brushes.Red;
-                DroneEntityAddButton.IsEnabled = false;
+                //DroneEntityAddButton.IsEnabled = false;
             }
             catch (DroneExistExceptionBL exp)
             {
                 InvalidDroneIDBlock.Text = exp.Message;
                 InvalidDroneIDBlock.Visibility = Visibility.Visible;
                 IDBox.Foreground = Brushes.Red;
-                DroneEntityAddButton.IsEnabled = false;
+                //DroneEntityAddButton.IsEnabled = false;
             }
             catch (StationExistExceptionBL exp)
             {
                 InvalidStationIDBlock.Text = exp.Message;
                 InvalidStationIDBlock.Visibility = Visibility.Visible;
-                DroneEntityAddButton.IsEnabled = false;
+                //DroneEntityAddButton.IsEnabled = false;
             }
         }
 

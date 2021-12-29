@@ -65,7 +65,7 @@ namespace BlApi
                 throw new DroneStatusExpetion("Can't release a drone that isn't charging");
             double TimeDifference = (DateTime.Now - (DateTime)Data.GetDroneCharge(DroneID).Start).TotalHours;
             DroneToBeAvailable.BatteryStatus += BatteryUsed[4] * TimeDifference;
-            DroneToBeAvailable.BatteryStatus = ((int)DroneToBeAvailable.BatteryStatus*100)/100;
+            DroneToBeAvailable.BatteryStatus = ((int)(DroneToBeAvailable.BatteryStatus*100))/100;
             if (DroneToBeAvailable.BatteryStatus > 100)
                 DroneToBeAvailable.BatteryStatus = 100;
             Data.UpdateDroneToBeAvailable(DroneID);

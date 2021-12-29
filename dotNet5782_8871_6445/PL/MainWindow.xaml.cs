@@ -43,7 +43,7 @@ namespace PL
         private void DroneListAddButton_Click(object sender, RoutedEventArgs e)
         {
             dronePage = new(e);
-            dronePage.DroneEntityAddButton.Click += DroneListPageButton_Click;
+            //dronePage.DroneEntityAddButton.Click += DroneListPageButton_Click;
             dronePage.DroneListGoBackButton.Click += DroneListPageButton_Click;
             dronePage.UpdateButtonsPanel.Visibility = Visibility.Collapsed;
             dronePage.InvalidDroneIDBlock.Visibility = Visibility.Collapsed;

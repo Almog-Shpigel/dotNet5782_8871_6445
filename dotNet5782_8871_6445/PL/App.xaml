@@ -114,7 +114,7 @@
             <Setter Property="FontWeight" Value="Bold" />
             <Setter Property="Background" Value="#ffe1a8" />
             <Setter Property="Foreground" Value="#723d46" />
-            <Setter Property="Margin" Value="10,10,15,0" />
+            <Setter Property="Margin" Value="10,5,15,5" />
         </Style>
         <Style TargetType="ListView" x:Key="ListViewStyle">
             <Setter Property="FontSize" Value="20" />

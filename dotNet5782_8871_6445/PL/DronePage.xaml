@@ -14,31 +14,35 @@
     <Grid Background="#c9cba3">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="5*"/>
-            <ColumnDefinition Width="120*"/>
+            <ColumnDefinition Width="150*"/>
             <ColumnDefinition Width="50*"/>
             <ColumnDefinition Width="5*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="30"/>
+            <RowDefinition Height="15"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <StackPanel x:Name="ShowDetailsDrone1" Grid.Column="1" Grid.Row="2">
             <StackPanel Orientation="Horizontal">
                 <TextBlock x:Name="PrintIDblock" Text="Drone ID:" Style="{StaticResource TextBlockPageStyle}" />
-                <TextBlock x:Name="IDBlock" Text="{Binding ID}" Style="{StaticResource TextBlockPageStyle}" />
-                <TextBox   x:Name="EnterDroneIDBox" TextChanged="EnterDroneIDBox_TextChanged" Style="{StaticResource TextBoxStyle}" />
+                <TextBox   x:Name="IDBox" Text="{Binding ID}" Width="150" FontSize="20" Margin="10,0" IsReadOnly="True"/>
+                <TextBlock x:Name="InvalidDroneIDBlock" Text=" * please enter a valid number" Style="{StaticResource TextBlockInvalidStyle}" Visibility="{Binding ElementName=DroneEntityAddButton, Path=Visibility}"/>
+                <TextBlock x:Name="ExistsDroneIDBlock" Style="{StaticResource TextBlockInvalidStyle}"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock x:Name="PrintModelBlock" Text="Model name:" Style="{StaticResource TextBlockPageStyle}" />
-                <materialDesign:PackIcon x:Name="UpdateNameButton" Kind="Refresh" Width="30" Height="30" Margin="10,5" HorizontalAlignment="Center" MouseLeftButtonDown="UpdateNameButton_MouseLeftButtonDown" Background="Transparent" />
-                <TextBox x:Name="ModelBlock" Text="{Binding Model}" Width="150" FontSize="20" Margin="10,0"/>
+                <TextBox x:Name="ModelBlock" Text="{Binding Model}" Width="150" FontSize="20" Margin="10,0" />
+                <materialDesign:PackIcon x:Name="UpdateNameButton" Kind="Refresh" Width="30" Height="30" Margin="10,5" HorizontalAlignment="Center"
+                                         MouseLeftButtonDown="UpdateNameButton_MouseLeftButtonDown" Background="Transparent" Visibility="{Binding ElementName=UpdateButtonsPanel, Path=Visibility}"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock x:Name="PrintWeightBlock" Text="Max weight:" Style="{StaticResource TextBlockPageStyle}" />
-                <TextBlock x:Name="WeightBlock" Text="{Binding MaxWeight}" Style="{StaticResource TextBlockPageStyle}" />
+                <TextBox x:Name="WeightBlock" Text="{Binding MaxWeight}" Width="150" FontSize="20" Margin="10,0" IsReadOnly="True" Visibility="{Binding ElementName=UpdateButtonsPanel, Path=Visibility}" />
+                <ComboBox  x:Name="WeightSelector" SelectionChanged="WeightSelector_SelectionChanged" Style="{StaticResource ComboBoxStyle}" Visibility="{Binding ElementName=DroneEntityAddButton, Path=Visibility}"/>
             </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <TextBlock x:Name="PrintBatteryBlock"   Text="Battery:"         Style="{StaticResource TextBlockPageStyle}" />
+            <StackPanel x:Name="BatteryPanel" Orientation="Horizontal" Visibility="{Binding ElementName=UpdateButtonsPanel, Path=Visibility}">
+                <!--Background="{Binding BatteryStatus, Converter={StaticResource ColorByPercentageConverter}}"-->
+                <TextBlock x:Name="PrintBatteryBlock" Text="Battery:" Style="{StaticResource TextBlockPageStyle}" />
                 <Viewbox Width="70" Height="30" HorizontalAlignment="Left" Margin="10,5,5,5">
                     <StackPanel Orientation="Horizontal">
                         <Border BorderBrush="black" BorderThickness="4" CornerRadius="5" Padding="2" Width="110" Height="50">
@@ -50,47 +54,52 @@
                         <Border Background="black" CornerRadius="0,2,2,0" Padding="2" Width="7" Height="20" Margin="-2,0,-2,0"/>
                     </StackPanel>
                 </Viewbox>
+                <TextBlock x:Name="InvalidBatteryToCompleteDeliveryBlock" Style="{StaticResource TextBlockInvalidStyle}"/>
             </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <TextBlock x:Name="PrintStatusBlock"    Text="Status:"          Style="{StaticResource TextBlockPageStyle}" />
-                <TextBlock x:Name="StatusBlock"    Text="{Binding Status}"   Style="{StaticResource TextBlockPageStyle}" />
+            <StackPanel Orientation="Horizontal" Visibility="{Binding ElementName=UpdateButtonsPanel, Path=Visibility}">
+                <TextBlock x:Name="PrintStatusBlock" Text="Status:" Style="{StaticResource TextBlockPageStyle}" />
+                <TextBox x:Name="StatusBlock" Text="{Binding Status}" Width="150" FontSize="20" Margin="10,0" IsReadOnly="True"/>
             </StackPanel>
-            <StackPanel Orientation="Horizontal">
+            <StackPanel Orientation="Horizontal" Visibility="{Binding ElementName=UpdateButtonsPanel, Path=Visibility}">
                 <TextBlock x:Name="PrintParcelBlock"    Text="Parcel carry:"    Style="{StaticResource TextBlockPageStyle}" />
+                <TextBox x:Name="ParcelBlock" Text="{Binding Parcel.ID}" Width="150" FontSize="20" Margin="10,0" IsReadOnly="True"/>
                 <materialDesign:PackIcon x:Name="PreviewParcel" Kind="Eye" Width="30" Height="30" Margin="10,5" HorizontalAlignment="Center" MouseLeftButtonDown="PreviewParcel_MouseLeftButtonDown" Background="Transparent"/>
-                <TextBlock x:Name="ParcelBlock" Text="{Binding Parcel.ID}" Style="{StaticResource TextBlockPageStyle}" />
             </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <TextBlock x:Name="PrintLocationBlock"  Text="Location:"        Style="{StaticResource TextBlockPageStyle}" />
+            <StackPanel Orientation="Horizontal" Visibility="{Binding ElementName=UpdateButtonsPanel, Path=Visibility}">
+                <TextBlock x:Name="PrintLocationBlock" Text="Location:" Style="{StaticResource TextBlockPageStyle}" />
+                <TextBlock x:Name="LocationBlock" Text="{Binding CurrentLocation}" Style="{StaticResource TextBlockPageStyle}" Width="260"/>
+                <!--<TextBox x:Name="LocationBlock" Text="{Binding CurrentLocation}" Width="300" FontSize="20" Margin="10,0" IsReadOnly="True"/>-->
                 <materialDesign:PackIcon x:Name="PreviewInMap" Kind="Map" Width="30" Height="30" Margin="10,5" HorizontalAlignment="Center" MouseLeftButtonDown="PreviewInMap_MouseLeftButtonDown"/>
-                <TextBlock x:Name="LocationBlock"   Text="{Binding CurrentLocation}"  Style="{StaticResource TextBlockPageStyle}" Width="350"/>
             </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <TextBlock x:Name="PrintStationIDBlock" Text="Station ID:"      Style="{StaticResource TextBlockPageStyle}" />
-
+            <StackPanel Orientation="Horizontal" Visibility="{Binding ElementName=DroneEntityAddButton, Path=Visibility}">
+                <TextBlock x:Name="PrintStationIDBlock" Text="Station ID:" Style="{StaticResource TextBlockPageStyle}" />
+                <ComboBox  x:Name="StationSelector"  SelectionChanged="StationSelector_SelectionChanged" Style="{StaticResource ComboBoxStyle}"/>
+                <TextBlock x:Name="InvalidStationIDBlock" Style="{StaticResource TextBlockInvalidStyle}"/>
             </StackPanel>
-        </StackPanel>
-        <StackPanel x:Name="ShowDetailsDrone2" Grid.Row="2" Grid.Column="2">
-            <Button x:Name="UpdateDroneToBeChargedButton"  Content="Send drone to be charged" Click="UpdateDroneToBeChargedButton_Click" Style="{StaticResource ButtonPageStyle}" />
-            <Button x:Name="UpdateReleaseDroneFromChargeButton"  Content="Release Drone from charge" Click="UpdateReleaseDroneFromChargeButton_Click" Style="{StaticResource ButtonPageStyle}" />
-            <Button x:Name="UpdateParcelAssignToDroneButton" Content="Assign parcel to drone" Click="UpdateParcelAssignToDroneButton_Click" Style="{StaticResource ButtonPageStyle}"/>
-            <Button x:Name="UpdateParcelCollectedByDroneButton" Content="Parcel collected by drone" Click="UpdateParcelCollectedByDroneButton_Click" Style="{StaticResource ButtonPageStyle}" />
-            <Button x:Name="UpdateParcelDeleiveredByDroneButton" Content="Parcel delivered by drone" Click="UpdateParcelDeleiveredByDroneButton_Click" ClickMode="Release" Style="{StaticResource ButtonPageStyle}" />
-            <Button x:Name="DroneListGoBackButton" Content="Go back to the list" Click="DroneListGoBackButton_Click" ClickMode="Release" Style="{StaticResource ButtonPageStyle}" />
-        </StackPanel>
-        <StackPanel x:Name="NewDroneEnterPanel" Grid.Row="2" Grid.Column="2">
+            <Button x:Name="DroneEntityAddButton" Content="Add" Click="DroneEntityAddButton_Click" Style="{StaticResource ButtonPageStyle}" HorizontalAlignment="Left" Margin="50,10"/>
+            <StackPanel x:Name="UpdateButtonsPanel" Margin="0,50">
+                <StackPanel Orientation="Horizontal">
+                    <Button x:Name="UpdateDroneToBeChargedButton"  Content="Send drone to be charged" Click="UpdateDroneToBeChargedButton_Click" Style="{StaticResource ButtonPageStyle}" />
+                    <Button x:Name="UpdateReleaseDroneFromChargeButton" Content="Release Drone from charge"  Click="UpdateReleaseDroneFromChargeButton_Click" Style="{StaticResource ButtonPageStyle}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Button x:Name="UpdateParcelAssignToDroneButton" Content="Assign parcel to drone" Click="UpdateParcelAssignToDroneButton_Click" Style="{StaticResource ButtonPageStyle}"/>
+                    <Button x:Name="UpdateParcelCollectedByDroneButton" Content="Parcel collected by drone" Click="UpdateParcelCollectedByDroneButton_Click" Style="{StaticResource ButtonPageStyle}" />
+                    <Button x:Name="UpdateParcelDeleiveredByDroneButton" Content="Parcel delivered by drone" Click="UpdateParcelDeleiveredByDroneButton_Click" ClickMode="Release" Style="{StaticResource ButtonPageStyle}" />
+                </StackPanel>
+            </StackPanel>
             
+        </StackPanel>
+
+        <Button x:Name="DroneListGoBackButton" Content="Go back to the list" Click="DroneListGoBackButton_Click" ClickMode="Release"
+                Style="{StaticResource ButtonPageStyle}" Grid.Row="2" Grid.Column="2" VerticalAlignment="Top"/>
+
+
+        <!--<StackPanel x:Name="NewDroneEnterPanel" Grid.Row="2" Grid.Column="2">
             <TextBox   x:Name="EnterModelNameBox" TextChanged="EnterModelNameBox_TextChanged" Style="{StaticResource TextBoxStyle}" />
-            <ComboBox  x:Name="WeightSelector" SelectionChanged="WeightSelector_SelectionChanged" Style="{StaticResource ComboBoxStyle}"/>
-            <ComboBox  x:Name="StationSelector"  SelectionChanged="StationSelector_SelectionChanged" Style="{StaticResource ComboBoxStyle}"/>
-            <Button x:Name="DroneEntityAddButton" Content="Add" Click="DroneEntityAddButton_Click" Style="{StaticResource ButtonPageStyle}" />
-        </StackPanel>
-        <StackPanel x:Name="InvalidTextPanel" Grid.Row="2" Grid.Column="3">
-            <TextBox   x:Name="UpdateNameBlock" Text="" Style="{StaticResource TextBoxStyle}"/>
-            <TextBlock x:Name="InvalidDroneIDBlock" Text=" * please enter a valid number" Style="{StaticResource TextBlockInvalidStyle}"/>
-            <TextBlock x:Name="InvalidStationIDBlock" Style="{StaticResource TextBlockInvalidStyle}"/>
-            <TextBlock x:Name="InvalidBatteryToCompleteDeliveryBlock" Style="{StaticResource TextBlockInvalidStyle}"/>
-            <TextBlock x:Name="ExistsDroneIDBlock" Style="{StaticResource TextBlockInvalidStyle}"/>
-        </StackPanel>
+            
+            
+            
+        </StackPanel>-->
     </Grid>
 </Page>

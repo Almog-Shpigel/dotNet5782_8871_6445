@@ -398,6 +398,61 @@ namespace DalObject
                     return true;
             return false;
         }
+
+        public void AddNewDrone(Drone drone, Station station)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateDroneName(Drone drone)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateStationName(Station station)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateCustomerName(Customer customer)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateCustomerPhone(Customer customer)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateStationSlots(Station station)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateDroneToBeAvailable(Drone drone)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateDroneToBeCharge(Drone drone, Station station, DateTime? start)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateParcelInDelivery(Drone drone)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateParcelCollected(Drone drone)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void PairParcelToDrone(Parcel parcel, Drone drone)
+        {
+            throw new NotImplementedException();
+        }
         #endregion
     }
 }

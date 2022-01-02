@@ -20,7 +20,6 @@ namespace PL
         private CustomerPage customerPage;
         private ParcelListPage parcelListPage;
         private ParcelPage parcelPage;
-        private MapWindow mapWindow;
 
         public MainWindow()
         {
@@ -150,7 +149,7 @@ namespace PL
                 customerPage.ParcelSentListViewFromCustomer.MouseDoubleClick += ParcelSentListViewFromCustomer_MouseDoubleClick;
                 customerPage.ParcelReceivedListViewFromCustomer.MouseDoubleClick += ParcelReceiveListViewFromCustomer_MouseDoubleClick;
                 Content = customerPage;
-            };
+            }
         }
 
         private void ParcelSentListViewFromCustomer_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -242,15 +241,28 @@ namespace PL
                     //    return;
                 }
             }
-            if(rbManager.IsChecked.Value)
+            if (rbManager.IsChecked.Value)
             {
                 LoginPanel.Visibility = Visibility.Collapsed;
                 ManagerPanel.Visibility = Visibility.Visible;
             }
             else
             {
-
+                CustomerToList customer = new(id);
+                if (customer != null)
+                {
+                    customerPage = new(customer);
+                    customerPage.CustomerListGoBackButton.Visibility = Visibility.Collapsed;
+                    //customerPage.ParcelSentListViewFromCustomer.MouseDoubleClick += ParcelSentListViewFromCustomer_MouseDoubleClick;
+                    //customerPage.ParcelReceivedListViewFromCustomer.MouseDoubleClick += ParcelReceiveListViewFromCustomer_MouseDoubleClick;
+                    Content = customerPage;
+                }
             }
+        }
+
+        private void RegisterLink_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

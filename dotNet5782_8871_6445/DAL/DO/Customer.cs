@@ -10,7 +10,7 @@ namespace DO
         public double Longitude { get; set; }
 
 
-        public Customer(int id = 0, string name = "", string phone = "", double latitude = 0.0, double longitude = 0.0);
+        public Customer(int id = 0, string name = "", string phone = "", double latitude = 0.0, double longitude = 0.0)
         {
             ID = id;
             Name = name;

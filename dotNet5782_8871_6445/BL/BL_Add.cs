@@ -25,32 +25,37 @@ namespace BlApi
             Data.AddNewStation(StationDO);
         }
        
-        public void AddNewDrone(DroneBL DroneBL, int StationID) ///Reciving a drone with name,id and weight, and a staion id to sent it to charge there
+        public void AddNewDrone(DroneBL DroneBL, int StationID)         ///Reciving a drone with name, id and weight, and a staion id to sent it to charge there
         {
             if (DroneBL.ID is < 100000 or > 999999)
-                throw new InvalidIDException("Drone ID has to have 6 positive digits.");
+                throw new InvalidInputException("Drone ID has to have 6 positive digits.");
+            Station station;
+            try
+            {
+                station = Data.GetStation(StationID);
+            }
+            catch (StationExistException ex)
+            {
+                throw new InvalidInputException("Wrong id. ", ex);
+            }
+            if (station.ChargeSlots <= 0)
+                throw new InvalidInputException("There are no slots available at this station.");
+            DroneBL.CurrentLocation = new(station.Latitude, station.Longitude);
             DroneBL.BatteryStatus = GetRandBatteryStatus(20, 41);
             DroneBL.Status = DroneStatus.Charging;
-            IEnumerable<Station> stations = Data.GetStations(station => true);
-            foreach (Station station in stations)
-                if (station.ID == StationID)
-                {
-                    if (station.ChargeSlots <= 0)
-                        throw new InvalidSlotsException("There are no slots available at this station.");
-                    DroneBL.CurrentLocation = new(station.Latitude, station.Longitude);
-                }
+            
             Drone NewDrone = new Drone(DroneBL.ID, DroneBL.Model, DroneBL.MaxWeight);
             try
             {
-                Data.AddNewDrone(NewDrone, StationID);              ///Sending the new drone to the data
+                Data.AddNewDrone(NewDrone, station);              ///Sending the new drone to the data
             }
             catch (DroneExistException exp)
             {
-                throw new DroneExistExceptionBL(exp.Message);
+                throw new InvalidInputException(exp.Message);
             }
-            catch(StationExistException exp)
+            catch (StationExistException exp)
             {
-                throw new StationExistExceptionBL(exp.Message);
+                throw new (exp.Message);
             }
             
             DroneToList NewDroneToList = new DroneToList(DroneBL.ID, DroneBL.Model, DroneBL.MaxWeight, DroneBL.BatteryStatus, DroneBL.Status, DroneBL.CurrentLocation, 0);
@@ -61,13 +66,13 @@ namespace BlApi
         public void AddNewCustomer(CustomerBL customer)
         {
             if (customer.ID < 100000000 || customer.ID > 999999999)
-                throw new InvalidIDException("Invalid customer ID number");
+                throw new InvalidInputException("Invalid customer ID number");
             char str = customer.Phone[0];
             bool success = int.TryParse(customer.Phone, out int PhoneNumber);
             if (!success || str != '0' || PhoneNumber < 500000000 || PhoneNumber > 599999999) ///Checking if the number starts with a '05' and contain 10 numbers
-                throw new InvalidPhoneNumberException("Invalid phone number");
+                throw new InvalidInputException("Invalid phone number");
             if ((int)customer.Location.Latitude != 31 || (int)customer.Location.Longitude != 35)
-                throw new OutOfRangeLocationException("The location is outside of Jerusalem"); ///We assume for now that all the locations
+                throw new InvalidInputException("The location is outside of Jerusalem"); ///We assume for now that all the locations
             Customer NewCustomer = new Customer(customer.ID, customer.Name, customer.Phone, customer.Location.Latitude, customer.Location.Longitude);
             Data.AddNewCustomer(NewCustomer);
         }
@@ -75,9 +80,9 @@ namespace BlApi
         public void AddNewParcel(ParcelBL parcel)
         {
             if (parcel.Sender.ID < 100000000 || parcel.Sender.ID > 999999999)
-                throw new InvalidIDException("Invalid sender ID number");
+                throw new InvalidInputException("Invalid sender ID number");
             if (parcel.Target.ID < 100000000 || parcel.Target.ID > 999999999)
-                throw new InvalidIDException("Invalid receiver ID number");
+                throw new InvalidInputException("Invalid receiver ID number");
             Parcel ParcelDO = new Parcel(parcel.ID, parcel.Sender.ID, parcel.Target.ID, 0, parcel.Weight, parcel.Priority, parcel.TimeRequested, parcel.Scheduled, parcel.PickedUp, parcel.Delivered);
             Data.AddNewParcel(ParcelDO);
         }

@@ -303,7 +303,7 @@ namespace BlApi
                 if (drone.ID == droneID)
                     return new DroneInParcel(drone.ID, drone.BatteryStatus, drone.CurrentLocation);
             }
-            throw new DroneExistExceptionBL();
+            throw new InvalidInputException();
         }
 
         public string GetDistanceFromStation(double latitude, double longitude, int StationID)

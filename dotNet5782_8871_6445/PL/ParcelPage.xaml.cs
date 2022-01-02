@@ -16,7 +16,6 @@ namespace PL
     public partial class ParcelPage : Page
     {
         private BlApi.IBL IBL = BlFactory.GetBl();
-        private ParcelToList Parcel;
         private ParcelBL ParcelBL;
 
         public ParcelPage(RoutedEventArgs e)

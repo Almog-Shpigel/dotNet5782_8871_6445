@@ -26,7 +26,6 @@ namespace PL
         private IBL IBL = BlFactory.GetBl();
         private CustomerBL CustomerBL;
         private CustomerToList Customer;
-        private RoutedEventArgs e;
 
         public CustomerPage(CustomerToList customer) //update ctor
         {

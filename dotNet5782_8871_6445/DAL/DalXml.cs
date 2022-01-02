@@ -250,6 +250,56 @@ namespace DAL
                    select drone;
         }
 
+        public void AddNewStation(Station station)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AddNewCustomer(Customer customer)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AddNewParcel(Parcel parcel)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AddNewDrone(Drone drone, Station station)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Drone GetDrone(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Station GetStation(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Customer GetCustomer(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Parcel GetParcel(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public double[] GetBatteryUsed()
+        {
+            throw new NotImplementedException();
+        }
+
+        public DroneCharge GetDroneCharge(int droneID)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
 
         #region Calc

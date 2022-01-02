@@ -205,19 +205,19 @@ namespace PL
                 IDBox.Foreground = Brushes.Red;
                 //DroneEntityAddButton.IsEnabled = false;
             }
-            catch (DroneExistExceptionBL exp)
+            catch (InvalidInputException exp)
             {
                 InvalidDroneIDBlock.Text = exp.Message;
                 InvalidDroneIDBlock.Visibility = Visibility.Visible;
                 IDBox.Foreground = Brushes.Red;
                 //DroneEntityAddButton.IsEnabled = false;
             }
-            catch (StationExistExceptionBL exp)
-            {
-                InvalidStationIDBlock.Text = exp.Message;
-                InvalidStationIDBlock.Visibility = Visibility.Visible;
-                //DroneEntityAddButton.IsEnabled = false;
-            }
+            //catch ( exp)
+            //{
+            //    InvalidStationIDBlock.Text = exp.Message;
+            //    InvalidStationIDBlock.Visibility = Visibility.Visible;
+            //    //DroneEntityAddButton.IsEnabled = false;
+            //}
         }
 
         private void DroneListGoBackButton_Click(object sender, RoutedEventArgs e)

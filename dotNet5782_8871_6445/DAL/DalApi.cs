@@ -13,20 +13,20 @@ namespace DalApi
         public void AddNewStation(Station station);
         public void AddNewCustomer(Customer customer);
         public void AddNewParcel(Parcel parcel);
-        public void AddNewDrone(Drone drone , int StationID);
+        public void AddNewDrone(Drone drone , Station station);
         #endregion
 
         #region Update
-        public void UpdateDroneName(int id, string model);
-        public void UpdateStationName(int stationID, string name);
-        public void UpdateCustomerName(int id, string name);
-        public void UpdateCustomerPhone(int id, int phone);
-        public void UpdateStationSlots(int stationID, int slots);
-        public void UpdateDroneToBeAvailable(int DroneID);
-        public void UpdateDroneToBeCharge(int DroneID, int StationID, DateTime? start);
-        public void UpdateParcelInDelivery(int idNum);
-        public void UpdateParcelCollected(int id);
-        public void PairParcelToDrone(int ParcelID, int DroneID);
+        public void UpdateDroneName(Drone drone);
+        public void UpdateStationName(Station station);
+        public void UpdateCustomerName(Customer customer);
+        public void UpdateCustomerPhone(Customer customer);
+        public void UpdateStationSlots(Station station);
+        public void UpdateDroneToBeAvailable(Drone drone);
+        public void UpdateDroneToBeCharge(Drone drone, Station station, DateTime? start);
+        public void UpdateParcelInDelivery(Drone drone);
+        public void UpdateParcelCollected(Drone drone);
+        public void PairParcelToDrone(Parcel parcel, Drone drone);
         #endregion
 
         #region Get
@@ -41,7 +41,7 @@ namespace DalApi
         public Parcel GetParcel(int id);
         public double[] GetBatteryUsed();
         DroneCharge GetDroneCharge(int droneID);
-        void DeleteStation(int stationID);
+
         #endregion
     }
 }

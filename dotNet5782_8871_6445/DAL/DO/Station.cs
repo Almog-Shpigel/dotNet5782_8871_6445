@@ -6,7 +6,7 @@ namespace DO
 {
     public struct Station
     {
-        public int ID { get; set; }
+        public int? ID { get; set; }
         public string Name { get; set; }
         public int ChargeSlots { get; set; }
         public double Latitude { get; set; }

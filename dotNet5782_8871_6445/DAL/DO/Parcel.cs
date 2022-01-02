@@ -5,7 +5,7 @@ namespace DO
 {
     public struct Parcel
     {
-        public int ID { get; set; }
+        public int? ID { get; set; }
         public int SenderID { get; set; }
         public int TargetID { get; set; }
         public int DroneID { get; set; }
@@ -16,10 +16,10 @@ namespace DO
         public DateTime? PickedUp { get; set; }
         public DateTime? Delivered { get; set; }
 
-        public Parcel(int id, int sender, int target, int drone,
-                        WeightCategories weight, Priorities priority,
-                        DateTime? requested, DateTime? schedued,
-                        DateTime? pickedUp, DateTime? delivered)
+        public Parcel(int id = 0, int sender = 0, int target = 0, int drone = 0,
+                        WeightCategories weight = WeightCategories.Light, Priorities priority = Priorities.Regular,
+                        DateTime? requested = null, DateTime? schedued = null,
+                        DateTime? pickedUp = null, DateTime? delivered = null)
         {
             ID = id;
             SenderID = sender;

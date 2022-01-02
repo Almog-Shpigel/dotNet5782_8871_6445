@@ -16,7 +16,7 @@ namespace DAL
                 case "DalObject":
                     return DalObject.DalObject.GetDalObject();          //Needs to return DalObject type
                 case "DalXml":
-                    return null;                    //Needs to return DalXml type
+                    return DalXml.Instance;                             //Needs to return DalXml type
                 default:
                     throw new InvalidOperationException();
             }

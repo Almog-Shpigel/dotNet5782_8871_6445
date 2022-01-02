@@ -2,11 +2,11 @@
 {
     public struct Drone
     {
-        public int ID { get; set; }
+        public int? ID { get; set; }
         public string Model { get; set; }
         public WeightCategories MaxWeight { get; set; }
 
-        public Drone(int id, string model, WeightCategories maxWeight)
+        public Drone(int id = 0, string model = "", WeightCategories maxWeight = WeightCategories.Light)
         {
             ID = id;
             Model = model;

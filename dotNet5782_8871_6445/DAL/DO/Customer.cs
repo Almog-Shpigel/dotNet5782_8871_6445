@@ -3,14 +3,14 @@ namespace DO
 {
     public struct Customer
     {
-        public int ID { get; set; }
+        public int? ID { get; set; }
         public string Name { get; set; }
         public string Phone { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
-            
 
-        public Customer(int id, string name, string phone,double latitude, double longitude)
+
+        public Customer(int id = 0, string name = "", string phone = "", double latitude = 0.0, double longitude = 0.0);
         {
             ID = id;
             Name = name;

@@ -48,19 +48,36 @@ namespace DAL
             XmlTools.SaveListToXmlSerializer(ListDrones, dronesPath);
         }
 
-        public void UpdateStationName(Station newStation)
+        public void UpdateStationName(Station station)
         {
             List<Station> ListStations = XmlTools.LoadListFromXmlSerializer<Station>(stationsPath);
-            Station oldStation = ListStations.Find(s => s.ID == newStation.ID);
+            Station oldStation = ListStations.Find(s => s.ID == station.ID);
 
             if (oldStation.ID != null)
             {
                 ListStations.Remove(oldStation);
-                oldStation.Name = newStation.Name;
+                oldStation.Name = station.Name;
                 ListStations.Add(oldStation);
             }
             else
-                throw new StationExistException($"Station {newStation.ID} dosen't exist in data!");
+                throw new StationExistException($"Station {station.ID} dosen't exist in data!");
+
+            XmlTools.SaveListToXmlSerializer(ListStations, stationsPath);
+        }
+        public void UpdateStationSlots(Station station)
+        {
+
+            List<Station> ListStations = XmlTools.LoadListFromXmlSerializer<Station>(stationsPath);
+            Station oldStation = ListStations.Find(s => s.ID == station.ID);
+
+            if (oldStation.ID != null)
+            {
+                ListStations.Remove(oldStation);
+                oldStation.ChargeSlots = station.ChargeSlots;
+                ListStations.Add(oldStation);
+            }
+            else
+                throw new StationExistException($"Station {station.ID} dosen't exist in data!");
 
             XmlTools.SaveListToXmlSerializer(ListStations, stationsPath);
         }
@@ -96,13 +113,23 @@ namespace DAL
                 throw new CustomerExistException($"Customer {customer.ID} dosen't exist in data!");
             XmlTools.SaveListToXmlSerializer(ListCustomers, customersPath);
         }
-        public void UpdateStationSlots(Station station)
-        {
-
-        }
+       
         public void UpdateDroneToBeAvailable(Drone drone)
         {
+            Drone oldDrone = GetDrone(drone.ID);
 
+            List<DroneCharge> ListDronesCharge = XmlTools.LoadListFromXmlSerializer<DroneCharge>(droneChargePath);
+            DroneCharge droneCharge = ListDronesCharge.Find(d => d.DroneID == oldDrone.ID);
+            ListDronesCharge.Remove(droneCharge);
+
+            List<Station> ListStations = XmlTools.LoadListFromXmlSerializer<Station>(stationsPath);
+            Station station = ListStations.Find(s => s.ID == droneCharge.StationID);
+            ListStations.Remove(station);
+            station.ChargeSlots++;
+            ListStations.Add(station);
+
+            XmlTools.SaveListToXmlSerializer(ListStations, stationsPath);
+            XmlTools.SaveListToXmlSerializer(ListDronesCharge, droneChargePath);            
         }
         public void UpdateDroneToBeCharge(Drone drone, Station station, DateTime? start)
         {
@@ -134,7 +161,7 @@ namespace DAL
         //    return BatteryUsed;
         //}
 
-        public Drone GetDrone(int DroneID)
+        public Drone GetDrone(int? DroneID)
         {
             List<Drone> ListDrones = XmlTools.LoadListFromXmlSerializer<Drone>(dronesPath);
             Drone drone = ListDrones.Find(drone => DroneID == drone.ID);
@@ -144,7 +171,7 @@ namespace DAL
                 throw new CustomerExistException($"Drone {DroneID} dosen't exist in data!");
         }
 
-        public Parcel GetParcel(int ParcelID)
+        public Parcel GetParcel(int? ParcelID)
         {
             List<Parcel> ListParcels = XmlTools.LoadListFromXmlSerializer<Parcel>(parcelsPath);
             Parcel parcel = ListParcels.Find(parcel => ParcelID == parcel.ID);
@@ -154,7 +181,7 @@ namespace DAL
                 throw new CustomerExistException($"Parcel {ParcelID} dosen't exist in data!");
         }
 
-        public Station GetStation(int StationID)
+        public Station GetStation(int? StationID)
         {
             List<Station> ListStation = XmlTools.LoadListFromXmlSerializer<Station>(stationsPath);
             Station station = ListStation.Find(station => StationID == station.ID);
@@ -164,7 +191,7 @@ namespace DAL
                 throw new CustomerExistException($"Station {StationID} dosen't exist in data!");
         }
 
-        public Customer GetCustomer(int CustomerID)
+        public Customer GetCustomer(int? CustomerID)
         {
             List<Customer> ListCustomer = XmlTools.LoadListFromXmlSerializer<Customer>(customersPath);
             Customer customer = ListCustomer.Find(customer => CustomerID == customer.ID);
@@ -174,7 +201,7 @@ namespace DAL
                 throw new CustomerExistException($"Customer {CustomerID} dosen't exist in data!");
         }
 
-        public DroneCharge GetDroneCharge(int DroneChargeID)
+        public DroneCharge GetDroneCharge(int? DroneChargeID)
         {
             List<DroneCharge> ListDroneCharge = XmlTools.LoadListFromXmlSerializer<DroneCharge>(droneChargePath);
             DroneCharge drone = ListDroneCharge.Find(drone => DroneChargeID == drone.DroneID);

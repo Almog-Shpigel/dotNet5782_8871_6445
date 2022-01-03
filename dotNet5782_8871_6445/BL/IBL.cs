@@ -61,7 +61,6 @@ namespace BlApi
         /// <param name="StationID"></param>
         /// <param name="NewStationName"></param>
         void UpdateStationSlots(int StationID, int NewNumberSlots , int CurrentlyCharging);
-        void DeleteStation(int iD);
 
         public void UpdateCustomerName(int CustomerID, string NewCustomerName);
         public void UpdateCustomerPhone(int CustomerID, int NewCustomerPhone);

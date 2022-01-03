@@ -57,7 +57,7 @@
         <StackPanel x:Name="UpdateStationButtons" Grid.Row="2" Grid.Column="4">
             <Button x:Name="UpdateNameButton" Content="Update name" Click="UpdateNameButton_Click" Style="{StaticResource ButtonPageStyle}" />
             <Button x:Name="UpdateChargeSlotsButton" Content="Update total charge slots" Click="UpdateChargeSlotsButton_Click" Style="{StaticResource ButtonPageStyle}" />
-            <Button x:Name="UpdateDeleteStationButton" Content="Delete station" Background="Red" Click="UpdateDeleteStationButton_Click" Style="{StaticResource ButtonPageStyle}" />
+            <!--<Button x:Name="UpdateDeleteStationButton" Content="Delete station" Background="Red" Click="UpdateDeleteStationButton_Click" Style="{StaticResource ButtonPageStyle}" />-->
             <Button x:Name="StationListGoBackButton" Content="Go back" Click="StationListGoBackButton_Click" Style="{StaticResource ButtonPageStyle}"/>
         </StackPanel>
     </Grid>

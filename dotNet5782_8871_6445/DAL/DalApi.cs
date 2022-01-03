@@ -13,7 +13,7 @@ namespace DalApi
         public void AddNewStation(Station station);
         public void AddNewCustomer(Customer customer);
         public void AddNewParcel(Parcel parcel);
-        public void AddNewDrone(Drone drone , Station station);
+        public void AddNewDrone(Drone drone, Station station);
         #endregion
 
         #region Update

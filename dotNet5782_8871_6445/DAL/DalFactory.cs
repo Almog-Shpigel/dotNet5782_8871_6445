@@ -9,7 +9,7 @@ namespace DAL
 {
     public static class DalFactory
     {
-        public static DalApi.IDal GetDal(string DalType)
+        public static IDal GetDal(string DalType)
         {
             switch(DalType)
             {

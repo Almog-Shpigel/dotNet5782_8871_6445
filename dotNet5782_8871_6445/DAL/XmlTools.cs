@@ -11,7 +11,7 @@ namespace DAL
 {
     class XmlTools
     {
-        static string dir = @"xml\";
+        static string dir = @"..\..\..\..\Data\";
 
         static XmlTools()
         {
@@ -20,7 +20,7 @@ namespace DAL
         }
 
         #region SaveLoadWithXmlSerializer
-        public static void SaveListToXmlSerializer<T>(List<T> list,string filePath)
+        public static void SaveListToXmlSerializer<T>(List<T> list, string filePath)
         {
             try
             {

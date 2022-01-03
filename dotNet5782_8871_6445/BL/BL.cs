@@ -11,18 +11,22 @@ namespace BlApi
 {
     public partial class BL : IBL
     {
-        internal static readonly BL Instance = new();
-        private DalApi.IDal Data;
-        private List<DroneToList> DroneList;
-        private Double[] BatteryUsed;
+        internal static readonly BL instance = new();
+
+        static BL() { }
 
         /// <summary>
         /// The cunstrucator will initialize all the drones saved in the data layer, saving them as DroneToList objects and saving them in a list located in BL
         /// </summary>
-        public static BL GetBL() { return Instance; }
+        public static BL Instance { get => instance; }
+
+        private DalApi.IDal Data;
+        private List<DroneToList> DroneList;
+        private Double[] BatteryUsed;
+
         private BL()
         {
-            Data = DalFactory.GetDal("DalObject");
+            Data = DalFactory.GetDal("DalXml");
             DroneList = new();
             BatteryUsed = Data.GetBatteryUsed();
 
@@ -92,7 +96,8 @@ namespace BlApi
                 case DroneStatus.Charging:
                     NewDrone.Status = DroneStatus.Charging;
                     RandomStation = rand.Next(0, AllAvailableStations.Count());
-                    Data.UpdateDroneToBeCharge(NewDrone.ID, AllAvailableStations.ElementAt(RandomStation).ID, DateTime.Now);
+                    Drone drone = new(NewDrone.ID);
+                    Data.UpdateDroneToBeCharge(drone, AllAvailableStations.ElementAt(RandomStation), DateTime.Now);
                     NewDrone.CurrentLocation = new(AllAvailableStations.ElementAt(RandomStation).Latitude, AllAvailableStations.ElementAt(RandomStation).Longitude);
                     NewDrone.BatteryStatus = GetRandBatteryStatus(0, 21);
                     break;

@@ -101,25 +101,25 @@ namespace PL
             }
         }
 
-        private void UpdateDeleteStationButton_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBoxResult res = MessageBox.Show("Are you sure you want to delete selected station?", "Verification", MessageBoxButton.YesNo, MessageBoxImage.Warning);
-            if (res == MessageBoxResult.No)
-                return;
-            MessageBox.Show("This method is under construction!", "TBD", MessageBoxButton.OKCancel, MessageBoxImage.Asterisk);
-            MessageBox.Show("This method is under construction!", "TBD", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-            MessageBox.Show("This method is under construction!", "TBD", MessageBoxButton.YesNo, MessageBoxImage.Stop);
-            MessageBox.Show("This method is under construction!", "TBD", MessageBoxButton.YesNoCancel, MessageBoxImage.Hand);
-            try
-            {
-                IBL.DeleteStation(StationBL.ID);
-            }
-            catch (Exception exp)
-            {
-                InvalidInputBlock.Text = exp.Message;
-                InvalidInputBlock.Visibility = Visibility.Visible;
-            }
-        }
+        //private void UpdateDeleteStationButton_Click(object sender, RoutedEventArgs e)
+        //{
+        //    MessageBoxResult res = MessageBox.Show("Are you sure you want to delete selected station?", "Verification", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+        //    if (res == MessageBoxResult.No)
+        //        return;
+        //    MessageBox.Show("This method is under construction!", "TBD", MessageBoxButton.OKCancel, MessageBoxImage.Asterisk);
+        //    MessageBox.Show("This method is under construction!", "TBD", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+        //    MessageBox.Show("This method is under construction!", "TBD", MessageBoxButton.YesNo, MessageBoxImage.Stop);
+        //    MessageBox.Show("This method is under construction!", "TBD", MessageBoxButton.YesNoCancel, MessageBoxImage.Hand);
+        //    try
+        //    {
+        //        IBL.DeleteStation(StationBL.ID);
+        //    }
+        //    catch (Exception exp)
+        //    {
+        //        InvalidInputBlock.Text = exp.Message;
+        //        InvalidInputBlock.Visibility = Visibility.Visible;
+        //    }
+        //}
 
         private void EnterStationIDBox_TextChanged(object sender, TextChangedEventArgs e)
         {

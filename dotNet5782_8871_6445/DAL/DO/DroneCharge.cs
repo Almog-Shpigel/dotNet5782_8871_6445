@@ -7,7 +7,7 @@ namespace DO
         public int StationID { get; set; }
         public DateTime? Start { get; set; }     /// Yair recommended we'll add the time the drone started charging.
 
-        public DroneCharge(int droneID = 0, int? stationID = null, DateTime? start = null)
+        public DroneCharge(int droneID = 0, int stationID = 0, DateTime? start = null)
         {
             DroneID = droneID;
             StationID = stationID;

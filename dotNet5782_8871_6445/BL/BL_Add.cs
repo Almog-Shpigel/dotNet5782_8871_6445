@@ -16,15 +16,22 @@ namespace BlApi
         public void AddNewStation(StationBL StationBO)
         {
             if (StationBO.ID is < 100000 or > 999999)
-                throw new InvalidIDException("Invalid station ID number. Must have 6 digits");
+                throw new InvalidInputException("Invalid station ID number. Must have 6 digits");
             if (StationBO.ChargeSlots < 0)
-                throw new InvalidSlotsException("Charge slots can't be a negative number");
+                throw new InvalidInputException("Charge slots can't be a negative number");
             if ((int)StationBO.Location.Latitude != 31 || (int)StationBO.Location.Longitude != 35)
-                throw new OutOfRangeLocationException("The location is outside of Jerusalem"); ///We assume for now that all the locations are inside Jerusalem
+                throw new InvalidInputException("The location is outside of Jerusalem");                    ///We assume for now that all the locations are inside Jerusalem
             Station StationDO = new(StationBO.ID, StationBO.Name, StationBO.ChargeSlots, StationBO.Location.Latitude, StationBO.Location.Longitude);
-            Data.AddNewStation(StationDO);
+            try
+            {
+                Data.AddNewStation(StationDO);
+            }
+            catch (StationExistException ex)
+            {
+                throw new InvalidInputException("Invalid id. ", ex);
+            }
         }
-       
+
         public void AddNewDrone(DroneBL DroneBL, int StationID)         ///Reciving a drone with name, id and weight, and a staion id to sent it to charge there
         {
             if (DroneBL.ID is < 100000 or > 999999)
@@ -36,36 +43,35 @@ namespace BlApi
             }
             catch (StationExistException ex)
             {
-                throw new InvalidInputException("Wrong id. ", ex);
+                throw new InvalidInputException("Invalid id. ", ex);
             }
             if (station.ChargeSlots <= 0)
                 throw new InvalidInputException("There are no slots available at this station.");
             DroneBL.CurrentLocation = new(station.Latitude, station.Longitude);
             DroneBL.BatteryStatus = GetRandBatteryStatus(20, 41);
             DroneBL.Status = DroneStatus.Charging;
-            
-            Drone NewDrone = new Drone(DroneBL.ID, DroneBL.Model, DroneBL.MaxWeight);
+
+            Drone NewDrone = new(DroneBL.ID, DroneBL.Model, DroneBL.MaxWeight);
             try
             {
                 Data.AddNewDrone(NewDrone, station);              ///Sending the new drone to the data
             }
-            catch (DroneExistException exp)
+            catch (DroneExistException ex)
             {
-                throw new InvalidInputException(exp.Message);
+                throw new InvalidInputException("Invalid id. ", ex);
             }
-            catch (StationExistException exp)
+            catch (StationExistException ex)
             {
-                throw new (exp.Message);
+                throw new InvalidInputException("Invalid id. ", ex);
             }
-            
+
             DroneToList NewDroneToList = new DroneToList(DroneBL.ID, DroneBL.Model, DroneBL.MaxWeight, DroneBL.BatteryStatus, DroneBL.Status, DroneBL.CurrentLocation, 0);
             DroneList.Add(NewDroneToList);      ///Saving a logic version of the new drone
-            
         }
-        
+
         public void AddNewCustomer(CustomerBL customer)
         {
-            if (customer.ID < 100000000 || customer.ID > 999999999)
+            if (customer.ID is < 100000000 or > 999999999)
                 throw new InvalidInputException("Invalid customer ID number");
             char str = customer.Phone[0];
             bool success = int.TryParse(customer.Phone, out int PhoneNumber);
@@ -73,10 +79,17 @@ namespace BlApi
                 throw new InvalidInputException("Invalid phone number");
             if ((int)customer.Location.Latitude != 31 || (int)customer.Location.Longitude != 35)
                 throw new InvalidInputException("The location is outside of Jerusalem"); ///We assume for now that all the locations
-            Customer NewCustomer = new Customer(customer.ID, customer.Name, customer.Phone, customer.Location.Latitude, customer.Location.Longitude);
-            Data.AddNewCustomer(NewCustomer);
+            Customer NewCustomer = new(customer.ID, customer.Name, customer.Phone, customer.Location.Latitude, customer.Location.Longitude);
+            try
+            {
+                Data.AddNewCustomer(NewCustomer);
+            }
+            catch (CustomerExistException ex)
+            {
+                throw new InvalidInputException("Invalid id. ", ex);
+            }
         }
-       
+
         public void AddNewParcel(ParcelBL parcel)
         {
             if (parcel.Sender.ID < 100000000 || parcel.Sender.ID > 999999999)
@@ -84,7 +97,14 @@ namespace BlApi
             if (parcel.Target.ID < 100000000 || parcel.Target.ID > 999999999)
                 throw new InvalidInputException("Invalid receiver ID number");
             Parcel ParcelDO = new Parcel(parcel.ID, parcel.Sender.ID, parcel.Target.ID, 0, parcel.Weight, parcel.Priority, parcel.TimeRequested, parcel.Scheduled, parcel.PickedUp, parcel.Delivered);
-            Data.AddNewParcel(ParcelDO);
+            try
+            {
+                Data.AddNewParcel(ParcelDO);
+            }
+            catch (ParcelExistException ex)
+            {
+                throw new InvalidInputException("Invalid id. ", ex);
+            }
         }
     }
 }

@@ -6,12 +6,11 @@ namespace DO
 {
     public struct Station
     {
-        public int? ID { get; set; }
+        public int ID { get; set; }
         public string Name { get; set; }
         public int ChargeSlots { get; set; }
         public double Latitude { get; set; }
-        public double Longitude { get; set; }
-            
+        public double Longitude { get; set; }  
 
         public Station(int id = 0, string name = "", int slots = 0, double latitude = 0, double longitude = 0)
         {
@@ -21,6 +20,7 @@ namespace DO
             Longitude = longitude;
             Latitude = latitude;
         }
+
         public override string ToString()
         {
             string sLong = ConvertCoordinates(Longitude), sLatit = ConvertCoordinates(Latitude);    /// Converts the coordinates to be in base 60 (bonus).
@@ -28,6 +28,7 @@ namespace DO
                 $"Charge slots available: {ChargeSlots}\n" +
                 $"Location: (" + sLatit + "N, " + sLong + "E)");
         }
+
         public string ConvertCoordinates(double number)
         {
             int result, remainder;

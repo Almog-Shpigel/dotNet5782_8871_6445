@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace DalObject
 {
-    internal class DalObject : DalApi.IDal
+    internal class DalObject : IDal
     {
         internal static readonly DalObject Instance = new();
 
@@ -21,18 +21,10 @@ namespace DalObject
 
         public static DalObject GetDalObject() { return Instance; }
 
-        private bool DroneIsCharging(int DroneID)
-        {
-            foreach (DroneCharge drone in GetDroneCharge(droneCharge => true))
-                if (drone.DroneID == DroneID)
-                    return true;
-            return false;
-        }
-
         #region Add
         public void AddNewStation(Station station)
         {
-            if (StationExist(station.ID))
+            if (DataSource.stations.Any(s=>s.ID == station.ID))
                 throw new StationExistException("The station ID exists already in the data!!");
             station.Name = "Station " + station.Name;
             DataSource.stations.Add(station);
@@ -40,96 +32,105 @@ namespace DalObject
 
         public void AddNewCustomer(Customer customer)
         {
-            if(CustomerExist(customer.ID))
+            if(DataSource.customers.Any(c => c.ID == customer.ID))
                 throw new CustomerExistException("The customer ID exists already in the data!!");
             DataSource.customers.Add(customer);
         }
 
         public void AddNewParcel(Parcel parcel)
         {
-            if (!CustomerExist(parcel.SenderID))
-                throw new CustomerExistException("The sender ID dosen't exists in the data!!");
-            if (!CustomerExist(parcel.TargetID))
-                throw new CustomerExistException("The target ID dosen't exists in the data!!");
+            if (DataSource.customers.Any(c => c.ID == parcel.SenderID))
+                throw new CustomerExistException($"Customer {parcel.SenderID} dosen't exists in the data!!");
+            if (DataSource.customers.Any(c => c.ID == parcel.TargetID))
+                throw new CustomerExistException($"Customer {parcel.TargetID} dosen't exists in the data!!");
+            
             parcel.ID = 344000 + ++DataSource.Config.ParcelsCounter;
             DataSource.parcels.Add(parcel);
         }
 
-        public void AddNewDrone(Drone drone, int StationID)
+        public void AddNewDrone(Drone drone, Station station)
         {
-            if (DroneExist(drone.ID))
-                throw new DroneExistException("The drone ID exists already in the data!!");
-            if (!StationExist(StationID))
-                throw new StationExistException("The station doesn't exists in the data!!");
+            Drone newDrone = DataSource.drones.Find(d => d.ID == drone.ID);
+            Station newStation = DataSource.stations.Find(s => s.ID == station.ID);
+            if (newDrone.ID != 0)
+                throw new DroneExistException($"Drone {drone.ID} exists already in the data!!");
+            if (newStation.ID == 0)
+                throw new StationExistException($"Station {station.ID} doesn't exists in the data!!");
             DataSource.drones.Add(drone);
-            UpdateDroneToBeCharge(drone.ID, StationID, DateTime.Now);
+            UpdateDroneToBeCharge(drone, station, DateTime.Now);
         }
+
         #endregion
 
         #region Update
-        public void UpdateDroneName(int DroneID, string model)
+        public void UpdateDroneName(Drone newDrone)
         {
-            Drone drone = GetDrone(DroneID);
-            drone.Model = model;
-            for (int i = 0; i < DataSource.drones.Count; i++)
+            Drone oldDrone = DataSource.drones.Find(d => d.ID == newDrone.ID);
+            if (oldDrone.ID != 0)
             {
-                if (DataSource.drones[i].ID == drone.ID)
-                {
-                    DataSource.drones[i] = drone;
-                    break;
-                }
+                DataSource.drones.Remove(oldDrone);
+                oldDrone.Model = newDrone.Model;
+                DataSource.drones.Add(oldDrone);
+                DataSource.drones = DataSource.drones.OrderBy(d => d.ID).ToList();
             }
+            else
+                throw new DroneExistException($"Drone {newDrone.ID} doesn't exists in the data!!");
         }
 
-        public void UpdateStationName(int stationID, string name)
+        public void UpdateStationName(Station newStation)
         {
-            Station station = GetStation(stationID);
-            station.Name = name;
-            for (int i = 0; i < DataSource.stations.Count; i++)
+            Station oldStation = DataSource.stations.Find(s => s.ID == newStation.ID);
+            if (oldStation.ID != 0)
             {
-                if (DataSource.stations[i].ID == station.ID)
-                    DataSource.stations[i] = station;
+                DataSource.stations.Remove(oldStation);
+                oldStation.Name = newStation.Name;
+                DataSource.stations.Add(oldStation);
+                DataSource.stations = DataSource.stations.OrderBy(s => s.ID).ToList();
             }
+            else
+                throw new StationExistException($"Station {newStation.ID} doesn't exists in the data!!");
         }
 
-        public void UpdateCustomerName(int CustomerID, string name)
+        public void UpdateStationSlots(Station newStation)
         {
-            Customer customer = GetCustomer(CustomerID);
-            customer.Name = name;
-            for (int i = 0; i < DataSource.customers.Count; i++)
+            Station oldStation = DataSource.stations.Find(s => s.ID == newStation.ID);
+            if (oldStation.ID != 0)
             {
-                if (DataSource.customers[i].ID == customer.ID)
-                    DataSource.customers[i] = customer;
+                DataSource.stations.Remove(oldStation);
+                oldStation.ChargeSlots = newStation.ChargeSlots;
+                DataSource.stations.Add(oldStation);
+                DataSource.stations = DataSource.stations.OrderBy(s => s.ID).ToList();
             }
+            else
+                throw new StationExistException($"Station {newStation.ID} doesn't exists in the data!!");
         }
 
-        public void UpdateCustomerPhone(int CustomerID, int phone)
+        public void UpdateCustomerName(Customer newCustomer)
         {
-            Customer customer = GetCustomer(CustomerID);
-            customer.Phone = '0' + phone.ToString();
-            for (int i = 0; i < DataSource.customers.Count; i++)
+            Customer oldCustomer = DataSource.customers.Find(c => c.ID == newCustomer.ID);
+            if (oldCustomer.ID != 0)
             {
-                if (DataSource.customers[i].ID == customer.ID)
-                    DataSource.customers[i] = customer;
+                DataSource.customers.Remove(oldCustomer);
+                oldCustomer.Name = newCustomer.Name;
+                DataSource.customers.Add(oldCustomer);
+                DataSource.customers = DataSource.customers.OrderBy(c => c.ID).ToList();
             }
+            else
+                throw new CustomerExistException($"Customer {newCustomer.ID} doesn't exists in the data!!");
         }
 
-        public void UpdateStationSlots(int stationID, int slots)
+        public void UpdateCustomerPhone(Customer newCustomer)
         {
-            Station station = GetStation(stationID);
-            station.ChargeSlots = slots;
-            for (int i = 0; i < DataSource.stations.Count; i++)
+            Customer oldCustomer = DataSource.customers.Find(c => c.ID == newCustomer.ID);
+            if (oldCustomer.ID != 0)
             {
-                if (DataSource.stations[i].ID == station.ID)
-                    DataSource.stations[i] = station;
+                DataSource.customers.Remove(oldCustomer);
+                oldCustomer.Phone = newCustomer.Phone;
+                DataSource.customers.Add(oldCustomer);
+                DataSource.customers = DataSource.customers.OrderBy(c => c.ID).ToList();
             }
-        }
-        public void DeleteStation(int StationID)
-        {
-            if (!StationExist(StationID))
-                throw new StationExistException("The station doesn't exists in the data!!");
-            Station StationToBeDeleted = GetStation(StationID);
-            DataSource.stations.Remove(StationToBeDeleted);
+            else
+                throw new CustomerExistException($"Customer {newCustomer.ID} doesn't exists in the data!!");
         }
 
         public void UpdateDroneToBeAvailable(int DroneID)
@@ -160,30 +161,21 @@ namespace DalObject
             }
         }
 
-        public void UpdateDroneToBeCharge(int DroneID, int StationID, DateTime? start)
+        public void UpdateDroneToBeCharge(Drone drone, Station station, DateTime? start)
         {
-            if (!DroneExist(DroneID))
-                throw new DroneExistException("The drone dosen't exists in the data!!");
-
-            if (!StationExist(StationID))
-                throw new StationExistException("The station dosen't exists in the data!!");
-
-            if (DroneIsCharging(DroneID))
-                throw new DroneExistException("The drone is already being charged!!");
-
+            if (DataSource.drones.Any(d => d.ID == drone.ID))
+                throw new DroneExistException($"Drone {drone.ID} doesn't exists in the data!!");
+            if (DataSource.stations.Any(s => s.ID == station.ID))
+                throw new StationExistException($"Station {station.ID} doesn't exists in the data!!");
+            if (DataSource.DroneCharges.Any(d => d.DroneID == drone.ID))
+                throw new DroneExistException($"Drone {drone.ID} is already being charged!!");
             
-            DroneCharge NewDroneToBeCharge = new(DroneID, StationID, start);
-            DataSource.DroneCharges.Add(NewDroneToBeCharge);
+            DataSource.DroneCharges.Add(new(drone.ID, station.ID, start));
 
-            for (int i = 0; i < DataSource.stations.Count; ++i)         ///Finding the wanted station
-            {
-                if (DataSource.stations[i].ID == StationID)
-                {
-                    Station NewStation = DataSource.stations[i];
-                    NewStation.ChargeSlots--;
-                    DataSource.stations[i] = NewStation;                ///one slot was taken by the drone we chose
-                }
-            }
+            station = DataSource.stations.Find(s => s.ID == station.ID);
+            DataSource.stations.Remove(station);
+            --station.ChargeSlots;
+            DataSource.stations.Add(station);
         }
 
         public void UpdateParcelInDelivery(int ParcelID)
@@ -324,135 +316,55 @@ namespace DalObject
         #endregion
 
         #region Calc
-        //Not in use at the moment.. Will be used when implement full GUI
-        internal double DistanceFromStation(double x1, double y1, int StationID)
-        {
-            int i = 0;
-            double x2, y2;
+        //###################################################################
+        //# Not in use at the moment.. Will be used when implement full GUI #
+        //###################################################################
+        //internal double DistanceFromStation(double x1, double y1, int StationID)
+        //{
+        //    int i = 0;
+        //    double x2, y2;
 
-            while (StationID != DataSource.stations[i].ID)
-                ++i;
+        //    while (StationID != DataSource.stations[i].ID)
+        //        ++i;
 
-            x1 = (x1 * Math.PI) / 180;
-            y1 = (y1 * Math.PI) / 180;
-            x2 = DataSource.stations[i].Longitude;
-            x2 = (x2 * Math.PI) / 180;
-            y2 = DataSource.stations[i].Latitude;
-            y2 = (y2 * Math.PI) / 180;
-            double result1 = Math.Pow(Math.Sin((x2 - x1) / 2), 2) + Math.Cos(y1) * Math.Cos(y2) * Math.Pow(Math.Sin((y2 - y1) / 2), 2);
-            double result2 = 2 * Math.Asin(Math.Sqrt(result1));
-            double radius = 3956;
-            return (result2 * radius);
-        }
+        //    x1 = (x1 * Math.PI) / 180;
+        //    y1 = (y1 * Math.PI) / 180;
+        //    x2 = DataSource.stations[i].Longitude;
+        //    x2 = (x2 * Math.PI) / 180;
+        //    y2 = DataSource.stations[i].Latitude;
+        //    y2 = (y2 * Math.PI) / 180;
+        //    double result1 = Math.Pow(Math.Sin((x2 - x1) / 2), 2) + Math.Cos(y1) * Math.Cos(y2) * Math.Pow(Math.Sin((y2 - y1) / 2), 2);
+        //    double result2 = 2 * Math.Asin(Math.Sqrt(result1));
+        //    double radius = 3956;
+        //    return (result2 * radius);
+        //}
 
-        internal double DistanceFromCustomer(double x1, double y1, int CustomerID)
-        {
-            int i = 0;
-            double x2, y2;
+        //internal double DistanceFromCustomer(double x1, double y1, int CustomerID)
+        //{
+        //    int i = 0;
+        //    double x2, y2;
 
-            while (CustomerID != DataSource.customers[i].ID)
-                ++i;
+        //    while (CustomerID != DataSource.customers[i].ID)
+        //        ++i;
 
-            x1 = (x1 * Math.PI) / 180;
-            y1 = (y1 * Math.PI) / 180;
-            x2 = DataSource.customers[i].Longitude;
-            x2 = (x2 * Math.PI) / 180;
-            y2 = DataSource.customers[i].Latitude;
-            y2 = (y2 * Math.PI) / 180;
-            double result1 = Math.Pow(Math.Sin((x2 - x1) / 2), 2) + Math.Cos(y1) * Math.Cos(y2) * Math.Pow(Math.Sin((y2 - y1) / 2), 2);
-            double result2 = 2 * Math.Asin(Math.Sqrt(result1));
-            double radius = 3956;
-            return (result2 * radius);
-        }
+        //    x1 = (x1 * Math.PI) / 180;
+        //    y1 = (y1 * Math.PI) / 180;
+        //    x2 = DataSource.customers[i].Longitude;
+        //    x2 = (x2 * Math.PI) / 180;
+        //    y2 = DataSource.customers[i].Latitude;
+        //    y2 = (y2 * Math.PI) / 180;
+        //    double result1 = Math.Pow(Math.Sin((x2 - x1) / 2), 2) + Math.Cos(y1) * Math.Cos(y2) * Math.Pow(Math.Sin((y2 - y1) / 2), 2);
+        //    double result2 = 2 * Math.Asin(Math.Sqrt(result1));
+        //    double radius = 3956;
+        //    return (result2 * radius);
+        //}
         #endregion
 
-        #region Exist
-        internal bool DroneExist(int id)
-        {
-            foreach (Drone drone in DataSource.drones)
-                if (drone.ID == id)
-                    return true;
-            return false;
-        }
 
-        internal bool StationExist(int id)
-        {
-            foreach (Station station in DataSource.stations)
-                if (station.ID == id)
-                    return true;
-            return false;
-        }
-
-        internal bool CustomerExist(int id)
-        {
-            foreach (Customer customer in DataSource.customers)
-                if (customer.ID == id)
-                    return true;
-            return false;
-        }
-
-        internal bool ParcelExist(int id)
-        {
-            foreach (Parcel parcel in DataSource.parcels)
-                if (parcel.ID == id)
-                    return true;
-            return false;
-        }
-
-        public void AddNewDrone(Drone drone, Station station)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void UpdateDroneName(Drone drone)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void UpdateStationName(Station station)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void UpdateCustomerName(Customer customer)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void UpdateCustomerPhone(Customer customer)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void UpdateStationSlots(Station station)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void UpdateDroneToBeAvailable(Drone drone)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void UpdateDroneToBeCharge(Drone drone, Station station, DateTime? start)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void UpdateParcelInDelivery(Drone drone)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void UpdateParcelCollected(Drone drone)
-        {
-            throw new NotImplementedException();
-        }
 
         public void PairParcelToDrone(Parcel parcel, Drone drone)
         {
             throw new NotImplementedException();
         }
-        #endregion
     }
 }

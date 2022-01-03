@@ -5,7 +5,7 @@ namespace DO
 {
     public struct Parcel
     {
-        public int? ID { get; set; }
+        public int ID { get; set; }
         public int SenderID { get; set; }
         public int TargetID { get; set; }
         public int DroneID { get; set; }

@@ -88,9 +88,10 @@ namespace BlApi
             {
                 if (drone.ID == DroneID)
                 {
-                    if (drone.Status != DroneStatus.Available)
-                        throw new DroneStatusExpetion("Drone is not availbale");
-
+                    if (drone.Status == DroneStatus.Delivery)
+                        throw new DroneStatusExpetion("Drone is in the middle of a delivery");
+                    if (drone.Status == DroneStatus.Charging)
+                        throw new DroneStatusExpetion("The drone is already charging");
                     NearestStatation = GetNearestStation(drone.CurrentLocation, Data.GetStations(station => station.ChargeSlots > 0));
                     NearestStataionLocation = new(NearestStatation.Latitude, NearestStatation.Longitude);
 

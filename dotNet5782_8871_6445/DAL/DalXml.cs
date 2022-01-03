@@ -33,84 +33,54 @@ namespace DAL
         public void UpdateDroneName(Drone newDrone)
         {
             List<Drone> ListDrones = XmlTools.LoadListFromXmlSerializer<Drone>(dronesPath);
-            Drone oldDrone = ListDrones.Find(d => d.ID == newDrone.ID);
-
-            if (oldDrone.ID != null)
-            {
-                ListDrones.Remove(oldDrone);
-                oldDrone.Model = newDrone.Model;
-                ListDrones.Add(oldDrone);
-                //ListDrones.Sort();
-            }
-            else
-                throw new DroneExistException($"Drone {newDrone.ID} dosen't exist in data!");
-
+            Drone oldDrone = GetDrone(newDrone.ID);
+            ListDrones.Remove(oldDrone);
+            oldDrone.Model = newDrone.Model;
+            ListDrones.Add(oldDrone);
+            ListDrones = ListDrones.OrderBy(d => d.ID).ToList();
             XmlTools.SaveListToXmlSerializer(ListDrones, dronesPath);
         }
 
         public void UpdateStationName(Station station)
         {
             List<Station> ListStations = XmlTools.LoadListFromXmlSerializer<Station>(stationsPath);
-            Station oldStation = ListStations.Find(s => s.ID == station.ID);
-
-            if (oldStation.ID != null)
-            {
-                ListStations.Remove(oldStation);
-                oldStation.Name = station.Name;
-                ListStations.Add(oldStation);
-            }
-            else
-                throw new StationExistException($"Station {station.ID} dosen't exist in data!");
-
+            Station oldStation = GetStation(station.ID);
+            ListStations.Remove(oldStation);
+            oldStation.Name = station.Name;
+            ListStations.Add(oldStation);
+            ListStations = ListStations.OrderBy(s => s.ID).ToList();
             XmlTools.SaveListToXmlSerializer(ListStations, stationsPath);
         }
         public void UpdateStationSlots(Station station)
         {
 
             List<Station> ListStations = XmlTools.LoadListFromXmlSerializer<Station>(stationsPath);
-            Station oldStation = ListStations.Find(s => s.ID == station.ID);
-
-            if (oldStation.ID != null)
-            {
-                ListStations.Remove(oldStation);
-                oldStation.ChargeSlots = station.ChargeSlots;
-                ListStations.Add(oldStation);
-            }
-            else
-                throw new StationExistException($"Station {station.ID} dosen't exist in data!");
-
+            Station oldStation = GetStation(station.ID);
+            ListStations.Remove(oldStation);
+            oldStation.ChargeSlots = station.ChargeSlots;
+            ListStations.Add(oldStation);
+            ListStations = ListStations.OrderBy(s => s.ID).ToList();
             XmlTools.SaveListToXmlSerializer(ListStations, stationsPath);
         }
 
         public void UpdateCustomerName(Customer newCustomer)
         {
             List<Customer> ListCustomers = XmlTools.LoadListFromXmlSerializer<Customer>(customersPath);
-            Customer oldCustomer = ListCustomers.Find(c => c.ID == newCustomer.ID);
-
-            if (oldCustomer.ID != null)
-            {
-                ListCustomers.Remove(oldCustomer);
-                oldCustomer.Name = newCustomer.Name;
-                ListCustomers.Add(oldCustomer);
-            }
-            else
-                throw new CustomerExistException($"Customer {newCustomer.ID} dosen't exist in data!");
-
+            Customer oldCustomer = GetCustomer(newCustomer.ID);
+            ListCustomers.Remove(oldCustomer);
+            oldCustomer.Name = newCustomer.Name;
+            ListCustomers.Add(oldCustomer);
+            ListCustomers = ListCustomers.OrderBy(c => c.ID).ToList();
             XmlTools.SaveListToXmlSerializer(ListCustomers, customersPath);
         }
         public void UpdateCustomerPhone(Customer customer)
         {
             List<Customer> ListCustomers = XmlTools.LoadListFromXmlSerializer<Customer>(customersPath);
-            Customer oldCustomer = ListCustomers.Find(c => c.ID == customer.ID);
-
-            if(oldCustomer.ID != null)
-            {
-                ListCustomers.Remove(oldCustomer);
-                oldCustomer.Phone = '0' + customer.Phone;
-                ListCustomers.Add(oldCustomer);
-            }
-            else
-                throw new CustomerExistException($"Customer {customer.ID} dosen't exist in data!");
+            Customer oldCustomer = GetCustomer(customer.ID);
+            ListCustomers.Remove(oldCustomer);
+            oldCustomer.Phone = '0' + customer.Phone;
+            ListCustomers.Add(oldCustomer);
+            ListCustomers = ListCustomers.OrderBy(c => c.ID).ToList();
             XmlTools.SaveListToXmlSerializer(ListCustomers, customersPath);
         }
        
@@ -119,20 +89,26 @@ namespace DAL
             Drone oldDrone = GetDrone(drone.ID);
 
             List<DroneCharge> ListDronesCharge = XmlTools.LoadListFromXmlSerializer<DroneCharge>(droneChargePath);
-            DroneCharge droneCharge = ListDronesCharge.Find(d => d.DroneID == oldDrone.ID);
+            DroneCharge droneCharge = GetDroneCharge(oldDrone.ID);
             ListDronesCharge.Remove(droneCharge);
 
             List<Station> ListStations = XmlTools.LoadListFromXmlSerializer<Station>(stationsPath);
-            Station station = ListStations.Find(s => s.ID == droneCharge.StationID);
+            Station station = GetStation(droneCharge.StationID);
             ListStations.Remove(station);
             station.ChargeSlots++;
             ListStations.Add(station);
-
+            ListStations = ListStations.OrderBy(s => s.ID).ToList();
             XmlTools.SaveListToXmlSerializer(ListStations, stationsPath);
             XmlTools.SaveListToXmlSerializer(ListDronesCharge, droneChargePath);            
         }
         public void UpdateDroneToBeCharge(Drone drone, Station station, DateTime? start)
         {
+            List<Station> ListStations = XmlTools.LoadListFromXmlSerializer<Station>(stationsPath);
+            List<DroneCharge> ListDronesCharge = XmlTools.LoadListFromXmlSerializer<DroneCharge>(droneChargePath);
+            Station UpdatedStation = GetStation(station.ID);
+            DroneCharge droneCharge = new DroneCharge(drone.ID, station.ID, start);
+
+            throw new DroneExistException("The drone is already being charged!!");
 
         }
         public void UpdateParcelInDelivery(Drone drone)

@@ -67,7 +67,15 @@ namespace DAL
 
         public void AddNewDrone(Drone drone, Station station)
         {
-            throw new NotImplementedException();
+            List<Drone> ListDrones = XmlTools.LoadListFromXmlSerializer<Drone>(dronesPath);
+            List<Station> ListStations = XmlTools.LoadListFromXmlSerializer<Station>(stationsPath);
+            if (ListDrones.Any(d => d.ID == drone.ID))
+                throw new DroneExistException($"The drone ID {drone.ID} exists already in the data!!");
+            if (!ListStations.Any(s => s.ID == station.ID))
+                throw new StationExistException($"The station ID {station.ID} doesn't exists in the data!!");
+            UpdateDroneToBeCharge(drone, station, DateTime.Now);
+            ListDrones.Add(drone);
+            XmlTools.SaveListToXmlSerializer(ListDrones, dronesPath);
         }
         #endregion
 
@@ -310,10 +318,6 @@ namespace DAL
         #endregion
 
         #region Calc
-
-        #endregion
-
-        #region Exists
 
         #endregion
     }

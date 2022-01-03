@@ -50,4 +50,14 @@
     <Model>Skydio 9</Model>
     <MaxWeight>Heavy</MaxWeight>
   </Drone>
+  <Drone>
+    <ID>669010</ID>
+    <Model>Mavic20</Model>
+    <MaxWeight>Heavy</MaxWeight>
+  </Drone>
+  <Drone>
+    <ID>669011</ID>
+    <Model>Amitai</Model>
+    <MaxWeight>Medium</MaxWeight>
+  </Drone>
 </ArrayOfDrone>

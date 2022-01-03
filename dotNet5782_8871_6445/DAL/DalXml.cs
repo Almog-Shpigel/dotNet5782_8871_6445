@@ -107,15 +107,26 @@ namespace DAL
             List<DroneCharge> ListDronesCharge = XmlTools.LoadListFromXmlSerializer<DroneCharge>(droneChargePath);
             Station UpdatedStation = GetStation(station.ID);
             DroneCharge droneCharge = new DroneCharge(drone.ID, station.ID, start);
-
-            throw new DroneExistException("The drone is already being charged!!");
-
+            ListDronesCharge.Add(droneCharge);
+            ListDronesCharge = ListDronesCharge.OrderBy(d => d.DroneID).ToList();
+            ListStations.Remove(UpdatedStation);
+            UpdatedStation.ChargeSlots--;
+            ListStations.Add(UpdatedStation);
+            ListStations = ListStations.OrderBy(s => s.ID).ToList();
+            XmlTools.SaveListToXmlSerializer(ListStations, stationsPath);
+            XmlTools.SaveListToXmlSerializer(ListDronesCharge, droneChargePath);
         }
-        public void UpdateParcelInDelivery(Drone drone)
+        public void UpdateParcelInDelivery(Parcel parcel)
         {
-
+            List<Parcel> ListParcels = XmlTools.LoadListFromXmlSerializer<Parcel>(parcelsPath);
+            Parcel UpdatedParcel = GetParcel(parcel.ID);
+            ListParcels.Remove(UpdatedParcel);
+            UpdatedParcel.Delivered = DateTime.Now;
+            ListParcels.Add(UpdatedParcel);
+            ListParcels = ListParcels.OrderBy(p => p.ID).ToList();
+            XmlTools.SaveListToXmlSerializer(ListParcels, parcelsPath);
         }
-        public void UpdateParcelCollected(Drone drone)
+        public void UpdateParcelCollected(Parcel parcel)
         {
 
         }

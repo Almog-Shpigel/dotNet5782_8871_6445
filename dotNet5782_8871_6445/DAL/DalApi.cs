@@ -24,8 +24,8 @@ namespace DalApi
         public void UpdateStationSlots(Station station);
         public void UpdateDroneToBeAvailable(Drone drone);
         public void UpdateDroneToBeCharge(Drone drone, Station station, DateTime? start);
-        public void UpdateParcelInDelivery(Drone drone);
-        public void UpdateParcelCollected(Drone drone);
+        public void UpdateParcelInDelivery(Parcel parcel);
+        public void UpdateParcelCollected(Parcel parcel);
         public void PairParcelToDrone(Parcel parcel, Drone drone);
         #endregion
 

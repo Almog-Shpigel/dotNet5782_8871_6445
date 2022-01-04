@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using System.Xml.Serialization;
 
 namespace DAL
@@ -12,7 +13,7 @@ namespace DAL
     class XmlTools
     {
         static string dir = @"..\..\..\..\Data\";
-
+        static XElement Root;
         static XmlTools()
         {
             if (!Directory.Exists(dir))
@@ -51,10 +52,37 @@ namespace DAL
                 else
                     return new List<T>();
             }
-            catch (Exception ex)
+            catch (FileNotFoundException ex)
             {
                 throw new XmlFileLoadCreateException(filePath, $"failed to load xml file: {filePath}", ex);
             }
+        }
+
+        public static XElement LoadListFromXElement(string filePath)
+        {
+            if (!File.Exists(filePath))
+                return CreateFiles(filePath);
+            else
+                return LoadData(filePath);
+        }
+
+        private static XElement LoadData(string filePath)
+        {
+            try
+            {
+                return XElement.Load(filePath);
+            }
+            catch (FileNotFoundException ex)
+            {
+                throw new XmlFileLoadCreateException(filePath, $"failed to load xml file: {filePath}", ex);
+            }
+        }
+
+        private static XElement CreateFiles(string stationsPath)
+        {
+            Root = new XElement("stations");
+            Root.Save(stationsPath);
+            return Root;
         }
         #endregion
     }

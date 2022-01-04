@@ -3,6 +3,7 @@ using DO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Linq;
 
 namespace DAL
 {
@@ -29,12 +30,12 @@ namespace DAL
         }
         private DalXml()
         {
-            //DataSource.Initialize();
-            //XmlTools.SaveListToXmlSerializer(DataSource.customers, customersPath);
-            //XmlTools.SaveListToXmlSerializer(DataSource.drones, dronesPath);
-            //XmlTools.SaveListToXmlSerializer(DataSource.DroneCharges, droneChargePath);
-            //XmlTools.SaveListToXmlSerializer(DataSource.parcels, parcelsPath);
-            //XmlTools.SaveListToXmlSerializer(DataSource.stations, stationsPath);
+            DataSource.Initialize();
+            XmlTools.SaveListToXmlSerializer(DataSource.customers, customersPath);
+            XmlTools.SaveListToXmlSerializer(DataSource.drones, dronesPath);
+            XmlTools.SaveListToXmlSerializer(DataSource.DroneCharges, droneChargePath);
+            XmlTools.SaveListToXmlSerializer(DataSource.parcels, parcelsPath);
+            XmlTools.SaveListToXmlSerializer(DataSource.stations, stationsPath);
         }
 
         public static DalXml Instance { get => instance; }
@@ -51,12 +52,19 @@ namespace DAL
         #region Add
         public void AddNewStation(Station station)
         {
-            List<Station> ListStations = XmlTools.LoadListFromXmlSerializer<Station>(stationsPath);
-            if (ListStations.Any(s => s.ID == station.ID))
+            XElement ListStations = XmlTools.LoadListFromXElement(stationsPath);
+            var x = ListStations.Descendants("ID");
+            //x = x.FirstOrDefault(s => s.Element("ID")?.Value == station.ID.ToString())
+            //x = ListStations.Descendants("Station").FirstOrDefault(s => s.Element("ID")?.Value == station.ID.ToString());
+            if(x != null)
                 throw new StationExistException($"The station ID {station.ID} exists already in the data!!");
-            station.Name = "Station " + station.Name;
-            ListStations.Add(station);
-            XmlTools.SaveListToXmlSerializer(ListStations, stationsPath);
+
+            //List<Station> ListStations = XmlTools.LoadListFromXmlSerializer<Station>(stationsPath);
+            //if (ListStations.Any(s => s.ID == station.ID))
+            //    throw new StationExistException($"The station ID {station.ID} exists already in the data!!");
+            //station.Name = "Station " + station.Name;
+            //ListStations.Add(station);
+            //XmlTools.SaveListToXmlSerializer(ListStations, stationsPath);
         }
 
         public void AddNewCustomer(Customer customer)

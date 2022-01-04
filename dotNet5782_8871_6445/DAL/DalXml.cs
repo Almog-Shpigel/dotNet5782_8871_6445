@@ -1,4 +1,5 @@
-﻿using DO;
+﻿using DalObject;
+using DO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,14 +11,30 @@ namespace DAL
         internal static readonly DalXml instance = new();
 
         static DalXml() { }
-
-        private DalXml() {
-            //DataSource.Initialize();
-            //XmlTools.SaveListToXmlSerializer(DataSource.customers, customersPath);
-            //XmlTools.SaveListToXmlSerializer(DataSource.drones, dronesPath);
-            //XmlTools.SaveListToXmlSerializer(DataSource.DroneCharges, droneChargePath);
-            //XmlTools.SaveListToXmlSerializer(DataSource.parcels, parcelsPath);
-            //XmlTools.SaveListToXmlSerializer(DataSource.stations, stationsPath);
+        struct config
+        {
+            internal static int ParcelsCounter = 0;
+            /// <summary>
+            /// According to our reasearch, a drone with full battery and empty cargo can fly 30 km
+            /// A drone with full battery and light cargo can fly 25 km
+            /// A drone with full battery and medium cargo can fly 20 km
+            /// A drone with full battery and heavy cargo can fly 15 km
+            /// </summary>
+            
+            internal static double Empty = 3.3;
+            internal static double LightWight = 4;
+            internal static double MediumWight = 5;
+            internal static double HaevyWight = 6.6;
+            internal static double ChargeRate = 60;     ///1% per minute
+        }
+        private DalXml()
+        {
+            DataSource.Initialize();
+            XmlTools.SaveListToXmlSerializer(DataSource.customers, customersPath);
+            XmlTools.SaveListToXmlSerializer(DataSource.drones, dronesPath);
+            XmlTools.SaveListToXmlSerializer(DataSource.DroneCharges, droneChargePath);
+            XmlTools.SaveListToXmlSerializer(DataSource.parcels, parcelsPath);
+            XmlTools.SaveListToXmlSerializer(DataSource.stations, stationsPath);
         }
 
         public static DalXml Instance { get => instance; }
@@ -55,9 +72,9 @@ namespace DAL
         {
             List<Parcel> ListParcels = XmlTools.LoadListFromXmlSerializer<Parcel>(parcelsPath);
             List<Customer> ListCustomers = XmlTools.LoadListFromXmlSerializer<Customer>(customersPath);
-            if (ListCustomers.Any(c => c.ID == parcel.SenderID))
+            if (!ListCustomers.Any(c => c.ID == parcel.SenderID))
                 throw new CustomerExistException($"Customer {parcel.SenderID} dosen't exists in the data!!");
-            if (ListCustomers.Any(c => c.ID == parcel.TargetID))
+            if (!ListCustomers.Any(c => c.ID == parcel.TargetID))
                 throw new CustomerExistException($"Customer {parcel.TargetID} dosen't exists in the data!!");
 
             //parcel.ID = 344000 + ++DataSource.Config.ParcelsCounter;

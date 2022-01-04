@@ -96,6 +96,9 @@ namespace BlApi
                 throw new InvalidInputException("Invalid sender ID number");
             if (parcel.Target.ID < 100000000 || parcel.Target.ID > 999999999)
                 throw new InvalidInputException("Invalid receiver ID number");
+            if (parcel.Target.ID == parcel.Sender.ID)
+                throw new InvalidInputException("Customer can't send a parcel to himself");
+
             Parcel ParcelDO = new Parcel(parcel.ID, parcel.Sender.ID, parcel.Target.ID, 0, parcel.Weight, parcel.Priority, parcel.TimeRequested, parcel.Scheduled, parcel.PickedUp, parcel.Delivered);
             try
             {

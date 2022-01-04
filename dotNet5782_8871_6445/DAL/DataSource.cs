@@ -23,6 +23,7 @@ namespace DalObject
             /// A drone with full battery and medium cargo can fly 20 km
             /// A drone with full battery and heavy cargo can fly 15 km
             /// </summary>
+            double[] DroneUsageRate = new double[] { 3.3, 4, 5, 6.6, 60 };
             internal static double Empty = 3.3;
             internal static double LightWight = 4;
             internal static double MediumWight = 5;

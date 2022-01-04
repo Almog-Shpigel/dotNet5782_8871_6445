@@ -29,12 +29,12 @@ namespace DAL
         }
         private DalXml()
         {
-            DataSource.Initialize();
-            XmlTools.SaveListToXmlSerializer(DataSource.customers, customersPath);
-            XmlTools.SaveListToXmlSerializer(DataSource.drones, dronesPath);
-            XmlTools.SaveListToXmlSerializer(DataSource.DroneCharges, droneChargePath);
-            XmlTools.SaveListToXmlSerializer(DataSource.parcels, parcelsPath);
-            XmlTools.SaveListToXmlSerializer(DataSource.stations, stationsPath);
+            //DataSource.Initialize();
+            //XmlTools.SaveListToXmlSerializer(DataSource.customers, customersPath);
+            //XmlTools.SaveListToXmlSerializer(DataSource.drones, dronesPath);
+            //XmlTools.SaveListToXmlSerializer(DataSource.DroneCharges, droneChargePath);
+            //XmlTools.SaveListToXmlSerializer(DataSource.parcels, parcelsPath);
+            //XmlTools.SaveListToXmlSerializer(DataSource.stations, stationsPath);
         }
 
         public static DalXml Instance { get => instance; }

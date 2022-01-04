@@ -34,12 +34,13 @@ namespace BlApi
             {
                 Parcel NewParcel = new();
                 DroneToList NewDrone = new(drone.ID, drone.Model, drone.MaxWeight);
-                
-                foreach (Parcel parcel in Data.GetParcels(parcel => parcel.DroneID == drone.ID && parcel.Delivered == null))
-                {
-                    NewParcel = parcel;
-                }
-                if (NewParcel.DroneID == drone.ID && NewParcel.Delivered == null)
+
+                Parcel parcel = Data.GetParcels(p => p.DroneID == drone.ID && p.Delivered == null).First();
+                //foreach (Parcel parcel in Data.GetParcels(parcel => parcel.DroneID == drone.ID && parcel.Delivered == null))
+                //{
+                //    NewParcel = parcel;
+                //}
+                if (parcel.ID != 0)
                     NewDrone = InitDroneInDelivery(NewDrone, NewParcel);
                 else
                     NewDrone = InitDroneNOTinDelivery(NewDrone);
@@ -75,35 +76,60 @@ namespace BlApi
 
         private DroneToList InitDroneNOTinDelivery(DroneToList NewDrone)
         {
-            Random rand = new();
             Station nearest;
-            int RandomStation, RandomCustomer;
-            DroneStatus option = (DroneStatus)rand.Next(0, 2);     ///Random status, Available or Charging
-            IEnumerable<Station> AllAvailableStations = Data.GetStations(station => station.ChargeSlots > 0);
-            IEnumerable<Customer> AllPastCustomers = Data.GetParcels(parcel => parcel.Delivered != null)
-                                                         .Select(parcel => Data.GetCustomer(parcel.TargetID));
-            if (AllPastCustomers.Count() == 0)                      ///We are assuming that the odds that there are no available stations are very unlikley
-                option = DroneStatus.Charging;
-            switch (option)
+            int RandomCustomer;
+            Random rand = new();
+            IEnumerable<Customer> AllPastCustomers = Data.GetParcels(parcel => parcel.Delivered != null).Select(parcel => Data.GetCustomer(parcel.TargetID));
+            DroneCharge droneCharging = Data.GetDroneCharge(D => D.DroneID == NewDrone.ID).FirstOrDefault();
+            if(droneCharging.DroneID != 0 || AllPastCustomers.Count() == 0)
             {
-                case DroneStatus.Available:
-                    NewDrone.Status = DroneStatus.Available;
-                    RandomCustomer = rand.Next(0, AllPastCustomers.Count());
-                    NewDrone.CurrentLocation = new(AllPastCustomers.ElementAt(RandomCustomer).Latitude, AllPastCustomers.ElementAt(RandomCustomer).Longitude);
-                    nearest = GetNearestStation(NewDrone.CurrentLocation, Data.GetStations(station => true));
-                    NewDrone.BatteryStatus = RandBatteryToStation(NewDrone, new Location(nearest.Latitude, nearest.Longitude), BatteryUsed[0]);
-                    break;
-                case DroneStatus.Charging:
-                    NewDrone.Status = DroneStatus.Charging;
-                    RandomStation = rand.Next(0, AllAvailableStations.Count());
-                    Drone drone = new(NewDrone.ID);
-                    Data.UpdateDroneToBeCharge(drone, AllAvailableStations.ElementAt(RandomStation), DateTime.Now);
-                    NewDrone.CurrentLocation = new(AllAvailableStations.ElementAt(RandomStation).Latitude, AllAvailableStations.ElementAt(RandomStation).Longitude);
-                    NewDrone.BatteryStatus = GetRandBatteryStatus(0, 21);
-                    break;
+                NewDrone.Status = DroneStatus.Charging;
+                NewDrone.CurrentLocation.Latitude = Data.GetStation(droneCharging.StationID).Latitude;
+                NewDrone.CurrentLocation.Longitude = Data.GetStation(droneCharging.StationID).Longitude;
+                Drone drone = new(NewDrone.ID);
+                Data.UpdateDroneToBeCharge(drone, Data.GetStation(droneCharging.StationID), DateTime.Now);
+                NewDrone.BatteryStatus = GetRandBatteryStatus(0, 21);
+            }
+            else
+            {
+                NewDrone.Status = DroneStatus.Available;
+                RandomCustomer = rand.Next(0, AllPastCustomers.Count());
+                NewDrone.CurrentLocation = new(AllPastCustomers.ElementAt(RandomCustomer).Latitude, AllPastCustomers.ElementAt(RandomCustomer).Longitude);
+                nearest = GetNearestStation(NewDrone.CurrentLocation, Data.GetStations(station => true));
+                NewDrone.BatteryStatus = RandBatteryToStation(NewDrone, new Location(nearest.Latitude, nearest.Longitude), BatteryUsed[0]);
             }
             return NewDrone;
-        }
+        //    /**********************************************************************************************************************************/
+
+        //    Station nearest;
+        //    int RandomCustomer, AllPastCustomers;
+        //    Random rand = new();
+        //    DroneStatus option = (DroneStatus)rand.Next(0, 2);     ///Random status, Available or Charging
+        //    IEnumerable<Station> AllAvailableStations = Data.GetStations(station => station.ChargeSlots > 0);
+        //    IEnumerable<Customer> AllPastCustomers = Data.GetParcels(parcel => parcel.Delivered != null)
+        //                                                 .Select(parcel => Data.GetCustomer(parcel.TargetID));
+        //    if (AllPastCustomers.Count() == 0)                      ///We are assuming that the odds that there are no available stations are very unlikley
+        //        option = DroneStatus.Charging;
+        //    switch (option)
+        //    {
+        //        case DroneStatus.Available:
+        //            NewDrone.Status = DroneStatus.Available;
+        //            RandomCustomer = rand.Next(0, AllPastCustomers.Count());
+        //            NewDrone.CurrentLocation = new(AllPastCustomers.ElementAt(RandomCustomer).Latitude, AllPastCustomers.ElementAt(RandomCustomer).Longitude);
+        //            nearest = GetNearestStation(NewDrone.CurrentLocation, Data.GetStations(station => true));
+        //            NewDrone.BatteryStatus = RandBatteryToStation(NewDrone, new Location(nearest.Latitude, nearest.Longitude), BatteryUsed[0]);
+        //            break;
+        //        case DroneStatus.Charging:
+        //            NewDrone.Status = DroneStatus.Charging;
+        //            RandomStation = rand.Next(0, AllAvailableStations.Count());
+        //            Drone drone = new(NewDrone.ID);
+        //            Data.UpdateDroneToBeCharge(drone, AllAvailableStations.ElementAt(RandomStation), DateTime.Now);
+        //            NewDrone.CurrentLocation = new(AllAvailableStations.ElementAt(RandomStation).Latitude, AllAvailableStations.ElementAt(RandomStation).Longitude);
+        //            NewDrone.BatteryStatus = GetRandBatteryStatus(0, 21);
+        //            break;
+        //    }
+        //    return NewDrone;
+        //}
     }
 }
 

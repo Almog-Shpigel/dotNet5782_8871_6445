@@ -34,7 +34,7 @@ namespace BlApi
             {
                 DroneToList newDrone = new(drone.ID, drone.Model, drone.MaxWeight);
                 Parcel newParcel = Data.GetParcels(parcel => parcel.DroneID == drone.ID).FirstOrDefault();
-                if (newParcel.Delivered == null)
+                if (newParcel.ID != 0 && newParcel.Delivered == null)
                     newDrone = InitDroneInDelivery(newDrone, newParcel);
                 else
                     newDrone = InitDroneNOTinDelivery(newDrone);
@@ -49,36 +49,36 @@ namespace BlApi
         /// <param name="NewDrone"></param>
         /// <param name="parcel"></param>
         /// <returns>Drone to list object</returns>
-        private DroneToList InitDroneInDelivery(DroneToList DroneInDelivery, Parcel parcel)   
+        private DroneToList InitDroneInDelivery(DroneToList droneInDelivery, Parcel parcel)
         {
-            DroneInDelivery.Status = DroneStatus.Delivery;         ///Updating drone's status
-            DroneInDelivery.ParcelID = parcel.ID;
+            droneInDelivery.Status = DroneStatus.Delivery;         ///Updating drone's status
+            droneInDelivery.ParcelID = parcel.ID;
             Customer sender = Data.GetCustomer(parcel.SenderID), target = Data.GetCustomer(parcel.TargetID);
             Location SenderLocation = new(sender.Latitude, sender.Longitude), TargetLocation = new(target.Latitude, target.Longitude);
-            Station NearestStationToTarget = GetNearestStation(TargetLocation, Data.GetStations(station => true));
-            Station NearestStationTosender = GetNearestStation(SenderLocation, Data.GetStations(station => true));
+            Station nearestStationToSender = GetNearestStation(SenderLocation, Data.GetStations(station => true));
             if (parcel.PickedUp == null)            ///Checking if the drone already picked up the parcel or not     
-                DroneInDelivery.CurrentLocation = new(NearestStationTosender.Latitude, NearestStationTosender.Longitude);
+                droneInDelivery.CurrentLocation = new(nearestStationToSender.Latitude, nearestStationToSender.Longitude);
             else    ///means it did get pickedup
-                DroneInDelivery.CurrentLocation = SenderLocation;
+                droneInDelivery.CurrentLocation = SenderLocation;
 
-            double total = BatteryUsageCurrStation(DroneInDelivery, parcel.SenderID, parcel.TargetID, NearestStationTosender, parcel.Weight); ///Returns the amount of battery needed to complete the delivery
-            DroneInDelivery.BatteryStatus = GetRandBatteryStatus(total, 100);          ///Choosing random battery number between the minimum needed to complete the delivery and full battery
-            return DroneInDelivery;
+            double total = BatteryUsageCurrStation(droneInDelivery, sender, target, nearestStationToSender, parcel.Weight); ///Returns the amount of battery needed to complete the delivery
+            droneInDelivery.BatteryStatus = GetRandBatteryStatus(total, 100);          ///Choosing random battery number between the minimum needed to complete the delivery and full battery
+            return droneInDelivery;
         }
 
-        private DroneToList InitDroneNOTinDelivery(DroneToList NewDrone)
+        private DroneToList InitDroneNOTinDelivery(DroneToList newDrone)
         {
             Station nearest;
             Customer customer;
             int RandomCustomer, RandomStation;
+            double battery;
             Random rand = new();
             IEnumerable<Station> AllAvailableStations = Data.GetStations(station => station.ChargeSlots > 0);
             IEnumerable<Customer> AllPastCustomers = Data.GetParcels(parcel => parcel.Delivered != null).Select(parcel => Data.GetCustomer(parcel.TargetID));
-            DroneCharge droneCharging = Data.GetDroneCharge(D => D.DroneID == NewDrone.ID).FirstOrDefault();
+            DroneCharge droneCharging = Data.GetDroneCharge(D => D.DroneID == newDrone.ID).FirstOrDefault();
             if (droneCharging.DroneID != 0 || !AllPastCustomers.Any())
             {
-                NewDrone.Status = DroneStatus.Charging;
+                newDrone.Status = DroneStatus.Charging;
                 if(droneCharging.StationID == 0)
                 {
                     RandomStation = rand.Next(0, GetAvailableStations().Count());
@@ -86,21 +86,22 @@ namespace BlApi
                 }
                 else
                     nearest = Data.GetStation(droneCharging.StationID);
-                NewDrone.CurrentLocation = new(nearest.Latitude, nearest.Longitude);
-                Drone drone = new(NewDrone.ID);
+                newDrone.CurrentLocation = new(nearest.Latitude, nearest.Longitude);
+                Drone drone = new(newDrone.ID);
                 Data.UpdateDroneToBeCharge(drone, nearest, DateTime.Now);
-                NewDrone.BatteryStatus = GetRandBatteryStatus(0, 21);
+                newDrone.BatteryStatus = GetRandBatteryStatus(0, 21);
             }
             else
             {
-                NewDrone.Status = DroneStatus.Available;
+                newDrone.Status = DroneStatus.Available;
                 RandomCustomer = rand.Next(0, AllPastCustomers.Count());
                 customer = AllPastCustomers.ElementAt(RandomCustomer);
-                NewDrone.CurrentLocation = new(customer.Latitude, customer.Longitude);
-                nearest = GetNearestStation(NewDrone.CurrentLocation, Data.GetStations(station => true));
-                NewDrone.BatteryStatus = RandBatteryToStation(NewDrone, new Location(nearest.Latitude, nearest.Longitude), BatteryUsed[0]);
+                newDrone.CurrentLocation = new(customer.Latitude, customer.Longitude);
+                nearest = GetNearestStation(newDrone.CurrentLocation, Data.GetStations(station => true));
+                battery = Distance(newDrone.CurrentLocation, new Location(nearest.Latitude, nearest.Longitude)) * BatteryUsed[0];
+                newDrone.BatteryStatus = GetRandBatteryStatus(battery, 100);
             }
-            return NewDrone;
+            return newDrone;
         }
         //    /**********************************************************************************************************************************/
 

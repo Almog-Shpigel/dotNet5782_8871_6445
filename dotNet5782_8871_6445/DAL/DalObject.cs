@@ -119,13 +119,21 @@ namespace DalObject
 
         public void UpdateDroneToBeAvailable(Drone newDrone)
         {
-            Drone oldDrone = DataSource.drones.Find(d => d.ID == newDrone.ID);
-            if (oldDrone.ID == 0)
+            Drone oldDrone;
+            DroneCharge droneCharge;
+            Station station;
+
+            if (DataSource.drones.Any(d => d.ID == newDrone.ID))
+                oldDrone = DataSource.drones.Find(d => d.ID == newDrone.ID);
+            else
                 throw new DroneExistException($"Drone {newDrone.ID} doesn't exists in the data!!");
-            DroneCharge droneCharge = DataSource.DroneCharges.Find(d => d.DroneID == newDrone.ID);
-            Station station = DataSource.stations.Find(s => s.ID == droneCharge.StationID);
-            if (station.ID == 0)
-                throw new StationExistException($"Station {station.ID} doesn't exists in the data!!");
+
+            droneCharge = DataSource.DroneCharges.Find(d => d.DroneID == newDrone.ID);      /// assuming that the drone exists in one of the drone charge stations.
+
+            if (DataSource.stations.Any(s => s.ID == droneCharge.StationID))
+                station = DataSource.stations.Find(s => s.ID == droneCharge.StationID);
+            else
+                throw new StationExistException($"Station {droneCharge.StationID} doesn't exists in the data!!");
 
             DataSource.drones.Remove(oldDrone);
             oldDrone.Model = newDrone.Model;
@@ -150,7 +158,6 @@ namespace DalObject
                 throw new DroneExistException($"Drone {drone.ID} is already being charged!!");
             
             DataSource.DroneCharges.Add(new(drone.ID, station.ID, start));
-
             station = DataSource.stations.Find(s => s.ID == station.ID);
             DataSource.stations.Remove(station);
             --station.ChargeSlots;

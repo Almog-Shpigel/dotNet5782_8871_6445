@@ -158,76 +158,62 @@ namespace BlApi
         
         public void UpdateParcelAssignToDrone(int DroneID)      // TO DO: rewrite this function
         {
-            int i = 0;
+            Parcel MaxParcel;
+            DroneToList DroneToBeAssign;
+            IEnumerable<Parcel> AllAvailableParcels;
             if (DroneID < 100000 || DroneID > 999999)
                 throw new InvalidIDException("Drone ID has to have 6 positive digits.");
-            DroneToList DroneToBeAssign = new();
-            for (; i < DroneList.Count; i++)
+            if (DroneList.Any(d => d.ID == DroneID))
             {
-                if (DroneList[i].ID == DroneID)
-                {
-                    DroneToBeAssign = DroneList[i];
-                    break;
-                }
+                DroneToBeAssign = DroneList.Find(d => d.ID == DroneID);
+                DroneList.Remove(DroneToBeAssign);
             }
+            else
+                throw new EntityExistException($"Drone {DroneID} doesn't exsits in the data!");
             if (DroneToBeAssign.Status != DroneStatus.Available)
                 throw new DroneStatusExpetion("Drone is unavailable for a delivery!");
-
-            IEnumerable<Parcel> AllAvailableParcels = Data.GetParcels(parcel => parcel.DroneID == 0);
-            if (AllAvailableParcels.Count() == 0)
+            AllAvailableParcels = Data.GetParcels(p => p.DroneID == 0);
+            if (!AllAvailableParcels.Any())
                 throw new NoAvailableParcelsException("There are no parcels to assign at this moment.");
-            Parcel MaxParcel = AllAvailableParcels.First();
+            AllAvailableParcels = AllAvailableParcels.Where(p => PossibleDelivery(DroneToBeAssign, p));
+            if (!AllAvailableParcels.Any())
+                throw new NoAvailableParcelsException("There is not enough battery to complete a delivery. Try charging the drone.");
+            AllAvailableParcels = AllAvailableParcels.Where(p => DroneToBeAssign.MaxWeight >= p.Weight);
+            if (!AllAvailableParcels.Any())
+                throw new NoAvailableParcelsException("The drone can't carry any parcel at this moment.");
+            AllAvailableParcels = AllAvailableParcels.OrderBy(p => p.Priority).ThenBy(p => p.Weight);
+            MaxParcel = AllAvailableParcels.First();
             foreach (var parcel in AllAvailableParcels)
             {
-                if (PossibleDelivery(DroneToBeAssign, parcel))
-                {
-                    if (parcel.Priority > MaxParcel.Priority)
-                        MaxParcel = parcel;
-                    if (parcel.Priority == MaxParcel.Priority)
-                    {
-                        if (parcel.Weight > MaxParcel.Weight && DroneToBeAssign.MaxWeight >= parcel.Weight)
-                            MaxParcel = parcel;
-                        if (parcel.Weight == MaxParcel.Weight && DroneToBeAssign.MaxWeight >= parcel.Weight)
-                        {
-                            if (DistanceDroneCustomer(DroneToBeAssign, parcel.SenderID) < DistanceDroneCustomer(DroneToBeAssign, MaxParcel.SenderID))
-                                MaxParcel = parcel;
-                        }
-                    }
-                }
+                if (DistanceDroneCustomer(DroneToBeAssign, Data.GetCustomer(parcel.SenderID)) < DistanceDroneCustomer(DroneToBeAssign, Data.GetCustomer(MaxParcel.SenderID)))
+                    MaxParcel = parcel;
             }
-            if (!PossibleDelivery(DroneToBeAssign, MaxParcel))
-                throw new NoAvailableParcelsException("There is not enough battery to complete a delivery. Try charging the drone.");
-            Drone drone = new(DroneToBeAssign.ID);
-            Data.PairParcelToDrone(MaxParcel, drone);
+            Data.PairParcelToDrone(MaxParcel, new(DroneToBeAssign.ID));
             DroneToBeAssign.Status = DroneStatus.Delivery;
             DroneToBeAssign.ParcelID = MaxParcel.ID;
-            DroneList[i] = DroneToBeAssign;
+            DroneList.Add(DroneToBeAssign);
         }
         
         public void UpdateParcelCollectedByDrone(int DroneID)
         {
-            int i = 0;
+            Customer sender;
+            Parcel ParcelToBeCollected;
+            DroneToList droneInDelivery;
             if (DroneID < 100000 || DroneID > 999999)
                 throw new InvalidIDException("Drone ID has to have 6 positive digits.");
-            DroneToList DroneInDelivery = new();
-            for (; i < DroneList.Count; i++)
-            {
-                if (DroneList[i].ID == DroneID)
-                {
-                    DroneInDelivery = DroneList[i];
-                    break;
-                }
-            }
-            if (DroneInDelivery.Status != DroneStatus.Delivery)
+            droneInDelivery = DroneList.Find(d => d.ID == DroneID);
+            if (droneInDelivery.Status != DroneStatus.Delivery)
                 throw new DroneNotInDeliveryException("This drone is not in delivery!");
-            Parcel ParcelToBeCollected = Data.GetParcel(DroneInDelivery.ParcelID);
+            ParcelToBeCollected = Data.GetParcel(droneInDelivery.ParcelID);
             if (ParcelToBeCollected.PickedUp != null)
                 throw new ParcelTimesException("The parcel has been already collected!");
+            
+            sender = Data.GetCustomer(ParcelToBeCollected.SenderID);
             Data.UpdateParcelCollected(ParcelToBeCollected);
-            DroneInDelivery.BatteryStatus -= ((int)(DistanceDroneCustomer(DroneInDelivery, ParcelToBeCollected.SenderID)*100))/100;
-            DroneInDelivery.CurrentLocation.Latitude = Data.GetCustomer(ParcelToBeCollected.SenderID).Latitude;
-            DroneInDelivery.CurrentLocation.Longitude = Data.GetCustomer(ParcelToBeCollected.SenderID).Longitude;
-            DroneList[i] = DroneInDelivery;
+            DroneList.Remove(droneInDelivery);
+            droneInDelivery.BatteryStatus -= DistanceDroneCustomer(droneInDelivery, sender) * BatteryUsed[1];
+            droneInDelivery.CurrentLocation = new(sender.Latitude, sender.Longitude);
+            DroneList.Add(droneInDelivery);
         }
 
         public void UpdateParcelDeleiveredByDrone(int DroneID)
@@ -242,7 +228,8 @@ namespace BlApi
             if (ParcelToBeDelivered.Delivered != null || ParcelToBeDelivered.PickedUp == null)
                 throw new ParcelTimesException("The drone is not carrying the parcel right now");
             Data.UpdateParcelInDelivery(ParcelToBeDelivered);
-            DroneInDelivery.BatteryStatus -= ((int)(DistanceDroneCustomer(DroneInDelivery, ParcelToBeDelivered.TargetID)*100))/100;
+            Customer target = Data.GetCustomer(ParcelToBeDelivered.TargetID);
+            DroneInDelivery.BatteryStatus -= DistanceDroneCustomer(DroneInDelivery, target) * GetWeightMultiplier(ParcelToBeDelivered.Weight);
             DroneInDelivery.CurrentLocation.Latitude = Data.GetCustomer(ParcelToBeDelivered.TargetID).Latitude;
             DroneInDelivery.CurrentLocation.Longitude = Data.GetCustomer(ParcelToBeDelivered.TargetID).Longitude;
             DroneInDelivery.Status = DroneStatus.Available;

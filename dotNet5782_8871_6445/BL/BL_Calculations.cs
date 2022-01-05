@@ -11,19 +11,6 @@ namespace BlApi
     partial class BL
     {
         /// <summary>
-        /// Returning a random battery value (100-0 %) when the minimum determined by the location of the drone and
-        /// </summary>
-        /// <param name="drone"></param>
-        /// <param name="location"></param>
-        /// <param name="battery"></param>
-        /// <returns></returns>
-        private double RandBatteryToStation(DroneToList drone, Location location, double battery)
-        {
-            battery = Distance(drone.CurrentLocation, location) * battery;
-            return GetRandBatteryStatus(battery, 100);
-        }
-
-        /// <summary>
         /// reciving a random battery value from the min and max value recived as paremeters
         /// </summary>
         /// <param name="min"></param>
@@ -52,20 +39,20 @@ namespace BlApi
         /// <param name="weight"></param>
         /// <param name="BatteryUse"></param>
         /// <returns>Weight multiplier paremeter</returns>
-        private double GetWeightMultiplier(WeightCategories weight, Double[] BatteryUse)
+        private double GetWeightMultiplier(WeightCategories weight)
         {
             switch (weight)
             {
                 case WeightCategories.Light:
-                    return BatteryUse[1]; //Light
+                    return BatteryUsed[1]; //Light
                 case WeightCategories.Medium:
-                    return BatteryUse[2]; //Medium
+                    return BatteryUsed[2]; //Medium
                 case WeightCategories.Heavy:
-                    return BatteryUse[3]; //Heavy
+                    return BatteryUsed[3]; //Heavy
                 default:
                     break;
             }
-            return BatteryUse[0]; //Empty
+            return BatteryUsed[0]; //Empty
         }
 
         /// <summary>
@@ -83,8 +70,8 @@ namespace BlApi
             double theta = location1.Longitude - location2.Longitude;
             double rtheta = Math.PI * theta / 180;
             double dist =
-                Math.Sin(rlat1) * Math.Sin(rlat2) + Math.Cos(rlat1) *
-                Math.Cos(rlat2) * Math.Cos(rtheta);
+                Math.Sin(rlat1) * Math.Sin(rlat2) +
+                Math.Cos(rlat1) * Math.Cos(rlat2) * Math.Cos(rtheta);
             dist = Math.Acos(dist);
             dist = dist * 180 / Math.PI;
             dist = dist * 60 * 1.1515;
@@ -98,9 +85,8 @@ namespace BlApi
         /// <param name="drone"></param>
         /// <param name="CustomerID"></param>
         /// <returns>distance (km)</returns>
-        private double DistanceDroneCustomer(DroneToList drone, int CustomerID)
+        private double DistanceDroneCustomer(DroneToList drone, Customer customer)
         {
-            Customer customer = Data.GetCustomer(CustomerID);
             Location CustomerLocation = new(customer.Latitude, customer.Longitude);
             return Distance(drone.CurrentLocation, CustomerLocation);
         }
@@ -111,9 +97,8 @@ namespace BlApi
         /// <param name="drone"></param>
         /// <param name="CustomerID"></param>
         /// <returns>distance (km)</returns>
-        private double DistanceCustomerCustomer(int SenderID, int TargetID)
+        private double DistanceCustomerCustomer(Customer sender, Customer target)
         {
-            Customer sender = Data.GetCustomer(SenderID), target = Data.GetCustomer(TargetID);
             Location SenderLocation = new(sender.Latitude, sender.Longitude), TargetLocation = new(target.Latitude, target.Longitude);
             return Distance(SenderLocation, TargetLocation);
         }
@@ -124,9 +109,8 @@ namespace BlApi
         /// <param name="drone"></param>
         /// <param name="CustomerID"></param>
         /// <returns>distance (km)</returns>
-        private double DistanceCustomerStation(int CustomerID, Station station)
+        private double DistanceCustomerStation(Customer customer, Station station)
         {
-            Customer customer = Data.GetCustomer(CustomerID);
             Location CustomerLocation = new(customer.Latitude, customer.Longitude), StationLocation = new(station.Latitude, station.Longitude);
             return Distance(CustomerLocation, StationLocation);
         }
@@ -141,14 +125,9 @@ namespace BlApi
         {
             double total;
             Customer sender = Data.GetCustomer(parcel.SenderID), target = Data.GetCustomer(parcel.TargetID);
-            Location TargetLocation = new(target.Latitude, target.Longitude);
-            Station NearestStat = GetNearestStation(TargetLocation, Data.GetStations(station => true));
-            Location SenderLoc, TargetLoc, StationLoc;
-
-            SenderLoc = new(sender.Latitude, sender.Longitude);
-            TargetLoc = new(target.Latitude, target.Longitude);
-            StationLoc = new(NearestStat.Latitude, NearestStat.Longitude);
-            total = BatteryUsageCurrStation(drone, parcel.SenderID, parcel.TargetID, NearestStat, parcel.Weight);
+            Location targetLocation = new(target.Latitude, target.Longitude);
+            Station nearestStat = GetNearestStation(targetLocation, Data.GetStations(station => true));
+            total = BatteryUsageCurrStation(drone, sender, target, nearestStat, parcel.Weight);
 
             if (total > drone.BatteryStatus)
                 return false;
@@ -156,7 +135,7 @@ namespace BlApi
         }
 
         /// <summary>
-        /// Checking if a drone can complete the delivery according to the amount of battery he has and the distance he needs to do for the delivery
+        /// Calculates the battery needed to make a delivery and get back to a station
         /// </summary>
         /// <param name="drone"></param>
         /// <param name="SenderID"></param>
@@ -164,13 +143,13 @@ namespace BlApi
         /// <param name="Station"></param>
         /// <param name="Weight"></param>
         /// <returns></returns>
-        private double BatteryUsageCurrStation(DroneToList drone, int SenderID, int TargetID, Station Station, WeightCategories Weight)
+        private double BatteryUsageCurrStation(DroneToList drone, Customer sender, Customer target, Station Station, WeightCategories Weight)
         {
             double DisDroneSender, DisSenderTarget, DisTargetStation;
-            DisDroneSender = DistanceDroneCustomer(drone, SenderID);
-            DisSenderTarget = DistanceCustomerCustomer(SenderID, TargetID);
-            DisTargetStation = DistanceCustomerStation(TargetID, Station);
-            return BatteryUsed[0] * (DisTargetStation + DisDroneSender) + GetWeightMultiplier(Weight, BatteryUsed) * DisSenderTarget;
+            DisDroneSender = DistanceDroneCustomer(drone, sender);
+            DisSenderTarget = DistanceCustomerCustomer(sender, target);
+            DisTargetStation = DistanceCustomerStation(target, Station);
+            return BatteryUsed[0] * (DisDroneSender + DisTargetStation) + GetWeightMultiplier(Weight) * DisSenderTarget;
         }
 
         private double CalcBatteryCharged(DroneToList drone)

@@ -253,7 +253,7 @@ namespace BlApi
             Customer sender = Data.GetCustomer(parcel.SenderID), target = Data.GetCustomer(parcel.TargetID);
             CustomerInParcel customer1 = new(sender.ID, sender.Name), customer2 = new(target.ID, target.Name);
             Location pickUpLocation = new(sender.Latitude, sender.Longitude), targetLocation = new(target.Latitude, target.Longitude);
-            double distance = DistanceCustomerCustomer(sender.ID, target.ID);
+            double distance = DistanceCustomerCustomer(sender, target);
             ParcelInDelivery UpdateParcelInDelivery = new(parcel.ID, parcel.Weight, parcel.Priority, customer1, customer2, pickUpLocation, targetLocation, distance);
             return UpdateParcelInDelivery;
         }
@@ -304,20 +304,6 @@ namespace BlApi
                     return new DroneInParcel(drone.ID, drone.BatteryStatus, drone.CurrentLocation);
             }
             throw new InvalidInputException();
-        }
-
-        public string GetDistanceFromStation(double latitude, double longitude, int StationID)
-        {
-            Station station = Data.GetStation(StationID);
-            Location StationLocation = new(station.Latitude, station.Longitude), location = new(latitude, longitude);
-            return "The distance is: " + Distance(StationLocation, location) + " km";
-        }
-
-        public string GetDistanceFromCustomer(double longitude1, double latitude1, int CustomerID)
-        {
-            Customer customer = Data.GetCustomer(CustomerID);
-            Location CustomerLocation = new(customer.Latitude, customer.Longitude), location = new(latitude1, longitude1);
-            return "The distance is: " + Distance(CustomerLocation, location) + " km";
         }
 
         /// <summary>

@@ -41,7 +41,6 @@
                 <ComboBox  x:Name="WeightSelector" SelectionChanged="WeightSelector_SelectionChanged" Style="{StaticResource ComboBoxStyle}" Visibility="{Binding ElementName=DroneEntityAddButton, Path=Visibility}"/>
             </StackPanel>
             <StackPanel x:Name="BatteryPanel" Orientation="Horizontal" Visibility="{Binding ElementName=UpdateButtonsPanel, Path=Visibility}">
-                <!--Background="{Binding BatteryStatus, Converter={StaticResource ColorByPercentageConverter}}"-->
                 <TextBlock x:Name="PrintBatteryBlock" Text="Battery:" Style="{StaticResource TextBlockPageStyle}" />
                 <Viewbox Width="70" Height="30" HorizontalAlignment="Left" Margin="10,5,5,5">
                     <StackPanel Orientation="Horizontal">
@@ -54,7 +53,7 @@
                         <Border Background="black" CornerRadius="0,2,2,0" Padding="2" Width="7" Height="20" Margin="-2,0,-2,0"/>
                     </StackPanel>
                 </Viewbox>
-                <TextBlock x:Name="InvalidBatteryToCompleteDeliveryBlock" Style="{StaticResource TextBlockInvalidStyle}"/>
+                <TextBlock x:Name="InvalidBatteryToCompleteDeliveryBlock" Style="{StaticResource TextBlockInvalidStyle}" TextWrapping="Wrap" Width="250"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Visibility="{Binding ElementName=UpdateButtonsPanel, Path=Visibility}">
                 <TextBlock x:Name="PrintStatusBlock" Text="Status:" Style="{StaticResource TextBlockPageStyle}" />
@@ -68,7 +67,6 @@
             <StackPanel Orientation="Horizontal" Visibility="{Binding ElementName=UpdateButtonsPanel, Path=Visibility}">
                 <TextBlock x:Name="PrintLocationBlock" Text="Location:" Style="{StaticResource TextBlockPageStyle}" />
                 <TextBlock x:Name="LocationBlock" Text="{Binding CurrentLocation}" Style="{StaticResource TextBlockPageStyle}" Width="260"/>
-                <!--<TextBox x:Name="LocationBlock" Text="{Binding CurrentLocation}" Width="300" FontSize="20" Margin="10,0" IsReadOnly="True"/>-->
                 <materialDesign:PackIcon x:Name="PreviewInMap" Kind="Map" Width="30" Height="30" Margin="10,5" HorizontalAlignment="Center" MouseLeftButtonDown="PreviewInMap_MouseLeftButtonDown"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Visibility="{Binding ElementName=DroneEntityAddButton, Path=Visibility}">
@@ -93,13 +91,5 @@
 
         <Button x:Name="DroneListGoBackButton" Content="Go back to the list" Click="DroneListGoBackButton_Click" ClickMode="Release"
                 Style="{StaticResource ButtonPageStyle}" Grid.Row="2" Grid.Column="2" VerticalAlignment="Top"/>
-
-
-        <!--<StackPanel x:Name="NewDroneEnterPanel" Grid.Row="2" Grid.Column="2">
-            <TextBox   x:Name="EnterModelNameBox" TextChanged="EnterModelNameBox_TextChanged" Style="{StaticResource TextBoxStyle}" />
-            
-            
-            
-        </StackPanel>-->
     </Grid>
 </Page>

@@ -81,7 +81,7 @@ namespace PL
             ParcelBL parcel = new(Sender, Target, weight, priority);
             try
             {
-                IBL.AddNewParcel(parcel);                
+                IBL.AddNewParcel(parcel);
             }
             catch (Exception) //TO DO: find a better Exception
             {

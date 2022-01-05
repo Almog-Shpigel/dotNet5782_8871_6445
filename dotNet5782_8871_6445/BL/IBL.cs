@@ -176,28 +176,6 @@ namespace BlApi
         /// <returns>CustomerBL to print</returns>
         public CustomerBL GetCustomer(int CustomerID);
         #endregion
-
-        #region Get other
-        /// <summary>
-        /// Returns the distance between a point and a specific station
-        /// </summary>
-        /// <param name="longitude1"></param>
-        /// <param name="latitude1"></param>
-        /// <param name="StationID"></param>
-        /// <returns>distance (km)</returns>
-        public string GetDistanceFromStation(double latitude, double longitude, int StationID);
-
-        /// <summary>
-        /// Returns the distance between a point and a specific customer
-        /// </summary>
-        /// <param name="longitude1"></param>
-        /// <param name="latitude1"></param>
-        /// <param name="CustomerID"></param>
-        /// <returns>distance (km)</returns>
-        public string GetDistanceFromCustomer(double latitude, double longitude, int CustomerID);
-        
-
-        #endregion
         #endregion
     }
 }

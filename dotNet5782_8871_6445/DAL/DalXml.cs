@@ -11,23 +11,23 @@ namespace DAL
     {
         internal static readonly DalXml instance = new();
 
-        static DalXml() { }
-        struct config
-        {
-            internal static int ParcelsCounter = 0;
-            /// <summary>
-            /// According to our reasearch, a drone with full battery and empty cargo can fly 30 km
-            /// A drone with full battery and light cargo can fly 25 km
-            /// A drone with full battery and medium cargo can fly 20 km
-            /// A drone with full battery and heavy cargo can fly 15 km
-            /// </summary>
+        //static DalXml() { }
+        ////struct config
+        ////{
+        ////    internal static int ParcelsCounter = 0;
+        ////    /// <summary>
+        ////    /// According to our reasearch, a drone with full battery and empty cargo can fly 30 km
+        ////    /// A drone with full battery and light cargo can fly 25 km
+        ////    /// A drone with full battery and medium cargo can fly 20 km
+        ////    /// A drone with full battery and heavy cargo can fly 15 km
+        ////    /// </summary>
             
-            internal static double Empty = 3.3;
-            internal static double LightWight = 4;
-            internal static double MediumWight = 5;
-            internal static double HaevyWight = 6.6;
-            internal static double ChargeRate = 60;     ///1% per minute
-        }
+        ////    internal static double Empty = 3.3;
+        ////    internal static double LightWight = 4;
+        ////    internal static double MediumWight = 5;
+        ////    internal static double HaevyWight = 6.6;
+        ////    internal static double ChargeRate = 60;     ///1% per minute
+        ////}
         private DalXml()
         {
             //DataSource.Initialize();

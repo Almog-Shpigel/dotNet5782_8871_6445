@@ -40,16 +40,8 @@ namespace BlApi
 
         public IEnumerable<StationToList> GetAllStations()
         {
-            List<StationToList> stations = new();
-            foreach (Station station in Data.GetStations(station => true))
-            {
-                StationToList NewStation = new();
-                NewStation.ID = station.ID;
-                NewStation.Name = station.Name;
-                NewStation.AvailableChargeSlots = station.ChargeSlots;
-                NewStation.UsedChargeSlots = Data.GetDroneCharge(droneCharge => droneCharge.StationID == NewStation.ID).Count();
-                stations.Add(NewStation);
-            }
+            IEnumerable<StationToList> stations = Data.GetStations(station => true).Select(station => new StationToList(station.ID, station.Name, station.ChargeSlots,
+                Data.GetDroneCharge(droneCharge => droneCharge.StationID == station.ID).Count()));
             return stations;
         }
 
@@ -59,24 +51,10 @@ namespace BlApi
             foreach (Customer customer in Data.GetCustomers(customer => true))
             {
                 CustomerToList NewCustomer = new(customer.ID, customer.Name, customer.Phone);
-
-                foreach (Parcel parcel in Data.GetParcels(parcel => true))
-                {
-                    if (parcel.TargetID == customer.ID)
-                    {
-                        if (parcel.Delivered == null)
-                            NewCustomer.ParcelsOnTheWay++;
-                        else
-                            NewCustomer.ParcelsRecived++;
-                    }
-                    if (parcel.SenderID == customer.ID)
-                    {
-                        if (parcel.Delivered == null)
-                            NewCustomer.SentAndNOTDeliverd++;
-                        else
-                            NewCustomer.SentAndDeliverd++;
-                    }
-                }
+                NewCustomer.ParcelsOnTheWay = Data.GetParcels(parcel => parcel.TargetID == NewCustomer.ID && parcel.Delivered == null).Count();
+                NewCustomer.ParcelsRecived = Data.GetParcels(parcel => parcel.TargetID == NewCustomer.ID && parcel.Delivered != null).Count();
+                NewCustomer.SentAndNOTDeliverd = Data.GetParcels(parcel => parcel.SenderID == NewCustomer.ID && parcel.Delivered == null).Count();
+                NewCustomer.SentAndDeliverd = Data.GetParcels(parcel => parcel.SenderID == NewCustomer.ID && parcel.Delivered != null).Count();
                 customers.Add(NewCustomer);
             }
             return customers;

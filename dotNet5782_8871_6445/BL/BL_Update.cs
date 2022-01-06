@@ -149,7 +149,7 @@ namespace BlApi
             if (droneToList.BatteryStatus < Distance(droneToList.CurrentLocation, NearestStataionLocation) * BatteryUsed[0])
                 throw new NotEnoughBatteryExpetion("There is not enough battery to reach the nearest station.");
 
-            droneToList.BatteryStatus -= ((int)(Distance(droneToList.CurrentLocation, NearestStataionLocation) * BatteryUsed[0])*100)/100;
+            droneToList.BatteryStatus -= Distance(droneToList.CurrentLocation, NearestStataionLocation) * BatteryUsed[0];
             droneToList.CurrentLocation = new(NearestStataionLocation.Latitude, NearestStataionLocation.Longitude);
             droneToList.Status = DroneStatus.Charging;
             Data.UpdateDroneToBeCharge(drone, NearestStatation, DateTime.Now);
@@ -164,10 +164,7 @@ namespace BlApi
             if (DroneID < 100000 || DroneID > 999999)
                 throw new InvalidIDException("Drone ID has to have 6 positive digits.");
             if (DroneList.Any(d => d.ID == DroneID))
-            {
                 DroneToBeAssign = DroneList.Find(d => d.ID == DroneID);
-                DroneList.Remove(DroneToBeAssign);
-            }
             else
                 throw new EntityExistException($"Drone {DroneID} doesn't exsits in the data!");
             if (DroneToBeAssign.Status != DroneStatus.Available)
@@ -189,9 +186,11 @@ namespace BlApi
                     MaxParcel = parcel;
             }
             Data.PairParcelToDrone(MaxParcel, new(DroneToBeAssign.ID));
+            DroneList.Remove(DroneToBeAssign);
             DroneToBeAssign.Status = DroneStatus.Delivery;
             DroneToBeAssign.ParcelID = MaxParcel.ID;
             DroneList.Add(DroneToBeAssign);
+            DroneList = DroneList.OrderBy(d => d.ID).ToList();
         }
         
         public void UpdateParcelCollectedByDrone(int DroneID)
@@ -211,14 +210,14 @@ namespace BlApi
             sender = Data.GetCustomer(ParcelToBeCollected.SenderID);
             Data.UpdateParcelCollected(ParcelToBeCollected);
             DroneList.Remove(droneInDelivery);
-            droneInDelivery.BatteryStatus -= DistanceDroneCustomer(droneInDelivery, sender) * BatteryUsed[1];
+            droneInDelivery.BatteryStatus -= DistanceDroneCustomer(droneInDelivery, sender) * BatteryUsed[0];
             droneInDelivery.CurrentLocation = new(sender.Latitude, sender.Longitude);
             DroneList.Add(droneInDelivery);
+            DroneList = DroneList.OrderBy(d => d.ID).ToList();
         }
 
         public void UpdateParcelDeleiveredByDrone(int DroneID)
         {
-            int i = 0;
             if (DroneID < 100000 || DroneID > 999999)
                 throw new InvalidIDException("Drone ID has to have 6 positive digits.");
             DroneToList DroneInDelivery = DroneList.Find(d => d.ID == DroneID);
@@ -229,12 +228,13 @@ namespace BlApi
                 throw new ParcelTimesException("The drone is not carrying the parcel right now");
             Data.UpdateParcelInDelivery(ParcelToBeDelivered);
             Customer target = Data.GetCustomer(ParcelToBeDelivered.TargetID);
+            DroneList.Remove(DroneInDelivery);
             DroneInDelivery.BatteryStatus -= DistanceDroneCustomer(DroneInDelivery, target) * GetWeightMultiplier(ParcelToBeDelivered.Weight);
-            DroneInDelivery.CurrentLocation.Latitude = Data.GetCustomer(ParcelToBeDelivered.TargetID).Latitude;
-            DroneInDelivery.CurrentLocation.Longitude = Data.GetCustomer(ParcelToBeDelivered.TargetID).Longitude;
+            DroneInDelivery.CurrentLocation = new(target.Latitude, target.Longitude);
             DroneInDelivery.Status = DroneStatus.Available;
             DroneInDelivery.ParcelID = 0;
-            DroneList[i] = DroneInDelivery;
+            DroneList.Add(DroneInDelivery);
+            DroneList = DroneList.OrderBy(d => d.ID).ToList();
         }
     }
 }

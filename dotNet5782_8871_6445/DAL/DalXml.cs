@@ -53,12 +53,27 @@ namespace DAL
         public void AddNewStation(Station station)
         {
             XElement ListStations = XmlTools.LoadListFromXElement(stationsPath);
-            var x = ListStations.Descendants("ID");
+            var x = (from s in ListStations.Elements()
+                     where Convert.ToInt32(s.Element("ID").Value) == station.ID
+                     select new Station()
+                     {
+                         ID = Convert.ToInt32(s.Element("ID").Value),
+                         Name = s.Element("Name").Value,
+                         ChargeSlots = Convert.ToInt32(s.Element("ChargeSlots").Value),
+                         Latitude = Convert.ToDouble(s.Element("Latitude").Value),
+                         Longitude = Convert.ToDouble(s.Element("Longitude").Value)
+                     }).FirstOrDefault();
+            if(x.ID != 0)
+                throw new StationExistException($"The station ID {station.ID} exists already in the data!!");
+            ListStations.Add(x);
+            XmlTools.SaveListToXElement(ListStations, stationsPath);
             //x = x.FirstOrDefault(s => s.Element("ID")?.Value == station.ID.ToString())
             //x = ListStations.Descendants("Station").FirstOrDefault(s => s.Element("ID")?.Value == station.ID.ToString());
-            if(x != null)
-                throw new StationExistException($"The station ID {station.ID} exists already in the data!!");
+            //if (x != null)
+            //    throw new StationExistException($"The station ID {station.ID} exists already in the data!!");
 
+
+/***********************************************************************************************************************************/
             //List<Station> ListStations = XmlTools.LoadListFromXmlSerializer<Station>(stationsPath);
             //if (ListStations.Any(s => s.ID == station.ID))
             //    throw new StationExistException($"The station ID {station.ID} exists already in the data!!");

@@ -65,6 +65,17 @@ namespace DAL
             else
                 return LoadData(filePath);
         }
+        public static void SaveListToXElement(XElement EntityList, string filePath)
+        {
+            try
+            {
+                EntityList.Save(dir+filePath);
+            }
+            catch (Exception ex)
+            {
+                throw new XmlFileLoadCreateException(filePath, $"failed to create xml file: {filePath}", ex);
+            }
+        }
 
         private static XElement LoadData(string filePath)
         {
@@ -78,10 +89,10 @@ namespace DAL
             }
         }
 
-        private static XElement CreateFiles(string stationsPath)
+        private static XElement CreateFiles(string filePath)
         {
-            Root = new XElement("stations");
-            Root.Save(stationsPath);
+            Root = new XElement("");
+            Root.Save(filePath);
             return Root;
         }
         #endregion

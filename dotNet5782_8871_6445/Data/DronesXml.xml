@@ -7,47 +7,47 @@
   </Drone>
   <Drone>
     <ID>669001</ID>
-    <Model>Skydio 1</Model>
+    <Model>Phantom 1</Model>
     <MaxWeight>Heavy</MaxWeight>
   </Drone>
   <Drone>
     <ID>669002</ID>
     <Model>Phantom 2</Model>
-    <MaxWeight>Medium</MaxWeight>
+    <MaxWeight>Light</MaxWeight>
   </Drone>
   <Drone>
     <ID>669003</ID>
-    <Model>Mavic 3</Model>
+    <Model>Phantom 3</Model>
     <MaxWeight>Heavy</MaxWeight>
   </Drone>
   <Drone>
     <ID>669004</ID>
-    <Model>Mavic 4</Model>
-    <MaxWeight>Light</MaxWeight>
+    <Model>Phantom 4</Model>
+    <MaxWeight>Heavy</MaxWeight>
   </Drone>
   <Drone>
     <ID>669005</ID>
     <Model>Mavic 5</Model>
-    <MaxWeight>Medium</MaxWeight>
+    <MaxWeight>Light</MaxWeight>
   </Drone>
   <Drone>
     <ID>669006</ID>
-    <Model>Skydio 6</Model>
-    <MaxWeight>Heavy</MaxWeight>
+    <Model>Phantom 6</Model>
+    <MaxWeight>Medium</MaxWeight>
   </Drone>
   <Drone>
     <ID>669007</ID>
-    <Model>Phantom 7</Model>
-    <MaxWeight>Light</MaxWeight>
+    <Model>Mavic 7</Model>
+    <MaxWeight>Heavy</MaxWeight>
   </Drone>
   <Drone>
     <ID>669008</ID>
-    <Model>Mavic 8</Model>
-    <MaxWeight>Light</MaxWeight>
+    <Model>Skydio 8</Model>
+    <MaxWeight>Medium</MaxWeight>
   </Drone>
   <Drone>
     <ID>669009</ID>
-    <Model>Skydio 9</Model>
-    <MaxWeight>Heavy</MaxWeight>
+    <Model>Phantom 9</Model>
+    <MaxWeight>Light</MaxWeight>
   </Drone>
 </ArrayOfDrone>

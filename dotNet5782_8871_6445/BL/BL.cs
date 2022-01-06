@@ -22,14 +22,22 @@ namespace BlApi
 
         private DalApi.IDal Data;
         private List<DroneToList> DroneList;
-        private Double[] BatteryUsed;
-
+        //private Double[] BatteryUsed;
+        private double BatteryUsageEmpty;
+        private double BatteryUsageLightWight;
+        private double BatteryUsageMediumWight;
+        private double BatteryUsageHaevyWight;
+        private double BatteryChargeRate;
         private BL()
         {
             Data = DalFactory.GetDal("DalXml");
             DroneList = new();
-            BatteryUsed = Data.GetBatteryUsed();
-
+            //BatteryUsed = Data.GetBatteryUsed();
+            BatteryUsageEmpty = Data.GetBatteryProperty("BatteryUsageEmpty");
+            BatteryUsageLightWight = Data.GetBatteryProperty("BatteryUsageLightWight");
+            BatteryUsageMediumWight = Data.GetBatteryProperty("BatteryUsageMediumWight");
+            BatteryUsageHaevyWight = Data.GetBatteryProperty("BatteryUsageHaevyWight");
+            BatteryChargeRate = Data.GetBatteryProperty("BatteryChargeRate");
             foreach (Drone drone in Data.GetDrones(drone => true))
             {
                 DroneToList newDrone = new(drone.ID, drone.Model, drone.MaxWeight);
@@ -86,9 +94,10 @@ namespace BlApi
                 }
                 else
                     nearest = Data.GetStation(droneCharging.StationID);
-                newDrone.CurrentLocation = new(nearest.Latitude, nearest.Longitude);
+                newDrone.CurrentLocation = new(nearest.Latitude, nearest.Longitude);               
                 Drone drone = new(newDrone.ID);
-                Data.UpdateDroneToBeCharge(drone, nearest, DateTime.Now);
+                if (droneCharging.DroneID == 0)
+                    Data.UpdateDroneToBeCharge(drone, nearest, DateTime.Now);
                 newDrone.BatteryStatus = GetRandBatteryStatus(0, 21);
             }
             else
@@ -98,7 +107,7 @@ namespace BlApi
                 customer = AllPastCustomers.ElementAt(RandomCustomer);
                 newDrone.CurrentLocation = new(customer.Latitude, customer.Longitude);
                 nearest = GetNearestStation(newDrone.CurrentLocation, Data.GetStations(station => true));
-                battery = Distance(newDrone.CurrentLocation, new Location(nearest.Latitude, nearest.Longitude)) * BatteryUsed[0];
+                battery = Distance(newDrone.CurrentLocation, new Location(nearest.Latitude, nearest.Longitude)) * BatteryUsageEmpty;
                 newDrone.BatteryStatus = GetRandBatteryStatus(battery, 100);
             }
             return newDrone;

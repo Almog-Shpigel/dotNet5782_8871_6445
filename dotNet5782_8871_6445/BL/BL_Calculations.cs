@@ -44,15 +44,15 @@ namespace BlApi
             switch (weight)
             {
                 case WeightCategories.Light:
-                    return BatteryUsed[1]; //Light
+                    return BatteryUsageLightWight; //Light
                 case WeightCategories.Medium:
-                    return BatteryUsed[2]; //Medium
+                    return BatteryUsageMediumWight; //Medium
                 case WeightCategories.Heavy:
-                    return BatteryUsed[3]; //Heavy
+                    return BatteryUsageHaevyWight; //Heavy
                 default:
                     break;
             }
-            return BatteryUsed[0]; //Empty
+            return BatteryUsageEmpty; //Empty
         }
 
         /// <summary>
@@ -149,13 +149,13 @@ namespace BlApi
             DisDroneSender = DistanceDroneCustomer(drone, sender);
             DisSenderTarget = DistanceCustomerCustomer(sender, target);
             DisTargetStation = DistanceCustomerStation(target, Station);
-            return BatteryUsed[0] * (DisDroneSender + DisTargetStation) + GetWeightMultiplier(Weight) * DisSenderTarget;
+            return BatteryUsageEmpty * (DisDroneSender + DisTargetStation) + GetWeightMultiplier(Weight) * DisSenderTarget;
         }
 
         private double CalcBatteryCharged(DroneToList drone)
         {
             double TimeDifference = (DateTime.Now - (DateTime)Data.GetDroneCharge(drone.ID).Start).TotalMinutes;
-            drone.BatteryStatus += BatteryUsed[4] * TimeDifference;
+            drone.BatteryStatus += BatteryChargeRate * TimeDifference;
             if (drone.BatteryStatus > 100)
                 return 100;
             return drone.BatteryStatus;

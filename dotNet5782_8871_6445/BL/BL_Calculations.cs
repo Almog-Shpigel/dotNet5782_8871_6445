@@ -154,9 +154,8 @@ namespace BlApi
 
         private double CalcBatteryCharged(DroneToList drone)
         {
-            double TimeDifference = (DateTime.Now - (DateTime)Data.GetDroneCharge(drone.ID).Start).TotalHours;
+            double TimeDifference = (DateTime.Now - (DateTime)Data.GetDroneCharge(drone.ID).Start).TotalMinutes;
             drone.BatteryStatus += BatteryUsed[4] * TimeDifference;
-            drone.BatteryStatus = ((int)(drone.BatteryStatus * 100)) / 100;
             if (drone.BatteryStatus > 100)
                 return 100;
             return drone.BatteryStatus;

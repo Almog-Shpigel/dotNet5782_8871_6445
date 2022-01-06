@@ -11,7 +11,7 @@ namespace BlApi
         #region Get All
         public IEnumerable<DroneToList> GetAllDrones()
         {
-            return DroneList;
+            return DroneList.Select(d => new DroneToList(d.ID, d.Model, d.MaxWeight, (int)d.BatteryStatus, d.Status, d.CurrentLocation, d. ParcelID));
         }
 
         public IEnumerable<ParcelToList> GetAllParcels()
@@ -119,9 +119,15 @@ namespace BlApi
             return AvailableStations;
         }
 
+        public IEnumerable<CustomerInParcel> GetAllCustomerInParcels()
+        {
+            IEnumerable<CustomerInParcel> customers = Data.GetCustomers(item => true).Select(customer => new CustomerInParcel(customer.ID, customer.Name));
+            return customers;
+        }
+
         public IEnumerable<DroneToList> GetDrones(DroneStatus status, WeightCategories weight)
         {
-            IEnumerable<DroneToList> SelectedDrones = DroneList;
+            IEnumerable<DroneToList> SelectedDrones = GetAllDrones();
             if ((int)weight != -1)
                 SelectedDrones = SelectedDrones.Where(drone => drone.MaxWeight == weight);
             if ((int)status != -1)
@@ -143,39 +149,36 @@ namespace BlApi
         #region Get one
         public DroneBL GetDrone(int DroneID)
         {
-            DroneBL DroneToDisplay;
-            foreach (DroneToList drone in DroneList)
-                if (drone.ID == DroneID)
-                {
-                    DroneToDisplay = new(drone.ID, drone.Model, drone.MaxWeight, drone.BatteryStatus, drone.Status); /// battery status needs to be updated every time
-                    DroneToDisplay.CurrentLocation = drone.CurrentLocation;
-                    if (drone.ParcelID == 0)
-                        return DroneToDisplay;
-                    if (DroneToDisplay.Status == DroneStatus.Delivery)
-                    {
-                        DroneToDisplay.Parcel = InitParcelInDelivery(Data.GetParcel(drone.ParcelID));
-                    }
-                    return DroneToDisplay;
-                }
-            throw new DroneExistException();
-        }
+            DroneToList drone;
+            if (DroneList.Any(d => d.ID == DroneID))
+                drone = DroneList.Where(d => d.ID == DroneID).First();
+            else
+                throw new DroneExistException();
 
+            DroneBL droneBL = new(drone.ID, drone.Model, drone.MaxWeight, (int)drone.BatteryStatus, drone.Status);
+            if (drone.ParcelID == 0)
+                return droneBL;
+            if (droneBL.Status == DroneStatus.Delivery)
+                droneBL.Parcel = InitParcelInDelivery(Data.GetParcel(drone.ParcelID));
+            return droneBL;
+        }
+        
         public ParcelBL GetParcel(int ParcelID)
         {
             Parcel parcel = Data.GetParcel(ParcelID);
             Customer sender = Data.GetCustomer(parcel.SenderID);
             Customer target = Data.GetCustomer(parcel.TargetID);
-            ParcelBL ParcelToDisplay = new(new(sender.ID,sender.Name), new(target.ID, target.Name), parcel.Weight, parcel.Priority);
-            ParcelToDisplay.ID = parcel.ID;
-            ParcelToDisplay.TimeRequested = parcel.TimeRequested;
-            ParcelToDisplay.Scheduled = parcel.Scheduled;
-            ParcelToDisplay.PickedUp = parcel.PickedUp;
-            ParcelToDisplay.Delivered = parcel.Delivered;
-            ParcelToDisplay.Sender.Name = sender.Name;
-            ParcelToDisplay.Target.Name = target.Name;
+            ParcelBL parcelBL = new(new(sender.ID,sender.Name), new(target.ID, target.Name), parcel.Weight, parcel.Priority);
+            parcelBL.ID = parcel.ID;
+            parcelBL.TimeRequested = parcel.TimeRequested;
+            parcelBL.Scheduled = parcel.Scheduled;
+            parcelBL.PickedUp = parcel.PickedUp;
+            parcelBL.Delivered = parcel.Delivered;
+            parcelBL.Sender.Name = sender.Name;
+            parcelBL.Target.Name = target.Name;
             if (parcel.DroneID != 0)
-                ParcelToDisplay.DroneInParcel = CreateDroneInParcel(parcel.DroneID);
-            return ParcelToDisplay;
+                parcelBL.DroneInParcel = CreateDroneInParcel(parcel.DroneID);
+            return parcelBL;
         }
 
         public StationBL GetStation(int StationID)
@@ -195,11 +198,6 @@ namespace BlApi
                 }
             }
             return StationToPrint;
-        }
-        public IEnumerable<CustomerInParcel> GetAllCustomerInParcels()
-        {
-            IEnumerable<CustomerInParcel> customers = Data.GetCustomers(item => true).Select(customer => new CustomerInParcel(customer.ID, customer.Name));
-            return customers;
         }
 
         public CustomerBL GetCustomer(int CustomerID)

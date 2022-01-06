@@ -30,12 +30,12 @@ namespace DAL
         }
         private DalXml()
         {
-            DataSource.Initialize();
-            XmlTools.SaveListToXmlSerializer(DataSource.customers, customersPath);
-            XmlTools.SaveListToXmlSerializer(DataSource.drones, dronesPath);
-            XmlTools.SaveListToXmlSerializer(DataSource.DroneCharges, droneChargePath);
-            XmlTools.SaveListToXmlSerializer(DataSource.parcels, parcelsPath);
-            XmlTools.SaveListToXmlSerializer(DataSource.stations, stationsPath);
+            //DataSource.Initialize();
+            //XmlTools.SaveListToXmlSerializer(DataSource.customers, customersPath);
+            //XmlTools.SaveListToXmlSerializer(DataSource.drones, dronesPath);
+            //XmlTools.SaveListToXmlSerializer(DataSource.DroneCharges, droneChargePath);
+            //XmlTools.SaveListToXmlSerializer(DataSource.parcels, parcelsPath);
+            //XmlTools.SaveListToXmlSerializer(DataSource.stations, stationsPath);
         }
 
         public static DalXml Instance { get => instance; }
@@ -55,18 +55,20 @@ namespace DAL
             XElement ListStations = XmlTools.LoadListFromXElement(stationsPath);
             var x = (from s in ListStations.Elements()
                      where Convert.ToInt32(s.Element("ID").Value) == station.ID
-                     select new Station()
-                     {
-                         ID = Convert.ToInt32(s.Element("ID").Value),
-                         Name = s.Element("Name").Value,
-                         ChargeSlots = Convert.ToInt32(s.Element("ChargeSlots").Value),
-                         Latitude = Convert.ToDouble(s.Element("Latitude").Value),
-                         Longitude = Convert.ToDouble(s.Element("Longitude").Value)
-                     }).FirstOrDefault();
-            if(x.ID != 0)
-                throw new StationExistException($"The station ID {station.ID} exists already in the data!!");
-            ListStations.Add(x);
+                     select s
+                   ).FirstOrDefault();
+            if(x is not null)
+                throw new StationExistException($"Station {station.ID} exists already in the data!!");
+            XElement id = new("ID", station.ID);
+            XElement name = new("Name", station.Name);
+            XElement latitude = new("Latitude", station.Latitude);
+            XElement longitude = new("Longitude", station.Longitude);
+            XElement slots = new("ChargeSlots",station.ChargeSlots);
+
+            ListStations.Add(new XElement("Station", id, name, latitude, longitude, slots));
             XmlTools.SaveListToXElement(ListStations, stationsPath);
+            
+            
             //x = x.FirstOrDefault(s => s.Element("ID")?.Value == station.ID.ToString())
             //x = ListStations.Descendants("Station").FirstOrDefault(s => s.Element("ID")?.Value == station.ID.ToString());
             //if (x != null)
@@ -133,25 +135,26 @@ namespace DAL
 
         public void UpdateStationName(Station station)
         {
-            List<Station> ListStations = XmlTools.LoadListFromXmlSerializer<Station>(stationsPath);
-            Station oldStation = GetStation(station.ID);
-            ListStations.Remove(oldStation);
-            oldStation.Name = station.Name;
-            ListStations.Add(oldStation);
-            ListStations = ListStations.OrderBy(s => s.ID).ToList();
-            XmlTools.SaveListToXmlSerializer(ListStations, stationsPath);
+            XElement ListStations = XmlTools.LoadListFromXElement(stationsPath);
+            XElement oldStation = (from s in ListStations.Elements()
+                                   where Convert.ToInt32(s.Element("ID").Value) == station.ID
+                                   select s).FirstOrDefault();
+            if (oldStation is null)
+                throw new StationExistException($"Station {station.ID} dosen't exists in the data!!");
+            oldStation.Element("Name").Value = station.Name;
+            XmlTools.SaveListToXElement(ListStations, stationsPath);
         }
 
         public void UpdateStationSlots(Station station)
         {
-
-            List<Station> ListStations = XmlTools.LoadListFromXmlSerializer<Station>(stationsPath);
-            Station oldStation = GetStation(station.ID);
-            ListStations.Remove(oldStation);
-            oldStation.ChargeSlots = station.ChargeSlots;
-            ListStations.Add(oldStation);
-            ListStations = ListStations.OrderBy(s => s.ID).ToList();
-            XmlTools.SaveListToXmlSerializer(ListStations, stationsPath);
+            XElement ListStations = XmlTools.LoadListFromXElement(stationsPath);
+            XElement oldStation = (from s in ListStations.Elements()
+                                   where Convert.ToInt32(s.Element("ID").Value) == station.ID
+                                   select s).FirstOrDefault();
+            if (oldStation is null)
+                throw new StationExistException($"Station {station.ID} dosen't exists in the data!!");
+            oldStation.Element("ChargeSlots").Value = station.ChargeSlots.ToString();
+            XmlTools.SaveListToXElement(ListStations, stationsPath);
         }
 
         public void UpdateCustomerName(Customer newCustomer)
@@ -288,12 +291,35 @@ namespace DAL
 
         public Station GetStation(int StationID)
         {
-            List<Station> ListStation = XmlTools.LoadListFromXmlSerializer<Station>(stationsPath);
-            Station station = ListStation.Find(station => StationID == station.ID);
-            if (station.ID != 0)
-                return station;
-            else
-                throw new CustomerExistException($"Station {StationID} dosen't exist in data!");
+            XElement ListStations = XmlTools.LoadListFromXElement(stationsPath);
+            Station station = (from s in ListStations.Elements()
+                               where Convert.ToInt32(s.Element("ID").Value) == StationID
+                               select new Station()
+                               {
+                                   ID = Convert.ToInt32(s.Element("ID").Value),
+                                   ChargeSlots = Convert.ToInt32(s.Element("ChargeSlots").Value),
+                                   Latitude = Convert.ToDouble(s.Element("Latitude").Value),
+                                   Longitude = Convert.ToDouble(s.Element("Longitude").Value),
+                                   Name = s.Element("Name").Value
+                               }).FirstOrDefault();
+            //try
+            //{
+            //    station = (from s in ListStations.Elements()
+            //                   where Convert.ToInt32(s.Element("ID").Value) == StationID
+            //                   select new Station()
+            //                   {
+            //                       ID = Convert.ToInt32(s.Element("ID").Value),
+            //                       ChargeSlots = Convert.ToInt32(s.Element("ChargeSlots").Value),
+            //                       Latitude = Convert.ToDouble(s.Element("Latitude").Value),
+            //                       Longitude = Convert.ToDouble(s.Element("Longitude").Value),
+            //                       Name = s.Element("Name").Value
+            //                   }).FirstOrDefault();
+            //}
+            //catch (Exception)
+            //{
+            //    station = new();
+            //}
+            return station;
         }
 
         public Customer GetCustomer(int CustomerID)
@@ -342,10 +368,33 @@ namespace DAL
 
         public IEnumerable<Station> GetStations(Predicate<Station> StationPredicate)
         {
-            List<Station> ListStations = XmlTools.LoadListFromXmlSerializer<Station>(stationsPath);
-            return from station in ListStations
-                   where StationPredicate(station)
-                   select station;
+            XElement ListStations = XmlTools.LoadListFromXElement(stationsPath);
+            List<Station> stations = (from s in ListStations.Elements()
+                                      select new Station()
+                                      {
+                                          ID = Convert.ToInt32(s.Element("ID").Value),
+                                          ChargeSlots = Convert.ToInt32(s.Element("ChargeSlots").Value),
+                                          Latitude = Convert.ToDouble(s.Element("Latitude").Value),
+                                          Longitude = Convert.ToDouble(s.Element("Longitude").Value),
+                                          Name = s.Element("Name").Value
+                                      }).Where(s => StationPredicate(s)).ToList();
+            //try
+            //{
+            //    stations = (from s in ListStations.Elements()
+            //                select new Station()
+            //                {
+            //                    ID = Convert.ToInt32(s.Element("ID").Value),
+            //                    ChargeSlots = Convert.ToInt32(s.Element("ChargeSlots").Value),
+            //                    Latitude = Convert.ToDouble(s.Element("Latitude").Value),
+            //                    Longitude = Convert.ToDouble(s.Element("Longitude").Value),
+            //                    Name = s.Element("Name").Value
+            //                }).Where(s => StationPredicate(s)).ToList();
+            //}
+            //catch (Exception)
+            //{
+            //    stations = null;
+            //}
+            return stations;
         }
 
         public IEnumerable<DroneCharge> GetDroneCharge(Predicate<DroneCharge> DroneChangePredicate)

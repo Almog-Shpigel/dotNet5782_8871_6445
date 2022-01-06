@@ -25,10 +25,15 @@
         <ListView x:Name="StationListView" Grid.Row="1" SelectionChanged="StationListView_SelectionChanged"  Style="{StaticResource ListViewStyle}">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn DisplayMemberBinding="{Binding ID}" Header="ID" Width="150"  />
-                    <GridViewColumn DisplayMemberBinding="{Binding Name}" Header="Name"  Width="150"/>
-                    <GridViewColumn DisplayMemberBinding="{Binding AvailableChargeSlots}" Header="Available slots"  Width="150"/>
-                    <GridViewColumn DisplayMemberBinding="{Binding UsedChargeSlots}" Header="Used slots"  Width="150"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding ID}" Header="ID" Width="auto"  />
+                    <GridViewColumn DisplayMemberBinding="{Binding Name}" Header="Name"  Width="auto"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding AvailableChargeSlots}" Header="Available slots"  Width="auto"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding UsedChargeSlots}" Header="Used slots"  Width="auto"/>
+                    <GridView.ColumnHeaderContainerStyle>
+                        <Style TargetType="GridViewColumnHeader">
+                            <Setter Property="Height" Value="35"/>
+                        </Style>
+                    </GridView.ColumnHeaderContainerStyle>
                 </GridView>
             </ListView.View>
             <ListView.ItemContainerStyle>

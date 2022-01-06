@@ -29,13 +29,13 @@
             <Button  x:Name="BackWindow" Content="Main Window" Click="BackWindow_Click" Style="{StaticResource ButtonBarStyle}"/>
         </StackPanel>
 
-        <ListView x:Name="DronesListView" Grid.Row="1" Style="{StaticResource ListViewStyle}"><!--SelectionChanged="DronesListView_SelectionChanged"-->
-            <ListView.View>
+        <ListView x:Name="DronesListView" Grid.Row="1" Style="{StaticResource ListViewStyle}" >
+            <ListView.View >
                 <GridView>
                     <GridViewColumn DisplayMemberBinding="{Binding ID}" Header="ID" Width="auto"/>
                     <GridViewColumn DisplayMemberBinding="{Binding Model}" Header="Model"  Width="auto"/>
                     <GridViewColumn DisplayMemberBinding="{Binding MaxWeight}" Header="Weight"  Width="auto"/>
-                    <GridViewColumn Header="Battery"  Width="auto">
+                    <GridViewColumn Header="Battery" Width="auto">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <Viewbox Width="70" Height="30" HorizontalAlignment="Left" Margin="10,0,0,0">
@@ -55,6 +55,11 @@
                     <GridViewColumn DisplayMemberBinding="{Binding Status}" Header="Status"  Width="auto"/>
                     <GridViewColumn DisplayMemberBinding="{Binding ParcelID}" Header="Parcel ID"  Width="auto"/>
                     <GridViewColumn DisplayMemberBinding="{Binding CurrentLocation}" Header="Location"  Width="auto"/>
+                    <GridView.ColumnHeaderContainerStyle>
+                        <Style TargetType="GridViewColumnHeader">
+                            <Setter Property="Height" Value="35"/>
+                        </Style>
+                    </GridView.ColumnHeaderContainerStyle>
                 </GridView>
             </ListView.View>
             <ListView.ItemContainerStyle>

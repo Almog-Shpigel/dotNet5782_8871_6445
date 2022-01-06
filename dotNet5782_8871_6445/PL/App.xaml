@@ -72,7 +72,7 @@
             <Setter Property="FontWeight" Value="Bold" />
             <Setter Property="Foreground" Value="#723d46" />
             <Setter Property="Margin" Value="10,5,15,5" />
-            <Setter Property="Width" Value="130"/>
+            <Setter Property="Width" Value="170"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
         </Style>
         <Style TargetType="TextBlock" x:Key="TextBlockInvalidStyle">
@@ -121,6 +121,8 @@
             <Setter Property="Background" Value="#ffe1a8" />
             <Setter Property="BorderBrush" Value="#723d46" />
             <Setter Property="BorderThickness" Value="3"/>
+            <Setter Property="MinWidth" Value="150" />
+            <Setter Property="MinHeight" Value="20"/>
             <Setter Property="Margin" Value="10,10,10,10" />
         </Style>
         <Style TargetType="DataGrid" x:Key="ParcelDataGrid">

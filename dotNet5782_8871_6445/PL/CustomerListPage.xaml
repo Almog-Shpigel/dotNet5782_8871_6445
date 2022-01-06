@@ -22,7 +22,7 @@
             <Button  x:Name="BackWindow" Content="Main Window" Click="BackWindow_Click" Style="{StaticResource ButtonBarStyle}"/>
         </StackPanel>
 
-        <ListView x:Name="CustomersListView" Grid.Row="1" SelectionChanged="CustomerListView_SelectionChanged" Style="{StaticResource ListViewStyle}" Margin="10,6,10,14">
+        <ListView x:Name="CustomersListView" Grid.Row="1" SelectionChanged="CustomerListView_SelectionChanged" Style="{StaticResource ListViewStyle}">
             <ListView.View>
                 <GridView>
                     <GridViewColumn DisplayMemberBinding="{Binding ID}" Header="ID" Width="auto"/>
@@ -32,6 +32,12 @@
                     <GridViewColumn DisplayMemberBinding="{Binding SentAndNOTDeliverd}" Header="Sent on the way"  Width="auto"/>
                     <GridViewColumn DisplayMemberBinding="{Binding ParcelsRecived}" Header="Parcels recived"  Width="auto"/>
                     <GridViewColumn DisplayMemberBinding="{Binding ParcelsOnTheWay}" Header="Parcels on the way"  Width="auto"/>
+                    <GridView.ColumnHeaderContainerStyle>
+                        <Style TargetType="GridViewColumnHeader">
+                            <Setter Property="Width" Value="auto"/>
+                            <Setter Property="Height" Value="auto"/>
+                        </Style>
+                    </GridView.ColumnHeaderContainerStyle>
                 </GridView>
             </ListView.View>
             <ListView.ItemContainerStyle>

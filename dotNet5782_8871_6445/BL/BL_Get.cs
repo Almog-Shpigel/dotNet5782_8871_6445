@@ -161,21 +161,27 @@ namespace BlApi
 
         public StationBL GetStation(int StationID)
         {
-            Station station = Data.GetStation(StationID);
-            Location location = new(station.Latitude, station.Longitude);
-            StationBL StationToPrint = new(station.ID, station.Name, station.ChargeSlots, location);
-            foreach (DroneCharge DroneCharge in Data.GetDroneCharge(droneCharge => true))
+            Station station;
+            try
             {
-                foreach (DroneToList DroneItem in DroneList)
+                station = Data.GetStation(StationID);
+            }
+            catch (StationExistException ex)
+            {
+                throw new EntityExistException("Wrong id.\n ", ex);
+            }
+             
+            Location location = new(station.Latitude, station.Longitude);
+            StationBL stationBL = new(station.ID, station.Name, station.ChargeSlots, location);
+            foreach (DroneCharge droneCharge in Data.GetDroneCharge(droneCharge => droneCharge.StationID == station.ID))
+            {
+                foreach (DroneToList DroneItem in DroneList.Where(d => d.ID == droneCharge.DroneID))
                 {
-                    if (DroneItem.ID == DroneCharge.DroneID && DroneCharge.StationID == StationID)
-                    {
-                        DroneChargeBL drone = new(DroneCharge.DroneID, DroneItem.BatteryStatus);
-                        StationToPrint.ChargingDrones.Add(drone);
-                    }
+                    DroneChargeBL drone = new(droneCharge.DroneID, DroneItem.BatteryStatus);
+                    stationBL.ChargingDrones.Add(drone);
                 }
             }
-            return StationToPrint;
+            return stationBL;
         }
 
         public CustomerBL GetCustomer(int CustomerID)
@@ -185,9 +191,9 @@ namespace BlApi
             {
                 customer = Data.GetCustomer(CustomerID);
             }
-            catch (CustomerExistException msg)
+            catch (CustomerExistException ex)
             {
-                throw new InvalidIDException("Wrong id!\n", msg);
+                throw new InvalidIDException("Wrong id!\n", ex);
             }
             
             Location location = new(customer.Latitude, customer.Longitude);
@@ -205,13 +211,6 @@ namespace BlApi
         #endregion
 
         #region Get other
-        private DroneToList GetDroneToList(int DroneID)
-        {
-            foreach (DroneToList drone in DroneList)
-                if (drone.ID == DroneID)
-                    return drone;
-            throw new DroneExistException();
-        }
         public ParcelToList GetParcelToList(ParcelAtCustomer parcel)
         {
             string target = Data.GetCustomer((Data.GetParcel(parcel.ID).TargetID)).Name;
@@ -240,14 +239,13 @@ namespace BlApi
         /// <param name="parcel"></param>
         /// <param name="CustomerID"></param>
         /// <returns>ParcelAtCustomer entity</returns>
-        private ParcelAtCustomer CreateParcelAtCustomer(Parcel parcel, int CustomerID)
+        private ParcelAtCustomer CreateParcelAtCustomer(Parcel parcel, int customerID)
         {
             ParcelStatus status = GetParcelStatus(parcel);
-            Customer cust = Data.GetCustomer(CustomerID);
+            Customer cust = Data.GetCustomer(customerID);
             CustomerInParcel customer = new(cust.ID, cust.Name);
             ParcelAtCustomer NewParcel = new(parcel.ID, parcel.Weight, parcel.Priority, status, customer);
             return NewParcel;
-
         }
 
         /// <summary>
@@ -274,12 +272,10 @@ namespace BlApi
         /// <returns>DroneInParcel entity</returns>
         private DroneInParcel CreateDroneInParcel(int droneID)
         {
-            foreach (var drone in DroneList)
-            {
-                if (drone.ID == droneID)
-                    return new DroneInParcel(drone.ID, drone.BatteryStatus, drone.CurrentLocation);
-            }
-            throw new InvalidInputException();
+            if(!DroneList.Any(d => d.ID == droneID))
+                throw new EntityExistException($"Drone {droneID} dosen't exist in the data!");
+            DroneToList drone = DroneList.Find(d => d.ID == droneID);
+            return new DroneInParcel(drone.ID, drone.BatteryStatus, drone.CurrentLocation);
         }
 
         /// <summary>
@@ -289,30 +285,23 @@ namespace BlApi
         /// </para>
         /// </summary>
         /// <returns></returns>
-        private Station GetNearestStation(Location location, IEnumerable<Station> AllStation)
+        private Station GetNearestStation(Location location, IEnumerable<Station> AllStations)
         {
-            if (AllStation.Count() == 0)
+            if (!AllStations.Any())
                 throw new NoAvailableStation("There are no station available.");
-            Station NearestStation = new(AllStation.First().ID,
-                AllStation.First().Name,
-                AllStation.First().ChargeSlots,
-                AllStation.First().Latitude,
-                AllStation.First().Longitude);
-
-            Location StationLocation = new(NearestStation.Latitude, NearestStation.Longitude);
-            double distance, MinDistance;
-            MinDistance = Distance(location, StationLocation);
-            foreach (Station station in AllStation)
+            Station nearestStation = AllStations.First();
+            double distance, minDistance;
+            minDistance = Distance(location, new(nearestStation.Latitude, nearestStation.Longitude));
+            foreach (Station station in AllStations)
             {
-                StationLocation = new(station.Latitude, station.Longitude);
-                distance = Distance(location, StationLocation);
-                if (distance < MinDistance)
+                distance = Distance(location, new(station.Latitude, station.Longitude));
+                if (distance < minDistance)
                 {
-                    MinDistance = distance;
-                    NearestStation = new(station.ID, station.Name, station.ChargeSlots, station.Latitude, station.Longitude);
+                    minDistance = distance;
+                    nearestStation = station;
                 }
             }
-            return NearestStation;
+            return nearestStation;
         }
         #endregion
     }

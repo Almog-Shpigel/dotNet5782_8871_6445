@@ -1,73 +1,73 @@
 <?xml version="1.0"?>
 <ArrayOfCustomer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Customer>
-    <ID>298068386</ID>
+    <ID>704105226</ID>
     <Name>Alon</Name>
-    <Phone>0547181512</Phone>
-    <Latitude>35.2514</Latitude>
-    <Longitude>31.8192</Longitude>
+    <Phone>0583451748</Phone>
+    <Latitude>35.2048</Latitude>
+    <Longitude>31.7383</Longitude>
   </Customer>
   <Customer>
-    <ID>175409752</ID>
-    <Name>Merav</Name>
-    <Phone>0536760754</Phone>
-    <Latitude>35.1585</Latitude>
-    <Longitude>31.8025</Longitude>
+    <ID>182752528</ID>
+    <Name>Alon</Name>
+    <Phone>0537371878</Phone>
+    <Latitude>35.2371</Latitude>
+    <Longitude>31.7501</Longitude>
   </Customer>
   <Customer>
-    <ID>784456738</ID>
-    <Name>Efart</Name>
-    <Phone>0598755701</Phone>
-    <Latitude>35.2591</Latitude>
-    <Longitude>31.8271</Longitude>
+    <ID>121973190</ID>
+    <Name>Rachel</Name>
+    <Phone>0554815980</Phone>
+    <Latitude>35.2195</Latitude>
+    <Longitude>31.7823</Longitude>
   </Customer>
   <Customer>
-    <ID>763937855</ID>
-    <Name>Almog</Name>
-    <Phone>0532029897</Phone>
-    <Latitude>35.144</Latitude>
-    <Longitude>31.8044</Longitude>
+    <ID>416669724</ID>
+    <Name>Rachel</Name>
+    <Phone>0510894182</Phone>
+    <Latitude>35.1695</Latitude>
+    <Longitude>31.7329</Longitude>
   </Customer>
   <Customer>
-    <ID>645402141</ID>
-    <Name>Efart</Name>
-    <Phone>0541403553</Phone>
-    <Latitude>35.1741</Latitude>
-    <Longitude>31.7342</Longitude>
-  </Customer>
-  <Customer>
-    <ID>415058659</ID>
-    <Name>Dor</Name>
-    <Phone>0577624349</Phone>
-    <Latitude>35.205</Latitude>
-    <Longitude>31.8172</Longitude>
-  </Customer>
-  <Customer>
-    <ID>301740658</ID>
-    <Name>Almog</Name>
-    <Phone>0592983645</Phone>
-    <Latitude>35.2344</Latitude>
-    <Longitude>31.8111</Longitude>
-  </Customer>
-  <Customer>
-    <ID>556472581</ID>
-    <Name>Yair</Name>
-    <Phone>0536585646</Phone>
-    <Latitude>35.1544</Latitude>
-    <Longitude>31.7519</Longitude>
-  </Customer>
-  <Customer>
-    <ID>630942371</ID>
+    <ID>449815182</ID>
     <Name>Ariel</Name>
-    <Phone>0584098087</Phone>
-    <Latitude>35.1805</Latitude>
-    <Longitude>31.8048</Longitude>
+    <Phone>0539526412</Phone>
+    <Latitude>35.2481</Latitude>
+    <Longitude>31.7983</Longitude>
   </Customer>
   <Customer>
-    <ID>953097388</ID>
-    <Name>Shoshana</Name>
-    <Phone>0575733137</Phone>
-    <Latitude>35.2141</Latitude>
-    <Longitude>31.8287</Longitude>
+    <ID>262701401</ID>
+    <Name>Rachel</Name>
+    <Phone>0593102142</Phone>
+    <Latitude>35.1764</Latitude>
+    <Longitude>31.8168</Longitude>
+  </Customer>
+  <Customer>
+    <ID>662414017</ID>
+    <Name>Noam</Name>
+    <Phone>0565673955</Phone>
+    <Latitude>35.1657</Latitude>
+    <Longitude>31.7911</Longitude>
+  </Customer>
+  <Customer>
+    <ID>294646138</ID>
+    <Name>Yishai</Name>
+    <Phone>0567134176</Phone>
+    <Latitude>35.1536</Latitude>
+    <Longitude>31.7344</Longitude>
+  </Customer>
+  <Customer>
+    <ID>207635942</ID>
+    <Name>Rachel</Name>
+    <Phone>0597370449</Phone>
+    <Latitude>35.1426</Latitude>
+    <Longitude>31.740099999999998</Longitude>
+  </Customer>
+  <Customer>
+    <ID>513076431</ID>
+    <Name>Alon</Name>
+    <Phone>0511576006</Phone>
+    <Latitude>35.1727</Latitude>
+    <Longitude>31.7961</Longitude>
   </Customer>
 </ArrayOfCustomer>

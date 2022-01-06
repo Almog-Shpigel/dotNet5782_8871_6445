@@ -2,7 +2,8 @@
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       xmlns:local="clr-namespace:PL"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
@@ -11,10 +12,8 @@
     <Grid Background="#c9cba3">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="5*"/>
-            <ColumnDefinition Width="50*"/>
-            <ColumnDefinition Width="50*"/>
-            <ColumnDefinition Width="50*"/>
-            <ColumnDefinition Width="45*"/>
+            <ColumnDefinition Width="100*"/>
+            <ColumnDefinition Width="30*"/>
             <ColumnDefinition Width="5*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -22,43 +21,41 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="2" Grid.Column="1">
-            <TextBlock x:Name="PrintIDblock"        Text="Station ID:"        Style="{StaticResource TextBlockPageStyle}" />
-            <TextBlock x:Name="PrintModelBlock"     Text="Station name:"      Style="{StaticResource TextBlockPageStyle}" />
-            <TextBlock x:Name="PrintWeightBlock"    Text="Available slots:"      Style="{StaticResource TextBlockPageStyle}" />
-            <TextBlock x:Name="PrintLocationBlock"  Text="Location:"        Style="{StaticResource TextBlockPageStyle}" />
-            <TextBlock x:Name="PrintDronsChargingBlock"    Text="Drones charging:"    Style="{StaticResource TextBlockPageStyle}" />
-        </StackPanel>
-        <StackPanel x:Name="ShowDetailsStation" Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2">
-            <TextBlock x:Name="IDBlock"  Text="{Binding ID}"       Style="{StaticResource TextBlockPageStyle}" />
-            <TextBlock x:Name="NamelBlock"  Text="{Binding Name}"    Style="{StaticResource TextBlockPageStyle}" />
-            <TextBlock x:Name="AvailableSlotstBlock"   Text="{Binding ChargeSlots}"  Style="{StaticResource TextBlockPageStyle}" />
-            <TextBlock x:Name="LocationBlock" Text="{Binding Location}"  Style="{StaticResource TextBlockPageStyle}" />
-            <ListView x:Name="DronesListViewFromStation" Style="{StaticResource ListViewStyle}">
-                <ListView.ItemContainerStyle>
-                    <Style TargetType="{x:Type ListViewItem}">
-                        <EventSetter Event="MouseDoubleClick" Handler="ListViewItem_MouseDoubleClick" />
-                    </Style>
-                </ListView.ItemContainerStyle>
-            </ListView>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock x:Name="PrintIDblock" Text="Station ID:" Style="{StaticResource TextBlockPageStyle}" />
+                <TextBox   x:Name="IDBox" Text="{Binding ID}" Width="150" FontSize="20" Margin="10,0" IsReadOnly="True" materialDesign:HintAssist.Hint="Enter ID"/>
+                <TextBlock x:Name="InvalidInputBlock"  Style="{StaticResource TextBlockInvalidStyle}"/>
             </StackPanel>
-            <StackPanel x:Name="AddNewStationPanell" Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="1">
-            <TextBox   x:Name="EnterStationIDBox" TextChanged="EnterStationIDBox_TextChanged" Style="{StaticResource TextBoxStyle}" />
-            <TextBox   x:Name="EnterStationNameBox" TextChanged="EnterStationNameBox_TextChanged" Style="{StaticResource TextBoxStyle}" />
-            <TextBox   x:Name="EnterAvailAbleSlotsBox" TextChanged ="EnterAvailAbleSlotsBox_TextChanged" Style="{StaticResource TextBoxStyle}"/>
-            <TextBox   x:Name="EnterLattitudeBox" TextChanged ="EnterLattitudeBox_TextChanged" Style="{StaticResource TextBoxStyle}"/>
-            <TextBox   x:Name="EnterLongitudeBox" TextChanged ="EnterLongitudeBox_TextChanged" Style="{StaticResource TextBoxStyle}"/>
-            <Button x:Name="StationEntityAddButton" Content="Add" Click="StationEntityAddButton_Click" Style="{StaticResource ButtonPageStyle}" />
-        </StackPanel>
-        <StackPanel x:Name="UpdateBlocksPanel" Grid.Row="2" Grid.Column="3">
-            <TextBox   x:Name="UpdateNameBlock" Text="" Style="{StaticResource TextBoxStyle}"/>
-            <TextBox   x:Name="UpdateChargeSlotsBlock" TextChanged="EnterChargeSlotsBox_TextChanged" Text="" Style="{StaticResource TextBoxStyle}"/>
-            <TextBlock x:Name="InvalidInputBlock"  Style="{StaticResource TextBlockInvalidStyle}"/>
-        </StackPanel>
-        <StackPanel x:Name="UpdateStationButtons" Grid.Row="2" Grid.Column="4">
-            <Button x:Name="UpdateNameButton" Content="Update name" Click="UpdateNameButton_Click" Style="{StaticResource ButtonPageStyle}" />
-            <Button x:Name="UpdateChargeSlotsButton" Content="Update total charge slots" Click="UpdateChargeSlotsButton_Click" Style="{StaticResource ButtonPageStyle}" />
-            <!--<Button x:Name="UpdateDeleteStationButton" Content="Delete station" Background="Red" Click="UpdateDeleteStationButton_Click" Style="{StaticResource ButtonPageStyle}" />-->
-            <Button x:Name="StationListGoBackButton" Content="Go back" Click="StationListGoBackButton_Click" Style="{StaticResource ButtonPageStyle}"/>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock x:Name="PrintModelBlock" Text="Station name:" Style="{StaticResource TextBlockPageStyle}" />
+                <TextBox x:Name="NamelBlock" Text="{Binding Name}" Width="150" FontSize="20" Margin="10,0" materialDesign:HintAssist.Hint="Enter name"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock x:Name="PrintAvailableSlots" Text="Available slots:" Style="{StaticResource TextBlockPageStyle}" />
+                <TextBox x:Name="AvailableSlotsBox" Text="{Binding ChargeSlots}" TextChanged="AvailableSlotsBox_TextChanged" Width="150" FontSize="20" Margin="10,0" materialDesign:HintAssist.Hint="Enter number"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock x:Name="PrintLocationBlock" Text="Location:" Style="{StaticResource TextBlockPageStyle}" />
+                <TextBlock x:Name="LocationBlock" Text="{Binding Location}" Style="{StaticResource TextBlockPageStyle}" Width="260" Visibility="{Binding ElementName=UpdateNameButton, Path=Visibility}"/>
+                <TextBox   x:Name="EnterLatitudeBox" TextChanged ="EnterLattitudeBox_TextChanged" Width="150" FontSize="20" Margin="10,0" materialDesign:HintAssist.Hint="Latitude" Visibility="{Binding ElementName=StationEntityAddButton, Path=Visibility}"/>
+                <TextBox   x:Name="EnterLongitudeBox" TextChanged ="EnterLongitudeBox_TextChanged" Width="150" FontSize="20" Margin="10,0" materialDesign:HintAssist.Hint="Longitude" Visibility="{Binding ElementName=StationEntityAddButton, Path=Visibility}"/>
+            </StackPanel>
+            <StackPanel x:Name="DronesInStationPanel" Orientation="Horizontal" Visibility="{Binding ElementName=UpdateNameButton, Path=Visibility}">
+                <TextBlock x:Name="PrintDronsChargingBlock" Text="Drones charging:" Style="{StaticResource TextBlockPageStyle}" />
+                <ListView x:Name="DronesListViewFromStation" Style="{StaticResource ListViewStyle}">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="{x:Type ListViewItem}">
+                            <EventSetter Event="MouseDoubleClick" Handler="ListViewItem_MouseDoubleClick" />
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                </ListView>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" >
+                <Button x:Name="StationEntityAddButton" Content="Add" Click="StationEntityAddButton_Click" Style="{StaticResource ButtonPageStyle}" />
+                <Button x:Name="UpdateNameButton" Content="Update name" Click="UpdateNameButton_Click" Style="{StaticResource ButtonPageStyle}" />
+                <Button x:Name="UpdateChargeSlotsButton" Content="Update total charge slots" Click="UpdateChargeSlotsButton_Click" Style="{StaticResource ButtonPageStyle}" Visibility="{Binding ElementName=UpdateNameButton, Path=Visibility}"/>
+                <Button x:Name="StationListGoBackButton" Content="Go back" Click="StationListGoBackButton_Click" Style="{StaticResource ButtonPageStyle}"/>
+            </StackPanel>
         </StackPanel>
     </Grid>
 </Page>

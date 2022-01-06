@@ -60,16 +60,16 @@ namespace DAL
 
         public static XElement LoadListFromXElement(string filePath)
         {
-            if (!File.Exists(filePath))
-                return CreateFiles(filePath);
-            else
+            if (File.Exists(dir + filePath))
                 return LoadData(filePath);
+            else
+                return CreateFiles(filePath);
         }
         public static void SaveListToXElement(XElement EntityList, string filePath)
         {
             try
             {
-                EntityList.Save(dir+filePath);
+                EntityList.Save(dir + filePath);
             }
             catch (Exception ex)
             {
@@ -77,11 +77,11 @@ namespace DAL
             }
         }
 
-        private static XElement LoadData(string filePath)
+        public static XElement LoadData(string filePath)
         {
             try
             {
-                return XElement.Load(filePath);
+                return XElement.Load(dir + filePath);
             }
             catch (FileNotFoundException ex)
             {
@@ -89,10 +89,11 @@ namespace DAL
             }
         }
 
-        private static XElement CreateFiles(string filePath)
+        public static XElement CreateFiles(string filePath)
         {
-            Root = new XElement("");
-            Root.Save(filePath);
+            string rootName = filePath.Split(".")[0];
+            Root = new XElement(rootName);
+            Root.Save(dir + filePath);
             return Root;
         }
         #endregion

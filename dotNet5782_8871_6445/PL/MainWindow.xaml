@@ -41,10 +41,12 @@
                             BorderThickness="3" BorderBrush="#c9cba3" Background="#ffe1a8" ToolTip="Login"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <TextBlock x:Name="InvalidIDBlock" Text="Please enter a valid ID number" Style="{StaticResource TextBlockStyle}" Foreground="Red" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                     <TextBlock x:Name="Register" Text="Don't have an account?" Style="{StaticResource TextBlockStyle}" Foreground="Black"/>
                     <Button x:Name="RegisterLink" Content="Register now!" Style="{StaticResource ButtonBarStyle}" Foreground="Blue" Background="Transparent" BorderBrush="Transparent" Click="RegisterLink_Click"/>
                 </StackPanel>
-                
             </StackPanel>
         </StackPanel>
         <StackPanel x:Name="ManagerPanel" Grid.Column="1" Grid.Row="1" Margin="20,10,20,10">

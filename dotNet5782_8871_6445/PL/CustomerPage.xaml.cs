@@ -1,17 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using BL;
 using BlApi;
 using BO;
@@ -35,23 +26,16 @@ namespace PL
             DataContext = CustomerBL;
             ParcelSentListViewFromCustomer.ItemsSource = CustomerBL.ParcelesSentByCustomer;
             ParcelSentListViewFromCustomer.ItemsSource = CustomerBL.ParcelesSentToCustomer;
-            AddNewCustomerPanell.Visibility = Visibility.Collapsed;
         }
 
         public CustomerPage(RoutedEventArgs e) //add ctor
         {
             InitializeComponent();
-            ShowDetailsCustomer.Visibility = Visibility.Collapsed;
-            ShowParcelsList.Visibility = Visibility.Collapsed;
-            UpdateNameButton.Visibility = Visibility.Collapsed;
-            UpdatePhoneButton.Visibility = Visibility.Collapsed;
-            PrintLattitudeBlock.Text = "Lattitude:";
-            PrintLongitudeBlock.Text = "Longitude:";
         }
 
         private void UpdateNameButton_Click(object sender, RoutedEventArgs e)
         {
-            IBL.UpdateCustomerName(Convert.ToInt32(IDBlock.Text), NameBlock.Text);
+            IBL.UpdateCustomerName(Convert.ToInt32(IDBox.Text), NameBox.Text);
             DataContext = IBL.GetCustomer(Customer.ID);
         }
 
@@ -59,7 +43,7 @@ namespace PL
         {
             try
             {
-                IBL.UpdateCustomerPhone(Customer.ID, Convert.ToInt32(PhoneNumberBlock.Text));
+                IBL.UpdateCustomerPhone(Customer.ID, Convert.ToInt32(PhoneNumberBox.Text));
                 DataContext = IBL.GetCustomer(Customer.ID);
             }
             catch (Exception exp)
@@ -73,17 +57,17 @@ namespace PL
         private void EnterCustomerIDBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             int customerID;
-            if (!int.TryParse(EnterCustomerIDBox.Text, out customerID))
+            if (!int.TryParse(IDBox.Text, out customerID))
             {
                 InvalidInputBlock.Visibility = Visibility.Visible;
                 InvalidInputBlock.Text = "Customer id must contain only numbers";
-                EnterCustomerIDBox.Foreground = Brushes.Red;
+                IDBox.Foreground = Brushes.Red;
                 CustomerEntityAddButton.IsEnabled = false;
             }
             else
             {
                 InvalidInputBlock.Visibility = Visibility.Collapsed;
-                EnterCustomerIDBox.Foreground = Brushes.Black;
+                IDBox.Foreground = Brushes.Black;
                 EnableButton();
             }
         }
@@ -93,8 +77,8 @@ namespace PL
         }
         private void CustomerEntityAddButton_Click(object sender, RoutedEventArgs e)
         {
-            CustomerBL NewCustomer = new(Convert.ToInt32(EnterCustomerIDBox.Text), EnterCustomerNameBox.Text, EnterCustomerPhoneBox.Text,
-               new(Convert.ToDouble(EnterLattitudeBox.Text), Convert.ToDouble(EnterLongitudeBox.Text)));
+            CustomerBL NewCustomer = new(Convert.ToInt32(IDBox.Text), NameBox.Text, PhoneNumberBox.Text,
+               new(Convert.ToDouble(EnterLatitudeBox.Text), Convert.ToDouble(EnterLongitudeBox.Text)));
             try
             {
                 IBL.AddNewCustomer(NewCustomer);
@@ -107,14 +91,14 @@ namespace PL
             {
                 InvalidInputBlock.Text = exp.Message;
                 InvalidInputBlock.Visibility = Visibility.Visible;
-                EnterCustomerIDBox.Foreground = Brushes.Red;
+                IDBox.Foreground = Brushes.Red;
                 CustomerEntityAddButton.IsEnabled = false;
             }
         }
         private void EnableButton()
         {
-            if (EnterCustomerIDBox.Text != "" && EnterCustomerNameBox.Text != ""
-               && EnterCustomerPhoneBox.Text != "" && EnterLattitudeBox.Text != "" &&
+            if (IDBox.Text != "" && NameBox.Text != ""
+               && PhoneNumberBox.Text != "" && EnterLatitudeBox.Text != "" &&
                EnterLongitudeBox.Text != "" && InvalidInputBlock.Visibility != Visibility.Visible)
             {
                 CustomerEntityAddButton.IsEnabled = true;
@@ -136,7 +120,7 @@ namespace PL
         {
             EnableButton();
         }
-        private void EnterLattitudeBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void EnterLatitudeBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             EnableButton();
         }

@@ -27,6 +27,7 @@ namespace PL
             
             InitializeComponent();
             ManagerPanel.Visibility = Visibility.Collapsed;
+            InvalidIDBlock.Visibility = Visibility.Hidden;
         }
 
         #region Drones
@@ -42,7 +43,6 @@ namespace PL
         private void DroneListAddButton_Click(object sender, RoutedEventArgs e)
         {
             dronePage = new(e);
-            //dronePage.DroneEntityAddButton.Click += DroneListPageButton_Click;
             dronePage.DroneListGoBackButton.Click += DroneListPageButton_Click;
             dronePage.UpdateButtonsPanel.Visibility = Visibility.Collapsed;
             dronePage.InvalidDroneIDBlock.Visibility = Visibility.Collapsed;
@@ -75,17 +75,6 @@ namespace PL
                 Content = dronePage;
             }
         }
-
-        //private void ParcelListViewFromDrone_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        //{
-        //    DroneChargeBL drone = (DroneChargeBL)stationPage.DronesListViewFromStation.SelectedItem;
-        //    if (drone != null)
-        //    {
-        //        dronePage = new(drone.DroneID);
-        //        dronePage.DroneListGoBackButton.Click += DroneListPageButton_Click;
-        //        Content = dronePage;
-        //    }
-        //}
         #endregion
 
         #region Stations
@@ -101,6 +90,7 @@ namespace PL
         private void StationListAddButton_Click(object sender, RoutedEventArgs e)
         {
             stationPage = new(e);
+            stationPage.StationListGoBackButton.Click += StationListPageButton_Click;
             stationPage.StationEntityAddButton.Click += StationListPageButton_Click;
             Content = stationPage;
         }
@@ -228,35 +218,39 @@ namespace PL
         private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
             int id;
-            if (int.TryParse(txtUserID.Text, out id))
-            {
-                try
-                {
-                    CustomerBL customer = IBL.GetCustomer(id);
-                }
-                catch (InvalidIDException msg)
-                {
-                    //MessageBoxResult res = MessageBox.Show(msg.Message + msg.InnerException.Message, "Verification", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    //if (res == MessageBoxResult.No)
-                    //    return;
-                }
-            }
+            CustomerBL customer;
             if (rbManager.IsChecked.Value)
             {
                 LoginPanel.Visibility = Visibility.Collapsed;
                 ManagerPanel.Visibility = Visibility.Visible;
             }
-            else
+            if ((rbCustomer.IsChecked.Value && txtUserID.Text == "") || !int.TryParse(txtUserID.Text, out id))
             {
-                CustomerToList customer = new(id);
-                if (customer != null)
+                InvalidIDBlock.Visibility = Visibility.Visible;
+                return;
+            }
+            if (txtUserID.Text != "")
+            {
+                InvalidIDBlock.Visibility = Visibility.Hidden;
+                try
                 {
-                    customerPage = new(customer);
-                    customerPage.CustomerListGoBackButton.Visibility = Visibility.Collapsed;
-                    //customerPage.ParcelSentListViewFromCustomer.MouseDoubleClick += ParcelSentListViewFromCustomer_MouseDoubleClick;
-                    //customerPage.ParcelReceivedListViewFromCustomer.MouseDoubleClick += ParcelReceiveListViewFromCustomer_MouseDoubleClick;
-                    Content = customerPage;
+                    customer = IBL.GetCustomer(id);
                 }
+                catch (InvalidIDException ex)
+                {
+                    MessageBoxResult res = MessageBox.Show(ex.Message + ex.InnerException.Message, "Verification", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    if (res == MessageBoxResult.No)
+                        return;
+                }
+            }
+            if (rbCustomer.IsChecked.Value)
+            {
+                CustomerToList customerToList = new(id);
+                customerPage = new(customerToList);
+                customerPage.CustomerListGoBackButton.Visibility = Visibility.Collapsed;
+                customerPage.ParcelSentListViewFromCustomer.MouseDoubleClick += ParcelSentListViewFromCustomer_MouseDoubleClick;
+                customerPage.ParcelReceivedListViewFromCustomer.MouseDoubleClick += ParcelReceiveListViewFromCustomer_MouseDoubleClick;
+                Content = customerPage;
             }
         }
 

@@ -26,7 +26,7 @@
             <Button  x:Name="BackWindow" Content="Main Window" Click="BackWindow_Click" Style="{StaticResource ButtonBarStyle}"/>
         </StackPanel>
         <DataGrid x:Name="ParcelDataGrid" AutoGenerateColumns="False" EnableRowVirtualization="False"
-                  ItemsSource="{Binding}" RowDetailsVisibilityMode="VisibleWhenSelected" RenderTransformOrigin="0.5,0.5" Grid.Column="1" Grid.Row="2"
+                  ItemsSource="{Binding}" RowDetailsVisibilityMode="VisibleWhenSelected" RenderTransformOrigin="0.5,0.5" Grid.Column="1" Grid.Row="2" 
                   SelectionChanged="ParcelDataGrid_SelectionChanged" Style="{StaticResource ParcelDataGrid}" IsReadOnly="True">
             <DataGrid.Columns>
                 <DataGridTextColumn x:Name="iDColumn" Binding="{Binding ID}" Header="Parcel ID" Width="Auto"/>

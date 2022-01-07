@@ -146,7 +146,7 @@ namespace PL
         {
             EnableButton();
         }
-        private void EnterLattitudeBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void EnterLatitudeBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             EnableButton();
         }

@@ -37,7 +37,7 @@
             <StackPanel Orientation="Horizontal">
                 <TextBlock x:Name="PrintLocationBlock" Text="Location:" Style="{StaticResource TextBlockPageStyle}" />
                 <TextBlock x:Name="LocationBlock" Text="{Binding Location}" Style="{StaticResource TextBlockPageStyle}" Width="260" Visibility="{Binding ElementName=UpdateNameButton, Path=Visibility}"/>
-                <TextBox   x:Name="EnterLatitudeBox" TextChanged ="EnterLattitudeBox_TextChanged" Width="150" FontSize="20" Margin="10,0" materialDesign:HintAssist.Hint="Latitude" Visibility="{Binding ElementName=StationEntityAddButton, Path=Visibility}"/>
+                <TextBox   x:Name="EnterLatitudeBox" TextChanged ="EnterLatitudeBox_TextChanged" Width="150" FontSize="20" Margin="10,0" materialDesign:HintAssist.Hint="Latitude" Visibility="{Binding ElementName=StationEntityAddButton, Path=Visibility}"/>
                 <TextBox   x:Name="EnterLongitudeBox" TextChanged ="EnterLongitudeBox_TextChanged" Width="150" FontSize="20" Margin="10,0" materialDesign:HintAssist.Hint="Longitude" Visibility="{Binding ElementName=StationEntityAddButton, Path=Visibility}"/>
             </StackPanel>
             <StackPanel x:Name="DronesInStationPanel" Orientation="Horizontal" Visibility="{Binding ElementName=UpdateNameButton, Path=Visibility}">

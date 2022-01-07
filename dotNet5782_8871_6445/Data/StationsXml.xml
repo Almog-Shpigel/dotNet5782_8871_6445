@@ -3,71 +3,71 @@
   <Station>
     <ID>122000</ID>
     <Name>Station 0</Name>
-    <ChargeSlots>8</ChargeSlots>
-    <Latitude>35.1893</Latitude>
-    <Longitude>31.818</Longitude>
+    <ChargeSlots>13</ChargeSlots>
+    <Latitude>35.2562</Latitude>
+    <Longitude>31.7683</Longitude>
   </Station>
   <Station>
     <ID>122001</ID>
     <Name>Station 1</Name>
-    <ChargeSlots>5</ChargeSlots>
-    <Latitude>35.2386</Latitude>
-    <Longitude>31.8001</Longitude>
+    <ChargeSlots>12</ChargeSlots>
+    <Latitude>35.2562</Latitude>
+    <Longitude>31.736</Longitude>
   </Station>
   <Station>
     <ID>122002</ID>
     <Name>Station 2</Name>
-    <ChargeSlots>11</ChargeSlots>
-    <Latitude>35.2502</Latitude>
-    <Longitude>31.7573</Longitude>
+    <ChargeSlots>10</ChargeSlots>
+    <Latitude>35.2572</Latitude>
+    <Longitude>31.7902</Longitude>
   </Station>
   <Station>
     <ID>122003</ID>
     <Name>Station 3</Name>
-    <ChargeSlots>10</ChargeSlots>
-    <Latitude>35.1871</Latitude>
-    <Longitude>31.7778</Longitude>
+    <ChargeSlots>9</ChargeSlots>
+    <Latitude>35.2046</Latitude>
+    <Longitude>31.8136</Longitude>
   </Station>
   <Station>
     <ID>122004</ID>
     <Name>Station 4</Name>
-    <ChargeSlots>5</ChargeSlots>
-    <Latitude>35.1695</Latitude>
-    <Longitude>31.8144</Longitude>
+    <ChargeSlots>10</ChargeSlots>
+    <Latitude>35.2189</Latitude>
+    <Longitude>31.8242</Longitude>
   </Station>
   <Station>
     <ID>122005</ID>
     <Name>Station 5</Name>
-    <ChargeSlots>11</ChargeSlots>
-    <Latitude>35.2172</Latitude>
-    <Longitude>31.7735</Longitude>
+    <ChargeSlots>5</ChargeSlots>
+    <Latitude>35.1664</Latitude>
+    <Longitude>31.7763</Longitude>
   </Station>
   <Station>
     <ID>122006</ID>
     <Name>Station 6</Name>
-    <ChargeSlots>-3</ChargeSlots>
-    <Latitude>35.2425</Latitude>
-    <Longitude>31.8027</Longitude>
+    <ChargeSlots>11</ChargeSlots>
+    <Latitude>35.1996</Latitude>
+    <Longitude>31.826</Longitude>
   </Station>
   <Station>
     <ID>122007</ID>
     <Name>Station 7</Name>
-    <ChargeSlots>7</ChargeSlots>
-    <Latitude>35.2645</Latitude>
-    <Longitude>31.765</Longitude>
+    <ChargeSlots>11</ChargeSlots>
+    <Latitude>35.2324</Latitude>
+    <Longitude>31.7794</Longitude>
   </Station>
   <Station>
     <ID>122008</ID>
     <Name>Station 8</Name>
-    <ChargeSlots>7</ChargeSlots>
-    <Latitude>35.1404</Latitude>
-    <Longitude>31.823</Longitude>
+    <ChargeSlots>6</ChargeSlots>
+    <Latitude>35.1903</Latitude>
+    <Longitude>31.8186</Longitude>
   </Station>
   <Station>
     <ID>122009</ID>
     <Name>Station 9</Name>
-    <ChargeSlots>13</ChargeSlots>
-    <Latitude>35.1963</Latitude>
-    <Longitude>31.7505</Longitude>
+    <ChargeSlots>9</ChargeSlots>
+    <Latitude>35.2626</Latitude>
+    <Longitude>31.7568</Longitude>
   </Station>
 </ArrayOfStation>

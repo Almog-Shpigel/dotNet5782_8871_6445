@@ -36,7 +36,7 @@
                 <TextBox x:Name="PhoneNumberBox" Text="{Binding Phone}" Width="150" FontSize="20" Margin="10,0" materialDesign:HintAssist.Hint="Enter number"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
-                <TextBlock x:Name="PrintLattitudeBlock"  Text="Location:"        Style="{StaticResource TextBlockPageStyle}" />
+                <TextBlock x:Name="PrintLatitudeBlock"  Text="Location:"        Style="{StaticResource TextBlockPageStyle}" />
                 <TextBlock x:Name="LocationBlock" Text="{Binding Location}"  Style="{StaticResource TextBlockPageStyle}" />
                 <TextBox   x:Name="EnterLatitudeBox" TextChanged ="EnterLatitudeBox_TextChanged" Width="150" FontSize="20" Margin="10,0" materialDesign:HintAssist.Hint="Latitude" Visibility="{Binding ElementName=CustomerEntityAddButton, Path=Visibility}"/>
                 <TextBox   x:Name="EnterLongitudeBox" TextChanged ="EnterLongitudeBox_TextChanged" Width="150" FontSize="20" Margin="10,0" materialDesign:HintAssist.Hint="Longitude" Visibility="{Binding ElementName=CustomerEntityAddButton, Path=Visibility}"/>

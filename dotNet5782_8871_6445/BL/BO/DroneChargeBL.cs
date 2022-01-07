@@ -10,6 +10,7 @@ using System.Threading.Tasks;
         public class DroneChargeBL
         {
             public int DroneID { get; set; }
+
             public double BatteryStatus { get; set; }
 
             public DroneChargeBL(int droneID, double battery)

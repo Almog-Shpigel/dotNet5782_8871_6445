@@ -7,6 +7,7 @@ using System.Windows.Media;
 using BL;
 using BlApi;
 using BO;
+using Microsoft.Maps.MapControl.WPF;
 
 namespace PL
 {
@@ -26,6 +27,14 @@ namespace PL
             StationBL = IBL.GetStation(Station.ID);
             DataContext = StationBL;
             DronesListViewFromStation.ItemsSource = StationBL.ChargingDrones;
+            Pushpin pin = new();
+            ToolTip tt = new();
+            pin.Location = new(StationBL.Location.Longitude,StationBL.Location.Latitude);
+            pin.Tag = StationBL.ID;
+            tt.Content = StationBL.ToString();
+            pin.ToolTip = tt;
+            myMap.Children.Add(pin);
+            myMap.Center = pin.Location;
         }
 
         public StationPage(RoutedEventArgs e)

@@ -256,7 +256,19 @@ namespace PL
 
         private void RegisterLink_Click(object sender, RoutedEventArgs e)
         {
+            customerPage = new(e);
+            customerPage.CustomerListGoBackButton.Click += BackWindow_Click;
+            Content = customerPage;
+        }
 
+        private void LogoutButton_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            ManagerPanel.Visibility = Visibility.Collapsed;
+            LoginPanel.Visibility = Visibility.Visible;
+            txtUserID.Text = string.Empty;
+            rbCustomer.IsChecked = false;
+            rbManager.IsChecked = false;
+            InvalidIDBlock.Visibility = Visibility.Hidden;
         }
     }
 }

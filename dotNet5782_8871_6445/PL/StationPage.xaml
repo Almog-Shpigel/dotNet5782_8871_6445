@@ -4,7 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-      xmlns:local="clr-namespace:PL"
+      xmlns:m="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="Station Page">
@@ -12,7 +12,7 @@
     <Grid Background="#c9cba3">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="5*"/>
-            <ColumnDefinition Width="100*"/>
+            <ColumnDefinition Width="70*"/>
             <ColumnDefinition Width="30*"/>
             <ColumnDefinition Width="5*"/>
         </Grid.ColumnDefinitions>
@@ -41,7 +41,7 @@
                 <TextBox   x:Name="EnterLongitudeBox" TextChanged ="EnterLongitudeBox_TextChanged" Width="150" FontSize="20" Margin="10,0" materialDesign:HintAssist.Hint="Longitude" Visibility="{Binding ElementName=StationEntityAddButton, Path=Visibility}"/>
             </StackPanel>
             <StackPanel x:Name="DronesInStationPanel" Orientation="Horizontal" Visibility="{Binding ElementName=UpdateNameButton, Path=Visibility}">
-                <TextBlock x:Name="PrintDronsChargingBlock" Text="Drones charging:" Style="{StaticResource TextBlockPageStyle}" />
+                <TextBlock x:Name="PrintDronsChargingBlock" Text="Drones charging:" Style="{StaticResource TextBlockPageStyle}" VerticalAlignment="Top"/>
                 <ListView x:Name="DronesListViewFromStation" Style="{StaticResource ListViewStyle}">
                     <ListView.ItemContainerStyle>
                         <Style TargetType="{x:Type ListViewItem}">
@@ -50,12 +50,19 @@
                     </ListView.ItemContainerStyle>
                 </ListView>
             </StackPanel>
-            <StackPanel Orientation="Horizontal" >
-                <Button x:Name="StationEntityAddButton" Content="Add" Click="StationEntityAddButton_Click" Style="{StaticResource ButtonPageStyle}" />
-                <Button x:Name="UpdateNameButton" Content="Update name" Click="UpdateNameButton_Click" Style="{StaticResource ButtonPageStyle}" />
-                <Button x:Name="UpdateChargeSlotsButton" Content="Update total charge slots" Click="UpdateChargeSlotsButton_Click" Style="{StaticResource ButtonPageStyle}" Visibility="{Binding ElementName=UpdateNameButton, Path=Visibility}"/>
-                <Button x:Name="StationListGoBackButton" Content="Go back" Click="StationListGoBackButton_Click" Style="{StaticResource ButtonPageStyle}"/>
-            </StackPanel>
+        </StackPanel>
+        <StackPanel Grid.Column="2" Grid.Row="1">
+            <Button x:Name="StationEntityAddButton" Content="Add" Click="StationEntityAddButton_Click" Style="{StaticResource ButtonPageStyle}" />
+            <Button x:Name="UpdateNameButton" Content="Update name" Click="UpdateNameButton_Click" Style="{StaticResource ButtonPageStyle}" />
+            <Button x:Name="UpdateChargeSlotsButton" Content="Update total charge slots" Click="UpdateChargeSlotsButton_Click" Style="{StaticResource ButtonPageStyle}" Visibility="{Binding ElementName=UpdateNameButton, Path=Visibility}"/>
+            <Button x:Name="StationListGoBackButton" Content="Go back" Click="StationListGoBackButton_Click" Style="{StaticResource ButtonPageStyle}"/>
+            <Border BorderBrush="Black" BorderThickness="1" Height="220" Margin="10,10">
+                <m:Map x:Name="myMap" Grid.RowSpan="2"
+                    Center="{Binding Location}" ZoomLevel="16"
+                    Mode="Road" 
+                    CredentialsProvider="AqTTbx5Fyl3jocqOWa8mxbnsv-7MqNqBPc5kVABd_psvOsnH-cxtzJ1wUdpdeCxE" />
+            </Border>
+
         </StackPanel>
     </Grid>
 </Page>

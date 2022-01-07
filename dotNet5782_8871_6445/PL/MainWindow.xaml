@@ -11,6 +11,115 @@
         <Grid.Background>
             <ImageBrush ImageSource="/aaa.jpg"/>
         </Grid.Background>
+        
+        <Grid.Resources>
+            <Storyboard x:Key="TransformButton1">
+                <DoubleAnimation
+                From="30"
+                Storyboard.TargetName="DroneListPage"
+                Storyboard.TargetProperty="(Button.RenderTransform).(TranslateTransform.X)"
+                By="-30" Duration="0:0:0.3">
+                </DoubleAnimation>
+            </Storyboard>
+            <Storyboard x:Key="OpacityOfButtons1">
+                <DoubleAnimation
+                    Storyboard.TargetName="DroneListPage"
+                    Storyboard.TargetProperty="Opacity"
+                    From="0.0" To="1.0" Duration="0:0:0.3">
+                </DoubleAnimation>
+            </Storyboard>
+            <Storyboard x:Key="TransformButton2">
+                <DoubleAnimation
+                BeginTime="0:0:0.1"
+                From="30"
+                Storyboard.TargetName="StationListPage"
+                Storyboard.TargetProperty="(Button.RenderTransform).(TranslateTransform.X)"
+                By="-30" Duration="0:0:0.3">
+                </DoubleAnimation>
+            </Storyboard>
+            <Storyboard x:Key="OpacityOfButtons2">
+                <DoubleAnimation
+                    BeginTime="0:0:0.1"
+                    Storyboard.TargetName="StationListPage"
+                    Storyboard.TargetProperty="Opacity"
+                    From="0.0" To="1.0" Duration="0:0:0.3">
+                </DoubleAnimation>
+            </Storyboard>
+
+            <Storyboard x:Key="TransformButton3">
+                <DoubleAnimation
+                BeginTime="0:0:0.2"
+                From="30"
+                Storyboard.TargetName="CustomerListPage"
+                Storyboard.TargetProperty="(Button.RenderTransform).(TranslateTransform.X)"
+                By="-30" Duration="0:0:0.3">
+                </DoubleAnimation>
+            </Storyboard>
+            <Storyboard x:Key="OpacityOfButtons3">
+                <DoubleAnimation
+                    BeginTime="0:0:0.2"
+                    Storyboard.TargetName="CustomerListPage"
+                    Storyboard.TargetProperty="Opacity"
+                    From="0.0" To="1.0" Duration="0:0:0.3">
+                </DoubleAnimation>
+            </Storyboard>
+
+            <Storyboard x:Key="TransformButton4">
+                <DoubleAnimation
+                BeginTime="0:0:0.3"    
+                From="30"
+                Storyboard.TargetName="ParcelListPage"
+                Storyboard.TargetProperty="(Button.RenderTransform).(TranslateTransform.X)"
+                By="-30" Duration="0:0:0.3">
+                </DoubleAnimation>
+            </Storyboard>
+            <Storyboard x:Key="OpacityOfButtons4">
+                <DoubleAnimation
+                    BeginTime="0:0:0.3"
+                    Storyboard.TargetName="ParcelListPage"
+                    Storyboard.TargetProperty="Opacity"
+                    From="0.0" To="1.0" Duration="0:0:0.3">
+                </DoubleAnimation>
+            </Storyboard>
+
+            <Storyboard x:Key="TransformButton5">
+                <DoubleAnimation
+                BeginTime="0:0:0.4"    
+                From="30"
+                Storyboard.TargetName="ShowMap"
+                Storyboard.TargetProperty="(Button.RenderTransform).(TranslateTransform.X)"
+                By="-30" Duration="0:0:0.3">
+                </DoubleAnimation>
+            </Storyboard>
+            <Storyboard x:Key="OpacityOfButtons5">
+                <DoubleAnimation
+                    BeginTime="0:0:0.3"
+                    Storyboard.TargetName="ShowMap"
+                    Storyboard.TargetProperty="Opacity"
+                    From="0.0" To="1.0" Duration="0:0:0.3">
+                </DoubleAnimation>
+            </Storyboard>
+        </Grid.Resources>
+
+
+        <Grid.Triggers>
+            <EventTrigger RoutedEvent="Button.Click" SourceName="LoginButton">
+                <BeginStoryboard Storyboard="{StaticResource TransformButton1}"/>
+                <BeginStoryboard Storyboard="{StaticResource OpacityOfButtons1}"/>
+                
+                <BeginStoryboard Storyboard="{StaticResource TransformButton2}"/>
+                <BeginStoryboard Storyboard="{StaticResource OpacityOfButtons2}"/>
+
+                <BeginStoryboard Storyboard="{StaticResource TransformButton3}"/>
+                <BeginStoryboard Storyboard="{StaticResource OpacityOfButtons3}"/>
+
+                <BeginStoryboard Storyboard="{StaticResource TransformButton4}"/>
+                <BeginStoryboard Storyboard="{StaticResource OpacityOfButtons4}"/>
+
+                <BeginStoryboard Storyboard="{StaticResource TransformButton5}"/>
+                <BeginStoryboard Storyboard="{StaticResource OpacityOfButtons5}"/>
+            </EventTrigger>
+        </Grid.Triggers>
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="4*"/>
@@ -20,13 +129,15 @@
             <RowDefinition Height="20"/>
             <RowDefinition Height="20*"/>
         </Grid.RowDefinitions>
-        <Viewbox HorizontalAlignment="Left" Margin="10,5,5,5">
-            <StackPanel Orientation="Horizontal">
-                <Border BorderBrush="black" BorderThickness="4" CornerRadius="5" Padding="2" />
-            </StackPanel>
+        
+        <Viewbox HorizontalAlignment="Center" Margin="20,20,20,20" Grid.Column="1" Grid.Row="0" Grid.RowSpan="4" >
+            <Rectangle Height="160" Fill="GhostWhite" Stroke="GhostWhite" Width="130" Opacity="0.3">
+                <Rectangle.Effect>
+                    <BlurEffect Radius="15"/>
+                </Rectangle.Effect>
+            </Rectangle>
         </Viewbox>
         <StackPanel x:Name="LoginPanel" Grid.Column="1" Grid.Row="1" Margin="20,10,20,10">
-
             <StackPanel Margin="20,40">
                 <TextBlock Text="User Login" Margin="0,20,0,40" Foreground="#472d30" TextAlignment="Center" FontSize="45" FontWeight="ExtraBold" FontFamily="Cooper black"/>
                 <StackPanel Orientation="Horizontal" Margin="10">
@@ -59,18 +170,38 @@
             <TextBlock FontSize="48" HorizontalAlignment="Center" VerticalAlignment="Center"
                    Text="Drone Delivery" Grid.ColumnSpan="2" Foreground="#472d30" FontWeight="ExtraBold" Margin="20,10,20,40" FontFamily="Cooper black"/>
             <Button x:Name="DroneListPage" Content="Drones" Click="DroneListPageButton_Click"
-                    Style="{StaticResource MainWindowButton}"/>
+                    Style="{StaticResource MainWindowButton}" Opacity="0">
+                <Button.RenderTransform>
+                    <TranslateTransform />
+                </Button.RenderTransform>
+            </Button>
             <Button x:Name="StationListPage" Content="Stations" Click="StationListPageButton_Click"
-                    Style="{StaticResource MainWindowButton}"/>
+                    Style="{StaticResource MainWindowButton}" Opacity="0">
+                <Button.RenderTransform>
+                    <TranslateTransform />
+                </Button.RenderTransform>
+            </Button>
             <Button x:Name="CustomerListPage" Content="Customers" Click="CustomerListPageButton_Click"
-                    Style="{StaticResource MainWindowButton}"/>
+                    Style="{StaticResource MainWindowButton}" Opacity="0">
+                <Button.RenderTransform>
+                    <TranslateTransform />
+                </Button.RenderTransform>
+            </Button>
             <Button x:Name="ParcelListPage" Content="Parcels" Click="ParcelListPageButton_Click"
-                    Style="{StaticResource MainWindowButton}"/>
+                    Style="{StaticResource MainWindowButton}" Opacity="0">
+                <Button.RenderTransform>
+                    <TranslateTransform />
+                </Button.RenderTransform>
+            </Button>
             <Button x:Name="ShowMap" Content="Map" Click="MapButton_Click"
-                    Style="{StaticResource MainWindowButton}"/>
+                    Style="{StaticResource MainWindowButton}" Opacity="0">
+                <Button.RenderTransform>
+                    <TranslateTransform />
+                </Button.RenderTransform>
+            </Button>
         </StackPanel>
         <Viewbox Grid.RowSpan="2" Width="60" Height="60" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20" >
-            <materialDesign:PackIcon Kind="Logout" Width="30" Height="30" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <materialDesign:PackIcon x:Name="LogoutButton" Kind="Logout" Width="30" Height="30" HorizontalAlignment="Center" VerticalAlignment="Center" MouseDoubleClick="LogoutButton_MouseDoubleClick" Background="Transparent"/>
         </Viewbox>
         <Frame x:Name="Main" Grid.ColumnSpan="5" Grid.RowSpan="5" NavigationUIVisibility="Hidden"/>
     </Grid>

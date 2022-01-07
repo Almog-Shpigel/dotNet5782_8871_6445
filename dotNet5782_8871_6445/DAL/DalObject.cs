@@ -38,9 +38,9 @@ namespace DalObject
         public void AddNewParcel(Parcel parcel)
         {
             if (DataSource.customers.Any(c => c.ID == parcel.SenderID))
-                throw new CustomerExistException($"Customer {parcel.SenderID} dosen't exists in the data!!");
+                throw new CustomerExistException($"Customer {parcel.SenderID} doesn't exists in the data!!");
             if (DataSource.customers.Any(c => c.ID == parcel.TargetID))
-                throw new CustomerExistException($"Customer {parcel.TargetID} dosen't exists in the data!!");
+                throw new CustomerExistException($"Customer {parcel.TargetID} doesn't exists in the data!!");
             
             parcel.ID = 344000 + ++DataSource.Config.ParcelsCounter;
             DataSource.parcels.Add(parcel);
@@ -168,7 +168,7 @@ namespace DalObject
         {
             Parcel oldParcel = DataSource.parcels.Find(p => p.ID == newParcel.ID);
             if (oldParcel.ID == 0)
-                throw new DroneExistException($"Parcel {newParcel.ID} dosen't exists in the data!!");
+                throw new DroneExistException($"Parcel {newParcel.ID} doesn't exists in the data!!");
 
             DataSource.parcels.Remove(oldParcel);
             oldParcel.Delivered = DateTime.Now;         ///Changing the time of the parcel to update it's been delivered now
@@ -180,7 +180,7 @@ namespace DalObject
         {
             Parcel oldParcel = DataSource.parcels.Find(p => p.ID == newParcel.ID);
             if (oldParcel.ID == 0)
-                throw new DroneExistException($"Parcel {newParcel.ID} dosen't exists in the data!!");
+                throw new DroneExistException($"Parcel {newParcel.ID} doesn't exists in the data!!");
 
             DataSource.parcels.Remove(oldParcel);
             oldParcel.PickedUp = DateTime.Now;         ///Updating the time of the pickup by the drone
@@ -193,7 +193,7 @@ namespace DalObject
             Parcel oldParcel = DataSource.parcels.Find(p => p.ID == newParcel.ID);
             Drone oldDrone = DataSource.drones.Find(d => d.ID == newDrone.ID);
             if (oldParcel.ID == 0)
-                throw new DroneExistException($"Parcel {newParcel.ID} dosen't exists in the data!!");
+                throw new DroneExistException($"Parcel {newParcel.ID} doesn't exists in the data!!");
             if (oldDrone.ID == 0)
                 throw new DroneExistException($"Drone {newDrone.ID} doesn't exists in the data!!");
 

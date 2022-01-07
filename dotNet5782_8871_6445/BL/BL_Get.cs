@@ -273,7 +273,7 @@ namespace BlApi
         private DroneInParcel CreateDroneInParcel(int droneID)
         {
             if(!DroneList.Any(d => d.ID == droneID))
-                throw new EntityExistException($"Drone {droneID} dosen't exist in the data!");
+                throw new EntityExistException($"Drone {droneID} doesn't exist in the data!");
             DroneToList drone = DroneList.Find(d => d.ID == droneID);
             return new DroneInParcel(drone.ID, drone.BatteryStatus, drone.CurrentLocation);
         }

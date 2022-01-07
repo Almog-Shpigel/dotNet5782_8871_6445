@@ -104,7 +104,7 @@ namespace BlApi
             if (DroneID is < 100000 or > 999999)
                 throw new InvalidIDException("Drone ID has to have 6 positive digits.");
             if (!DroneList.Any(d => d.ID == DroneID))
-                throw new EntityExistException($"Drone {DroneID} dosen't exist in data!");
+                throw new EntityExistException($"Drone {DroneID} doesn't exist in data!");
             DroneToBeAvailable = DroneList.Find(d => d.ID == DroneID);
             if (DroneToBeAvailable.Status != DroneStatus.Charging)
                 throw new InvalidOperationException("Can't release a drone that isn't charging");

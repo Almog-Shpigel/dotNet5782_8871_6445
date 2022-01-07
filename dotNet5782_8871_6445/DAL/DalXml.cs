@@ -98,9 +98,9 @@ namespace DAL
             List<Parcel> ListParcels = XmlTools.LoadListFromXmlSerializer<Parcel>(parcelsPath);
             List<Customer> ListCustomers = XmlTools.LoadListFromXmlSerializer<Customer>(customersPath);
             if (!ListCustomers.Any(c => c.ID == parcel.SenderID))
-                throw new CustomerExistException($"Customer {parcel.SenderID} dosen't exists in the data!!");
+                throw new CustomerExistException($"Customer {parcel.SenderID} doesn't exists in the data!!");
             if (!ListCustomers.Any(c => c.ID == parcel.TargetID))
-                throw new CustomerExistException($"Customer {parcel.TargetID} dosen't exists in the data!!");
+                throw new CustomerExistException($"Customer {parcel.TargetID} doesn't exists in the data!!");
 
             //parcel.ID = 344000 + ++DataSource.Config.ParcelsCounter;
             ListParcels.Add(parcel);
@@ -140,7 +140,7 @@ namespace DAL
                                    where Convert.ToInt32(s.Element("ID").Value) == station.ID
                                    select s).FirstOrDefault();
             if (oldStation is null)
-                throw new StationExistException($"Station {station.ID} dosen't exists in the data!!");
+                throw new StationExistException($"Station {station.ID} doesn't exists in the data!!");
             oldStation.Element("Name").Value = station.Name;
             XmlTools.SaveListToXElement(ListStations, stationsPath);
         }
@@ -152,7 +152,7 @@ namespace DAL
                                    where Convert.ToInt32(s.Element("ID").Value) == station.ID
                                    select s).FirstOrDefault();
             if (oldStation is null)
-                throw new StationExistException($"Station {station.ID} dosen't exists in the data!!");
+                throw new StationExistException($"Station {station.ID} doesn't exists in the data!!");
             oldStation.Element("ChargeSlots").Value = station.ChargeSlots.ToString();
             XmlTools.SaveListToXElement(ListStations, stationsPath);
         }
@@ -229,7 +229,7 @@ namespace DAL
             List<Parcel> ListParcels = XmlTools.LoadListFromXmlSerializer<Parcel>(parcelsPath);
             Parcel oldParcel = ListParcels.Find(p => p.ID == newParcel.ID);
             if (oldParcel.ID == 0)
-                throw new DroneExistException($"Parcel {newParcel.ID} dosen't exists in the data!!");
+                throw new DroneExistException($"Parcel {newParcel.ID} doesn't exists in the data!!");
 
             ListParcels.Remove(oldParcel);
             oldParcel.PickedUp = DateTime.Now;         ///Updating the time of the pickup by the drone
@@ -244,7 +244,7 @@ namespace DAL
             Parcel oldParcel = ListParcels.Find(p => p.ID == newParcel.ID);
             Drone oldDrone = DroneParcels.Find(d => d.ID == newDrone.ID);
             if (oldParcel.ID == 0)
-                throw new DroneExistException($"Parcel {newParcel.ID} dosen't exists in the data!!");
+                throw new DroneExistException($"Parcel {newParcel.ID} doesn't exists in the data!!");
             if (oldDrone.ID == 0)
                 throw new DroneExistException($"Drone {newDrone.ID} doesn't exists in the data!!");
 
@@ -276,7 +276,7 @@ namespace DAL
             if (drone.ID != 0)
                 return drone;
             else
-                throw new CustomerExistException($"Drone {DroneID} dosen't exist in data!");
+                throw new CustomerExistException($"Drone {DroneID} doesn't exist in data!");
         }
 
         public Parcel GetParcel(int ParcelID)
@@ -286,7 +286,7 @@ namespace DAL
             if (parcel.ID != 0)
                 return parcel;
             else
-                throw new CustomerExistException($"Parcel {ParcelID} dosen't exist in data!");
+                throw new CustomerExistException($"Parcel {ParcelID} doesn't exist in data!");
         }
 
         public Station GetStation(int StationID)
@@ -329,7 +329,7 @@ namespace DAL
             if (customer.ID != 0)
                 return customer;
             else
-                throw new CustomerExistException($"Customer {CustomerID} dosen't exist in data!");
+                throw new CustomerExistException($"Customer {CustomerID} doesn't exist in data!");
         }
 
         public DroneCharge GetDroneCharge(int DroneChargeID)
@@ -339,7 +339,7 @@ namespace DAL
             if (drone.DroneID != 0)
                 return drone;
             else
-                throw new CustomerExistException($"Customer {DroneChargeID} dosen't exist in data!");
+                throw new CustomerExistException($"Customer {DroneChargeID} doesn't exist in data!");
         }
 
         public IEnumerable<Customer> GetCustomers(Predicate<Customer> CustomerPredicate)

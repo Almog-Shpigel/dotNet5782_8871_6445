@@ -19,11 +19,11 @@ namespace PL
             Pushpin pin = new();
             foreach (var item in this.IBL.GetAllDrones())
             {
-                AddPushpin(new(item.CurrentLocation.Longitude, item.CurrentLocation.Latitude), item.ID);
+                AddPushpin(new(item.CurrentLocation.Latitude, item.CurrentLocation.Longitude), item.ID);
             }
             foreach (var item in this.IBL.GatAllStationsDO())
             {
-                AddPushpin(new(item.Longitude, item.Latitude), item.ID);
+                AddPushpin(new(item.Latitude, item.Longitude), item.ID);
             }
         }
 

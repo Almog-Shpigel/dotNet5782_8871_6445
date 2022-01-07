@@ -29,7 +29,7 @@ namespace PL
             DronesListViewFromStation.ItemsSource = StationBL.ChargingDrones;
             Pushpin pin = new();
             ToolTip tt = new();
-            pin.Location = new(StationBL.Location.Longitude,StationBL.Location.Latitude);
+            pin.Location = new(StationBL.Location.Latitude, StationBL.Location.Longitude);
             pin.Tag = StationBL.ID;
             tt.Content = StationBL.ToString();
             pin.ToolTip = tt;

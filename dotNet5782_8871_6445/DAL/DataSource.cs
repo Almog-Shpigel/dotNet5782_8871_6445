@@ -46,7 +46,7 @@ namespace DalObject
                 double latitude = 31 + ((double)rnd.Next(7300, 8300) / 10000);      ///Jerusalem area
                 double longitude = 35 + ((double)rnd.Next(1400, 2700) / 10000);     ///Jerusalem area
                 int chargeSlot = rnd.Next(5,15);
-                Station station = new(id, name, chargeSlot, longitude, latitude);
+                Station station = new(id, name, chargeSlot, latitude, longitude);
                 Station NewStation = station;
                 stations.Add(NewStation);
             }
@@ -67,7 +67,7 @@ namespace DalObject
                 string name = ((CustomerNames)rnd.Next(17)).ToString();
                 double latitude = 31 + ((double)rnd.Next(7300, 8300) / 10000);      ///Jerusalem area
                 double longitude = 35 + ((double)rnd.Next(1400, 2700) / 10000);     ///Jerusalem area
-                Customer NewCustomer = new(id, name, phone, longitude, latitude);
+                Customer NewCustomer = new(id, name, phone, latitude, longitude);
                 customers.Add(NewCustomer);
             }
             /// Initializing 10 parcels.

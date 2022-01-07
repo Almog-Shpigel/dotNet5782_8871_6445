@@ -23,7 +23,7 @@ namespace DO
             string sLong = ConvertCoordinates(Longitude), sLatit = ConvertCoordinates(Latitude);    /// Converts the coordinates to be in base 60 (bonus).
             return ($"{Name} id #{ID}:\n" +
                 $"Phone number: {Phone}\n" +
-                $"Location: (" + sLong + "E, " + sLatit + "N)\n");
+                $"Location: (" + sLatit  + "N, " + sLong + "E)\n");
         }
         public string ConvertCoordinates(double number)
         {

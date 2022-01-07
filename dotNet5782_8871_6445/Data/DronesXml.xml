@@ -2,12 +2,12 @@
 <ArrayOfDrone xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Drone>
     <ID>669000</ID>
-    <Model>Phantom 0</Model>
-    <MaxWeight>Medium</MaxWeight>
+    <Model>Skydio 0</Model>
+    <MaxWeight>Heavy</MaxWeight>
   </Drone>
   <Drone>
     <ID>669001</ID>
-    <Model>Mavic 1</Model>
+    <Model>Phantom 1</Model>
     <MaxWeight>Heavy</MaxWeight>
   </Drone>
   <Drone>
@@ -17,33 +17,33 @@
   </Drone>
   <Drone>
     <ID>669003</ID>
-    <Model>Skydio 3</Model>
+    <Model>Mavic 3</Model>
     <MaxWeight>Heavy</MaxWeight>
   </Drone>
   <Drone>
     <ID>669004</ID>
-    <Model>Mavic 4</Model>
+    <Model>Phantom 4</Model>
     <MaxWeight>Medium</MaxWeight>
   </Drone>
   <Drone>
     <ID>669005</ID>
-    <Model>Skydio 5</Model>
+    <Model>Phantom 5</Model>
     <MaxWeight>Medium</MaxWeight>
   </Drone>
   <Drone>
     <ID>669006</ID>
-    <Model>Phantom 6</Model>
-    <MaxWeight>Light</MaxWeight>
+    <Model>Mavic 6</Model>
+    <MaxWeight>Medium</MaxWeight>
   </Drone>
   <Drone>
     <ID>669007</ID>
-    <Model>Skydio 7</Model>
-    <MaxWeight>Medium</MaxWeight>
+    <Model>Mavic 7</Model>
+    <MaxWeight>Light</MaxWeight>
   </Drone>
   <Drone>
     <ID>669008</ID>
     <Model>Skydio 8</Model>
-    <MaxWeight>Light</MaxWeight>
+    <MaxWeight>Medium</MaxWeight>
   </Drone>
   <Drone>
     <ID>669009</ID>

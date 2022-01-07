@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Config-Data>
+  <BatteryUsage>
+    <BatteryUsageEmpty>3.3</BatteryUsageEmpty>
+    <BatteryUsageLightWight>4</BatteryUsageLightWight>
+    <BatteryUsageMediumWight>5</BatteryUsageMediumWight>
+    <BatteryUsageHaevyWight>6.6</BatteryUsageHaevyWight>
+    <BatteryChargeRate>60</BatteryChargeRate>
+  </BatteryUsage>
+  <Counters>
+    <ParcelIDCounter>344011</ParcelIDCounter>
+  </Counters>
+</Config-Data>

@@ -11,23 +11,23 @@ namespace DAL
     {
         internal static readonly DalXml instance = new();
 
-        static DalXml() { }
-        struct config
-        {
-            internal static int ParcelsCounter = 0;
-            /// <summary>
-            /// According to our reasearch, a drone with full battery and empty cargo can fly 30 km
-            /// A drone with full battery and light cargo can fly 25 km
-            /// A drone with full battery and medium cargo can fly 20 km
-            /// A drone with full battery and heavy cargo can fly 15 km
-            /// </summary>
+        //static DalXml() { }
+        ////struct config
+        ////{
+        ////    internal static int ParcelsCounter = 0;
+        ////    /// <summary>
+        ////    /// According to our reasearch, a drone with full battery and empty cargo can fly 30 km
+        ////    /// A drone with full battery and light cargo can fly 25 km
+        ////    /// A drone with full battery and medium cargo can fly 20 km
+        ////    /// A drone with full battery and heavy cargo can fly 15 km
+        ////    /// </summary>
             
-            internal static double Empty = 3.3;
-            internal static double LightWight = 4;
-            internal static double MediumWight = 5;
-            internal static double HaevyWight = 6.6;
-            internal static double ChargeRate = 60;     ///1% per minute
-        }
+        ////    internal static double Empty = 3.3;
+        ////    internal static double LightWight = 4;
+        ////    internal static double MediumWight = 5;
+        ////    internal static double HaevyWight = 6.6;
+        ////    internal static double ChargeRate = 60;     ///1% per minute
+        ////}
         private DalXml()
         {
             //DataSource.Initialize();
@@ -36,6 +36,18 @@ namespace DAL
             //XmlTools.SaveListToXmlSerializer(DataSource.DroneCharges, droneChargePath);
             //XmlTools.SaveListToXmlSerializer(DataSource.parcels, parcelsPath);
             //XmlTools.SaveListToXmlSerializer(DataSource.stations, stationsPath);
+            //XmlTools.CreateFiles(configPath);
+            //XElement BatteryUsageEmpty = new("BatteryUsageEmpty", 3.3);
+            //XElement BatteryUsageLightWight = new("BatteryUsageLightWight", 4);
+            //XElement BatteryUsageMediumWight = new("BatteryUsageMediumWight", 5);
+            //XElement BatteryUsageHaevyWight = new("BatteryUsageHaevyWight", 6.6);
+            //XElement BatteryChargeRate = new("BatteryChargeRate", 60);
+            //XElement BatteryUsage = new("BatteryUsage", BatteryUsageEmpty, BatteryUsageLightWight, BatteryUsageMediumWight, BatteryUsageHaevyWight, BatteryChargeRate);
+            //XElement ParcelIDCounter = new("ParcelIDCounter", 344011);
+            //XElement Counters = new("Counters", ParcelIDCounter);
+            //XElement configItems = new XElement("Config-Data",BatteryUsage,Counters);
+            //XmlTools.SaveListToXElement(configItems, configPath);
+
         }
 
         public static DalXml Instance { get => instance; }
@@ -100,9 +112,13 @@ namespace DAL
             if (!ListCustomers.Any(c => c.ID == parcel.SenderID))
                 throw new CustomerExistException($"Customer {parcel.SenderID} doesn't exists in the data!!");
             if (!ListCustomers.Any(c => c.ID == parcel.TargetID))
-                throw new CustomerExistException($"Customer {parcel.TargetID} doesn't exists in the data!!");
-
-            //parcel.ID = 344000 + ++DataSource.Config.ParcelsCounter;
+                throw new CustomerExistException($"Customer {parcel.TargetID} dosen't exists in the data!!");
+            XElement config = XmlTools.LoadData(configPath);
+            int parcelCounter = Convert.ToInt32(config.Element("Counters").Element("ParcelIDCounter").Value);
+            parcel.ID = parcelCounter;
+            config.Element("Counters").Element("ParcelIDCounter").Remove();
+            parcelCounter++;
+            config.Element("Counters").Add(new XElement("ParcelIDCounter", parcelCounter));
             ListParcels.Add(parcel);
             XmlTools.SaveListToXmlSerializer(ListParcels, parcelsPath);
         }
@@ -186,7 +202,6 @@ namespace DAL
             List<DroneCharge> ListDronesCharge = XmlTools.LoadListFromXmlSerializer<DroneCharge>(droneChargePath);
             DroneCharge droneCharge = GetDroneCharge(oldDrone.ID);
             ListDronesCharge.Remove(droneCharge);
-
             List<Station> ListStations = XmlTools.LoadListFromXmlSerializer<Station>(stationsPath);
             Station station = GetStation(droneCharge.StationID);
             ListStations.Remove(station);
@@ -258,15 +273,31 @@ namespace DAL
         #endregion
 
         #region Get
-        public double[] GetBatteryUsed()
+        public double GetBatteryProperty(string elementString)
         {
-            double[] BatteryUsed = new double[5];
-            BatteryUsed[0] = 3.3;
-            BatteryUsed[1] = 4;
-            BatteryUsed[2] = 5;
-            BatteryUsed[3] = 6.6;
-            BatteryUsed[4] = 60;
-            return BatteryUsed;
+            XElement BatteryPropertyList = XmlTools.LoadData(configPath);
+            double batteryProperty = 0;
+            switch (elementString)
+            {
+                case "BatteryUsageEmpty":
+                    batteryProperty =Convert.ToDouble( BatteryPropertyList.Element("BatteryUsage").Element("BatteryUsageEmpty").Value);
+                    break;
+                case "BatteryUsageLightWight":
+                    batteryProperty = Convert.ToDouble(BatteryPropertyList.Element("BatteryUsage").Element("BatteryUsageLightWight").Value);
+                    break;
+                case "BatteryUsageMediumWight":
+                    batteryProperty = Convert.ToDouble(BatteryPropertyList.Element("BatteryUsage").Element("BatteryUsageMediumWight").Value);
+                    break;
+                case "BatteryUsageHaevyWight":
+                    batteryProperty = Convert.ToDouble(BatteryPropertyList.Element("BatteryUsage").Element("BatteryUsageHaevyWight").Value);
+                    break;
+                case "BatteryChargeRate":
+                    batteryProperty = Convert.ToDouble(BatteryPropertyList.Element("BatteryUsage").Element("BatteryChargeRate").Value);
+                    break;
+                default:
+                    break;
+            }            
+            return batteryProperty;
         }
 
         public Drone GetDrone(int DroneID)

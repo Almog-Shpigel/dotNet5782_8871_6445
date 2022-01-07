@@ -216,7 +216,10 @@ namespace DalObject
             BatteryUsed[4] = DataSource.Config.ChargeRate;
             return BatteryUsed;
         }
-
+        public double GetBatteryProperty(string v)
+        {
+            return 0; //TO DO: implement
+        }
         public Drone GetDrone(int DroneID)
         {
             Drone drone = DataSource.drones.Find(d => d.ID == DroneID);

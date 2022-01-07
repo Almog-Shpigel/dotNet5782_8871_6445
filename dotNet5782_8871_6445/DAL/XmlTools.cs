@@ -57,7 +57,8 @@ namespace DAL
                 throw new XmlFileLoadCreateException(filePath, $"failed to load xml file: {filePath}", ex);
             }
         }
-
+        #endregion
+        #region  Save Load With XElement
         public static XElement LoadListFromXElement(string filePath)
         {
             if (File.Exists(dir + filePath))
@@ -65,6 +66,7 @@ namespace DAL
             else
                 return CreateFiles(filePath);
         }
+
         public static void SaveListToXElement(XElement EntityList, string filePath)
         {
             try

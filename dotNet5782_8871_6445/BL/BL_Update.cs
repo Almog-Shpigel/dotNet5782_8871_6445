@@ -149,10 +149,10 @@ namespace BlApi
                 throw new DroneStatusExpetion("The drone is already charging");
             NearestStatation = GetNearestStation(droneToList.CurrentLocation, Data.GetStations(station => station.ChargeSlots > 0));
             NearestStataionLocation = new(NearestStatation.Latitude, NearestStatation.Longitude);
-            if (droneToList.BatteryStatus < Distance(droneToList.CurrentLocation, NearestStataionLocation) * BatteryUsed[0])
+            if (droneToList.BatteryStatus < Distance(droneToList.CurrentLocation, NearestStataionLocation) * BatteryUsageEmpty)
                 throw new NotEnoughBatteryExpetion("There is not enough battery to reach the nearest station.");
 
-            droneToList.BatteryStatus -= Distance(droneToList.CurrentLocation, NearestStataionLocation) * BatteryUsed[0];
+            droneToList.BatteryStatus -= Distance(droneToList.CurrentLocation, NearestStataionLocation) * BatteryUsageEmpty;
             droneToList.CurrentLocation = new(NearestStataionLocation.Latitude, NearestStataionLocation.Longitude);
             droneToList.Status = DroneStatus.Charging;
             Data.UpdateDroneToBeCharge(drone, NearestStatation, DateTime.Now);
@@ -213,7 +213,7 @@ namespace BlApi
             sender = Data.GetCustomer(ParcelToBeCollected.SenderID);
             Data.UpdateParcelCollected(ParcelToBeCollected);
             DroneList.Remove(droneInDelivery);
-            droneInDelivery.BatteryStatus -= DistanceDroneCustomer(droneInDelivery, sender) * BatteryUsed[0];
+            droneInDelivery.BatteryStatus -= DistanceDroneCustomer(droneInDelivery, sender) * BatteryUsageEmpty;
             droneInDelivery.CurrentLocation = new(sender.Latitude, sender.Longitude);
             DroneList.Add(droneInDelivery);
             DroneList = DroneList.OrderBy(d => d.ID).ToList();

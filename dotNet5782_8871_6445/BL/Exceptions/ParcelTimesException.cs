@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace BO
+namespace BlApi
 {
     [Serializable]
-    internal class ParcelTimesException : Exception
+    public class ParcelTimesException : Exception
     {
         public ParcelTimesException()
         {

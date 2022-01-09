@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DalApi;
 
+
 namespace DAL
 {
     public static class DalFactory
@@ -14,7 +15,7 @@ namespace DAL
             switch(DalType)
             {
                 case "DalObject":
-                    return DalObject.DalObject.GetDalObject();          //Needs to return DalObject type
+                    return DalObject.DalObject.Instance;          //Needs to return DalObject type
                 case "DalXml":
                     return DalXml.Instance;                             //Needs to return DalXml type
                 default:

@@ -9,7 +9,7 @@ namespace DalObject
 {
     internal class DalObject : IDal
     {
-        internal static readonly DalObject Instance = new();
+        internal static readonly DalObject instance = new();
 
         private DalObject()
         {
@@ -17,8 +17,7 @@ namespace DalObject
 
         }
 
-        public static DalObject GetDalObject() { return Instance; }
-
+        public static DalObject Instance { get => instance; }
         #region Add
         public void AddNewStation(Station station)
         {

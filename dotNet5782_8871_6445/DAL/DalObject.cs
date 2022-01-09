@@ -261,8 +261,7 @@ namespace DalObject
 
         public IEnumerable<Drone> GetDrones(Predicate<Drone> DronePredicate)
         {
-            IEnumerable<Drone> SelectedDrones = DataSource.drones.Where(drone => DronePredicate(drone));
-            return SelectedDrones;
+            return DataSource.drones.Where(drone => DronePredicate(drone));
         }
 
         public IEnumerable<Parcel> GetParcels(Predicate<Parcel> ParcelPredicate)

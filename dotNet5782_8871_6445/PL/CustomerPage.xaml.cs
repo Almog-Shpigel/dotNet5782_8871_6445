@@ -24,6 +24,7 @@ namespace PL
             Customer = customer;
             CustomerBL = IBL.GetCustomer(Customer.ID);
             DataContext = CustomerBL;
+            CustomerEntityAddButton.Visibility = Visibility.Collapsed;
             ParcelSentListViewFromCustomer.ItemsSource = CustomerBL.ParcelesSentByCustomer;
             ParcelSentListViewFromCustomer.ItemsSource = CustomerBL.ParcelesSentToCustomer;
         }
@@ -31,6 +32,7 @@ namespace PL
         public CustomerPage(RoutedEventArgs e) //add ctor
         {
             InitializeComponent();
+            UpdateNameButton.Visibility = Visibility.Collapsed;
         }
 
         private void UpdateNameButton_Click(object sender, RoutedEventArgs e)

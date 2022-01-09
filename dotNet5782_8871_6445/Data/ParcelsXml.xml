@@ -113,7 +113,7 @@
     <SenderID>446941980</SenderID>
     <TargetID>976366739</TargetID>
     <DroneID>0</DroneID>
-    <Weight>Medium</Weight>
+    <Weight>Heavy</Weight>
     <Priority>Urgent</Priority>
     <TimeRequested>2022-01-09T10:17:54.2834087+02:00</TimeRequested>
     <Scheduled xsi:nil="true" />

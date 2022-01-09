@@ -40,8 +40,8 @@ namespace DalApi
         public Station GetStation(int id);
         public Customer GetCustomer(int id);
         public Parcel GetParcel(int id);
-        DroneCharge GetDroneCharge(int droneID);
-        public double GetBatteryProperty(string v);
+        DroneCharge GetDroneCharge(int id);
+        public double GetBatteryProperty(string value);
 
         #endregion
     }

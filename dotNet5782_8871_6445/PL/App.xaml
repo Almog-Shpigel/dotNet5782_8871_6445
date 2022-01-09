@@ -58,12 +58,12 @@
             <Setter Property="Margin" Value="15,5,15,5" />
         </Style>
         <Style TargetType="TextBlock" x:Key="TextBlockStyle">
-            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
             <Setter Property="VerticalAlignment" Value="Center" />
             <Setter Property="FontSize" Value="17" />
             <Setter Property="FontWeight" Value="Bold" />
             <Setter Property="Foreground" Value="#723d46" />
-            <Setter Property="Margin" Value="10,5,10,5" />
+            <Setter Property="Margin" Value="5,5,5,0" />
         </Style>
         <Style TargetType="TextBlock" x:Key="TextBlockPageStyle">
             <Setter Property="HorizontalAlignment" Value="Left" />
@@ -92,7 +92,7 @@
             <Setter Property="FontSize" Value="20" />
             <Setter Property="FontWeight" Value="Bold" />
             <Setter Property="Foreground" Value="#723d46" />
-            <Setter Property="Margin" Value="10,10,15,0" />
+            <Setter Property="Margin" Value="5,5,5,5" />
         </Style>
         <Style TargetType="ComboBox" x:Key="ComboBoxBarStyle">
             <Setter Property="HorizontalAlignment" Value="Center" />
@@ -103,7 +103,7 @@
             <Setter Property="FontWeight" Value="Bold" />
             <Setter Property="Background" Value="#ffe1a8" />
             <Setter Property="Foreground" Value="#723d46" />
-            <Setter Property="Margin" Value="10,10,15,10" />
+            <Setter Property="Margin" Value="5,0,5,0" />
         </Style>
         <Style TargetType="ComboBox" x:Key="ComboBoxStyle">
             <Setter Property="HorizontalAlignment" Value="Center" />

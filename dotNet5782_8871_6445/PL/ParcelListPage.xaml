@@ -37,37 +37,36 @@
         </DataGrid>
         <StackPanel Orientation="Horizontal" Grid.Column="1">
             <StackPanel >
-                <StackPanel >
-                    <TextBlock Text="ID:" Style="{StaticResource TextBlockStyle}"/>
-                    <TextBox x:Name="txtUserID" Margin="10,0" materialDesign:HintAssist.Hint="Enter ID" Width="140" FontSize="18"/>
-                </StackPanel>
-                <StackPanel >
-                    <TextBlock Text="Sender:" Style="{StaticResource TextBlockStyle}"/>
-                    <ComboBox x:Name="SenderSelector" SelectionChanged="SenderSelector_SelectionChanged" Style="{StaticResource ComboBoxBarStyle}"/>
-                </StackPanel>
-                <StackPanel >
-                    <TextBlock Text="Receiver:" Style="{StaticResource TextBlockStyle}"/>
-                    <ComboBox x:Name="ReceiverSelector" SelectionChanged="ReceiverSelector_SelectionChanged" Style="{StaticResource ComboBoxBarStyle}"/>
+                <StackPanel>
+                    <TextBlock Text="Group by:" Style="{StaticResource TextBlockStyle}"/>
+                    <StackPanel Orientation="Horizontal">
+                        <RadioButton x:Name="GroupBySenderButton" Content="Sender" Margin="5,0" Checked="GroupBySenderButton_Checked"/>
+                        <RadioButton x:Name="GroupByReceiverButton" Content="Receiver" Checked="GroupByReceiverButton_Checked" />
+                    </StackPanel>
                 </StackPanel>
                 <StackPanel >
                     <TextBlock Text="Weight:" Style="{StaticResource TextBlockStyle}"/>
-                    <ComboBox x:Name="WeightSelector" SelectionChanged="WeightSelector_SelectionChanged" Style="{StaticResource ComboBoxBarStyle}"/>
+                    <ComboBox x:Name="WeightSelector" SelectionChanged="WeightSelector_SelectionChanged" Width="150" FontSize="15" Margin="10,0"/>
                 </StackPanel>
                 <StackPanel >
                     <TextBlock Text="Priority:" Style="{StaticResource TextBlockStyle}"/>
-                    <ComboBox x:Name="PrioritySelector" SelectionChanged="PrioritySelector_SelectionChanged" Style="{StaticResource ComboBoxBarStyle}"/>
+                    <ComboBox x:Name="PrioritySelector" SelectionChanged="PrioritySelector_SelectionChanged" Width="150" FontSize="15" Margin="10,0"/>
                 </StackPanel>
                 <StackPanel >
                     <TextBlock Text="Status:" Style="{StaticResource TextBlockStyle}"/>
-                    <ComboBox x:Name="StatusSelector" SelectionChanged="StatusSelector_SelectionChanged" Style="{StaticResource ComboBoxBarStyle}"/>
+                    <ComboBox x:Name="StatusSelector" SelectionChanged="StatusSelector_SelectionChanged" Width="150" FontSize="15" Margin="10,0"/>
                 </StackPanel>
                 <StackPanel>
                     <TextBlock Text="From:" Style="{StaticResource TextBlockStyle}"/>
-                    <DatePicker Width="140" materialDesign:HintAssist.Hint="DD/MM/YYYY" FontSize="14"/>
+                    <DatePicker x:Name="FromDatePicker" Width="140" SelectedDateChanged="From_SelectedDateChanged"  materialDesign:HintAssist.Hint="DD/MM/YYYY" FontSize="14"/>
                 </StackPanel>
                 <StackPanel >
                     <TextBlock Text="To:" Style="{StaticResource TextBlockStyle}"/>
-                    <DatePicker Width="140" materialDesign:HintAssist.Hint="DD/MM/YYYY" FontSize="14"/>
+                    <DatePicker x:Name="ToDatePicker" Width="140" SelectedDateChanged="To_SelectedDateChanged"  materialDesign:HintAssist.Hint="DD/MM/YYYY" FontSize="14"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Button  x:Name="ParcelDataGridClear" Content="Clear filters" Click="ParcelDataGridClear_Click"  Style="{StaticResource ButtonBarStyle}"/>
+                    <materialDesign:PackIcon Kind="Cleaning" Height="20" Width="30" VerticalAlignment="Center"/>
                 </StackPanel>
                 <StackPanel >
                     <Button  x:Name="ParcelDataGridAddButton" Content="Add new parcel" Click="ParcelDataGridAddButton_Click" Style="{StaticResource ButtonBarStyle}"/>

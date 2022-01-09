@@ -47,7 +47,7 @@
   </Drone>
   <Drone>
     <ID>669009</ID>
-    <Model>Phantom 9</Model>
-    <MaxWeight>Heavy</MaxWeight>
+    <Model>Mavic 9</Model>
+    <MaxWeight>Medium</MaxWeight>
   </Drone>
 </ArrayOfDrone>

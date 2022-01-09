@@ -82,6 +82,7 @@ namespace BlApi
         /// <param name="DroneID"></param>
         public void UpdateParcelDeleiveredByDrone(int DroneID);
 
+
         /// <summary>
         /// Sending the wanted drone to charge at the nearest station that has free charge slots
         /// </summary>
@@ -143,10 +144,11 @@ namespace BlApi
         /// </summary>
         /// <returns>list of available stations</returns>
         public IEnumerable<StationToList> GetAvailableStations();
+        public IEnumerable<ParcelToList> GetParcelsGroupBy(string groupByString);
 
         public IEnumerable<DroneToList> GetDrones(DroneStatus status, WeightCategories weight);
 
-        public IEnumerable<ParcelToList> GetParcels(Priorities priorities, WeightCategories weight,CustomerInParcel sender,CustomerInParcel reciver,ParcelStatus status);
+        public IEnumerable<ParcelToList> GetParcels(Priorities priorities, WeightCategories weight,ParcelStatus status, DateTime? from, DateTime? to);
         #endregion
 
         #region Get one

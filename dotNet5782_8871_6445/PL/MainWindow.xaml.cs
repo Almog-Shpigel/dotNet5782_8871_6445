@@ -58,8 +58,6 @@ namespace PL
             {
                 parcelPage = new(ParcelID);
                 parcelPage.ParcelDataGridGoBackButton.Click += ParcelListPageButton_Click;
-                parcelPage.UpdateDeleteParcelButton.Click += ParcelListPageButton_Click;
-                parcelPage.ParcelEntityAddButton.Click += ParcelListPageButton_Click;
                 Content = parcelPage;
             }
         }
@@ -244,9 +242,10 @@ namespace PL
                 }
                 CustomerToList customerToList = new(id);
                 customerPage = new(customerToList);
-                customerPage.CustomerListGoBackButton.Visibility = Visibility.Collapsed;
+                customerPage.CustomerListGoBackButton.Click += BackWindow_Click;
                 customerPage.ParcelSentListViewFromCustomer.MouseDoubleClick += ParcelSentListViewFromCustomer_MouseDoubleClick;
                 customerPage.ParcelReceivedListViewFromCustomer.MouseDoubleClick += ParcelReceiveListViewFromCustomer_MouseDoubleClick;
+                customerPage.CustomerListGoBackButton.Content = "Logout";
                 Content = customerPage;
             }
         }

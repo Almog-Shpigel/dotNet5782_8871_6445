@@ -2,8 +2,8 @@
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:PL"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"  
+      xmlns:local="clr-namespace:PL" xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="Parcel Page">
@@ -11,64 +11,73 @@
     <Grid Background="#c9cba3">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="10"/>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="10"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="10"/>
-            <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="10"/>
 
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="1" Grid.Column="1">
-            <TextBlock x:Name="PrintIDblock"                Text="Parcel ID:"       Style="{StaticResource TextBlockPageStyle}" />
-            <TextBlock x:Name="PrintSenderBlock"            Text="Sender:"          Style="{StaticResource TextBlockPageStyle}" />
-            <TextBlock x:Name="PrintReceiverBlock"          Text="Receiver:"        Style="{StaticResource TextBlockPageStyle}" />
-            <TextBlock x:Name="PrintWeightBlock"            Text="Weight:"          Style="{StaticResource TextBlockPageStyle}" />
-            <TextBlock x:Name="PrintPriorityBlock"          Text="Priority:"        Style="{StaticResource TextBlockPageStyle}" />
-            <TextBlock x:Name="PrintRequestedBlock"         Text="Requested:"       Style="{StaticResource TextBlockPageStyle}" />
-            <TextBlock x:Name="PrintScheduledBlock"         Text="Scheduled:"       Style="{StaticResource TextBlockPageStyle}" />
-            <TextBlock x:Name="PrintPickedUpBlock"          Text="Picked Up:"       Style="{StaticResource TextBlockPageStyle}" />
-            <TextBlock x:Name="PrintDeliveredBlock"         Text="Delivered:"       Style="{StaticResource TextBlockPageStyle}" />
-            <TextBlock x:Name="PrintDroneInParcelIDBlock"   Text="Drone In Parcel:" Style="{StaticResource TextBlockPageStyle}" TextWrapping="Wrap"/>
+        <StackPanel Grid.Row="1" Grid.Column="1" Margin="10">
+            <StackPanel Orientation="Horizontal" Visibility="{Binding ElementName=UpdateParcelCollectedButton, Path=Visibility}">
+                <TextBlock x:Name="PrintIDblock"                Text="Parcel ID:"       Style="{StaticResource TextBlockPageStyle}" />
+                <TextBlock x:Name="IDBlock" Text="{Binding ID}" Width="auto" FontSize="20" Margin="10,0" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock x:Name="PrintSenderBlock"            Text="Sender:"          Style="{StaticResource TextBlockPageStyle}" />
+                <TextBlock x:Name="SenderIDBox" Text="{Binding Sender}" Width="auto" FontSize="20" Margin="10,0" Visibility="{Binding ElementName=UpdateParcelCollectedButton, Path=Visibility}" />
+                <ComboBox x:Name="SenderIDSelector" SelectionChanged="SenderIDSelector_SelectionChanged" Width="auto" FontSize="20" Margin="10,0" IsEditable="True" Visibility="{Binding ElementName=ParcelEntityAddButton, Path=Visibility}"/>
+                <TextBlock x:Name="InvalidSenderIDBlock" Style="{StaticResource TextBlockInvalidStyle}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock x:Name="PrintReceiverBlock"          Text="Receiver:"        Style="{StaticResource TextBlockPageStyle}" />
+                <TextBlock x:Name="TargetIDBox" Text="{Binding Target}" Width="auto" FontSize="20" Margin="10,0" Visibility="{Binding ElementName=UpdateParcelCollectedButton, Path=Visibility}"/>
+                <ComboBox x:Name="TargetIDSelector" Text="{Binding Target}" SelectionChanged="TargetIDSelector_SelectionChanged" Width="auto" FontSize="20" Margin="10,0" Visibility="{Binding ElementName=ParcelEntityAddButton, Path=Visibility}"/>
+                <TextBlock x:Name="InvalidTargetIDBlock" Style="{StaticResource TextBlockInvalidStyle}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock x:Name="PrintWeightBlock"            Text="Weight:"          Style="{StaticResource TextBlockPageStyle}" />
+                <TextBlock x:Name="WeightBox" Text="{Binding Weight}" Width="auto" FontSize="20" Margin="10,0" Visibility="{Binding ElementName=UpdateParcelCollectedButton, Path=Visibility}"/>
+                <ComboBox x:Name="WeightSelector"   SelectionChanged="WeightSelector_SelectionChanged"  Width="auto" FontSize="20" Margin="10,0" IsEditable="True" Visibility="{Binding ElementName=ParcelEntityAddButton, Path=Visibility}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock x:Name="PrintPriorityBlock"          Text="Priority:"        Style="{StaticResource TextBlockPageStyle}" />
+                <TextBlock x:Name="PriorityBox" Text="{Binding Priorities}" Width="auto" FontSize="20" Margin="10,0" Visibility="{Binding ElementName=UpdateParcelCollectedButton, Path=Visibility}"/>
+                <ComboBox x:Name="PrioritySelector" ItemsSource="{Binding Priorities}" SelectionChanged="PrioritySelector_SelectionChanged"  Width="auto" FontSize="20" Margin="10,0" Visibility="{Binding ElementName=ParcelEntityAddButton, Path=Visibility}"/>
+            </StackPanel>
+            <StackPanel Visibility="{Binding ElementName=UpdateParcelCollectedButton, Path=Visibility}">
+                <StackPanel Orientation="Horizontal" >
+                    <TextBlock x:Name="PrintRequestedBlock"         Text="Requested:"       Style="{StaticResource TextBlockPageStyle}" />
+                    <TextBlock x:Name="RequestedBlock" Width="auto" FontSize="20" Margin="10,0" Text="{Binding TimeRequested}"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock x:Name="PrintScheduledBlock"         Text="Scheduled:"       Style="{StaticResource TextBlockPageStyle}" />
+                    <TextBlock x:Name="ScheduledBlock"  Width="auto" FontSize="20" Margin="10,0" Text="{Binding Scheduled}"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock x:Name="PrintPickedUpBlock"          Text="Picked Up:"       Style="{StaticResource TextBlockPageStyle}" />
+                    <TextBlock x:Name="PickedUpBlock"  Width="auto" FontSize="20" Margin="10,0" Text="{Binding PickedUp}"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock x:Name="PrintDeliveredBlock"         Text="Delivered:"       Style="{StaticResource TextBlockPageStyle}" />
+                    <TextBlock x:Name="DeliveredBlock"   Width="auto" FontSize="20" Margin="10,0" Text="{Binding Delivered}"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock x:Name="PrintDroneInParcelIDBlock"   Text="Drone In Parcel:" Style="{StaticResource TextBlockPageStyle}" TextWrapping="Wrap" VerticalAlignment="Top"/>
+                    <TextBlock x:Name="DroneInParcelIDBlock"  Width="auto" FontSize="20" Margin="10,0" Text="{Binding DroneInParcel}" TextWrapping="Wrap"/>
+                </StackPanel>
+            </StackPanel>
         </StackPanel>
-        <StackPanel x:Name="ShowDetailsParcel1" Grid.Row="1" Grid.Column="2" >
-            <TextBlock x:Name="IDBlock"                 Style="{StaticResource TextBlockPageStyle}" Text="{Binding ID}"/>
-            <TextBlock x:Name="SenderBlock"             Style="{StaticResource TextBlockPageStyle}" Text="{Binding Sender}"/>
-            <TextBlock x:Name="ReceiverBlock"           Style="{StaticResource TextBlockPageStyle}" Text="{Binding Target}"/>
-            <TextBlock x:Name="WeightBlock"             Style="{StaticResource TextBlockPageStyle}" Text="{Binding Weight}"/>
-            <TextBlock x:Name="PriorityBlock"           Style="{StaticResource TextBlockPageStyle}" Text="{Binding Priority}"/>
-            <TextBlock x:Name="RequestedBlock"          Style="{StaticResource TextBlockPageStyle}" Text="{Binding TimeRequested}"/>
-            <TextBlock x:Name="ScheduledBlock"          Style="{StaticResource TextBlockPageStyle}" Text="{Binding Scheduled}"/>
-            <TextBlock x:Name="PickedUpBlock"           Style="{StaticResource TextBlockPageStyle}" Text="{Binding PickedUp}"/>
-            <TextBlock x:Name="DeliveredBlock"          Style="{StaticResource TextBlockPageStyle}" Text="{Binding Delivered}"/>
-            <TextBlock x:Name="DroneInParcelIDBlock"    Style="{StaticResource TextBlockPageStyle}" Text="{Binding DroneInParcel}"/>
-        </StackPanel>
-        <StackPanel x:Name="ShowDetailsParcel2" Grid.Row="1" Grid.Column="4">
+
+        <StackPanel x:Name="ButtonsPanel" Grid.Row="1" Grid.Column="2" Margin="10">
             <Button x:Name="UpdateParcelCollectedButton" Style="{StaticResource ButtonPageStyle}" Content="Parcel collected" Click="UpdateParcelCollectedButton_Click" IsEnabled="{Binding Delivered}"/>
-            <Button x:Name="UpdateParcelDeliveredButton" Style="{StaticResource ButtonPageStyle}" Content="Parcel delivered" Click="UpdateParcelDeliveredButton_Click" />
-            <Button x:Name="UpdateDeleteParcelButton"    Style="{StaticResource ButtonPageStyle}" Content="Delete parcel" Click="UpdateParcelDeliveredButton_Click" />
-            <Button x:Name="ParcelDataGridGoBackButton"     Style="{StaticResource ButtonPageStyle}" Content="Go back" Click="ParcelDataGridGoBackButton_Click"/>
-        </StackPanel>
-        <StackPanel x:Name="NewParcelEnterPanel" Grid.Row="1" Grid.Column="3">
-            <ComboBox x:Name="SenderIDSelector"  SelectionChanged="SenderIDSelector_SelectionChanged" Style="{StaticResource ComboBoxStyle}">
-                
-            </ComboBox>
-            <ComboBox x:Name="TargetIDSelector" Text="{Binding ID}" SelectionChanged="TargetIDSelector_SelectionChanged" Style="{StaticResource ComboBoxStyle}" >
-                
-            </ComboBox>
-            <ComboBox x:Name="WeightSelector"   SelectionChanged="WeightSelector_SelectionChanged"   Style="{StaticResource ComboBoxStyle}"/>
-            <ComboBox x:Name="PrioritySelector" SelectionChanged="PrioritySelector_SelectionChanged" Style="{StaticResource ComboBoxStyle}" ItemsSource="{Binding Priorities}"/>
-            <Button   x:Name="ParcelEntityAddButton" Content="Add" Click="ParcelEntityAddButton_Click" Style="{StaticResource ButtonPageStyle}" IsEnabled="{Binding NotifyOnValidationError=True}"/>
-        </StackPanel>
-        <StackPanel x:Name="InvalidTextPanel" Grid.Row="1" Grid.Column="5">
-            <TextBlock x:Name="InvalidSenderIDBlock" Style="{StaticResource TextBlockInvalidStyle}"/>
-            <TextBlock x:Name="InvalidTargetIDBlock" Style="{StaticResource TextBlockInvalidStyle}"/>
+            <Button x:Name="UpdateParcelDeliveredButton" Style="{StaticResource ButtonPageStyle}" Content="Parcel delivered" Click="UpdateParcelDeliveredButton_Click" Visibility="{Binding ElementName=UpdateParcelCollectedButton, Path=Visibility}" />
+            <Button x:Name="UpdateDeleteParcelButton" Style="{StaticResource ButtonPageStyle}" Content="Delete parcel" Click="UpdateDeleteParcelButton_Click" Visibility="{Binding ElementName=UpdateParcelCollectedButton, Path=Visibility}"/>
+            <Button x:Name="ParcelEntityAddButton" Content="Add" Click="ParcelEntityAddButton_Click" Style="{StaticResource ButtonPageStyle}" IsEnabled="{Binding NotifyOnValidationError=True}"/>
+            <Button x:Name="ParcelDataGridGoBackButton" Style="{StaticResource ButtonPageStyle}" Content="Go back" Click="ParcelDataGridGoBackButton_Click"/>
         </StackPanel>
     </Grid>
 </Page>

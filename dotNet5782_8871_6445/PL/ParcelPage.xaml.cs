@@ -1,4 +1,5 @@
 ﻿using BL;
+using BlApi;
 using BO;
 using DO;
 using System;
@@ -21,12 +22,11 @@ namespace PL
         public ParcelPage(RoutedEventArgs e)
         {
             InitializeComponent(); // Add parcel ctor
-            SenderIDSelector.ItemsSource = IBL.GetAllCustomerInParcels();
+            SenderIDSelector.ItemsSource = IBL.GetAllCustomerInParcels().ToList();
             TargetIDSelector.ItemsSource = SenderIDSelector.ItemsSource;
             WeightSelector.ItemsSource = Enum.GetValues(typeof(WeightCategories));
             PrioritySelector.ItemsSource = Enum.GetValues(typeof(Priorities));
-            PrintIDblock.Visibility = Visibility.Collapsed;
-            ShowDetailsParcel2.Visibility = Visibility.Collapsed;
+            UpdateParcelCollectedButton.Visibility = Visibility.Collapsed;
             EnableButton();
             UpdateLayout();
         }
@@ -34,10 +34,9 @@ namespace PL
         public ParcelPage(int ParcelID) // Update parcel ctor
         {
             InitializeComponent();
-            NewParcelEnterPanel.Visibility = Visibility.Collapsed;
             ParcelBL = IBL.GetParcel(ParcelID);
             DataContext = ParcelBL;
-            
+            ParcelEntityAddButton.Visibility = Visibility.Collapsed;
             if (ParcelBL.Scheduled == null)
             {
                 UpdateParcelCollectedButton.IsEnabled = false;
@@ -129,6 +128,19 @@ namespace PL
         private void ParcelDataGridGoBackButton_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void UpdateDeleteParcelButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                IBL.UpdateDeleteParcel(int.Parse(IDBlock.Text));
+            }
+            catch (BlApi.InvalidOperationException ex)
+            {
+                InvalidSenderIDBlock.Text = ex.Message;
+                InvalidSenderIDBlock.Visibility = Visibility.Visible;
+            }
         }
     }
 }

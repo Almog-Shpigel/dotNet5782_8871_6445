@@ -202,6 +202,15 @@ namespace DalObject
             DataSource.parcels.Add(oldParcel);
             DataSource.parcels = DataSource.parcels.OrderBy(p => p.ID).ToList();
         }
+
+        public void UpdateDeleteParcel(Parcel parcel)
+        {
+            Parcel oldParcel = DataSource.parcels.Find(p => p.ID == parcel.ID);
+            if (oldParcel.ID == 0)
+                throw new DroneExistException($"Parcel {parcel.ID} doesn't exists in the data!!");
+            DataSource.parcels.Remove(oldParcel);
+            DataSource.parcels = DataSource.parcels.OrderBy(p => p.ID).ToList();
+        }
         #endregion
 
         #region Get

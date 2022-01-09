@@ -120,7 +120,7 @@ namespace BlApi
                 SelectedParcels = SelectedParcels.Where(parcel => parcel.Weight == weight);
             if ((int)priorities != -1)
                 SelectedParcels = SelectedParcels.Where(parcel => parcel.Priority == priorities);
-            if
+            //if
             return SelectedParcels;
         }
         #endregion
@@ -214,7 +214,7 @@ namespace BlApi
         #region Get other
         public ParcelToList GetParcelToList(ParcelAtCustomer parcel)
         {
-            string target = Data.GetCustomer((Data.GetParcel(parcel.ID).TargetID)).Name;
+            string target = Data.GetCustomer(Data.GetParcel(parcel.ID).TargetID).Name;
             ParcelToList parcelToList = new(parcel.ID, parcel.Customer.Name, target, parcel.Weight, parcel.Priority, parcel.Status);
             return parcelToList;
         }

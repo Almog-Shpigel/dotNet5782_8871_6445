@@ -101,9 +101,9 @@
             </Storyboard>
         </Grid.Resources>
 
-        <Grid.Triggers>
-            <EventTrigger RoutedEvent="Button.Click" SourceName="LoginButton">
-                <BeginStoryboard Storyboard="{StaticResource TransformButton1}"/>
+        <!--<Grid.Triggers >
+            <EventTrigger RoutedEvent="Button.Click" SourceName="LoginButton" >
+                <BeginStoryboard Storyboard="{StaticResource TransformButton1}" />
                 <BeginStoryboard Storyboard="{StaticResource OpacityOfButtons1}"/>
                 
                 <BeginStoryboard Storyboard="{StaticResource TransformButton2}"/>
@@ -118,7 +118,7 @@
                 <BeginStoryboard Storyboard="{StaticResource TransformButton5}"/>
                 <BeginStoryboard Storyboard="{StaticResource OpacityOfButtons5}"/>
             </EventTrigger>
-        </Grid.Triggers>
+        </Grid.Triggers>-->
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="4*"/>
@@ -169,31 +169,31 @@
             <TextBlock FontSize="48" HorizontalAlignment="Center" VerticalAlignment="Center"
                    Text="Drone Delivery" Grid.ColumnSpan="2" Foreground="#472d30" FontWeight="ExtraBold" Margin="20,10,20,40" FontFamily="Cooper black"/>
             <Button x:Name="DroneListPage" Content="Drones" Click="DroneListPageButton_Click"
-                    Style="{StaticResource MainWindowButton}" Opacity="0">
+                    Style="{StaticResource MainWindowButton}" >
                 <Button.RenderTransform>
                     <TranslateTransform />
                 </Button.RenderTransform>
             </Button>
             <Button x:Name="StationListPage" Content="Stations" Click="StationListPageButton_Click"
-                    Style="{StaticResource MainWindowButton}" Opacity="0">
+                    Style="{StaticResource MainWindowButton}" >
                 <Button.RenderTransform>
                     <TranslateTransform />
                 </Button.RenderTransform>
             </Button>
             <Button x:Name="CustomerListPage" Content="Customers" Click="CustomerListPageButton_Click"
-                    Style="{StaticResource MainWindowButton}" Opacity="0">
+                    Style="{StaticResource MainWindowButton}" >
                 <Button.RenderTransform>
                     <TranslateTransform />
                 </Button.RenderTransform>
             </Button>
             <Button x:Name="ParcelListPage" Content="Parcels" Click="ParcelListPageButton_Click"
-                    Style="{StaticResource MainWindowButton}" Opacity="0">
+                    Style="{StaticResource MainWindowButton}" >
                 <Button.RenderTransform>
                     <TranslateTransform />
                 </Button.RenderTransform>
             </Button>
             <Button x:Name="ShowMap" Content="Map" Click="MapButton_Click"
-                    Style="{StaticResource MainWindowButton}" Opacity="0">
+                    Style="{StaticResource MainWindowButton}" >
                 <Button.RenderTransform>
                     <TranslateTransform />
                 </Button.RenderTransform>

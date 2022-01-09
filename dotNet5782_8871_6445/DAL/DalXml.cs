@@ -270,6 +270,15 @@ namespace DAL
             ListParcels = ListParcels.OrderBy(p => p.ID).ToList();
             XmlTools.SaveListToXmlSerializer(ListParcels, parcelsPath);
         }
+
+        public void UpdateDeleteParcel(Parcel parcel)
+        {
+            List<Parcel> ListParcels = XmlTools.LoadListFromXmlSerializer<Parcel>(parcelsPath);
+            Parcel UpdatedParcel = GetParcel(parcel.ID);
+            ListParcels.Remove(UpdatedParcel);
+            ListParcels = ListParcels.OrderBy(p => p.ID).ToList();
+            XmlTools.SaveListToXmlSerializer(ListParcels, parcelsPath);
+        }
         #endregion
 
         #region Get

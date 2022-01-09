@@ -44,12 +44,12 @@ namespace PL
 
         private void PrioritySelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ParcelDataGrid.ItemsSource = IBL.GetParcels((Priorities)e.AddedItems[0], (WeightCategories)WeightSelector.SelectedIndex);
+            //ParcelDataGrid.ItemsSource = IBL.GetParcels((Priorities)e.AddedItems[0], (WeightCategories)WeightSelector.SelectedIndex);
         }
 
         private void WeightSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ParcelDataGrid.ItemsSource = IBL.GetParcels((Priorities)PrioritySelector.SelectedIndex, (WeightCategories)e.AddedItems[0]);
+            //ParcelDataGrid.ItemsSource = IBL.GetParcels((Priorities)PrioritySelector.SelectedIndex, (WeightCategories)e.AddedItems[0]);
         }
         private void ReceiverSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

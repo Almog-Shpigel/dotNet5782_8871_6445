@@ -67,7 +67,6 @@ namespace BlApi
             }
         }
 
-
         public void UpdateCustomerName(int CustomerID,string NewCustomerName)
         {
             if (CustomerID is < 100000000 or > 999999999)
@@ -82,6 +81,7 @@ namespace BlApi
                 throw new EntityExistException(ex.Message); // TO DO: maybe add to\change the message
             }
         }
+
         public void UpdateCustomerPhone(int CustomerID, int NewCustomerPhone)
         {
             if (NewCustomerPhone is < 500000000 or > 599999999)
@@ -159,7 +159,7 @@ namespace BlApi
 
         }
         
-        public void UpdateParcelAssignToDrone(int DroneID)      // TO DO: rewrite this function
+        public void UpdateParcelAssignToDrone(int DroneID)
         {
             Parcel MaxParcel;
             DroneToList DroneToBeAssign;
@@ -238,6 +238,23 @@ namespace BlApi
             droneInDelivery.ParcelID = 0;
             DroneList.Add(droneInDelivery);
             DroneList = DroneList.OrderBy(d => d.ID).ToList();
+        }
+
+        public void UpdateDeleteParcel(int parcelID)
+        {
+            Parcel parcelToBeDeleted;
+            try
+            {
+                parcelToBeDeleted = Data.GetParcel(parcelID);
+            }
+            catch (ParcelExistException ex)
+            {
+                throw new EntityExistException($"Can't delete parcel {parcelID}.\n", ex);
+            }
+            if(parcelToBeDeleted.Scheduled != null)
+                throw new InvalidOperationException($"Can't delete parcel {parcelID}\n" +
+                    $"Parcel {parcelID} has already being dispatched by one of our drones.");
+            Data.UpdateDeleteParcel(parcelToBeDeleted);
         }
     }
 }

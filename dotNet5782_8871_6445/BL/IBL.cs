@@ -101,6 +101,8 @@ namespace BlApi
         /// </summary>
         /// <param name="DroneID"></param>
         public void UpdateDroneToBeAvailable(int DroneID);
+
+        public void UpdateDeleteParcel(int id);
         #endregion
 
         #region Get

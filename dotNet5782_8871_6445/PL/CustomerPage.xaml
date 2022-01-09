@@ -36,12 +36,12 @@
                 <TextBox x:Name="PhoneNumberBox" Text="{Binding Phone}" Width="150" FontSize="20" Margin="10,0" materialDesign:HintAssist.Hint="Enter number"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
-                <TextBlock x:Name="PrintLatitudeBlock"  Text="Location:"        Style="{StaticResource TextBlockPageStyle}" />
-                <TextBlock x:Name="LocationBlock" Text="{Binding Location}"  Style="{StaticResource TextBlockPageStyle}" />
+                <TextBlock x:Name="PrintLatitudeBlock" Text="Location:" Style="{StaticResource TextBlockPageStyle}" />
+                <TextBlock x:Name="LocationBlock" Text="{Binding Location}"  Style="{StaticResource TextBlockPageStyle}" Visibility="{Binding ElementName=UpdateNameButton, Path=Visibility}"/>
                 <TextBox   x:Name="EnterLatitudeBox" TextChanged ="EnterLatitudeBox_TextChanged" Width="150" FontSize="20" Margin="10,0" materialDesign:HintAssist.Hint="Latitude" Visibility="{Binding ElementName=CustomerEntityAddButton, Path=Visibility}"/>
                 <TextBox   x:Name="EnterLongitudeBox" TextChanged ="EnterLongitudeBox_TextChanged" Width="150" FontSize="20" Margin="10,0" materialDesign:HintAssist.Hint="Longitude" Visibility="{Binding ElementName=CustomerEntityAddButton, Path=Visibility}"/>
             </StackPanel>
-            <StackPanel Orientation="Horizontal">
+            <StackPanel x:Name="ParcelInCustomerListPanel" Orientation="Horizontal" Visibility="{Binding ElementName=UpdateNameButton, Path=Visibility}">
                 <StackPanel>
                     <TextBlock x:Name="PrintSentBlock"    Text="Parcels sent:"    Style="{StaticResource TextBlockPageStyle}" />
                     <ListView x:Name="ParcelSentListViewFromCustomer" Style="{StaticResource ListViewStyle}">
@@ -71,8 +71,8 @@
         <StackPanel x:Name="ButtonsPanel" Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="1">
             <Button x:Name="CustomerEntityAddButton" Content="Add" Click="CustomerEntityAddButton_Click" Style="{StaticResource ButtonPageStyle}" />
             <Button x:Name="UpdateNameButton" Content="Update name" Click="UpdateNameButton_Click" Style="{StaticResource ButtonPageStyle}" />
-            <Button x:Name="UpdatePhoneButton" Content="Update phone number" Click="UpdatePhoneButton_Click" Style="{StaticResource ButtonPageStyle}" />
-            <Button x:Name="CustomerListGoBackButton" Content="Go back" Click="CustomerListGoBackButton_Click" Style="{StaticResource ButtonPageStyle}"/>
+            <Button x:Name="UpdatePhoneButton" Content="Update phone number" Click="UpdatePhoneButton_Click" Style="{StaticResource ButtonPageStyle}" Visibility="{Binding ElementName=UpdateNameButton, Path=Visibility}"/>
+            <Button x:Name="CustomerListGoBackButton" Content="Go back" Click="CustomerListGoBackButton_Click" Style="{StaticResource ButtonPageStyle}" />
         </StackPanel>
     </Grid>
 </Page>

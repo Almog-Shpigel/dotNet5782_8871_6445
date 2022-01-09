@@ -101,7 +101,6 @@
             </Storyboard>
         </Grid.Resources>
 
-
         <Grid.Triggers>
             <EventTrigger RoutedEvent="Button.Click" SourceName="LoginButton">
                 <BeginStoryboard Storyboard="{StaticResource TransformButton1}"/>

@@ -239,12 +239,8 @@ namespace PL
                 catch (InvalidIDException ex)
                 {
                     MessageBoxResult res = MessageBox.Show(ex.Message + ex.InnerException.Message, "Verification", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    if (res == MessageBoxResult.No)
-                        return;
+                    return;
                 }
-            }
-            if (rbCustomer.IsChecked.Value)
-            {
                 CustomerToList customerToList = new(id);
                 customerPage = new(customerToList);
                 customerPage.CustomerListGoBackButton.Visibility = Visibility.Collapsed;

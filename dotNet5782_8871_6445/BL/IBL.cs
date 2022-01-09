@@ -144,7 +144,7 @@ namespace BlApi
 
         public IEnumerable<DroneToList> GetDrones(DroneStatus status, WeightCategories weight);
 
-        public IEnumerable<ParcelToList> GetParcels(Priorities priorities, WeightCategories weight);
+        public IEnumerable<ParcelToList> GetParcels(Priorities priorities, WeightCategories weight,CustomerInParcel sender,CustomerInParcel reciver,ParcelStatus status);
         #endregion
 
         #region Get one

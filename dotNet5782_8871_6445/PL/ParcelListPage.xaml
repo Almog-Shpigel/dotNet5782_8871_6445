@@ -43,11 +43,11 @@
                 </StackPanel>
                 <StackPanel >
                     <TextBlock Text="Sender:" Style="{StaticResource TextBlockStyle}"/>
-                    <ComboBox x:Name="SenderSelector" SelectionChanged="PrioritySelector_SelectionChanged" Style="{StaticResource ComboBoxBarStyle}"/>
+                    <ComboBox x:Name="SenderSelector" SelectionChanged="SenderSelector_SelectionChanged" Style="{StaticResource ComboBoxBarStyle}"/>
                 </StackPanel>
                 <StackPanel >
                     <TextBlock Text="Receiver:" Style="{StaticResource TextBlockStyle}"/>
-                    <ComboBox x:Name="ReceiverSelector" SelectionChanged="PrioritySelector_SelectionChanged" Style="{StaticResource ComboBoxBarStyle}"/>
+                    <ComboBox x:Name="ReceiverSelector" SelectionChanged="ReceiverSelector_SelectionChanged" Style="{StaticResource ComboBoxBarStyle}"/>
                 </StackPanel>
                 <StackPanel >
                     <TextBlock Text="Weight:" Style="{StaticResource TextBlockStyle}"/>
@@ -59,7 +59,7 @@
                 </StackPanel>
                 <StackPanel >
                     <TextBlock Text="Status:" Style="{StaticResource TextBlockStyle}"/>
-                    <ComboBox x:Name="StatusSelector" SelectionChanged="PrioritySelector_SelectionChanged" Style="{StaticResource ComboBoxBarStyle}"/>
+                    <ComboBox x:Name="StatusSelector" SelectionChanged="StatusSelector_SelectionChanged" Style="{StaticResource ComboBoxBarStyle}"/>
                 </StackPanel>
                 <StackPanel>
                     <TextBlock Text="From:" Style="{StaticResource TextBlockStyle}"/>

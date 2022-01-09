@@ -9,7 +9,7 @@ using DAL;
 
 namespace BlApi
 {
-    public partial class BL : IBL
+    internal partial class BL : IBL
     {
         internal static readonly BL instance = new();
 

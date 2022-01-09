@@ -113,13 +113,14 @@ namespace BlApi
             return SelectedDrones;
         }
 
-        public IEnumerable<ParcelToList> GetParcels(Priorities priorities, WeightCategories weight)
+        public IEnumerable<ParcelToList> GetParcels(Priorities priorities, WeightCategories weight, CustomerInParcel sender, CustomerInParcel reciver, ParcelStatus status)
         {
             IEnumerable<ParcelToList> SelectedParcels = GetAllParcels();
             if ((int)weight != -1)
                 SelectedParcels = SelectedParcels.Where(parcel => parcel.Weight == weight);
             if ((int)priorities != -1)
                 SelectedParcels = SelectedParcels.Where(parcel => parcel.Priority == priorities);
+            if
             return SelectedParcels;
         }
         #endregion

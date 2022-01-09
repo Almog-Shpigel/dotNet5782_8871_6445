@@ -21,7 +21,10 @@ namespace PL
             InitializeComponent();
             ParcelDataGrid.ItemsSource = IBL.GetAllParcels();
             PrioritySelector.ItemsSource = Enum.GetValues(typeof(Priorities));
-            WeightSelector.ItemsSource = Enum.GetValues(typeof(WeightCategories));            
+            WeightSelector.ItemsSource = Enum.GetValues(typeof(WeightCategories));
+            StatusSelector.ItemsSource = Enum.GetValues(typeof(ParcelStatus));
+            SenderSelector.ItemsSource = IBL.GetAllCustomerInParcels();
+            ReceiverSelector.ItemsSource = IBL.GetAllCustomerInParcels();
         }
 
         private void ParcelEntityAddButton_Click(object sender, RoutedEventArgs e)
@@ -47,6 +50,21 @@ namespace PL
         private void WeightSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ParcelDataGrid.ItemsSource = IBL.GetParcels((Priorities)PrioritySelector.SelectedIndex, (WeightCategories)e.AddedItems[0]);
+        }
+        private void ReceiverSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+           // ParcelDataGrid.ItemsSource = IBL.GetParcels((CustomerInParcel)PrioritySelector.SelectedIndex, (WeightCategories)e.AddedItems[0]);
+            
+        }
+        private void SenderSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            //ParcelDataGrid.ItemsSource = IBL.GetParcels((Priorities)PrioritySelector.SelectedIndex, (WeightCategories)e.AddedItems[0]);
+     
+        }
+        private void StatusSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            //ParcelDataGrid.ItemsSource = IBL.GetParcels((Priorities)PrioritySelector.SelectedIndex, (WeightCategories)e.AddedItems[0]);
+
         }
 
         private void DataGridRow_MouseDoubleClick(object sender, MouseButtonEventArgs e)

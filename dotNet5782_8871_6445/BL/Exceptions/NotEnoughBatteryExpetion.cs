@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace BO
+namespace BlApi
 {
     [Serializable]
-    internal class NotEnoughBatteryExpetion : Exception
+    public class NotEnoughBatteryExpetion : Exception
     {
         public NotEnoughBatteryExpetion()
         {

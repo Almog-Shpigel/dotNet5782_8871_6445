@@ -219,24 +219,24 @@ namespace BlApi
             DroneList = DroneList.OrderBy(d => d.ID).ToList();
         }
 
-        public void UpdateParcelDeleiveredByDrone(int DroneID)
+        public void UpdateParcelDeleiveredByDrone(int droneID)
         {
-            if (DroneID < 100000 || DroneID > 999999)
+            if (droneID < 100000 || droneID > 999999)
                 throw new InvalidIDException("Drone ID has to have 6 positive digits.");
-            DroneToList DroneInDelivery = DroneList.Find(d => d.ID == DroneID);
-            if (DroneInDelivery.Status != DroneStatus.Delivery)
+            DroneToList droneInDelivery = DroneList.Find(d => d.ID == droneID);
+            if (droneInDelivery.Status != DroneStatus.Delivery)
                 throw new InvalidOperationException("This drone is not doing a delivery right now");
-            Parcel ParcelToBeDelivered = Data.GetParcel(DroneInDelivery.ParcelID);
-            if (ParcelToBeDelivered.Delivered != null || ParcelToBeDelivered.PickedUp == null)
+            Parcel parcelToBeDelivered = Data.GetParcel(droneInDelivery.ParcelID);
+            if (parcelToBeDelivered.Delivered != null || parcelToBeDelivered.PickedUp == null)
                 throw new ParcelTimesException("The drone is not carrying the parcel right now");
-            Data.UpdateParcelInDelivery(ParcelToBeDelivered);
-            Customer target = Data.GetCustomer(ParcelToBeDelivered.TargetID);
-            DroneList.Remove(DroneInDelivery);
-            DroneInDelivery.BatteryStatus -= DistanceDroneCustomer(DroneInDelivery, target) * GetWeightMultiplier(ParcelToBeDelivered.Weight);
-            DroneInDelivery.CurrentLocation = new(target.Latitude, target.Longitude);
-            DroneInDelivery.Status = DroneStatus.Available;
-            DroneInDelivery.ParcelID = 0;
-            DroneList.Add(DroneInDelivery);
+            Data.UpdateParcelInDelivery(parcelToBeDelivered);
+            Customer target = Data.GetCustomer(parcelToBeDelivered.TargetID);
+            DroneList.Remove(droneInDelivery);
+            droneInDelivery.BatteryStatus -= DistanceDroneCustomer(droneInDelivery, target) * GetWeightMultiplier(parcelToBeDelivered.Weight);
+            droneInDelivery.CurrentLocation = new(target.Latitude, target.Longitude);
+            droneInDelivery.Status = DroneStatus.Available;
+            droneInDelivery.ParcelID = 0;
+            DroneList.Add(droneInDelivery);
             DroneList = DroneList.OrderBy(d => d.ID).ToList();
         }
     }

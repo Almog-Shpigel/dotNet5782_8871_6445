@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:PL"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="Main Window" Height="750" Width="1000" WindowStartupLocation="CenterScreen" WindowState="Normal" ResizeMode="CanMinimize">
+        Title="Main Window" Height="700" Width="950" WindowStartupLocation="CenterScreen" WindowState="Normal" ResizeMode="CanMinimize">
     <Grid >
         <Grid.Background>
             <ImageBrush ImageSource="/aaa.jpg"/>

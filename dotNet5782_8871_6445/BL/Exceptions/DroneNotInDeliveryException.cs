@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace BO
+namespace BlApi
 {
     [Serializable]
-    internal class DroneNotInDeliveryException : Exception
+    public class DroneNotInDeliveryException : Exception
     {
         public DroneNotInDeliveryException()
         {

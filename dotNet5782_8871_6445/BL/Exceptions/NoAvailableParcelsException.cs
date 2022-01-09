@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace BO
+namespace BlApi
 {
     [Serializable]
-    internal class NoAvailableParcelsException : Exception
+    public class NoAvailableParcelsException : Exception
     {
         public NoAvailableParcelsException()
         {

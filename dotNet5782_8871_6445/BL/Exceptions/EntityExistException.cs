@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace BlApi
 {
     [Serializable]
-    internal class EntityExistException : Exception
+    public class EntityExistException : Exception
     {
         public EntityExistException()
         {

@@ -30,23 +30,23 @@ namespace DAL
         ////}
         private DalXml()
         {
-            DataSource.Initialize();
-            XmlTools.SaveListToXmlSerializer(DataSource.customers, customersPath);
-            XmlTools.SaveListToXmlSerializer(DataSource.drones, dronesPath);
-            XmlTools.SaveListToXmlSerializer(DataSource.DroneCharges, droneChargePath);
-            XmlTools.SaveListToXmlSerializer(DataSource.parcels, parcelsPath);
-            XmlTools.SaveListToXmlSerializer(DataSource.stations, stationsPath);
-            XmlTools.CreateFiles(configPath);
-            XElement BatteryUsageEmpty = new("BatteryUsageEmpty", 3.3);
-            XElement BatteryUsageLightWight = new("BatteryUsageLightWight", 4);
-            XElement BatteryUsageMediumWight = new("BatteryUsageMediumWight", 5);
-            XElement BatteryUsageHaevyWight = new("BatteryUsageHaevyWight", 6.6);
-            XElement BatteryChargeRate = new("BatteryChargeRate", 60);
-            XElement BatteryUsage = new("BatteryUsage", BatteryUsageEmpty, BatteryUsageLightWight, BatteryUsageMediumWight, BatteryUsageHaevyWight, BatteryChargeRate);
-            XElement ParcelIDCounter = new("ParcelIDCounter", 344011);
-            XElement Counters = new("Counters", ParcelIDCounter);
-            XElement configItems = new XElement("Config-Data", BatteryUsage, Counters);
-            XmlTools.SaveListToXElement(configItems, configPath);
+            //DataSource.Initialize();
+            //XmlTools.SaveListToXmlSerializer(DataSource.customers, customersPath);
+            //XmlTools.SaveListToXmlSerializer(DataSource.drones, dronesPath);
+            //XmlTools.SaveListToXmlSerializer(DataSource.DroneCharges, droneChargePath);
+            //XmlTools.SaveListToXmlSerializer(DataSource.parcels, parcelsPath);
+            //XmlTools.SaveListToXmlSerializer(DataSource.stations, stationsPath);
+            //XmlTools.CreateFiles(configPath);
+            //XElement BatteryUsageEmpty = new("BatteryUsageEmpty", 3.3);
+            //XElement BatteryUsageLightWight = new("BatteryUsageLightWight", 4);
+            //XElement BatteryUsageMediumWight = new("BatteryUsageMediumWight", 5);
+            //XElement BatteryUsageHaevyWight = new("BatteryUsageHaevyWight", 6.6);
+            //XElement BatteryChargeRate = new("BatteryChargeRate", 60);
+            //XElement BatteryUsage = new("BatteryUsage", BatteryUsageEmpty, BatteryUsageLightWight, BatteryUsageMediumWight, BatteryUsageHaevyWight, BatteryChargeRate);
+            //XElement ParcelIDCounter = new("ParcelIDCounter", 344011);
+            //XElement Counters = new("Counters", ParcelIDCounter);
+            //XElement configItems = new XElement("Config-Data", BatteryUsage, Counters);
+            //XmlTools.SaveListToXElement(configItems, configPath);
 
         }
 

@@ -3,6 +3,7 @@ using System.Linq;
 using DO;
 using BO;
 using static BO.EnumsBL;
+using System;
 
 namespace BlApi
 {
@@ -11,7 +12,7 @@ namespace BlApi
         #region Get All
         public IEnumerable<DroneToList> GetAllDrones()
         {
-            return DroneList.Select(d => new DroneToList(d.ID, d.Model, d.MaxWeight, (int)d.BatteryStatus, d.Status, d.CurrentLocation, d. ParcelID));
+            return DroneList.Select(d => new DroneToList(d.ID, d.Model, d.MaxWeight, (int)d.BatteryStatus, d.Status, d.CurrentLocation, d.ParcelID));
         }
 
         public IEnumerable<ParcelToList> GetAllParcels()
@@ -113,16 +114,22 @@ namespace BlApi
             return SelectedDrones;
         }
 
-        public IEnumerable<ParcelToList> GetParcels(Priorities priorities, WeightCategories weight, CustomerInParcel sender, CustomerInParcel reciver, ParcelStatus status)
+        public IEnumerable<ParcelToList> GetParcels(Priorities priorities, WeightCategories weight, ParcelStatus status, DateTime? from, DateTime? to)
         {
             IEnumerable<ParcelToList> SelectedParcels = GetAllParcels();
             if ((int)weight != -1)
                 SelectedParcels = SelectedParcels.Where(parcel => parcel.Weight == weight);
             if ((int)priorities != -1)
                 SelectedParcels = SelectedParcels.Where(parcel => parcel.Priority == priorities);
-            if
+            if ((int)status != -1)
+                SelectedParcels = SelectedParcels.Where(parcel => parcel.Status == status);
+            if (from != null)
+                SelectedParcels = SelectedParcels.Where(parcel => from <= Data.GetParcel(parcel.ID).TimeRequested);
+            if (to != null)
+                SelectedParcels = SelectedParcels.Where(parcel => to >= Data.GetParcel(parcel.ID).TimeRequested);
             return SelectedParcels;
         }
+
         #endregion
 
         #region Get one
@@ -141,13 +148,13 @@ namespace BlApi
                 droneBL.Parcel = InitParcelInDelivery(Data.GetParcel(drone.ParcelID));
             return droneBL;
         }
-        
+
         public ParcelBL GetParcel(int ParcelID)
         {
             Parcel parcel = Data.GetParcel(ParcelID);
             Customer sender = Data.GetCustomer(parcel.SenderID);
             Customer target = Data.GetCustomer(parcel.TargetID);
-            ParcelBL parcelBL = new(new(sender.ID,sender.Name), new(target.ID, target.Name), parcel.Weight, parcel.Priority);
+            ParcelBL parcelBL = new(new(sender.ID, sender.Name), new(target.ID, target.Name), parcel.Weight, parcel.Priority);
             parcelBL.ID = parcel.ID;
             parcelBL.TimeRequested = parcel.TimeRequested;
             parcelBL.Scheduled = parcel.Scheduled;
@@ -171,7 +178,7 @@ namespace BlApi
             {
                 throw new EntityExistException("Wrong id.\n ", ex);
             }
-             
+
             Location location = new(station.Latitude, station.Longitude);
             StationBL stationBL = new(station.ID, station.Name, station.ChargeSlots, location);
             foreach (DroneCharge droneCharge in Data.GetDroneCharge(droneCharge => droneCharge.StationID == station.ID))
@@ -196,7 +203,7 @@ namespace BlApi
             {
                 throw new InvalidIDException("Wrong id!\n", ex);
             }
-            
+
             Location location = new(customer.Latitude, customer.Longitude);
             CustomerBL CustomerToDisplay = new CustomerBL(customer.ID, customer.Name, customer.Phone, location);
             foreach (var parcel in Data.GetParcels(parcel => true))
@@ -273,10 +280,22 @@ namespace BlApi
         /// <returns>DroneInParcel entity</returns>
         private DroneInParcel CreateDroneInParcel(int droneID)
         {
-            if(!DroneList.Any(d => d.ID == droneID))
+            if (!DroneList.Any(d => d.ID == droneID))
                 throw new EntityExistException($"Drone {droneID} doesn't exist in the data!");
             DroneToList drone = DroneList.Find(d => d.ID == droneID);
             return new DroneInParcel(drone.ID, drone.BatteryStatus, drone.CurrentLocation);
+        }
+        public IEnumerable<ParcelToList> GetParcelsGroupBy(string groupByString)
+        {
+            switch(groupByString)
+            {
+                case "sender":
+                    return (IEnumerable<ParcelToList>)GetAllParcels().GroupBy(parcel => parcel.SenderName);
+                case "reciver":
+                    return (IEnumerable<ParcelToList>)GetAllParcels().GroupBy(parcel => parcel.TargetName);
+                default:
+                    throw new InvalidInputException("Invalid grouping paremeter");
+            }
         }
 
         /// <summary>

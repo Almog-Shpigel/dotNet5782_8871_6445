@@ -13,19 +13,19 @@ namespace BL
     internal class DroneSimulator
     {
         private const double SPEED = 2.0;
-        private const int DELAY = 500;
+        private const int DELAY = 1000;
 
         public DroneSimulator(BlApi.BL bl, int droneID, Action updateView, Func<bool> checkIfCanceled)
         {
-            DroneBL drone;
-            DroneToList droneToList;
+            DroneBL drone = bl.GetDrone(droneID);
+            DroneToList droneToList = new(drone.ID, drone.Model, drone.MaxWeight, drone.BatteryStatus, drone.Status, drone.CurrentLocation, drone.Parcel.ID);
+            double distance = drone.Parcel.DeliveryDistance;
             while (!checkIfCanceled())
             {
-                drone = bl.GetDrone(droneID);
-                droneToList = new(drone.ID, drone.Model, drone.MaxWeight, drone.BatteryStatus, drone.Status, drone.CurrentLocation, drone.Parcel.ID);
                 switch (drone.Status)
                 {
                     case DroneStatus.Available:
+                        if (!sleepDelayTime()) break;
                         lock (bl) lock (bl.Data)
                             {
                                 bl.UpdateParcelAssignToDrone(droneID);
@@ -45,16 +45,30 @@ namespace BL
                         ParcelToBeCollected = bl.Data.GetParcel(droneToList.ParcelID);
                         if (ParcelToBeCollected.PickedUp == null)
                             bl.UpdateParcelCollectedByDrone(droneID);
-                        if (drone.Parcel.DeliveryDistance <= 0.1)
+                        if (distance <= 1)
                         {
+                            drone = bl.GetDrone(droneID);
+                            droneToList = new(drone.ID, drone.Model, drone.MaxWeight, drone.BatteryStatus, drone.Status, drone.CurrentLocation, drone.Parcel.ID);
                             bl.UpdateParcelDeleiveredByDrone(droneID);
                             bl.UpdateDroneToBeCharged(droneID);
                         }
                         else
-                            drone.Parcel.DeliveryDistance *= 0.90;
+                        {
+                            distance -= 1;
+                            updateView();
+                            bl.UpdateDrone(drone);
+                        }
                         break;
                 }
+                updateView();
+                Thread.Sleep(DELAY);
             }
+        }
+
+        private static bool sleepDelayTime()
+        {
+            try { Thread.Sleep(DELAY); } catch (ThreadInterruptedException) { return false; }
+            return true;
         }
     }
 }

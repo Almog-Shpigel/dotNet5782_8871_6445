@@ -42,6 +42,7 @@ namespace PL
         {
             droneBL = IBL.GetDrone(int.Parse(IDBox.Text));
             batteryBorder.Width = droneBL.BatteryStatus;
+            batteryBlock.Text = droneBL.BatteryStatus.ToString();
             StatusBlock.Text = droneBL.Status.ToString();
             ParcelBlock.Text = droneBL.Parcel.ID.ToString();
             LocationBlock.Text = droneBL.CurrentLocation.ToString();

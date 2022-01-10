@@ -18,7 +18,6 @@ namespace BO
         }
         public string ConvertCoordinates(double number)
         {
-            //string coordinates;
             int sec = (int)Math.Round(number * 3600);
             int deg = sec / 3600;
             sec = Math.Abs(sec % 3600);

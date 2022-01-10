@@ -389,7 +389,7 @@ namespace BlApi
         /// </para>
         /// </summary>
         /// <returns></returns>
-        private Station GetNearestStation(Location location, IEnumerable<Station> AllStations)
+        internal Station GetNearestStation(Location location, IEnumerable<Station> AllStations)
         {
             lock (Data)
             {

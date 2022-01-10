@@ -307,22 +307,6 @@ namespace BlApi
         {
             new DroneSimulator(this, droneID, updateView, checkIfCanceled);
         }
-
-        [MethodImpl(MethodImplOptions.Synchronized)]
-        public void UpdateDrone(DroneBL oldDrone)
-        {
-            lock (Data)
-            {
-                Drone drone1 = new(oldDrone.ID, oldDrone.Model, oldDrone.MaxWeight);
-                DroneToList newDrone = DroneList.Find(d => d.ID == oldDrone.ID);
-                DroneList.Remove(newDrone);
-                newDrone.ParcelID = oldDrone.Parcel.ID;
-                newDrone.Status = oldDrone.Status;
-                newDrone.BatteryStatus = oldDrone.BatteryStatus;
-                newDrone.CurrentLocation = oldDrone.CurrentLocation;
-                DroneList.Add(newDrone);
-                DroneList = DroneList.OrderBy(d => d.ID).ToList();
-            }
-        }
+        
     }
 }

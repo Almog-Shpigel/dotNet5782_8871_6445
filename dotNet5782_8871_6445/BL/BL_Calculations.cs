@@ -63,7 +63,7 @@ namespace BlApi
         /// <param name="lat2"></param>
         /// <param name="lon2"></param>
         /// <returns>distance (km)</returns>
-        private double Distance(Location location1, Location location2)
+        internal double Distance(Location location1, Location location2)
         {
             double rlat1 = Math.PI * location1.Latitude / 180;
             double rlat2 = Math.PI * location2.Latitude / 180;
@@ -85,7 +85,7 @@ namespace BlApi
         /// <param name="drone"></param>
         /// <param name="CustomerID"></param>
         /// <returns>distance (km)</returns>
-        private double DistanceDroneCustomer(DroneToList drone, Customer customer)
+        internal double DistanceDroneCustomer(DroneToList drone, Customer customer)
         {
             Location CustomerLocation = new(customer.Latitude, customer.Longitude);
             return Distance(drone.CurrentLocation, CustomerLocation);
@@ -121,7 +121,7 @@ namespace BlApi
         /// <param name="drone"></param>
         /// <param name="parcel"></param>
         /// <returns></returns>
-        private bool PossibleDelivery(DroneToList drone, Parcel parcel)
+        public bool PossibleDelivery(DroneToList drone, Parcel parcel)
         {
             lock (Data)
             {

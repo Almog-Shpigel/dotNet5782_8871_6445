@@ -25,11 +25,11 @@ namespace BlApi
         internal DalApi.IDal Data;
         private List<DroneToList> DroneList;
         //private Double[] BatteryUsed;
-        private double BatteryUsageEmpty;
-        private double BatteryUsageLightWight;
-        private double BatteryUsageMediumWight;
-        private double BatteryUsageHaevyWight;
-        private double BatteryChargeRate;
+        internal double BatteryUsageEmpty;
+        internal double BatteryUsageLightWight;
+        internal double BatteryUsageMediumWight;
+        internal double BatteryUsageHaevyWight;
+        internal double BatteryChargeRate;
         private BL()
         {
             Data = DalFactory.GetDal("DalXml");

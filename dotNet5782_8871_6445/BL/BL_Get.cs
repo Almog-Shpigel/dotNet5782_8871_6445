@@ -4,73 +4,98 @@ using DO;
 using BO;
 using static BO.EnumsBL;
 using System;
+using System.Runtime.CompilerServices;
+
 
 namespace BlApi
 {
     partial class BL
     {
         #region Get All
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<DroneToList> GetAllDrones()
         {
-            return DroneList.Select(d => new DroneToList(d.ID, d.Model, d.MaxWeight, (int)d.BatteryStatus, d.Status, d.CurrentLocation, d.ParcelID));
+            lock (Data)
+            {
+                return DroneList.Select(d => new DroneToList(d.ID, d.Model, d.MaxWeight, (int)d.BatteryStatus, d.Status, d.CurrentLocation, d.ParcelID));
+            }
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<ParcelToList> GetAllParcels()
         {
-            List<ParcelToList> parcels = new();
-            foreach (Parcel parcel in Data.GetParcels(parcel => true))
+            lock (Data)
             {
-                ParcelToList NewParcel = new();
-                NewParcel.ID = parcel.ID;
-                NewParcel.Priority = parcel.Priority;
-                NewParcel.TargetName = Data.GetCustomer(parcel.TargetID).Name;
-                NewParcel.SenderName = Data.GetCustomer(parcel.SenderID).Name;
-                NewParcel.Weight = parcel.Weight;
-                if (parcel.Delivered != null)
-                    NewParcel.Status = ParcelStatus.Delivered;
-                else if (parcel.PickedUp != null)
-                    NewParcel.Status = ParcelStatus.PickedUp;
-                else if (parcel.Scheduled != null)
-                    NewParcel.Status = ParcelStatus.Scheduled;
-                else
-                    NewParcel.Status = ParcelStatus.Requested;
-                parcels.Add(NewParcel);
+                List<ParcelToList> parcels = new();
+                foreach (Parcel parcel in Data.GetParcels(parcel => true))
+                {
+                    ParcelToList NewParcel = new();
+                    NewParcel.ID = parcel.ID;
+                    NewParcel.Priority = parcel.Priority;
+                    NewParcel.TargetName = Data.GetCustomer(parcel.TargetID).Name;
+                    NewParcel.SenderName = Data.GetCustomer(parcel.SenderID).Name;
+                    NewParcel.Weight = parcel.Weight;
+                    if (parcel.Delivered != null)
+                        NewParcel.Status = ParcelStatus.Delivered;
+                    else if (parcel.PickedUp != null)
+                        NewParcel.Status = ParcelStatus.PickedUp;
+                    else if (parcel.Scheduled != null)
+                        NewParcel.Status = ParcelStatus.Scheduled;
+                    else
+                        NewParcel.Status = ParcelStatus.Requested;
+                    parcels.Add(NewParcel);
+                }
+                return parcels;
             }
-            return parcels;
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<StationToList> GetAllStations()
         {
-            IEnumerable<StationToList> stations = Data.GetStations(station => true).Select(station => new StationToList(station.ID, station.Name, station.ChargeSlots,
+            lock (Data)
+            {
+                IEnumerable<StationToList> stations = Data.GetStations(station => true).Select(station => new StationToList(station.ID, station.Name, station.ChargeSlots,
                 Data.GetDroneCharge(droneCharge => droneCharge.StationID == station.ID).Count()));
-            return stations;
+                return stations;
+            }
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<CustomerToList> GetAllCustomers()
         {
-            List<CustomerToList> customers = new();
-            foreach (Customer customer in Data.GetCustomers(customer => true))
+            lock (Data)
             {
-                CustomerToList NewCustomer = new(customer.ID, customer.Name, customer.Phone);
-                NewCustomer.ParcelsOnTheWay = Data.GetParcels(parcel => parcel.TargetID == NewCustomer.ID && parcel.Delivered == null).Count();
-                NewCustomer.ParcelsRecived = Data.GetParcels(parcel => parcel.TargetID == NewCustomer.ID && parcel.Delivered != null).Count();
-                NewCustomer.SentAndNOTDeliverd = Data.GetParcels(parcel => parcel.SenderID == NewCustomer.ID && parcel.Delivered == null).Count();
-                NewCustomer.SentAndDeliverd = Data.GetParcels(parcel => parcel.SenderID == NewCustomer.ID && parcel.Delivered != null).Count();
-                customers.Add(NewCustomer);
+                List<CustomerToList> customers = new();
+                foreach (Customer customer in Data.GetCustomers(customer => true))
+                {
+                    CustomerToList NewCustomer = new(customer.ID, customer.Name, customer.Phone);
+                    NewCustomer.ParcelsOnTheWay = Data.GetParcels(parcel => parcel.TargetID == NewCustomer.ID && parcel.Delivered == null).Count();
+                    NewCustomer.ParcelsRecived = Data.GetParcels(parcel => parcel.TargetID == NewCustomer.ID && parcel.Delivered != null).Count();
+                    NewCustomer.SentAndNOTDeliverd = Data.GetParcels(parcel => parcel.SenderID == NewCustomer.ID && parcel.Delivered == null).Count();
+                    NewCustomer.SentAndDeliverd = Data.GetParcels(parcel => parcel.SenderID == NewCustomer.ID && parcel.Delivered != null).Count();
+                    customers.Add(NewCustomer);
+                }
+                return customers;
             }
-            return customers;
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<Station> GatAllStationsDO()
         {
-            return Data.GetStations(station => true);
+            lock (Data)
+            {
+                return Data.GetStations(station => true);
+            }
         }
         #endregion
 
         #region Get Some
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<ParcelToList> GetUnassignedParcels()
         {
-            IEnumerable<ParcelToList> UnassignedParcels = Data
+            lock (Data)
+            {
+                IEnumerable<ParcelToList> UnassignedParcels = Data
                 .GetParcels(parcel => parcel.ID == 0)
                 .Select(parcel => new ParcelToList()
                 {
@@ -81,12 +106,16 @@ namespace BlApi
                     Priority = parcel.Priority,
                     Status = GetParcelStatus(parcel)
                 });
-            return UnassignedParcels;
+                return UnassignedParcels;
+            }
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<StationToList> GetAvailableStations()
         {
-            IEnumerable<StationToList> AvailableStations = Data
+            lock (Data)
+            {
+                IEnumerable<StationToList> AvailableStations = Data
                 .GetStations(station => station.ChargeSlots > 0)
                 .Select(station => new StationToList()
                 {
@@ -95,135 +124,168 @@ namespace BlApi
                     Name = station.Name,
                     UsedChargeSlots = Data.GetDroneCharge(droneCharge => droneCharge.StationID == station.ID).Count()
                 });
-            return AvailableStations;
+                return AvailableStations;
+            }
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<CustomerInParcel> GetAllCustomerInParcels()
         {
-            IEnumerable<CustomerInParcel> customers = Data.GetCustomers(item => true).Select(customer => new CustomerInParcel(customer.ID, customer.Name));
-            return customers;
+            lock (Data)
+            {
+                IEnumerable<CustomerInParcel> customers = Data.GetCustomers(item => true).Select(customer => new CustomerInParcel(customer.ID, customer.Name));
+                return customers;
+            }
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<DroneToList> GetDrones(DroneStatus status, WeightCategories weight)
         {
-            IEnumerable<DroneToList> SelectedDrones = GetAllDrones();
-            if ((int)weight != -1)
-                SelectedDrones = SelectedDrones.Where(drone => drone.MaxWeight == weight);
-            if ((int)status != -1)
-                SelectedDrones = SelectedDrones.Where(drone => drone.Status == status);
-            return SelectedDrones;
+            lock (Data)
+            {
+                IEnumerable<DroneToList> SelectedDrones = GetAllDrones();
+                if ((int)weight != -1)
+                    SelectedDrones = SelectedDrones.Where(drone => drone.MaxWeight == weight);
+                if ((int)status != -1)
+                    SelectedDrones = SelectedDrones.Where(drone => drone.Status == status);
+                return SelectedDrones;
+            }
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<ParcelToList> GetParcels(Priorities priorities, WeightCategories weight, ParcelStatus status, DateTime? from, DateTime? to)
         {
-            IEnumerable<ParcelToList> SelectedParcels = GetAllParcels();
-            if ((int)weight != -1)
-                SelectedParcels = SelectedParcels.Where(parcel => parcel.Weight == weight);
-            if ((int)priorities != -1)
-                SelectedParcels = SelectedParcels.Where(parcel => parcel.Priority == priorities);
-            if ((int)status != -1)
-                SelectedParcels = SelectedParcels.Where(parcel => parcel.Status == status);
-            if (from != null)
-                SelectedParcels = SelectedParcels.Where(parcel => from <= Data.GetParcel(parcel.ID).TimeRequested);
-            if (to != null)
-                SelectedParcels = SelectedParcels.Where(parcel => to >= Data.GetParcel(parcel.ID).TimeRequested);
-            return SelectedParcels;
+            lock (Data)
+            {
+                IEnumerable<ParcelToList> SelectedParcels = GetAllParcels();
+                if ((int)weight != -1)
+                    SelectedParcels = SelectedParcels.Where(parcel => parcel.Weight == weight);
+                if ((int)priorities != -1)
+                    SelectedParcels = SelectedParcels.Where(parcel => parcel.Priority == priorities);
+                if ((int)status != -1)
+                    SelectedParcels = SelectedParcels.Where(parcel => parcel.Status == status);
+                if (from != null)
+                    SelectedParcels = SelectedParcels.Where(parcel => from <= Data.GetParcel(parcel.ID).TimeRequested);
+                if (to != null)
+                    SelectedParcels = SelectedParcels.Where(parcel => to >= Data.GetParcel(parcel.ID).TimeRequested);
+                return SelectedParcels;
+            }
         }
 
         #endregion
 
         #region Get one
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public DroneBL GetDrone(int DroneID)
         {
-            DroneToList drone;
-            if (DroneList.Any(d => d.ID == DroneID))
-                drone = DroneList.Where(d => d.ID == DroneID).First();
-            else
-                throw new DroneExistException();
+            lock (Data)
+            {
+                DroneToList drone;
+                if (DroneList.Any(d => d.ID == DroneID))
+                    drone = DroneList.Where(d => d.ID == DroneID).First();
+                else
+                    throw new DroneExistException();
 
-            DroneBL droneBL = new(drone.ID, drone.Model, drone.MaxWeight, (int)drone.BatteryStatus, drone.Status);
-            if (drone.ParcelID == 0)
+                DroneBL droneBL = new(drone.ID, drone.Model, drone.MaxWeight, (int)drone.BatteryStatus, drone.Status);
+                if (drone.ParcelID == 0)
+                    return droneBL;
+                if (droneBL.Status == DroneStatus.Delivery)
+                    droneBL.Parcel = InitParcelInDelivery(Data.GetParcel(drone.ParcelID));
+                droneBL.Parcel.DeliveryDistance = Distance(droneBL.CurrentLocation, droneBL.Parcel.TargetLocation);
                 return droneBL;
-            if (droneBL.Status == DroneStatus.Delivery)
-                droneBL.Parcel = InitParcelInDelivery(Data.GetParcel(drone.ParcelID));
-            return droneBL;
+            }
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public ParcelBL GetParcel(int ParcelID)
         {
-            Parcel parcel = Data.GetParcel(ParcelID);
-            Customer sender = Data.GetCustomer(parcel.SenderID);
-            Customer target = Data.GetCustomer(parcel.TargetID);
-            ParcelBL parcelBL = new(new(sender.ID, sender.Name), new(target.ID, target.Name), parcel.Weight, parcel.Priority);
-            parcelBL.ID = parcel.ID;
-            parcelBL.TimeRequested = parcel.TimeRequested;
-            parcelBL.Scheduled = parcel.Scheduled;
-            parcelBL.PickedUp = parcel.PickedUp;
-            parcelBL.Delivered = parcel.Delivered;
-            parcelBL.Sender.Name = sender.Name;
-            parcelBL.Target.Name = target.Name;
-            if (parcel.DroneID != 0)
-                parcelBL.DroneInParcel = CreateDroneInParcel(parcel.DroneID);
-            return parcelBL;
+            lock (Data)
+            {
+                Parcel parcel = Data.GetParcel(ParcelID);
+                Customer sender = Data.GetCustomer(parcel.SenderID);
+                Customer target = Data.GetCustomer(parcel.TargetID);
+                ParcelBL parcelBL = new(new(sender.ID, sender.Name), new(target.ID, target.Name), parcel.Weight, parcel.Priority);
+                parcelBL.ID = parcel.ID;
+                parcelBL.TimeRequested = parcel.TimeRequested;
+                parcelBL.Scheduled = parcel.Scheduled;
+                parcelBL.PickedUp = parcel.PickedUp;
+                parcelBL.Delivered = parcel.Delivered;
+                parcelBL.Sender.Name = sender.Name;
+                parcelBL.Target.Name = target.Name;
+                if (parcel.DroneID != 0)
+                    parcelBL.DroneInParcel = CreateDroneInParcel(parcel.DroneID);
+                return parcelBL;
+            }
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public StationBL GetStation(int StationID)
         {
-            Station station;
-            try
+            lock (Data)
             {
-                station = Data.GetStation(StationID);
-            }
-            catch (StationExistException ex)
-            {
-                throw new EntityExistException("Wrong id.\n ", ex);
-            }
-
-            Location location = new(station.Latitude, station.Longitude);
-            StationBL stationBL = new(station.ID, station.Name, station.ChargeSlots, location);
-            foreach (DroneCharge droneCharge in Data.GetDroneCharge(droneCharge => droneCharge.StationID == station.ID))
-            {
-                foreach (DroneToList DroneItem in DroneList.Where(d => d.ID == droneCharge.DroneID))
+                Station station;
+                try
                 {
-                    DroneChargeBL drone = new(droneCharge.DroneID, DroneItem.BatteryStatus);
-                    stationBL.ChargingDrones.Add(drone);
+                    station = Data.GetStation(StationID);
                 }
+                catch (StationExistException ex)
+                {
+                    throw new EntityExistException("Wrong id.\n ", ex);
+                }
+
+                Location location = new(station.Latitude, station.Longitude);
+                StationBL stationBL = new(station.ID, station.Name, station.ChargeSlots, location);
+                foreach (DroneCharge droneCharge in Data.GetDroneCharge(droneCharge => droneCharge.StationID == station.ID))
+                {
+                    foreach (DroneToList DroneItem in DroneList.Where(d => d.ID == droneCharge.DroneID))
+                    {
+                        DroneChargeBL drone = new(droneCharge.DroneID, DroneItem.BatteryStatus);
+                        stationBL.ChargingDrones.Add(drone);
+                    }
+                }
+                return stationBL;
             }
-            return stationBL;
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public CustomerBL GetCustomer(int CustomerID)
         {
-            Customer customer;
-            try
+            lock (Data)
             {
-                customer = Data.GetCustomer(CustomerID);
-            }
-            catch (CustomerExistException ex)
-            {
-                throw new InvalidIDException("Wrong id!\n", ex);
-            }
+                Customer customer;
+                try
+                {
+                    customer = Data.GetCustomer(CustomerID);
+                }
+                catch (CustomerExistException ex)
+                {
+                    throw new InvalidIDException("Wrong id!\n", ex);
+                }
 
-            Location location = new(customer.Latitude, customer.Longitude);
-            CustomerBL CustomerToDisplay = new CustomerBL(customer.ID, customer.Name, customer.Phone, location);
-            foreach (var parcel in Data.GetParcels(parcel => true))
-            {
-                if (parcel.SenderID == CustomerToDisplay.ID)
-                    CustomerToDisplay.ParcelesSentByCustomer.Add(CreateParcelAtCustomer(parcel, parcel.TargetID));
-                if (parcel.TargetID == CustomerToDisplay.ID)
-                    CustomerToDisplay.ParcelesSentToCustomer.Add(CreateParcelAtCustomer(parcel, parcel.SenderID));
+                Location location = new(customer.Latitude, customer.Longitude);
+                CustomerBL CustomerToDisplay = new CustomerBL(customer.ID, customer.Name, customer.Phone, location);
+                foreach (var parcel in Data.GetParcels(parcel => true))
+                {
+                    if (parcel.SenderID == CustomerToDisplay.ID)
+                        CustomerToDisplay.ParcelesSentByCustomer.Add(CreateParcelAtCustomer(parcel, parcel.TargetID));
+                    if (parcel.TargetID == CustomerToDisplay.ID)
+                        CustomerToDisplay.ParcelesSentToCustomer.Add(CreateParcelAtCustomer(parcel, parcel.SenderID));
+                }
+                return CustomerToDisplay;
             }
-            return CustomerToDisplay;
-
         }
         #endregion
 
         #region Get other
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public ParcelToList GetParcelToList(ParcelAtCustomer parcel)
         {
-            string target = Data.GetCustomer(Data.GetParcel(parcel.ID).TargetID).Name;
-            ParcelToList parcelToList = new(parcel.ID, parcel.Customer.Name, target, parcel.Weight, parcel.Priority, parcel.Status);
-            return parcelToList;
+            lock (Data)
+            {
+                string target = Data.GetCustomer(Data.GetParcel(parcel.ID).TargetID).Name;
+                ParcelToList parcelToList = new(parcel.ID, parcel.Customer.Name, target, parcel.Weight, parcel.Priority, parcel.Status);
+                return parcelToList;
+            }
         }
 
         /// <summary>
@@ -233,12 +295,15 @@ namespace BlApi
         /// <returns> ParcelInDelivery entity </returns>
         private ParcelInDelivery InitParcelInDelivery(Parcel parcel)
         {
-            Customer sender = Data.GetCustomer(parcel.SenderID), target = Data.GetCustomer(parcel.TargetID);
-            CustomerInParcel customer1 = new(sender.ID, sender.Name), customer2 = new(target.ID, target.Name);
-            Location pickUpLocation = new(sender.Latitude, sender.Longitude), targetLocation = new(target.Latitude, target.Longitude);
-            double distance = DistanceCustomerCustomer(sender, target);
-            ParcelInDelivery UpdateParcelInDelivery = new(parcel.ID, parcel.Weight, parcel.Priority, customer1, customer2, pickUpLocation, targetLocation, distance);
-            return UpdateParcelInDelivery;
+            lock (Data)
+            {
+                Customer sender = Data.GetCustomer(parcel.SenderID), target = Data.GetCustomer(parcel.TargetID);
+                CustomerInParcel customer1 = new(sender.ID, sender.Name), customer2 = new(target.ID, target.Name);
+                Location pickUpLocation = new(sender.Latitude, sender.Longitude), targetLocation = new(target.Latitude, target.Longitude);
+                double distance = DistanceCustomerCustomer(sender, target);
+                ParcelInDelivery UpdateParcelInDelivery = new(parcel.ID, parcel.Weight, parcel.Priority, customer1, customer2, pickUpLocation, targetLocation, distance);
+                return UpdateParcelInDelivery;
+            }
         }
 
         /// <summary>
@@ -249,11 +314,14 @@ namespace BlApi
         /// <returns>ParcelAtCustomer entity</returns>
         private ParcelAtCustomer CreateParcelAtCustomer(Parcel parcel, int customerID)
         {
-            ParcelStatus status = GetParcelStatus(parcel);
-            Customer cust = Data.GetCustomer(customerID);
-            CustomerInParcel customer = new(cust.ID, cust.Name);
-            ParcelAtCustomer NewParcel = new(parcel.ID, parcel.Weight, parcel.Priority, status, customer);
-            return NewParcel;
+            lock (Data)
+            {
+                ParcelStatus status = GetParcelStatus(parcel);
+                Customer cust = Data.GetCustomer(customerID);
+                CustomerInParcel customer = new(cust.ID, cust.Name);
+                ParcelAtCustomer NewParcel = new(parcel.ID, parcel.Weight, parcel.Priority, status, customer);
+                return NewParcel;
+            }
         }
 
         /// <summary>
@@ -285,6 +353,8 @@ namespace BlApi
             DroneToList drone = DroneList.Find(d => d.ID == droneID);
             return new DroneInParcel(drone.ID, drone.BatteryStatus, drone.CurrentLocation);
         }
+
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<ParcelToList> GetParcelsGroupBy(string groupByString)
         {
             List<ParcelToList> groupedList = new();
@@ -321,21 +391,24 @@ namespace BlApi
         /// <returns></returns>
         private Station GetNearestStation(Location location, IEnumerable<Station> AllStations)
         {
-            if (!AllStations.Any())
-                throw new NoAvailableStation("There are no station available.");
-            Station nearestStation = AllStations.First();
-            double distance, minDistance;
-            minDistance = Distance(location, new(nearestStation.Latitude, nearestStation.Longitude));
-            foreach (Station station in AllStations)
+            lock (Data)
             {
-                distance = Distance(location, new(station.Latitude, station.Longitude));
-                if (distance < minDistance)
+                if (!AllStations.Any())
+                    throw new NoAvailableStation("There are no station available.");
+                Station nearestStation = AllStations.First();
+                double distance, minDistance;
+                minDistance = Distance(location, new(nearestStation.Latitude, nearestStation.Longitude));
+                foreach (Station station in AllStations)
                 {
-                    minDistance = distance;
-                    nearestStation = station;
+                    distance = Distance(location, new(station.Latitude, station.Longitude));
+                    if (distance < minDistance)
+                    {
+                        minDistance = distance;
+                        nearestStation = station;
+                    }
                 }
+                return nearestStation;
             }
-            return nearestStation;
         }
         #endregion
     }

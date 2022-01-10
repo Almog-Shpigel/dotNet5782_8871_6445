@@ -7,10 +7,7 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="Drone List Page">
-    <Page.Resources>
-        <local:BatteryToProgressBarConverter x:Key="BatteryToProgressBarConverter"/>
-        <local:ColorByPercentageConverter x:Key="ColorByPercentageConverter"/>
-    </Page.Resources>
+
     <Grid x:Name="MainGrid" Background="#819eb1">
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>

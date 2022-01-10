@@ -104,6 +104,8 @@ namespace BlApi
         public void UpdateDroneToBeAvailable(int DroneID);
 
         public void UpdateDeleteParcel(int id);
+
+        public void UpdateDroneSimulatorStart(int droneID, Action updateView, Func<bool> checkIfCanceled);
         #endregion
 
         #region Get

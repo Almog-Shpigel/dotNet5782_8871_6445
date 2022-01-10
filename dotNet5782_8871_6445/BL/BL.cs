@@ -6,6 +6,8 @@ using BO;
 using DO;
 using static BO.EnumsBL;
 using DAL;
+using System.Runtime.CompilerServices;
+
 
 namespace BlApi
 {
@@ -20,7 +22,7 @@ namespace BlApi
         /// </summary>
         public static BL Instance { get => instance; }
 
-        private DalApi.IDal Data;
+        internal DalApi.IDal Data;
         private List<DroneToList> DroneList;
         //private Double[] BatteryUsed;
         private double BatteryUsageEmpty;

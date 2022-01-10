@@ -123,15 +123,18 @@ namespace BlApi
         /// <returns></returns>
         private bool PossibleDelivery(DroneToList drone, Parcel parcel)
         {
-            double total;
-            Customer sender = Data.GetCustomer(parcel.SenderID), target = Data.GetCustomer(parcel.TargetID);
-            Location targetLocation = new(target.Latitude, target.Longitude);
-            Station nearestStat = GetNearestStation(targetLocation, Data.GetStations(station => true));
-            total = BatteryUsageCurrStation(drone, sender, target, nearestStat, parcel.Weight);
+            lock (Data)
+            {
+                double total;
+                Customer sender = Data.GetCustomer(parcel.SenderID), target = Data.GetCustomer(parcel.TargetID);
+                Location targetLocation = new(target.Latitude, target.Longitude);
+                Station nearestStat = GetNearestStation(targetLocation, Data.GetStations(station => true));
+                total = BatteryUsageCurrStation(drone, sender, target, nearestStat, parcel.Weight);
 
-            if (total > drone.BatteryStatus)
-                return false;
-            return true;
+                if (total > drone.BatteryStatus)
+                    return false;
+                return true;
+            }
         }
 
         /// <summary>
@@ -154,11 +157,14 @@ namespace BlApi
 
         private double CalcBatteryCharged(DroneToList drone)
         {
-            double TimeDifference = (DateTime.Now - (DateTime)Data.GetDroneCharge(drone.ID).Start).TotalMinutes;
-            drone.BatteryStatus += BatteryChargeRate * TimeDifference;
-            if (drone.BatteryStatus > 100)
-                return 100;
-            return drone.BatteryStatus;
+            lock (Data)
+            {
+                double TimeDifference = (DateTime.Now - (DateTime)Data.GetDroneCharge(drone.ID).Start).TotalMinutes;
+                drone.BatteryStatus += BatteryChargeRate * TimeDifference;
+                if (drone.BatteryStatus > 100)
+                    return 100;
+                return drone.BatteryStatus;
+            }
         }
     }
 }

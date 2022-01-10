@@ -4,6 +4,8 @@ using DO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
+
 
 namespace DalObject
 {
@@ -19,6 +21,8 @@ namespace DalObject
 
         public static DalObject Instance { get => instance; }
         #region Add
+        [MethodImpl(MethodImplOptions.Synchronized)]
+
         public void AddNewStation(Station station)
         {
             if (DataSource.stations.Any(s=>s.ID == station.ID))
@@ -26,6 +30,7 @@ namespace DalObject
             station.Name = "Station " + station.Name;
             DataSource.stations.Add(station);
         }
+        [MethodImpl(MethodImplOptions.Synchronized)]
 
         public void AddNewCustomer(Customer customer)
         {
@@ -33,6 +38,7 @@ namespace DalObject
                 throw new CustomerExistException("The customer ID exists already in the data!!");
             DataSource.customers.Add(customer);
         }
+        [MethodImpl(MethodImplOptions.Synchronized)]
 
         public void AddNewParcel(Parcel parcel)
         {
@@ -44,6 +50,7 @@ namespace DalObject
             parcel.ID = 344000 + ++DataSource.Config.ParcelsCounter;
             DataSource.parcels.Add(parcel);
         }
+        [MethodImpl(MethodImplOptions.Synchronized)]
 
         public void AddNewDrone(Drone drone, Station station)
         {
@@ -60,6 +67,8 @@ namespace DalObject
         #endregion
 
         #region Update
+        [MethodImpl(MethodImplOptions.Synchronized)]
+
         public void UpdateDroneName(Drone newDrone)
         {
             Drone oldDrone = DataSource.drones.Find(d => d.ID == newDrone.ID);
@@ -71,6 +80,7 @@ namespace DalObject
             DataSource.drones.Add(oldDrone);
             DataSource.drones = DataSource.drones.OrderBy(d => d.ID).ToList();
         }
+        [MethodImpl(MethodImplOptions.Synchronized)]
 
         public void UpdateStationName(Station newStation)
         {
@@ -82,6 +92,7 @@ namespace DalObject
             DataSource.stations.Add(oldStation);
             DataSource.stations = DataSource.stations.OrderBy(s => s.ID).ToList();
         }
+        [MethodImpl(MethodImplOptions.Synchronized)]
 
         public void UpdateStationSlots(Station newStation)
         {
@@ -93,6 +104,7 @@ namespace DalObject
             DataSource.stations.Add(oldStation);
             DataSource.stations = DataSource.stations.OrderBy(s => s.ID).ToList();
         }
+        [MethodImpl(MethodImplOptions.Synchronized)]
 
         public void UpdateCustomerName(Customer newCustomer)
         {
@@ -104,6 +116,7 @@ namespace DalObject
             DataSource.customers.Add(oldCustomer);
             DataSource.customers = DataSource.customers.OrderBy(c => c.ID).ToList();
         }
+        [MethodImpl(MethodImplOptions.Synchronized)]
 
         public void UpdateCustomerPhone(Customer newCustomer)
         {
@@ -115,6 +128,7 @@ namespace DalObject
             DataSource.customers.Add(oldCustomer);
             DataSource.customers = DataSource.customers.OrderBy(c => c.ID).ToList();
         }
+        [MethodImpl(MethodImplOptions.Synchronized)]
 
         public void UpdateDroneToBeAvailable(Drone newDrone)
         {
@@ -146,6 +160,7 @@ namespace DalObject
 
             DataSource.DroneCharges.Remove(droneCharge);
         }
+        [MethodImpl(MethodImplOptions.Synchronized)]
 
         public void UpdateDroneToBeCharge(Drone drone, Station station, DateTime? start)
         {
@@ -162,6 +177,7 @@ namespace DalObject
             --station.ChargeSlots;
             DataSource.stations.Add(station);
         }
+        [MethodImpl(MethodImplOptions.Synchronized)]
 
         public void UpdateParcelInDelivery(Parcel newParcel)
         {
@@ -175,6 +191,7 @@ namespace DalObject
             DataSource.parcels = DataSource.parcels.OrderBy(p => p.ID).ToList();
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void UpdateParcelCollected(Parcel newParcel)
         {
             Parcel oldParcel = DataSource.parcels.Find(p => p.ID == newParcel.ID);
@@ -187,6 +204,7 @@ namespace DalObject
             DataSource.parcels = DataSource.parcels.OrderBy(p => p.ID).ToList();
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void PairParcelToDrone(Parcel newParcel, Drone newDrone)
         {
             Parcel oldParcel = DataSource.parcels.Find(p => p.ID == newParcel.ID);
@@ -202,7 +220,7 @@ namespace DalObject
             DataSource.parcels.Add(oldParcel);
             DataSource.parcels = DataSource.parcels.OrderBy(p => p.ID).ToList();
         }
-
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void UpdateDeleteParcel(Parcel parcel)
         {
             Parcel oldParcel = DataSource.parcels.Find(p => p.ID == parcel.ID);
@@ -214,6 +232,7 @@ namespace DalObject
         #endregion
 
         #region Get
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public double[] GetBatteryUsed()
         {
             double[] BatteryUsed = new double[5];
@@ -224,10 +243,14 @@ namespace DalObject
             BatteryUsed[4] = DataSource.Config.ChargeRate;
             return BatteryUsed;
         }
+
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public double GetBatteryProperty(string v)
         {
             return 0; //TO DO: implement
         }
+
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public Drone GetDrone(int DroneID)
         {
             Drone drone = DataSource.drones.Find(d => d.ID == DroneID);
@@ -236,6 +259,7 @@ namespace DalObject
             return drone;
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public Parcel GetParcel(int ParcelID)
         {
             Parcel parcel = DataSource.parcels.Find(p => p.ID == ParcelID);
@@ -244,6 +268,7 @@ namespace DalObject
             return parcel;
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public Station GetStation(int StationID)
         {
             Station station = DataSource.stations.Find(s => s.ID == StationID);
@@ -252,6 +277,7 @@ namespace DalObject
             return station;
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public Customer GetCustomer(int CustomerID)
         {
             Customer customer = DataSource.customers.Find(c => c.ID == CustomerID);
@@ -260,6 +286,7 @@ namespace DalObject
             return customer;
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public DroneCharge GetDroneCharge(int DroneChargeID)
         {
             DroneCharge drone = DataSource.DroneCharges.Find(d => d.DroneID == DroneChargeID);
@@ -268,29 +295,34 @@ namespace DalObject
             return drone;
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<Drone> GetDrones(Predicate<Drone> DronePredicate)
         {
             return DataSource.drones.Where(drone => DronePredicate(drone));
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<Parcel> GetParcels(Predicate<Parcel> ParcelPredicate)
         {
             IEnumerable<Parcel> SelectedParcels = DataSource.parcels.Where(parcel => ParcelPredicate(parcel));
             return SelectedParcels;
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<Station> GetStations(Predicate<Station> StationPredicate)
         {
             IEnumerable<Station> SelectedStations = DataSource.stations.Where(station => StationPredicate(station));
             return SelectedStations;
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<Customer> GetCustomers(Predicate<Customer> CustomerPredicate)
         {
             IEnumerable<Customer> SelectedCustomers = DataSource.customers.Where(customer => CustomerPredicate(customer));
             return SelectedCustomers;
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<DroneCharge> GetDroneCharge(Predicate<DroneCharge> DroneChargePredicate)
         {
             IEnumerable<DroneCharge> SelectedDroneCharge = DataSource.DroneCharges.Where(droneCharge => DroneChargePredicate(droneCharge));

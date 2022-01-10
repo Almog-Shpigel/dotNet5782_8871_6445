@@ -8,10 +8,7 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="Drone Page">
-    <Page.Resources>
-        <local:BatteryToProgressBarConverter x:Key="BatteryToProgressBarConverter"/>
-        <local:ColorByPercentageConverter x:Key="ColorByPercentageConverter"/>
-    </Page.Resources>
+
     <Grid Background="#819eb1">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="5*"/>
@@ -47,8 +44,8 @@
                     <StackPanel Orientation="Horizontal">
                         <Border BorderBrush="black" BorderThickness="4" CornerRadius="5" Padding="2" Width="110" Height="50">
                             <Grid>
-                                <Border Height="40" Grid.Row="1" Background="{Binding BatteryStatus, Converter={StaticResource ColorByPercentageConverter}}" CornerRadius="2" Padding="2" HorizontalAlignment="Left" Width="{Binding BatteryStatus, Converter={StaticResource BatteryToProgressBarConverter}}"/>
-                                <TextBlock x:Name="a" Text="{Binding BatteryStatus}" FontSize="26" HorizontalAlignment="Center"/>
+                                <Border x:Name="batteryBorder" Height="40" Grid.Row="1" Background="{Binding BatteryStatus, Converter={StaticResource ColorByPercentageConverter}}" CornerRadius="2" Padding="2" HorizontalAlignment="Left" Width="{Binding BatteryStatus, Converter={StaticResource BatteryToProgressBarConverter}}"/>
+                                <TextBlock x:Name="batteryBlock" Text="{Binding BatteryStatus}" FontSize="26" HorizontalAlignment="Center"/>
                             </Grid>
                         </Border>
                         <Border Background="black" CornerRadius="0,2,2,0" Padding="2" Width="7" Height="20" Margin="-2,0,-2,0"/>
@@ -98,6 +95,8 @@
                     Mode="Road" 
                     CredentialsProvider="AqTTbx5Fyl3jocqOWa8mxbnsv-7MqNqBPc5kVABd_psvOsnH-cxtzJ1wUdpdeCxE" />
             </Border>
+            <Button x:Name="AutoThreadButton" Content="Simulator" Style="{StaticResource ButtonPageStyle}" Visibility="{Binding Auto, Converter={StaticResource BoolVisibilityConverter}}" Click="AutoThreadButton_Click"/>
+            <Button x:Name="ManualThreadButton" Content="Manual" Style="{StaticResource ButtonPageStyle}" Visibility="{Binding Auto, Converter={StaticResource BoolVisibilityConverter}}"  Click="ManualThreadButton_Click"/>
         </StackPanel>
         
     </Grid>

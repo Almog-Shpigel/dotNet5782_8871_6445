@@ -21,8 +21,10 @@
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Lime.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Font.xaml" />
             </ResourceDictionary.MergedDictionaries>
-        
-        <Style TargetType="Button" x:Key="MainWindowButton">
+            <local:BatteryToProgressBarConverter x:Key="BatteryToProgressBarConverter"/>
+            <local:ColorByPercentageConverter x:Key="ColorByPercentageConverter"/>
+            <local:BoolVisibilityConverter x:Key="BoolVisibilityConverter"/>
+            <Style TargetType="Button" x:Key="MainWindowButton">
             <Setter Property="HorizontalAlignment" Value="Center" />
             <Setter Property="VerticalAlignment" Value="Center" />
             <Setter Property="MinHeight" Value="60" />
@@ -134,5 +136,6 @@
             <Setter Property="Margin" Value="10,10,10,10" />
         </Style>
         </ResourceDictionary>
+
     </Application.Resources>
 </Application>

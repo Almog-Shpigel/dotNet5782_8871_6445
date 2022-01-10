@@ -3,6 +3,7 @@ using BlApi;
 using BO;
 using DO;
 using System;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -18,6 +19,7 @@ namespace PL
     {
         private BlApi.IBL IBL = BlFactory.GetBl();
         private BO.DroneBL droneBL;
+        BackgroundWorker worker;
 
         public DronePage(RoutedEventArgs e)
         {
@@ -32,11 +34,18 @@ namespace PL
         {
             InitializeComponent();
             droneBL = IBL.GetDrone(DroneID);
-            this.DataContext = droneBL;
+            DataContext = droneBL;
             ButtenEnableCheck();
-            UpdateLayout();
         }
-
+        
+        private void updateDrone()
+        {
+            droneBL = IBL.GetDrone(int.Parse(IDBox.Text));
+            batteryBorder.Width = droneBL.BatteryStatus;
+            StatusBlock.Text = droneBL.Status.ToString();
+            ParcelBlock.Text = droneBL.Parcel.ID.ToString();
+            LocationBlock.Text = droneBL.CurrentLocation.ToString();
+        }
 
         private void ButtenEnableCheck()
         {
@@ -238,5 +247,45 @@ namespace PL
         {
             MessageBoxResult res = MessageBox.Show("This feature is not implemented yet", "TBD", MessageBoxButton.OK, MessageBoxImage.Information);
         }
+
+        private void updateView()
+        {
+            worker.ReportProgress(0);
+        }
+
+        private bool checkIfCanceled()
+        {
+            return worker.CancellationPending;
+        }
+
+        private void AutoThreadButton_Click(object sender, RoutedEventArgs e)
+        {
+            worker = new() { WorkerReportsProgress = true, WorkerSupportsCancellation = true, };
+            worker.DoWork += Worker_DoWork;
+            worker.ProgressChanged += Worker_ProgressChanged;
+            worker.RunWorkerCompleted += Worker_RunWorkerCompleted;
+            worker.RunWorkerAsync();
+        }
+
+        private void ManualThreadButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            updateDrone();
+        }
+
+        private void Worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            updateDrone();
+        }
+
+        private void Worker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            IBL.UpdateDroneSimulatorStart(droneBL.ID, updateView, checkIfCanceled);
+        }
+
     }
 }

@@ -8,7 +8,7 @@
       mc:Ignorable="d" 
       Title="Parcel List Page">
 
-    <Grid x:Name="MainGrid" Background="#c9cba3">
+    <Grid x:Name="MainGrid" Background="#819eb1">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="auto"/>

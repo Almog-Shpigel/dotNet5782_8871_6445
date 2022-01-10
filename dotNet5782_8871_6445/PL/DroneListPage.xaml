@@ -11,7 +11,7 @@
         <local:BatteryToProgressBarConverter x:Key="BatteryToProgressBarConverter"/>
         <local:ColorByPercentageConverter x:Key="ColorByPercentageConverter"/>
     </Page.Resources>
-    <Grid x:Name="MainGrid" Background="#c9cba3">
+    <Grid x:Name="MainGrid" Background="#819eb1">
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
             <RowDefinition Height="40*"/>

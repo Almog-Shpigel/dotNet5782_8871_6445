@@ -138,7 +138,7 @@
         </Viewbox>
         <StackPanel x:Name="LoginPanel" Grid.Column="1" Grid.Row="1" Margin="20,10,20,10">
             <StackPanel Margin="20,40">
-                <TextBlock Text="User Login" Margin="0,20,0,40" Foreground="#472d30" TextAlignment="Center" FontSize="45" FontWeight="ExtraBold" FontFamily="Cooper black"/>
+                <TextBlock Text="User Login" Margin="0,20,0,40" Foreground="#472d30" TextAlignment="Center" FontSize="45" FontWeight="ExtraBold" materialDesign:TextBlockAssist.AutoToolTip="True"/>
                 <StackPanel Orientation="Horizontal" Margin="10">
                     <materialDesign:PackIcon Kind="User" Width="50" Height="50" Margin="20,0"/>
                     <TextBox x:Name="txtUserID" Margin="10,0" materialDesign:HintAssist.Hint="Enter ID" Width="280" FontSize="30"/>
@@ -152,22 +152,22 @@
                     <RadioButton x:Name="rbManager" RadioButton.Content="Manager" Margin="10" FontSize="25" FontWeight="ExtraBold"/>
                 </StackPanel>
                 <StackPanel Margin="20" HorizontalAlignment="Center">
-                    <Button x:Name="LoginButton" Click="LoginButton_Click" Content="Login" Foreground="#472d30" FontSize="25" Width="140" Height="50" Style="{StaticResource MaterialDesignRaisedButton}"
+                    <Button x:Name="LoginButton" Click="LoginButton_Click" Content="Login" Foreground="#1f2631" FontSize="25" Width="140" Height="50" Style="{StaticResource MaterialDesignRaisedButton}"
                             materialDesign:ButtonAssist.CornerRadius="20"
-                            BorderThickness="3" BorderBrush="#c9cba3" Background="#ffe1a8" ToolTip="Login"/>
+                            BorderThickness="3" BorderBrush="#c9cba3" Background="#ffcc4d" ToolTip="Login"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                     <TextBlock x:Name="InvalidIDBlock" Text="Please enter a valid ID number" Style="{StaticResource TextBlockStyle}" Foreground="Red" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                     <TextBlock x:Name="Register" Text="Don't have an account?" Style="{StaticResource TextBlockStyle}" Foreground="Black"/>
-                    <Button x:Name="RegisterLink" Content="Register now!" Style="{StaticResource ButtonBarStyle}" Foreground="Blue" Background="Transparent" BorderBrush="Transparent" Click="RegisterLink_Click"/>
+                    <Button x:Name="RegisterLink" Content="Register now!" Style="{StaticResource ButtonBarStyle}" Foreground="RoyalBlue" Background="Transparent" BorderBrush="Transparent" Click="RegisterLink_Click"/>
                 </StackPanel>
             </StackPanel>
         </StackPanel>
         <StackPanel x:Name="ManagerPanel" Grid.Column="1" Grid.Row="1" Margin="20,10,20,10">
             <TextBlock FontSize="48" HorizontalAlignment="Center" VerticalAlignment="Center"
-                   Text="Drone Delivery" Grid.ColumnSpan="2" Foreground="#472d30" FontWeight="ExtraBold" Margin="20,10,20,40" FontFamily="Cooper black"/>
+                   Text="Drone Delivery" Grid.ColumnSpan="2" Foreground="#472d30" FontWeight="ExtraBold" Margin="20,10,20,40" FontFamily="Roberto"/>
             <Button x:Name="DroneListPage" Content="Drones" Click="DroneListPageButton_Click"
                     Style="{StaticResource MainWindowButton}" >
                 <Button.RenderTransform>

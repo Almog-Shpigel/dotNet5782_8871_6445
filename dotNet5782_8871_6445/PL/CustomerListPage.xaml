@@ -7,7 +7,7 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="CustomerListPage">
-    <Grid x:Name="MainGrid" Background="#c9cba3">
+    <Grid x:Name="MainGrid" Background="#819eb1">
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
             <RowDefinition Height="40*"/>

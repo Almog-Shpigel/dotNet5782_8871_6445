@@ -8,7 +8,7 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="Parcel Page">
 
-    <Grid Background="#c9cba3">
+    <Grid Background="#819eb1">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="10"/>
             <ColumnDefinition Width="Auto"/>
@@ -24,50 +24,50 @@
         <StackPanel Grid.Row="1" Grid.Column="1" Margin="10">
             <StackPanel Orientation="Horizontal" Visibility="{Binding ElementName=UpdateParcelCollectedButton, Path=Visibility}">
                 <TextBlock x:Name="PrintIDblock"                Text="Parcel ID:"       Style="{StaticResource TextBlockPageStyle}" />
-                <TextBlock x:Name="IDBlock" Text="{Binding ID}" Width="auto" FontSize="20" Margin="10,0" />
+                <TextBlock x:Name="IDBlock" Text="{Binding ID}" Width="auto"  MinWidth="170" FontSize="20" Margin="10,0" />
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock x:Name="PrintSenderBlock"            Text="Sender:"          Style="{StaticResource TextBlockPageStyle}" />
-                <TextBlock x:Name="SenderIDBox" Text="{Binding Sender}" Width="auto" FontSize="20" Margin="10,0" Visibility="{Binding ElementName=UpdateParcelCollectedButton, Path=Visibility}" />
-                <ComboBox x:Name="SenderIDSelector" SelectionChanged="SenderIDSelector_SelectionChanged" Width="auto" FontSize="20" Margin="10,0" IsEditable="True" Visibility="{Binding ElementName=ParcelEntityAddButton, Path=Visibility}"/>
+                <TextBlock x:Name="SenderIDBox" Text="{Binding Sender}" Width="auto"  MinWidth="170" FontSize="20" Margin="10,0" Visibility="{Binding ElementName=UpdateParcelCollectedButton, Path=Visibility}" />
+                <ComboBox x:Name="SenderIDSelector" SelectionChanged="SenderIDSelector_SelectionChanged" Width="auto"  MinWidth="170" FontSize="20" Margin="10,0" IsEditable="True" Visibility="{Binding ElementName=ParcelEntityAddButton, Path=Visibility}"/>
                 <TextBlock x:Name="InvalidSenderIDBlock" Style="{StaticResource TextBlockInvalidStyle}"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock x:Name="PrintReceiverBlock"          Text="Receiver:"        Style="{StaticResource TextBlockPageStyle}" />
-                <TextBlock x:Name="TargetIDBox" Text="{Binding Target}" Width="auto" FontSize="20" Margin="10,0" Visibility="{Binding ElementName=UpdateParcelCollectedButton, Path=Visibility}"/>
-                <ComboBox x:Name="TargetIDSelector" Text="{Binding Target}" SelectionChanged="TargetIDSelector_SelectionChanged" Width="auto" FontSize="20" Margin="10,0" Visibility="{Binding ElementName=ParcelEntityAddButton, Path=Visibility}"/>
+                <TextBlock x:Name="TargetIDBox" Text="{Binding Target}" Width="auto"  MinWidth="170" FontSize="20" Margin="10,0" Visibility="{Binding ElementName=UpdateParcelCollectedButton, Path=Visibility}"/>
+                <ComboBox x:Name="TargetIDSelector" Text="{Binding Target}" SelectionChanged="TargetIDSelector_SelectionChanged" Width="auto"  MinWidth="170" FontSize="20" Margin="10,0" Visibility="{Binding ElementName=ParcelEntityAddButton, Path=Visibility}"/>
                 <TextBlock x:Name="InvalidTargetIDBlock" Style="{StaticResource TextBlockInvalidStyle}"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock x:Name="PrintWeightBlock"            Text="Weight:"          Style="{StaticResource TextBlockPageStyle}" />
-                <TextBlock x:Name="WeightBox" Text="{Binding Weight}" Width="auto" FontSize="20" Margin="10,0" Visibility="{Binding ElementName=UpdateParcelCollectedButton, Path=Visibility}"/>
-                <ComboBox x:Name="WeightSelector"   SelectionChanged="WeightSelector_SelectionChanged"  Width="auto" FontSize="20" Margin="10,0" IsEditable="True" Visibility="{Binding ElementName=ParcelEntityAddButton, Path=Visibility}"/>
+                <TextBlock x:Name="WeightBox" Text="{Binding Weight}" Width="auto"  MinWidth="170" FontSize="20" Margin="10,0" Visibility="{Binding ElementName=UpdateParcelCollectedButton, Path=Visibility}"/>
+                <ComboBox x:Name="WeightSelector"   SelectionChanged="WeightSelector_SelectionChanged"  Width="auto"  MinWidth="170" FontSize="20" Margin="10,0" IsEditable="True" Visibility="{Binding ElementName=ParcelEntityAddButton, Path=Visibility}"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock x:Name="PrintPriorityBlock"          Text="Priority:"        Style="{StaticResource TextBlockPageStyle}" />
-                <TextBlock x:Name="PriorityBox" Text="{Binding Priorities}" Width="auto" FontSize="20" Margin="10,0" Visibility="{Binding ElementName=UpdateParcelCollectedButton, Path=Visibility}"/>
-                <ComboBox x:Name="PrioritySelector" ItemsSource="{Binding Priorities}" SelectionChanged="PrioritySelector_SelectionChanged"  Width="auto" FontSize="20" Margin="10,0" Visibility="{Binding ElementName=ParcelEntityAddButton, Path=Visibility}"/>
+                <TextBlock x:Name="PriorityBox" Text="{Binding Priorities}" Width="auto"  MinWidth="170" FontSize="20" Margin="10,0" Visibility="{Binding ElementName=UpdateParcelCollectedButton, Path=Visibility}"/>
+                <ComboBox x:Name="PrioritySelector" ItemsSource="{Binding Priorities}" SelectionChanged="PrioritySelector_SelectionChanged"  Width="auto"  MinWidth="170" FontSize="20" Margin="10,0" Visibility="{Binding ElementName=ParcelEntityAddButton, Path=Visibility}"/>
             </StackPanel>
             <StackPanel Visibility="{Binding ElementName=UpdateParcelCollectedButton, Path=Visibility}">
                 <StackPanel Orientation="Horizontal" >
                     <TextBlock x:Name="PrintRequestedBlock"         Text="Requested:"       Style="{StaticResource TextBlockPageStyle}" />
-                    <TextBlock x:Name="RequestedBlock" Width="auto" FontSize="20" Margin="10,0" Text="{Binding TimeRequested}"/>
+                    <TextBlock x:Name="RequestedBlock" Width="auto"  MinWidth="170" FontSize="20" Margin="10,0" Text="{Binding TimeRequested}"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock x:Name="PrintScheduledBlock"         Text="Scheduled:"       Style="{StaticResource TextBlockPageStyle}" />
-                    <TextBlock x:Name="ScheduledBlock"  Width="auto" FontSize="20" Margin="10,0" Text="{Binding Scheduled}"/>
+                    <TextBlock x:Name="ScheduledBlock"  Width="auto"  MinWidth="170" FontSize="20" Margin="10,0" Text="{Binding Scheduled}"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock x:Name="PrintPickedUpBlock"          Text="Picked Up:"       Style="{StaticResource TextBlockPageStyle}" />
-                    <TextBlock x:Name="PickedUpBlock"  Width="auto" FontSize="20" Margin="10,0" Text="{Binding PickedUp}"/>
+                    <TextBlock x:Name="PickedUpBlock"  Width="auto"  MinWidth="170" FontSize="20" Margin="10,0" Text="{Binding PickedUp}"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock x:Name="PrintDeliveredBlock"         Text="Delivered:"       Style="{StaticResource TextBlockPageStyle}" />
-                    <TextBlock x:Name="DeliveredBlock"   Width="auto" FontSize="20" Margin="10,0" Text="{Binding Delivered}"/>
+                    <TextBlock x:Name="DeliveredBlock"   Width="auto"  MinWidth="170" FontSize="20" Margin="10,0" Text="{Binding Delivered}"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock x:Name="PrintDroneInParcelIDBlock"   Text="Drone In Parcel:" Style="{StaticResource TextBlockPageStyle}" TextWrapping="Wrap" VerticalAlignment="Top"/>
-                    <TextBlock x:Name="DroneInParcelIDBlock"  Width="auto" FontSize="20" Margin="10,0" Text="{Binding DroneInParcel}" TextWrapping="Wrap"/>
+                    <TextBlock x:Name="DroneInParcelIDBlock"  Width="auto"  MinWidth="170" FontSize="20" Margin="10,0" Text="{Binding DroneInParcel}" TextWrapping="Wrap"/>
                 </StackPanel>
             </StackPanel>
         </StackPanel>

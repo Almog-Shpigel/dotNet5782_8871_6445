@@ -16,19 +16,18 @@ namespace PL
     /// </summary>
     public partial class ParcelPage : Page
     {
-        private BlApi.IBL IBL = BlFactory.GetBl();
+        private readonly BlApi.IBL IBL = BlFactory.GetBl();
         private ParcelBL ParcelBL;
 
-        public ParcelPage(RoutedEventArgs e)
+        public ParcelPage(RoutedEventArgs e) // Add parcel ctor
         {
-            InitializeComponent(); // Add parcel ctor
-            SenderIDSelector.ItemsSource = IBL.GetAllCustomerInParcels().ToList();
+            InitializeComponent(); 
+            SenderIDSelector.ItemsSource = IBL.GetAllCustomerInParcels();
             TargetIDSelector.ItemsSource = SenderIDSelector.ItemsSource;
             WeightSelector.ItemsSource = Enum.GetValues(typeof(WeightCategories));
             PrioritySelector.ItemsSource = Enum.GetValues(typeof(Priorities));
             UpdateParcelCollectedButton.Visibility = Visibility.Collapsed;
             EnableButton();
-            UpdateLayout();
         }
 
         public ParcelPage(int ParcelID) // Update parcel ctor

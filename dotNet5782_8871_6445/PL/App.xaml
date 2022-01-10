@@ -6,9 +6,9 @@
     <!--
     Colors:
     #c9cba3
-    #ffe1a8
+    #9498d1
     #e26d5c
-    #723d46
+    #1f2631
     #472d30
     -->
 
@@ -19,6 +19,7 @@
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.DeepPurple.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Lime.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Font.xaml" />
             </ResourceDictionary.MergedDictionaries>
         
         <Style TargetType="Button" x:Key="MainWindowButton">
@@ -29,8 +30,8 @@
             <Setter Property="ClickMode" Value="Release" />
             <Setter Property="FontSize" Value="32" />
             <Setter Property="FontWeight" Value="Bold" />
-            <Setter Property="Background" Value="#ffe1a8" />
-            <Setter Property="Foreground" Value="#723d46" />
+                <Setter Property="Background" Value="#ffcc4d" />
+            <Setter Property="Foreground" Value="#1f2631" />
             <Setter Property="Margin" Value="20,10,20,10" />
         </Style>
         <Style TargetType="Button" x:Key="ButtonBarStyle">
@@ -41,8 +42,8 @@
             <Setter Property="ClickMode" Value="Release" />
             <Setter Property="FontSize" Value="15" />
             <Setter Property="FontWeight" Value="Bold" />
-            <Setter Property="Background" Value="#ffe1a8" />
-            <Setter Property="Foreground" Value="#723d46" />
+                <Setter Property="Background" Value="#ffcc4d" />
+            <Setter Property="Foreground" Value="#1f2631" />
             <Setter Property="Margin" Value="10,5,10,5" />
         </Style>
         <Style TargetType="Button" x:Key="ButtonPageStyle">
@@ -53,8 +54,8 @@
             <Setter Property="ClickMode" Value="Release" />
             <Setter Property="FontSize" Value="10" />
             <Setter Property="FontWeight" Value="Bold" />
-            <Setter Property="Background" Value="#ffe1a8" />
-            <Setter Property="Foreground" Value="#723d46" />
+                <Setter Property="Background" Value="#ffcc4d" />
+            <Setter Property="Foreground" Value="#1f2631" />
             <Setter Property="Margin" Value="15,5,15,5" />
         </Style>
         <Style TargetType="TextBlock" x:Key="TextBlockStyle">
@@ -62,7 +63,7 @@
             <Setter Property="VerticalAlignment" Value="Center" />
             <Setter Property="FontSize" Value="17" />
             <Setter Property="FontWeight" Value="Bold" />
-            <Setter Property="Foreground" Value="#723d46" />
+            <Setter Property="Foreground" Value="#1f2631" />
             <Setter Property="Margin" Value="5,5,5,0" />
         </Style>
         <Style TargetType="TextBlock" x:Key="TextBlockPageStyle">
@@ -70,7 +71,7 @@
             <Setter Property="VerticalAlignment" Value="Center" />
             <Setter Property="FontSize" Value="20" />
             <Setter Property="FontWeight" Value="Bold" />
-            <Setter Property="Foreground" Value="#723d46" />
+            <Setter Property="Foreground" Value="#1f2631" />
             <Setter Property="Margin" Value="10,5,15,5" />
             <Setter Property="Width" Value="170"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
@@ -91,7 +92,7 @@
             <Setter Property="MinWidth" Value="160" />
             <Setter Property="FontSize" Value="20" />
             <Setter Property="FontWeight" Value="Bold" />
-            <Setter Property="Foreground" Value="#723d46" />
+            <Setter Property="Foreground" Value="#1f2631" />
             <Setter Property="Margin" Value="5,5,5,5" />
         </Style>
         <Style TargetType="ComboBox" x:Key="ComboBoxBarStyle">
@@ -101,8 +102,8 @@
             <Setter Property="MinWidth" Value="140" />
             <Setter Property="FontSize" Value="15" />
             <Setter Property="FontWeight" Value="Bold" />
-            <Setter Property="Background" Value="#ffe1a8" />
-            <Setter Property="Foreground" Value="#723d46" />
+                <Setter Property="Background" Value="#ffcc4d" />
+            <Setter Property="Foreground" Value="#1f2631" />
             <Setter Property="Margin" Value="5,0,5,0" />
         </Style>
         <Style TargetType="ComboBox" x:Key="ComboBoxStyle">
@@ -112,14 +113,14 @@
             <Setter Property="MinWidth" Value="160" />
             <Setter Property="FontSize" Value="20" />
             <Setter Property="FontWeight" Value="Bold" />
-            <Setter Property="Background" Value="#ffe1a8" />
-            <Setter Property="Foreground" Value="#723d46" />
+                <Setter Property="Background" Value="#ffcc4d" />
+            <Setter Property="Foreground" Value="#1f2631" />
             <Setter Property="Margin" Value="10,5,15,5" />
         </Style>
         <Style TargetType="ListView" x:Key="ListViewStyle">
             <Setter Property="FontSize" Value="20" />
-            <Setter Property="Background" Value="#ffe1a8" />
-            <Setter Property="BorderBrush" Value="#723d46" />
+                <Setter Property="Background" Value="#bcdff6" />
+            <Setter Property="BorderBrush" Value="#1f2631" />
             <Setter Property="BorderThickness" Value="3"/>
             <Setter Property="MinWidth" Value="150" />
             <Setter Property="MinHeight" Value="20"/>
@@ -127,8 +128,8 @@
         </Style>
         <Style TargetType="DataGrid" x:Key="ParcelDataGrid">
             <Setter Property="FontSize" Value="20" />
-            <Setter Property="Background" Value="#ffe1a8"/>
-            <Setter Property="BorderBrush" Value="#723d46" />
+                <Setter Property="Background" Value="#bcdff6"/>
+            <Setter Property="BorderBrush" Value="#1f2631" />
             <Setter Property="BorderThickness" Value="3"/>
             <Setter Property="Margin" Value="10,10,10,10" />
         </Style>

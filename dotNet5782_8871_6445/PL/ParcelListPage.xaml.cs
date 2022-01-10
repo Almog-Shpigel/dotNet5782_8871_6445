@@ -106,6 +106,7 @@ namespace PL
         {
             try
             {
+                IEnumerable<ParcelToList> parcelList = IBL.GetParcelsGroupBy("sender");
                 ParcelDataGrid.ItemsSource = IBL.GetParcelsGroupBy("sender");
             }
             catch(Exception ex)

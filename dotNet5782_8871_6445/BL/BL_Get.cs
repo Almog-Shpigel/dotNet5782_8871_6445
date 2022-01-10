@@ -287,15 +287,29 @@ namespace BlApi
         }
         public IEnumerable<ParcelToList> GetParcelsGroupBy(string groupByString)
         {
+            List<ParcelToList> groupedList = new();
             switch(groupByString)
             {
                 case "sender":
-                    return (IEnumerable<ParcelToList>)GetAllParcels().GroupBy(parcel => parcel.SenderName);
+                    {
+                        var parcelList = GetAllParcels().GroupBy(p => p.SenderName);
+                        foreach (var groupedParcels in parcelList)
+                            foreach(var parcel in groupedParcels)
+                                groupedList.Add(parcel);
+                        break;
+                    }
                 case "reciver":
-                    return (IEnumerable<ParcelToList>)GetAllParcels().GroupBy(parcel => parcel.TargetName);
+                    {
+                        var parcelList = GetAllParcels().GroupBy(p => p.TargetName);
+                        foreach (var groupedParcels in parcelList)
+                            foreach (var parcel in groupedParcels)
+                                groupedList.Add(parcel);
+                        break;
+                    }
                 default:
                     throw new InvalidInputException("Invalid grouping paremeter");
             }
+            return groupedList;
         }
 
         /// <summary>

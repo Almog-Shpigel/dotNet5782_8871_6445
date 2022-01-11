@@ -38,15 +38,6 @@ namespace PL
             ButtenEnableCheck();
         }
         
-        private void updateDrone()
-        {
-            droneBL = IBL.GetDrone(int.Parse(IDBox.Text));
-            batteryBorder.Width = droneBL.BatteryStatus;
-            batteryBlock.Text = droneBL.BatteryStatus.ToString();
-            StatusBlock.Text = droneBL.Status.ToString();
-            ParcelBlock.Text = droneBL.Parcel.ID.ToString();
-            LocationBlock.Text = droneBL.CurrentLocation.ToString();
-        }
 
         private void ButtenEnableCheck()
         {
@@ -249,9 +240,17 @@ namespace PL
             MessageBoxResult res = MessageBox.Show("This feature is not implemented yet", "TBD", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
-        private void updateView()
+        private void updateDrone()
         {
-            worker.ReportProgress(0);
+            lock(IBL)
+            {
+                droneBL = IBL.GetDrone(int.Parse(IDBox.Text));
+                batteryBorder.Width = droneBL.BatteryStatus;
+                batteryBlock.Text = droneBL.BatteryStatus.ToString();
+                StatusBlock.Text = droneBL.Status.ToString();
+                ParcelBlock.Text = droneBL.Parcel.ID.ToString();
+                LocationBlock.Text = droneBL.CurrentLocation.ToString();
+            }
         }
 
         private bool checkIfCanceled()
@@ -266,6 +265,11 @@ namespace PL
             worker.ProgressChanged += Worker_ProgressChanged;
             worker.RunWorkerCompleted += Worker_RunWorkerCompleted;
             worker.RunWorkerAsync();
+        }
+
+        private void updateView()
+        {
+            worker.ReportProgress(0);
         }
 
         private void ManualThreadButton_Click(object sender, RoutedEventArgs e)

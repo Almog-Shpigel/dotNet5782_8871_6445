@@ -236,10 +236,7 @@ namespace PL
 
         private void updateDrone()
         {
-            lock (bl)
-            {
-                droneBL = bl.GetDrone(droneBL.ID);
-            }
+            droneBL = bl.GetDrone(droneBL.ID);
             batteryBorder.Width = droneBL.BatteryStatus;
             batteryBlock.Text = droneBL.BatteryStatus.ToString();
             StatusBlock.Text = droneBL.Status.ToString();

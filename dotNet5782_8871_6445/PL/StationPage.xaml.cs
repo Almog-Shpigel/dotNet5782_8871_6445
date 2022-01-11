@@ -33,8 +33,8 @@ namespace PL
             pin.Tag = StationBL.ID;
             tt.Content = StationBL.ToString();
             pin.ToolTip = tt;
-            myMap.Children.Add(pin);
-            myMap.Center = pin.Location;
+            //myMap.Children.Add(pin);
+            //myMap.Center = pin.Location;
         }
 
         public StationPage(RoutedEventArgs e)

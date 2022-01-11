@@ -31,7 +31,7 @@ namespace BlApi
         internal double BatteryChargeRate;
         private BL()
         {
-            Data = DalFactory.GetDal("DalXml");
+            Data = DalFactory.GetDal("DalObject");
             DroneList = new();
             BatteryUsageEmpty = Data.GetBatteryProperty("BatteryUsageEmpty");
             BatteryUsageLightWight = Data.GetBatteryProperty("BatteryUsageLightWight");

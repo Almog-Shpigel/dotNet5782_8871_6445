@@ -16,13 +16,11 @@ namespace PL
     {
         private IBL IBL = BlFactory.GetBl();
         private CustomerBL CustomerBL;
-        private CustomerToList Customer;
 
-        public CustomerPage(CustomerToList customer) //update ctor
+        public CustomerPage(int customerID) //update ctor
         {
             InitializeComponent();
-            Customer = customer;
-            CustomerBL = IBL.GetCustomer(Customer.ID);
+            CustomerBL = IBL.GetCustomer(customerID);
             DataContext = CustomerBL;
             CustomerEntityAddButton.Visibility = Visibility.Collapsed;
             ParcelSentListViewFromCustomer.ItemsSource = CustomerBL.ParcelesSentByCustomer;
@@ -38,15 +36,15 @@ namespace PL
         private void UpdateNameButton_Click(object sender, RoutedEventArgs e)
         {
             IBL.UpdateCustomerName(Convert.ToInt32(IDBox.Text), NameBox.Text);
-            DataContext = IBL.GetCustomer(Customer.ID);
+            DataContext = IBL.GetCustomer(CustomerBL.ID);
         }
 
         private void UpdatePhoneButton_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                IBL.UpdateCustomerPhone(Customer.ID, Convert.ToInt32(PhoneNumberBox.Text));
-                DataContext = IBL.GetCustomer(Customer.ID);
+                IBL.UpdateCustomerPhone(CustomerBL.ID, Convert.ToInt32(PhoneNumberBox.Text));
+                DataContext = IBL.GetCustomer(CustomerBL.ID);
             }
             catch (Exception exp)
             {

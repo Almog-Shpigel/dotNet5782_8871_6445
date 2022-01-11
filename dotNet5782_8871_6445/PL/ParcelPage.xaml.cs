@@ -17,7 +17,7 @@ namespace PL
     public partial class ParcelPage : Page
     {
         private readonly BlApi.IBL IBL = BlFactory.GetBl();
-        private ParcelBL ParcelBL;
+        public ParcelBL ParcelBL;
 
         public ParcelPage(RoutedEventArgs e) // Add parcel ctor
         {
@@ -140,6 +140,21 @@ namespace PL
                 InvalidSenderIDBlock.Text = ex.Message;
                 InvalidSenderIDBlock.Visibility = Visibility.Visible;
             }
+        }
+
+        private void PreviewSender_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+
+        }
+
+        private void PreviewTarget_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+
+        }
+
+        private void PreviewDroneInParcel_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+
         }
     }
 }

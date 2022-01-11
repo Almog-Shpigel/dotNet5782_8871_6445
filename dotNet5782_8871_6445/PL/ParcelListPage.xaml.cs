@@ -26,8 +26,7 @@ namespace PL
             PrioritySelector.ItemsSource = Enum.GetValues(typeof(Priorities));
             WeightSelector.ItemsSource = Enum.GetValues(typeof(WeightCategories));
             StatusSelector.ItemsSource = Enum.GetValues(typeof(ParcelStatus));
-            //SenderSelector.ItemsSource = IBL.GetAllCustomerInParcels();
-            //ReceiverSelector.ItemsSource = IBL.GetAllCustomerInParcels();
+            
         }
 
         private void ParcelEntityAddButton_Click(object sender, RoutedEventArgs e)
@@ -54,16 +53,7 @@ namespace PL
         {
             SortParcels();
         }
-        //private void ReceiverSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        //{
-        //   // ParcelDataGrid.ItemsSource = IBL.GetParcels((CustomerInParcel)PrioritySelector.SelectedIndex, (WeightCategories)e.AddedItems[0]);
-            
-        //}
-        //private void SenderSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        //{
-        //    //ParcelDataGrid.ItemsSource = IBL.GetParcels((Priorities)PrioritySelector.SelectedIndex, (WeightCategories)e.AddedItems[0]);
-     
-        //}
+       
         private void StatusSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             SortParcels();

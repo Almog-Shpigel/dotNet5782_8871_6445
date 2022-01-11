@@ -32,15 +32,12 @@ namespace PL
             WeightSelector.ItemsSource = Enum.GetValues(typeof(WeightCategories));
         }
 
-        private void StatusSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void FilterSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            DronesListView.ItemsSource = IBL.GetDrones((DroneStatus)e.AddedItems[0], (WeightCategories)WeightSelector.SelectedIndex);
+            DronesListView.ItemsSource = IBL.GetDrones((DroneStatus)StatusSelector.SelectedIndex, (WeightCategories)WeightSelector.SelectedIndex);
         }
 
-        private void WeightSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            DronesListView.ItemsSource = IBL.GetDrones((DroneStatus)StatusSelector.SelectedIndex, (WeightCategories)e.AddedItems[0]);
-        }
+       
 
         private void BackWindow_Click(object sender, RoutedEventArgs e)
         {
@@ -60,6 +57,13 @@ namespace PL
         private void DronesListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
+        }
+
+        private void ClearFilters_Click(object sender, RoutedEventArgs e)
+        {
+            StatusSelector.SelectedIndex = -1;
+            WeightSelector.SelectedIndex = -1;
+            DronesListView.ItemsSource = IBL.GetAllDrones();
         }
     }
 }

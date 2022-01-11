@@ -19,9 +19,10 @@
         </Grid>
         <StackPanel Orientation="Horizontal">
             <TextBlock Text="Status:" Style="{StaticResource TextBlockStyle}"/>
-            <ComboBox x:Name="StatusSelector" SelectionChanged="StatusSelector_SelectionChanged" Style="{StaticResource ComboBoxBarStyle}"/>
+            <ComboBox x:Name="StatusSelector" SelectionChanged="FilterSelector_SelectionChanged" Width="120" FontSize="20" Margin="10,0"/>
             <TextBlock Text="Weight:" Style="{StaticResource TextBlockStyle}"/>
-            <ComboBox x:Name="WeightSelector" SelectionChanged="WeightSelector_SelectionChanged" Style="{StaticResource ComboBoxBarStyle}"/>
+            <ComboBox x:Name="WeightSelector" SelectionChanged="FilterSelector_SelectionChanged" Width="120" FontSize="20" Margin="10,0"/>
+            <Button  x:Name="ClearFilters" Content="Clear filters" Click="ClearFilters_Click"  Style="{StaticResource ButtonBarStyle}"/>
             <Button x:Name="DroneListAddButton" Content="Add new drone" Click="DroneListAddButton_Click" Style="{StaticResource ButtonBarStyle}"/>
             <Button  x:Name="BackWindow" Content="Main Window" Click="BackWindow_Click" Style="{StaticResource ButtonBarStyle}"/>
         </StackPanel>

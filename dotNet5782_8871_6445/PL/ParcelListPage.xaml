@@ -31,7 +31,7 @@
             </DataGrid.Columns>
             <DataGrid.ItemContainerStyle>
                 <Style TargetType="{x:Type DataGridRow}">
-                    <EventSetter Event="MouseDoubleClick" Handler="DataGridRow_MouseDoubleClick" />
+                    <EventSetter Event="MouseDoubleClick"  Handler="DataGridRow_MouseDoubleClick" />
                 </Style>
             </DataGrid.ItemContainerStyle>
         </DataGrid>

@@ -111,7 +111,7 @@ namespace BlApi
             {
                 if (NewCustomerPhone is < 500000000 or > 599999999)
                     throw new InvalidInputException("Invalid phone number");
-                string phoneNumber = NewCustomerPhone.ToString();
+                string phoneNumber ="0" + NewCustomerPhone.ToString();
                 Customer customer = new(CustomerID, "", phoneNumber);
                 try
                 {

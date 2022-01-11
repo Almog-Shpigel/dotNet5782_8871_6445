@@ -27,6 +27,9 @@ namespace PL
             WeightSelector.ItemsSource = Enum.GetValues(typeof(WeightCategories));
             StationSelector.ItemsSource = bl.GetAvailableStations().Select(station => (string)station.ID.ToString());
             DroneEntityAddButton.IsEnabled = false;
+            UpdateButtonsPanel.Visibility = Visibility.Collapsed;
+            InvalidDroneIDBlock.Visibility = Visibility.Collapsed;
+            IDBox.IsReadOnly = false;
             UpdateLayout();
         }
 
@@ -35,6 +38,7 @@ namespace PL
             InitializeComponent();
             droneBL = bl.GetDrone(DroneID);
             DataContext = droneBL;
+            DroneEntityAddButton.Visibility = Visibility.Collapsed;
             ButtenEnableCheck();
         }
         

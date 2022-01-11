@@ -16,81 +16,88 @@ namespace BL
         private const double SPEED = 2.0;
         private const int DELAY = 1000;
 
+
         public DroneSimulator(BlApi.BL bl, int droneID, Action updateView, Func<bool> checkIfCanceled)
         {
-            DroneBL drone = bl.GetDrone(droneID);
+            DroneBL drone;
+            var dal = bl.Data;
+            lock (bl)
+            {
+                drone = bl.GetDrone(droneID);
+            }
             DroneToList droneToList = new(drone.ID, drone.Model, drone.MaxWeight, drone.BatteryStatus, drone.Status, drone.CurrentLocation, drone.Parcel.ID);
             double distance = drone.Parcel.DeliveryDistance;
             while (!checkIfCanceled())
             {
-                 drone = bl.GetDrone(droneID);
-                 droneToList = new(drone.ID, drone.Model, drone.MaxWeight, drone.BatteryStatus, drone.Status, drone.CurrentLocation, drone.Parcel.ID);
+                drone = bl.GetDrone(droneID);
+                droneToList = new(drone.ID, drone.Model, drone.MaxWeight, drone.BatteryStatus, drone.Status, drone.CurrentLocation, drone.Parcel.ID);
                 switch (drone.Status)
                 {
                     case DroneStatus.Available:
-                        var AllAvailableParcels = bl.Data.GetParcels(p => p.DroneID == 0).Where(p => bl.PossibleDelivery(droneToList, p))
-                            .Where(p => drone.MaxWeight >= p.Weight).OrderBy(p => p.Priority).ThenBy(p => p.Weight);
-                        Parcel MaxParcel = AllAvailableParcels.FirstOrDefault();
+                        
                         if (!sleepDelayTime()) break;
-                        if ((MaxParcel.ID == 0 && drone.BatteryStatus < 100) || !bl.PossibleDelivery(droneToList, MaxParcel))
+                        lock (bl) lock (dal)
                         {
-                            Station near = bl.GetNearestStation(drone.CurrentLocation, bl.Data.GetStations(station => station.ChargeSlots > 0));
-                            if (drone.BatteryStatus < bl.Distance(droneToList.CurrentLocation, new(near.Latitude, near.Longitude)) * bl.BatteryUsageEmpty)
+                                Parcel MaxParcel = dal.GetParcels(p => p.DroneID == 0)
+                                                             .Where(p => bl.PossibleDelivery(droneToList, p))
+                                                             .Where(p => drone.MaxWeight >= p.Weight)
+                                                             .OrderBy(p => p.Priority)
+                                                             .ThenBy(p => p.Weight).FirstOrDefault();
+                            if ((MaxParcel.ID == 0 && drone.BatteryStatus < 100) || !bl.PossibleDelivery(droneToList, MaxParcel))
                             {
-                                near = bl.GetNearestStation(drone.CurrentLocation, bl.Data.GetStations(station => true));
-                                StationBL nearStation = bl.GetStation(near.ID);
-                                bl.UpdateStationSlots(nearStation.ID, nearStation.ChargingDrones.Count() + 1, nearStation.ChargingDrones.Count());
-                                updateView();
-                            }
-                            lock (bl) lock (bl.Data)
+                                Station near = bl.GetNearestStation(drone.CurrentLocation, dal.GetStations(station => station.ChargeSlots > 0));
+                                if (drone.BatteryStatus < bl.Distance(droneToList.CurrentLocation, new(near.Latitude, near.Longitude)) * bl.BatteryUsageEmpty)
                                 {
-                                    bl.UpdateDroneToBeCharged(drone.ID);
-                                    updateView();
+                                    near = bl.GetNearestStation(drone.CurrentLocation, dal.GetStations(station => true));
+                                    StationBL nearStation = bl.GetStation(near.ID);
+                                    bl.UpdateStationSlots(nearStation.ID, nearStation.ChargingDrones.Count() + 1, nearStation.ChargingDrones.Count());
                                 }
+                                bl.UpdateDroneToBeCharged(drone.ID);
+
+                            }
+                            else if (MaxParcel.ID != 0 && bl.PossibleDelivery(droneToList, MaxParcel))
+                            {
+                                bl.UpdateParcelAssignToDrone(drone.ID);
+                            }
                         }
-                        else if (MaxParcel.ID != 0 && bl.PossibleDelivery(droneToList,MaxParcel))
-                            {
-                            lock (bl) lock (bl.Data)
-                                {
-                                    bl.UpdateParcelAssignToDrone(drone.ID);
-                                    updateView();
-                                }
-                            }
                         break;
                     case DroneStatus.Charging:
-                        lock (bl) lock (bl.Data)
-                            {
-                                bl.UpdateDroneToBeAvailable(drone.ID);
-                                drone = bl.GetDrone(drone.ID);
-                                if (drone.BatteryStatus < 100)
-                                    bl.UpdateDroneToBeCharged(drone.ID);
-                                updateView();
-                            }
+                        if (!sleepDelayTime()) break;
+                        lock (bl)
+                        {
+                            bl.UpdateDroneToBeAvailable(drone.ID);
+                            drone = bl.GetDrone(drone.ID);
+                            if (drone.BatteryStatus < 100)
+                                bl.UpdateDroneToBeCharged(drone.ID);
+                        }
                         break;
                     case DroneStatus.Delivery:
-                        Parcel ParcelToBeCollected = bl.Data.GetParcel(drone.Parcel.ID);
-                        double distanceDroneCustomer = bl.DistanceDroneCustomer(droneToList, bl.Data.GetCustomer(ParcelToBeCollected.SenderID));
-                        if (ParcelToBeCollected.PickedUp == null)
-                        {
-                            //TO DO: Distance prograss from the drone and the customer
-                            bl.UpdateParcelCollectedByDrone(droneID);
-                        }
-                        else
-                        {
-                            if (distance <= 1)
+                        if (!sleepDelayTime()) break;
+                        lock (bl) lock(dal)
                             {
-                                bl.UpdateParcelDeleiveredByDrone(drone.ID);
-                                updateView();
+                                Parcel ParcelToBeCollected = dal.GetParcel(drone.Parcel.ID);
+                                double distanceDroneCustomer = bl.DistanceDroneCustomer(droneToList, dal.GetCustomer(ParcelToBeCollected.SenderID));
+                                if (ParcelToBeCollected.PickedUp == null)
+                                {
+                                    //TO DO: Distance prograss from the drone and the customer
+                                    bl.UpdateParcelCollectedByDrone(droneID);
+                                }
+                                else
+                                {
+                                    if (distance <= 1)
+                                    {
+                                        bl.UpdateParcelDeleiveredByDrone(drone.ID);
+                                    }
+                                    else
+                                    {
+                                        distance -= 1;
+                                    }
+                                }
                             }
-                            else
-                            {
-                                distance -= 1;
-                            }
-                        }                       
                         break;
                 }
                 updateView();
-                Thread.Sleep(DELAY);
+                Thread.Sleep(DELAY*2);
             }
         }
 

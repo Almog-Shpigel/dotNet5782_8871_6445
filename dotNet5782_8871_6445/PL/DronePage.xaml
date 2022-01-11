@@ -89,12 +89,12 @@
         <StackPanel Grid.Row="1" Grid.Column="2">
             <Button x:Name="DroneListGoBackButton" Content="Go back to the list" Click="DroneListGoBackButton_Click" ClickMode="Release"
                 Style="{StaticResource ButtonPageStyle}" Grid.Row="2" Grid.Column="2" VerticalAlignment="Top"/>
-            <Border BorderBrush="Black" BorderThickness="1" Height="220" Margin="10,10">
+            <!--<Border BorderBrush="Black" BorderThickness="1" Height="220" Margin="10,10">
                 <m:Map x:Name="myMap" Grid.RowSpan="2"
                     Center="{Binding Location}" ZoomLevel="16"
                     Mode="Road" 
                     CredentialsProvider="AqTTbx5Fyl3jocqOWa8mxbnsv-7MqNqBPc5kVABd_psvOsnH-cxtzJ1wUdpdeCxE" />
-            </Border>
+            </Border>-->
             <Button x:Name="AutoThreadButton" Content="Simulator" Style="{StaticResource ButtonPageStyle}" Visibility="{Binding Auto, Converter={StaticResource BoolVisibilityConverter}}" Click="AutoThreadButton_Click"/>
             <Button x:Name="ManualThreadButton" Content="Manual" Style="{StaticResource ButtonPageStyle}" Visibility="{Binding Auto, Converter={StaticResource BoolVisibilityConverter}}"  Click="ManualThreadButton_Click"/>
         </StackPanel>

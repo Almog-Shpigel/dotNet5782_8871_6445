@@ -414,22 +414,6 @@ namespace DAL
                                           Longitude = Convert.ToDouble(s.Element("Longitude").Value),
                                           Name = s.Element("Name").Value
                                       }).Where(s => StationPredicate(s)).ToList();
-            //try
-            //{
-            //    stations = (from s in ListStations.Elements()
-            //                select new Station()
-            //                {
-            //                    ID = Convert.ToInt32(s.Element("ID").Value),
-            //                    ChargeSlots = Convert.ToInt32(s.Element("ChargeSlots").Value),
-            //                    Latitude = Convert.ToDouble(s.Element("Latitude").Value),
-            //                    Longitude = Convert.ToDouble(s.Element("Longitude").Value),
-            //                    Name = s.Element("Name").Value
-            //                }).Where(s => StationPredicate(s)).ToList();
-            //}
-            //catch (Exception)
-            //{
-            //    stations = null;
-            //}
             return stations;
         }
 

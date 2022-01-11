@@ -33,8 +33,8 @@ namespace PL
             pin.Tag = StationBL.ID;
             tt.Content = StationBL.ToString();
             pin.ToolTip = tt;
-            myMap.Children.Add(pin);
-            myMap.Center = pin.Location;
+            //myMap.Children.Add(pin);
+            //myMap.Center = pin.Location;
         }
 
         public StationPage(RoutedEventArgs e)
@@ -71,7 +71,7 @@ namespace PL
         {
             try
             {
-                IBL.UpdateStationSlots(Station.ID, Convert.ToInt32(AvailableSlotsBox.Text),StationBL.ChargingDrones.Count());
+                IBL.UpdateStationSlots(Station.ID, Convert.ToInt32(AvailableSlotsBox.Text), StationBL.ChargingDrones.Count());
                 DataContext = IBL.GetStation(Station.ID);
             }
             catch (Exception exp)

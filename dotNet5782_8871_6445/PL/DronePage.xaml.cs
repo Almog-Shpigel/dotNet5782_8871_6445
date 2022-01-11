@@ -17,7 +17,7 @@ namespace PL
     /// </summary>
     public partial class DronePage : Page
     {
-        private BlApi.IBL IBL = BlFactory.GetBl();
+        private BlApi.IBL bl = BlFactory.GetBl();
         private BO.DroneBL droneBL;
         BackgroundWorker worker;
 
@@ -25,7 +25,7 @@ namespace PL
         {
             InitializeComponent(); // Add drone ctor
             WeightSelector.ItemsSource = Enum.GetValues(typeof(WeightCategories));
-            StationSelector.ItemsSource = IBL.GetAvailableStations().Select(station => (string)station.ID.ToString());
+            StationSelector.ItemsSource = bl.GetAvailableStations().Select(station => (string)station.ID.ToString());
             DroneEntityAddButton.IsEnabled = false;
             UpdateLayout();
         }
@@ -33,7 +33,7 @@ namespace PL
         public DronePage(int DroneID) // Update drone ctor
         {
             InitializeComponent();
-            droneBL = IBL.GetDrone(DroneID);
+            droneBL = bl.GetDrone(DroneID);
             DataContext = droneBL;
             ButtenEnableCheck();
         }
@@ -61,7 +61,7 @@ namespace PL
                 return;
             }
             
-            ParcelBL parcel = IBL.GetParcel(droneBL.Parcel.ID);
+            ParcelBL parcel = bl.GetParcel(droneBL.Parcel.ID);
             if (parcel.PickedUp != null)
             {
                 UpdateParcelDeleiveredByDroneButton.IsEnabled = true;
@@ -75,12 +75,6 @@ namespace PL
             if (parcel.TimeRequested != null)
                 UpdateParcelCollectedByDroneButton.IsEnabled = true;
         }
-
-        //private void UpdateNameButton_Click(object sender, RoutedEventArgs e)
-        //{
-        //    IBL.UpdateDroneName(Convert.ToInt32(IDBlock.Text), ModelBlock.Text);
-        //    ModelBlock.Text = IBL.GetDrone(Convert.ToInt32(IDBlock.Text)).Model;
-        //}
 
         private void WeightSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -120,8 +114,8 @@ namespace PL
             InvalidBatteryToCompleteDeliveryBlock.Visibility = Visibility.Collapsed;
             try
             {
-                IBL.UpdateDroneToBeCharged(Convert.ToInt32(IDBox.Text));
-                droneBL = IBL.GetDrone(droneBL.ID);
+                bl.UpdateDroneToBeCharged(Convert.ToInt32(IDBox.Text));
+                droneBL = bl.GetDrone(droneBL.ID);
                 DataContext = droneBL;
                 ButtenEnableCheck();
             }
@@ -134,8 +128,8 @@ namespace PL
 
         private void UpdateReleaseDroneFromChargeButton_Click(object sender, RoutedEventArgs e)
         {
-            IBL.UpdateDroneToBeAvailable(Convert.ToInt32(IDBox.Text));
-            droneBL = IBL.GetDrone(droneBL.ID);
+            bl.UpdateDroneToBeAvailable(Convert.ToInt32(IDBox.Text));
+            droneBL = bl.GetDrone(droneBL.ID);
             DataContext = droneBL;
             ButtenEnableCheck();
         }
@@ -144,8 +138,8 @@ namespace PL
         {
             try
             {
-                IBL.UpdateParcelAssignToDrone(Convert.ToInt32(IDBox.Text));
-                droneBL = IBL.GetDrone(droneBL.ID);
+                bl.UpdateParcelAssignToDrone(Convert.ToInt32(IDBox.Text));
+                droneBL = bl.GetDrone(droneBL.ID);
                 DataContext = droneBL;
                 ButtenEnableCheck();
             }
@@ -158,16 +152,16 @@ namespace PL
 
         private void UpdateParcelCollectedByDroneButton_Click(object sender, RoutedEventArgs e)
         {
-            IBL.UpdateParcelCollectedByDrone(Convert.ToInt32(IDBox.Text));
-            droneBL = IBL.GetDrone(droneBL.ID);
+            bl.UpdateParcelCollectedByDrone(Convert.ToInt32(IDBox.Text));
+            droneBL = bl.GetDrone(droneBL.ID);
             DataContext = droneBL;
             ButtenEnableCheck();
         }
 
         private void UpdateParcelDeleiveredByDroneButton_Click(object sender, RoutedEventArgs e)
         {
-            IBL.UpdateParcelDeleiveredByDrone(droneBL.ID);
-            droneBL = IBL.GetDrone(droneBL.ID);
+            bl.UpdateParcelDeleiveredByDrone(droneBL.ID);
+            droneBL = bl.GetDrone(droneBL.ID);
             DataContext = droneBL;
             ButtenEnableCheck();
         }
@@ -191,7 +185,7 @@ namespace PL
             DroneBL drone = new(DroneID, name, weight);
             try
             {
-                IBL.AddNewDrone(drone, StationID);
+                bl.AddNewDrone(drone, StationID);
                 IDBox.IsEnabled = false;
                 StationSelector.IsEnabled = false;
                 WeightSelector.IsEnabled = false;
@@ -226,8 +220,8 @@ namespace PL
             MessageBoxResult res = MessageBox.Show("Are you sure you want change the model name?", "Verification", MessageBoxButton.YesNo, MessageBoxImage.Warning);
             if (res == MessageBoxResult.No)
                 return;
-            IBL.UpdateDroneName(Convert.ToInt32(IDBox.Text), ModelBlock.Text);
-            ModelBlock.Text = IBL.GetDrone(Convert.ToInt32(IDBox.Text)).Model;
+            bl.UpdateDroneName(Convert.ToInt32(IDBox.Text), ModelBlock.Text);
+            ModelBlock.Text = bl.GetDrone(Convert.ToInt32(IDBox.Text)).Model;
         }
 
         private void PreviewParcel_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -242,15 +236,15 @@ namespace PL
 
         private void updateDrone()
         {
-            lock(IBL)
+            lock (bl)
             {
-                droneBL = IBL.GetDrone(int.Parse(IDBox.Text));
-                batteryBorder.Width = droneBL.BatteryStatus;
-                batteryBlock.Text = droneBL.BatteryStatus.ToString();
-                StatusBlock.Text = droneBL.Status.ToString();
-                ParcelBlock.Text = droneBL.Parcel.ID.ToString();
-                LocationBlock.Text = droneBL.CurrentLocation.ToString();
+                droneBL = bl.GetDrone(droneBL.ID);
             }
+            batteryBorder.Width = droneBL.BatteryStatus;
+            batteryBlock.Text = droneBL.BatteryStatus.ToString();
+            StatusBlock.Text = droneBL.Status.ToString();
+            ParcelBlock.Text = droneBL.Parcel.ID.ToString();
+            LocationBlock.Text = droneBL.CurrentLocation.ToString();
         }
 
         private bool checkIfCanceled()
@@ -264,7 +258,7 @@ namespace PL
             worker.DoWork += Worker_DoWork;
             worker.ProgressChanged += Worker_ProgressChanged;
             worker.RunWorkerCompleted += Worker_RunWorkerCompleted;
-            worker.RunWorkerAsync();
+            worker.RunWorkerAsync(droneBL.ID);
         }
 
         private void updateView()
@@ -289,7 +283,7 @@ namespace PL
 
         private void Worker_DoWork(object sender, DoWorkEventArgs e)
         {
-            IBL.UpdateDroneSimulatorStart(droneBL.ID, updateView, checkIfCanceled);
+            bl.UpdateDroneSimulatorStart((int)e.Argument, updateView, checkIfCanceled);
         }
 
     }

@@ -59,17 +59,21 @@ namespace BlApi
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public void UpdateStationSlots(int StationID, int NewNumberSlots, int CurrentlyCharging)
+        public void UpdateStationSlots(int stationID, int newNumberSlots, int currentlyCharging)
         {
             lock (Data)
             {
-                if (StationID is < 100000 or > 999999)
+                if (stationID is < 100000 or > 999999)
                     throw new InvalidIDException("Invalid station ID number. Must have 6 digits");
-                if (NewNumberSlots < 0)
+                if (newNumberSlots < 0)
                     throw new InvalidInputException("Slots can't be less than a 0");
-                if (CurrentlyCharging > NewNumberSlots)
+                if (currentlyCharging > newNumberSlots)
                     throw new InvalidSlotsException("Charge slots can't be less than the number of currently charging drones in the station");
-                Station station = new(StationID, "", NewNumberSlots - CurrentlyCharging);
+
+                Station station = Data.GetStation(stationID);
+                //if (station.ChargeSlots <= newNumberSlots)
+                //    return;
+                station = new(stationID, "", newNumberSlots - currentlyCharging);
                 try
                 {
                     Data.UpdateStationSlots(station);

@@ -83,20 +83,6 @@ namespace DAL
             ListStations.Add(new XElement("Station", id, name, latitude, longitude, slots));
             XmlTools.SaveListToXElement(ListStations, stationsPath);
             
-            
-            //x = x.FirstOrDefault(s => s.Element("ID")?.Value == station.ID.ToString())
-            //x = ListStations.Descendants("Station").FirstOrDefault(s => s.Element("ID")?.Value == station.ID.ToString());
-            //if (x != null)
-            //    throw new StationExistException($"The station ID {station.ID} exists already in the data!!");
-
-
-/***********************************************************************************************************************************/
-            //List<Station> ListStations = XmlTools.LoadListFromXmlSerializer<Station>(stationsPath);
-            //if (ListStations.Any(s => s.ID == station.ID))
-            //    throw new StationExistException($"The station ID {station.ID} exists already in the data!!");
-            //station.Name = "Station " + station.Name;
-            //ListStations.Add(station);
-            //XmlTools.SaveListToXmlSerializer(ListStations, stationsPath);
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
@@ -125,6 +111,7 @@ namespace DAL
             parcelCounter++;
             config.Element("Counters").Add(new XElement("ParcelIDCounter", parcelCounter));
             ListParcels.Add(parcel);
+            XmlTools.SaveListToXElement(config, configPath);
             XmlTools.SaveListToXmlSerializer(ListParcels, parcelsPath);
         }
 

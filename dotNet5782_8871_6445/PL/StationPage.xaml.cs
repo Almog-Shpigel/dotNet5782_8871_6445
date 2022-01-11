@@ -71,7 +71,7 @@ namespace PL
         {
             try
             {
-                IBL.UpdateStationSlots(Station.ID, Convert.ToInt32(AvailableSlotsBox.Text),StationBL.ChargingDrones.Count());
+                IBL.UpdateStationSlots(Station.ID, Convert.ToInt32(UpdateTotalSlotsBox.Text),StationBL.ChargingDrones.Count());
                 DataContext = IBL.GetStation(Station.ID);
             }
             catch (Exception exp)
@@ -158,17 +158,17 @@ namespace PL
         private void AvailableSlotsBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             int stationID;
-            if (int.TryParse(AvailableSlotsBox.Text, out stationID))
+            if (int.TryParse(UpdateTotalSlotsBox.Text, out stationID))
             {
                 InvalidInputBlock.Visibility = Visibility.Collapsed;
-                AvailableSlotsBox.Foreground = Brushes.Black;
+                UpdateTotalSlotsBox.Foreground = Brushes.Black;
                 EnableButton();
             }
             else
             {
                 InvalidInputBlock.Visibility = Visibility.Visible;
                 InvalidInputBlock.Text = "Available slots must be a number";
-                AvailableSlotsBox.Foreground = Brushes.Red;
+                UpdateTotalSlotsBox.Foreground = Brushes.Red;
                 StationEntityAddButton.IsEnabled = false;
             }
         }

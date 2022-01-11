@@ -195,6 +195,7 @@ namespace PL
         {
             parcelPage = new(e);
             parcelPage.ParcelEntityAddButton.Click += ParcelListPageButton_Click;
+            parcelPage.ParcelDataGridGoBackButton.Click += ParcelListPageButton_Click;
             Content = parcelPage;
         }
 

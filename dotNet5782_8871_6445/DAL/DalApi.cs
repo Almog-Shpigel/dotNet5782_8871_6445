@@ -27,7 +27,6 @@ namespace DalApi
         public void UpdateParcelInDelivery(Parcel parcel);
         public void UpdateParcelCollected(Parcel parcel);
         public void PairParcelToDrone(Parcel parcel, Drone drone);
-
         public void UpdateDeleteParcel(Parcel parcel);
         #endregion
 
@@ -41,7 +40,7 @@ namespace DalApi
         public Station GetStation(int id);
         public Customer GetCustomer(int id);
         public Parcel GetParcel(int id);
-        DroneCharge GetDroneCharge(int id);
+        public DroneCharge GetDroneCharge(int id);
         public double GetBatteryProperty(string value);
 
         #endregion

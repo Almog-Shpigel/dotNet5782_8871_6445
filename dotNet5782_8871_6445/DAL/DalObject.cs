@@ -45,8 +45,7 @@ namespace DalObject
             if (DataSource.customers.Any(c => c.ID == parcel.SenderID))
                 throw new CustomerExistException($"Customer {parcel.SenderID} doesn't exists in the data!!");
             if (DataSource.customers.Any(c => c.ID == parcel.TargetID))
-                throw new CustomerExistException($"Customer {parcel.TargetID} doesn't exists in the data!!");
-            
+                throw new CustomerExistException($"Customer {parcel.TargetID} doesn't exists in the data!!");            
             parcel.ID = 344000 + ++DataSource.Config.ParcelsCounter;
             DataSource.parcels.Add(parcel);
         }
@@ -141,8 +140,9 @@ namespace DalObject
             else
                 throw new DroneExistException($"Drone {newDrone.ID} doesn't exists in the data!!");
 
-            droneCharge = DataSource.DroneCharges.Find(d => d.DroneID == newDrone.ID);      /// assuming that the drone exists in one of the drone charge stations.
-
+            droneCharge = DataSource.DroneCharges.Find(d => d.DroneID == newDrone.ID);     
+            if(droneCharge.DroneID == 0)
+                throw new DroneExistException($"Drone {newDrone.ID} isn't charging at this moment");
             if (DataSource.stations.Any(s => s.ID == droneCharge.StationID))
                 station = DataSource.stations.Find(s => s.ID == droneCharge.StationID);
             else
@@ -232,22 +232,25 @@ namespace DalObject
         #endregion
 
         #region Get
-        [MethodImpl(MethodImplOptions.Synchronized)]
-        public double[] GetBatteryUsed()
-        {
-            double[] BatteryUsed = new double[5];
-            BatteryUsed[0] = DataSource.Config.Empty;
-            BatteryUsed[1] = DataSource.Config.LightWight;
-            BatteryUsed[2] = DataSource.Config.MediumWight;
-            BatteryUsed[3] = DataSource.Config.HaevyWight;
-            BatteryUsed[4] = DataSource.Config.ChargeRate;
-            return BatteryUsed;
-        }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public double GetBatteryProperty(string v)
+        public double GetBatteryProperty(string property)
         {
-            return 0; //TO DO: implement
+            switch(property)
+            {
+                case "BatteryUsageEmpty":
+                    return DataSource.Config.Empty;
+                case "BatteryUsageLightWight":
+                    return DataSource.Config.LightWight;
+                case "BatteryUsageMediumWight":
+                    return DataSource.Config.MediumWight;
+                case "BatteryUsageHaevyWight":
+                    return DataSource.Config.HaevyWight;
+                case "BatteryChargeRate":
+                    return DataSource.Config.ChargeRate;
+                default:
+                    throw new InvalidBatteryPropertyException("Battery property doesn't exsits");
+            }
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]

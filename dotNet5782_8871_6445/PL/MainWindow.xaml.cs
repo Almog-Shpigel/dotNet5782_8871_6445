@@ -135,7 +135,7 @@ namespace PL
                 customerPage = new(customer.ID);
                 customerPage.CustomerListGoBackButton.Click += CustomerListPageButton_Click;
                 customerPage.ParcelSentListViewFromCustomer.MouseDoubleClick += ParcelSentListViewFromCustomer_MouseDoubleClick;
-                customerPage.ParcelReceivedListViewFromCustomer.MouseDoubleClick += ParcelReceiveListViewFromCustomer_MouseDoubleClick;
+                customerPage.ParcelReceivedListViewFromCustomer.MouseDoubleClick += ParcelReceivedListViewFromCustomer_MouseDoubleClick;
                 Content = customerPage;
             }
         }
@@ -146,6 +146,21 @@ namespace PL
             ParcelToList parcel = IBL.GetParcelToList(parcelAtCustomer);
             if(parcel != null)
             { 
+                parcelPage = new(parcel.ID);
+                parcelPage.ParcelDataGridGoBackButton.Click += ParcelListPageButton_Click;
+                parcelPage.UpdateDeleteParcelButton.Click += ParcelListPageButton_Click;
+                parcelPage.ParcelEntityAddButton.Click += ParcelListPageButton_Click;
+                parcelPage.PreviewSender.MouseLeftButtonDown += PreviewSender_MouseLeftButtonDown;
+                parcelPage.PreviewTarget.MouseLeftButtonDown += PreviewTarget_MouseLeftButtonDown;
+                Content = parcelPage;
+            }
+        }
+        private void ParcelReceivedListViewFromCustomer_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            ParcelAtCustomer parcelAtCustomer = (ParcelAtCustomer)customerPage.ParcelReceivedListViewFromCustomer.SelectedItem;
+            ParcelToList parcel = IBL.GetParcelToList(parcelAtCustomer);
+            if (parcel != null)
+            {
                 parcelPage = new(parcel.ID);
                 parcelPage.ParcelDataGridGoBackButton.Click += ParcelListPageButton_Click;
                 parcelPage.UpdateDeleteParcelButton.Click += ParcelListPageButton_Click;
@@ -218,6 +233,8 @@ namespace PL
             {
                 customerPage = new(parcelPage.ParcelBL.Sender.ID);
                 customerPage.CustomerListGoBackButton.Click += ParcelListPageButton_Click;
+                customerPage.ParcelSentListViewFromCustomer.MouseDoubleClick += ParcelSentListViewFromCustomer_MouseDoubleClick;
+                customerPage.ParcelReceivedListViewFromCustomer.MouseDoubleClick += ParcelReceivedListViewFromCustomer_MouseDoubleClick;
                 Content = customerPage;
             }
         }
@@ -227,6 +244,8 @@ namespace PL
             {
                 customerPage = new(parcelPage.ParcelBL.Target.ID);
                 customerPage.CustomerListGoBackButton.Click += ParcelListPageButton_Click;
+                customerPage.ParcelSentListViewFromCustomer.MouseDoubleClick += ParcelSentListViewFromCustomer_MouseDoubleClick;
+                customerPage.ParcelReceivedListViewFromCustomer.MouseDoubleClick += ParcelReceivedListViewFromCustomer_MouseDoubleClick;
                 Content = customerPage;
             }
         }

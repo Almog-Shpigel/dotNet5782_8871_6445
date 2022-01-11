@@ -48,7 +48,7 @@
                     <ListView x:Name="ParcelSentListViewFromCustomer" Style="{StaticResource ListViewStyle}">
                         <ListView.ItemContainerStyle>
                             <Style TargetType="{x:Type ListViewItem}">
-                                <EventSetter Event="MouseDoubleClick" Handler="ParcelListViewItem_MouseDoubleClick" />
+                                <EventSetter Event="MouseDoubleClick" Handler="ParcelSentListViewFromCustomer_MouseDoubleClick" />
                             </Style>
                         </ListView.ItemContainerStyle>
                     </ListView>
@@ -58,7 +58,7 @@
                     <ListView x:Name="ParcelReceivedListViewFromCustomer" Style="{StaticResource ListViewStyle}">
                         <ListView.ItemContainerStyle>
                             <Style TargetType="{x:Type ListViewItem}">
-                                <EventSetter Event="MouseDoubleClick" Handler="ParcelListViewItem_MouseDoubleClick" />
+                                <EventSetter Event="MouseDoubleClick" Handler="ParcelReceivedListViewFromCustomer_MouseDoubleClick" />
                             </Style>
                         </ListView.ItemContainerStyle>
                     </ListView>

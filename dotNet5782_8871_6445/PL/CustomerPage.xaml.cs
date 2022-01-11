@@ -24,7 +24,7 @@ namespace PL
             DataContext = CustomerBL;
             CustomerEntityAddButton.Visibility = Visibility.Collapsed;
             ParcelSentListViewFromCustomer.ItemsSource = CustomerBL.ParcelesSentByCustomer;
-            ParcelSentListViewFromCustomer.ItemsSource = CustomerBL.ParcelesSentToCustomer;
+            ParcelReceivedListViewFromCustomer.ItemsSource = CustomerBL.ParcelesSentToCustomer;
         }
 
         public CustomerPage(RoutedEventArgs e) //add ctor
@@ -112,7 +112,11 @@ namespace PL
         {
 
         }
-        private void ParcelListViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void ParcelSentListViewFromCustomer_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+        private void ParcelReceivedListViewFromCustomer_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
 
         }
@@ -129,6 +133,11 @@ namespace PL
             EnableButton();
         }
         private void UpdatePhoneBlock_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
+        private void ListViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
 
         }

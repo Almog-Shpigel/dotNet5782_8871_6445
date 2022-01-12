@@ -212,7 +212,7 @@ namespace PL
         private void ParcelDataGridAddButton_Click(object sender, RoutedEventArgs e)
         {
             parcelPage = new(e);
-            parcelPage.ParcelEntityAddButton.Click += ParcelListPageButton_Click;
+            //parcelPage.ParcelEntityAddButton.Click += ParcelListPageButton_Click;
             parcelPage.ParcelDataGridGoBackButton.Click += ParcelListPageButton_Click;
             Content = parcelPage;
         }

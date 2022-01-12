@@ -123,6 +123,7 @@ namespace PL
             customerListPage.CustomerListAddButton.Click += CustomerListAddButton_Click;
             customerListPage.BackWindow.Click += BackWindow_Click;
             customerListPage.CustomersListView.MouseDoubleClick += CustomerListView_MouseDoubleClick;
+            customerPage.UpdateNewParcel.Click += ParcelDataGridAddButton_Click;
             Content = customerListPage;
         }
 
@@ -135,7 +136,7 @@ namespace PL
                 customerPage.CustomerListGoBackButton.Click += CustomerListPageButton_Click;
                 customerPage.ParcelSentListViewFromCustomer.MouseDoubleClick += ParcelSentListViewFromCustomer_MouseDoubleClick;
                 customerPage.ParcelReceivedListViewFromCustomer.MouseDoubleClick += ParcelReceivedListViewFromCustomer_MouseDoubleClick;
-                customerPage.UpdateNewParcel.Click += ParcelDataGridAddButton_Click;
+                
                 Content = customerPage;
             }
         }
@@ -155,6 +156,7 @@ namespace PL
                 Content = parcelPage;
             }
         }
+
         private void ParcelReceivedListViewFromCustomer_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             ParcelAtCustomer parcelAtCustomer = (ParcelAtCustomer)customerPage.ParcelReceivedListViewFromCustomer.SelectedItem;
@@ -215,6 +217,7 @@ namespace PL
             parcelPage.ParcelDataGridGoBackButton.Click += ParcelListPageButton_Click;
             Content = parcelPage;
         }
+
         private void PreviewDroneInParcel_MouseLeftButtonDown(object sender, RoutedEventArgs e)
         {
             if (parcelPage.ParcelBL.DroneInParcel.ID != 0)
@@ -225,6 +228,7 @@ namespace PL
                 Content = dronePage;
             }
         }
+
         private void PreviewSender_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (parcelPage.ParcelBL.Sender.ID != 0)
@@ -236,6 +240,7 @@ namespace PL
                 Content = customerPage;
             }
         }
+
         private void PreviewTarget_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (parcelPage.ParcelBL.Target.ID != 0)
@@ -295,6 +300,7 @@ namespace PL
                 customerPage.CustomerListGoBackButton.Click += BackWindow_Click;
                 customerPage.ParcelSentListViewFromCustomer.MouseDoubleClick += ParcelSentListViewFromCustomer_MouseDoubleClick;
                 customerPage.ParcelReceivedListViewFromCustomer.MouseDoubleClick += ParcelReceiveListViewFromCustomer_MouseDoubleClick;
+                customerPage.UpdateNewParcel.Click += ParcelDataGridAddButton_Click;
                 customerPage.CustomerListGoBackButton.Content = "Logout";
                 Content = customerPage;
             }
@@ -316,5 +322,7 @@ namespace PL
             rbManager.IsChecked = false;
             InvalidIDBlock.Visibility = Visibility.Hidden;
         }
+
+
     }
 }

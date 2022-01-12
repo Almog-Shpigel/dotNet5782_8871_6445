@@ -31,7 +31,7 @@ namespace BlApi
         /// </summary>
         /// <param name="DroneBL"></param>
         /// <param name="StationID"></param>
-        public void AddNewDrone(DroneBL drone, int StationID);
+        public void AddNewDrone(DroneBL drone, int stationID);
 
         /// <summary>
         /// Adding new parcel to the data, checking if the sender and the target IDs are valid ( contain 9 digits)
@@ -46,35 +46,35 @@ namespace BlApi
         /// </summary>
         /// <param name="id"></param>
         /// <param name="model"></param>
-        public void UpdateDroneName(int DroneID, string NewName);
+        public void UpdateDroneName(int droneID, string newName);
 
         /// <summary>
         /// Updating a station's name
         /// </summary>
         /// <param name="StationID"></param>
         /// <param name="NewStationName"></param>
-        void UpdateStationName(int StationID, string NewStationName);
+        void UpdateStationName(int stationID, string newStationName);
 
         /// <summary>
         /// Updating a station's total charging slots
         /// </summary>
         /// <param name="StationID"></param>
         /// <param name="NewStationName"></param>
-        void UpdateStationSlots(int StationID, int NewNumberSlots , int CurrentlyCharging);
+        void UpdateStationSlots(int stationID, int newNumberSlots , int currentlyCharging);
         /// <summary>
         /// Updating a customer's name
         /// </summary>
         /// <param name="CustomerID"></param>
         /// <param name="NewCustomerName"></param>
 
-        public void UpdateCustomerName(int CustomerID, string NewCustomerName);
+        public void UpdateCustomerName(int customerID, string newCustomerName);
 
         /// <summary>
         /// Updating a customer's phone number
         /// </summary>
         /// <param name="CustomerID"></param>
         /// <param name="NewCustomerPhone"></param>
-        public void UpdateCustomerPhone(int CustomerID, int NewCustomerPhone);
+        public void UpdateCustomerPhone(int customerID, int newCustomerPhone);
 
         /// <summary>
         /// Pairing a parcel to the wanted drone, the parcel will be selected by the next algorithem:
@@ -83,7 +83,7 @@ namespace BlApi
         /// and the drone's battery is able to collect the parcel,deliver it and return to a near by station.
         /// </summary>
         /// <param name="DroneID"></param>
-        public void UpdateParcelAssignToDrone(int DroneID);
+        public void UpdateParcelAssignToDrone(int droneID);
 
         /// <summary>
         /// Updating that the parcel was delivered to the target by the drone carrying it, updating the drone's location 
@@ -91,28 +91,28 @@ namespace BlApi
         /// available again
         /// </summary>
         /// <param name="DroneID"></param>
-        public void UpdateParcelDeleiveredByDrone(int DroneID);
+        public void UpdateParcelDeleiveredByDrone(int droneID);
 
 
         /// <summary>
         /// Sending the wanted drone to charge at the nearest station that has free charge slots
         /// </summary>
         /// <param name="DroneID"></param>
-        public void UpdateDroneToBeCharged(int DroneID);
+        public void UpdateDroneToBeCharged(int droneID);
 
         /// <summary>
         /// Updating a parcel status to be collected by the drone paired to her. also updating the drone's location
         /// to be at that target and the battery to substract according to the distance from it's last location
         /// </summary>
         /// <param name="DroneID"></param>
-        public void UpdateParcelCollectedByDrone(int DroneID);
+        public void UpdateParcelCollectedByDrone(int droneID);
 
         /// <summary>
         /// Relasing a drone that is currently charging, changing it's status to be available and deleting the "drone in charge" entity 
         /// saved in the data layer
         /// </summary>
         /// <param name="DroneID"></param>
-        public void UpdateDroneToBeAvailable(int DroneID);
+        public void UpdateDroneToBeAvailable(int droneID);
 
         /// <summary>
         /// Deleting a parcel from the data
@@ -219,28 +219,28 @@ namespace BlApi
         /// </summary>
         /// <param name="DroneID"></param>
         /// <returns>DroneBL to print</returns>
-        public DroneBL GetDrone(int DroneID);
+        public DroneBL GetDrone(int droneID);
 
         /// <summary>
         /// Receive parcel id and convert it to ParcelBL entity and send it to print
         /// </summary>
         /// <param name="ParcelID"></param>
         /// <returns>ParcelBL entity</returns>
-        public ParcelBL GetParcel(int ParcelID);
+        public ParcelBL GetParcel(int parcelID);
 
         /// <summary>
         /// Receiving a station id and converting the station to a StationBL and print it
         /// </summary>
         /// <param name="StationID"></param>
         /// <returns>StationBL to print</returns>
-        public StationBL GetStation(int StationID);
+        public StationBL GetStation(int stationID);
 
         /// <summary>
         /// Receiving a customer id and converting it to CustomerBL and sends it to print
         /// </summary>
         /// <param name="CustomerID"></param>
         /// <returns>CustomerBL to print</returns>
-        public CustomerBL GetCustomer(int CustomerID);
+        public CustomerBL GetCustomer(int customerID);
         #endregion
         #endregion
     }

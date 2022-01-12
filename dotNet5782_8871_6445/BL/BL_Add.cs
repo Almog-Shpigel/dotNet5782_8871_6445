@@ -16,66 +16,66 @@ namespace BlApi
     partial class BL
     {
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public void AddNewStation(StationBL StationBO)
+        public void AddNewStation(StationBL stationBO)
         {
             lock (Data)
             {
-                if (StationBO.ID is < 100000 or > 999999)
+                if (stationBO.ID is < 100000 or > 999999)
                     throw new InvalidInputException("Invalid station ID number. Must have 6 digits");
-                if (StationBO.ChargeSlots < 0)
+                if (stationBO.ChargeSlots < 0)
                     throw new InvalidInputException("Charge slots can't be a negative number");
-                if ((int)StationBO.Location.Latitude != 31 || (int)StationBO.Location.Longitude != 35)
+                if ((int)stationBO.Location.Latitude != 31 || (int)stationBO.Location.Longitude != 35)
                     throw new InvalidInputException("The location is outside of Jerusalem");                    ///We assume for now that all the locations are inside Jerusalem
-                Station StationDO = new(StationBO.ID, StationBO.Name, StationBO.ChargeSlots, StationBO.Location.Latitude, StationBO.Location.Longitude);
+                Station stationDO = new(stationBO.ID, stationBO.Name, stationBO.ChargeSlots, stationBO.Location.Latitude, stationBO.Location.Longitude);
                 try
                 {
-                    Data.AddNewStation(StationDO);
+                    Data.AddNewStation(stationDO);
                 }
                 catch (StationExistException ex)
                 {
-                    throw new InvalidInputException("Invalid id. ", ex);
+                    throw new InvalidInputException("Invalid id. \n" + ex.Message);
                 }
             }
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public void AddNewDrone(DroneBL DroneBL, int StationID)         ///Reciving a drone with name, id and weight, and a staion id to sent it to charge there
+        public void AddNewDrone(DroneBL droneBL, int stationID)         ///Reciving a drone with name, id and weight, and a staion id to sent it to charge there
         {
             lock(Data)
             {
-                if (DroneBL.ID is < 100000 or > 999999)
+                if (droneBL.ID is < 100000 or > 999999)
                     throw new InvalidInputException("Drone ID has to have 6 positive digits.");
                 Station station;
                 try
                 {
-                    station = Data.GetStation(StationID);
+                    station = Data.GetStation(stationID);
                 }
                 catch (StationExistException ex)
                 {
-                    throw new InvalidInputException("Invalid id. ", ex);
+                    throw new InvalidInputException("Invalid id. \n" + ex.Message);
                 }
                 if (station.ChargeSlots <= 0)
                     throw new InvalidInputException("There are no slots available at this station.");
-                DroneBL.CurrentLocation = new(station.Latitude, station.Longitude);
-                DroneBL.BatteryStatus = GetRandBatteryStatus(20, 41);
-                DroneBL.Status = DroneStatus.Charging;
+                droneBL.CurrentLocation = new(station.Latitude, station.Longitude);
+                droneBL.BatteryStatus = GetRandBatteryStatus(20, 41);
+                droneBL.Status = DroneStatus.Charging;
 
-                Drone NewDrone = new(DroneBL.ID, DroneBL.Model, DroneBL.MaxWeight);
+                Drone newDrone = new(droneBL.ID, droneBL.Model, droneBL.MaxWeight);
                 try
                 {
-                    Data.AddNewDrone(NewDrone, station);              ///Sending the new drone to the data
+                    Data.AddNewDrone(newDrone, station);              ///Sending the new drone to the data
                 }
                 catch (DroneExistException ex)
                 {
-                    throw new InvalidInputException("Invalid id. ", ex);
+                    throw new InvalidInputException("Invalid id. \n" + ex.Message);
                 }
                 catch (StationExistException ex)
                 {
-                    throw new InvalidInputException("Invalid id. ", ex);
+                    throw new InvalidInputException("Invalid id. \n" + ex.Message);
                 }
 
-                DroneToList NewDroneToList = new DroneToList(DroneBL.ID, DroneBL.Model, DroneBL.MaxWeight, DroneBL.BatteryStatus, DroneBL.Status, DroneBL.CurrentLocation, 0);
-                DroneList.Add(NewDroneToList);      ///Saving a logic version of the new drone
+                DroneToList newDroneToList = new DroneToList(droneBL.ID, droneBL.Model, droneBL.MaxWeight, droneBL.BatteryStatus, droneBL.Status, droneBL.CurrentLocation, 0);
+                DroneList.Add(newDroneToList);      ///Saving a logic version of the new drone
             }
         }
 
@@ -92,14 +92,14 @@ namespace BlApi
                     throw new InvalidInputException("Invalid phone number");
                 if ((int)customer.Location.Latitude != 31 || (int)customer.Location.Longitude != 35)
                     throw new InvalidInputException("The location is outside of Jerusalem"); ///We assume for now that all the locations
-                Customer NewCustomer = new(customer.ID, customer.Name, customer.Phone, customer.Location.Latitude, customer.Location.Longitude);
+                Customer newCustomer = new(customer.ID, customer.Name, customer.Phone, customer.Location.Latitude, customer.Location.Longitude);
                 try
                 {
-                    Data.AddNewCustomer(NewCustomer);
+                    Data.AddNewCustomer(newCustomer);
                 }
                 catch (CustomerExistException ex)
                 {
-                    throw new InvalidInputException("Invalid id. ", ex);
+                    throw new InvalidInputException("Invalid id. \n" + ex.Message);
                 }
             }
         }
@@ -116,14 +116,14 @@ namespace BlApi
                 if (parcel.Target.ID == parcel.Sender.ID)
                     throw new InvalidInputException("Customer can't send a parcel to himself");
 
-                Parcel ParcelDO = new Parcel(parcel.ID, parcel.Sender.ID, parcel.Target.ID, 0, parcel.Weight, parcel.Priority, parcel.TimeRequested, parcel.Scheduled, parcel.PickedUp, parcel.Delivered);
+                Parcel parcelDO = new Parcel(parcel.ID, parcel.Sender.ID, parcel.Target.ID, 0, parcel.Weight, parcel.Priority, parcel.TimeRequested, parcel.Scheduled, parcel.PickedUp, parcel.Delivered);
                 try
                 {
-                    Data.AddNewParcel(ParcelDO);
+                    Data.AddNewParcel(parcelDO);
                 }
                 catch (ParcelExistException ex)
                 {
-                    throw new InvalidInputException("Invalid id. ", ex);
+                    throw new InvalidInputException("Invalid id. \n"  + ex.Message);
                 }
             }
         }

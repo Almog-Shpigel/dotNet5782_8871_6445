@@ -26,6 +26,7 @@
             <StackPanel Orientation="Horizontal">
                 <TextBlock x:Name="PrintIDblock"        Text="Customer ID:"        Style="{StaticResource TextBlockPageStyle}" />
                 <TextBox x:Name="IDBox" Text="{Binding ID}" Width="150" FontSize="20" Margin="10,0" IsReadOnly="True" materialDesign:HintAssist.Hint="Enter number" TextChanged="IDBox_TextChanged"/>
+                <materialDesign:PackIcon x:Name="IconEntityAdded" Kind="Approve" Width="30" Height="30" Margin="10,5" HorizontalAlignment="Center" Foreground="Green" Background="Transparent"/>
                 <TextBlock x:Name="InvalidInputBlock"  Style="{StaticResource TextBlockInvalidStyle}"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">

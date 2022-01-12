@@ -23,6 +23,7 @@ namespace PL
             CustomerBL = IBL.GetCustomer(customerID);
             DataContext = CustomerBL;
             CustomerEntityAddButton.Visibility = Visibility.Collapsed;
+            IconEntityAdded.Visibility = Visibility.Collapsed;
             ParcelSentListViewFromCustomer.ItemsSource = CustomerBL.ParcelesSentByCustomer;
             ParcelReceivedListViewFromCustomer.ItemsSource = CustomerBL.ParcelesSentToCustomer;
         }
@@ -31,6 +32,7 @@ namespace PL
         {
             InitializeComponent();
             UpdateNameButton.Visibility = Visibility.Collapsed;
+            IconEntityAdded.Visibility = Visibility.Collapsed;
             IDBox.IsReadOnly = false;
         }
 
@@ -71,6 +73,7 @@ namespace PL
                 PhoneNumberBox.IsEnabled = false;
                 EnterLatitudeBox.IsEnabled = false;
                 EnterLongitudeBox.IsEnabled = false;
+                IconEntityAdded.Visibility = Visibility.Visible;
             }
             catch (InvalidInputException exp)
             {

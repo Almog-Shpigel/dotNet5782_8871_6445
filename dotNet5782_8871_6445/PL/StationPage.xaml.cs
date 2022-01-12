@@ -23,6 +23,7 @@ namespace PL
         {
             InitializeComponent();
             StationEntityAddButton.Visibility = Visibility.Collapsed;
+            IconEntityAdded.Visibility = Visibility.Collapsed;
             Station = item;
             StationBL = IBL.GetStation(Station.ID);
             DataContext = StationBL;
@@ -44,6 +45,7 @@ namespace PL
             AvailableSlotsBox.IsReadOnly = false;
             UpdateNameButton.Visibility = Visibility.Collapsed;
             UpdateTotalSlotsBox.Visibility = Visibility.Collapsed;
+            IconEntityAdded.Visibility = Visibility.Collapsed;
             EnableButton();
            
         }
@@ -134,13 +136,17 @@ namespace PL
                 InvalidInputBlock.Text = "Station added!";
                 InvalidInputBlock.Visibility = Visibility.Visible;
                 InvalidInputBlock.Foreground = Brushes.Green;
+                IDBox.IsEnabled = false;
+                NamelBlock.IsEnabled = false;
+                AvailableSlotsBox.IsEnabled = false;
+                EnterLongitudeBox.IsEnabled = false;
+                EnterLatitudeBox.IsEnabled = false;
+                IconEntityAdded.Visibility = Visibility.Visible;
             }
             catch (Exception exp)
             {
                 InvalidInputBlock.Text = exp.Message;
                 InvalidInputBlock.Visibility = Visibility.Visible;
-                IDBox.Foreground = Brushes.Red;
-                
             }
         }
 
@@ -155,11 +161,37 @@ namespace PL
         }
         private void EnterLatitudeBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            EnableButton();
+            int latitude;
+            if (int.TryParse(EnterLatitudeBox.Text, out latitude))
+            {
+                InvalidInputBlock.Visibility = Visibility.Collapsed;
+                UpdateTotalSlotsBox.Foreground = Brushes.Black;
+                EnableButton();
+            }
+            else
+            {
+                InvalidInputBlock.Visibility = Visibility.Visible;
+                InvalidInputBlock.Text = "Latitude must be a number";
+                EnterLatitudeBox.Foreground = Brushes.Red;
+                StationEntityAddButton.IsEnabled = false;
+            }
         }
         private void EnterLongitudeBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            EnableButton();
+            int longitude;
+            if (int.TryParse(EnterLongitudeBox.Text, out longitude))
+            {
+                InvalidInputBlock.Visibility = Visibility.Collapsed;
+                EnterLongitudeBox.Foreground = Brushes.Black;
+                EnableButton();
+            }
+            else
+            {
+                InvalidInputBlock.Visibility = Visibility.Visible;
+                InvalidInputBlock.Text = "Longitude must be a number";
+                EnterLongitudeBox.Foreground = Brushes.Red;
+                StationEntityAddButton.IsEnabled = false;
+            }
         }
 
         private void UpdateTotalSlotsBox_TextChanged(object sender, TextChangedEventArgs e)

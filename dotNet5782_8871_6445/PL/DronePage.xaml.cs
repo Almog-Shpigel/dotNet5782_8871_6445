@@ -31,6 +31,7 @@ namespace PL
             DroneEntityAddButton.IsEnabled = false;
             UpdateButtonsPanel.Visibility = Visibility.Collapsed;
             InvalidDroneIDBlock.Visibility = Visibility.Collapsed;
+            IconEntityAdded.Visibility = Visibility.Collapsed;
             IDBox.IsReadOnly = false;
             UpdateLayout();
         }
@@ -41,6 +42,7 @@ namespace PL
             droneBL = bl.GetDrone(DroneID);
             DataContext = droneBL;
             DroneEntityAddButton.Visibility = Visibility.Collapsed;
+            IconEntityAdded.Visibility = Visibility.Collapsed;
             ButtenEnableCheck();
             pin = new();
             ToolTip tt = new();
@@ -199,6 +201,7 @@ namespace PL
                 InvalidDroneIDBlock.Text = "Drone added!";
                 InvalidDroneIDBlock.Visibility = Visibility.Visible;
                 InvalidDroneIDBlock.Foreground = Brushes.Green;
+                IconEntityAdded.Visibility = Visibility.Visible;
             }
             catch (InvalidIDException exp)
             {

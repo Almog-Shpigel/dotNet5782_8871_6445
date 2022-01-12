@@ -24,6 +24,7 @@
             <StackPanel Orientation="Horizontal">
                 <TextBlock x:Name="PrintIDblock" Text="Drone ID:" Style="{StaticResource TextBlockPageStyle}" />
                 <TextBox   x:Name="IDBox" Text="{Binding ID}" Width="150" FontSize="20" Margin="10,0" IsReadOnly="True" TextChanged="IDBox_TextChanged"/>
+                <materialDesign:PackIcon x:Name="IconEntityAdded" Kind="Approve"  Width="30" Height="30" Margin="10,5" HorizontalAlignment="Center" Foreground="Green" Background="Transparent"/>
                 <TextBlock x:Name="InvalidDroneIDBlock" Text=" * please enter a valid number" Style="{StaticResource TextBlockInvalidStyle}" Visibility="{Binding ElementName=DroneEntityAddButton, Path=Visibility}"/>
                 <TextBlock x:Name="ExistsDroneIDBlock" Style="{StaticResource TextBlockInvalidStyle}"/>
             </StackPanel>

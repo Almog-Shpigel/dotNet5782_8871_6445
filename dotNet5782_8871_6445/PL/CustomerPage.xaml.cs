@@ -23,6 +23,7 @@ namespace PL
             CustomerBL = IBL.GetCustomer(customerID);
             DataContext = CustomerBL;
             CustomerEntityAddButton.Visibility = Visibility.Collapsed;
+            IconEntityAdded.Visibility = Visibility.Collapsed;
             ParcelSentListViewFromCustomer.ItemsSource = CustomerBL.ParcelesSentByCustomer;
             ParcelReceivedListViewFromCustomer.ItemsSource = CustomerBL.ParcelesSentToCustomer;
         }
@@ -31,6 +32,7 @@ namespace PL
         {
             InitializeComponent();
             UpdateNameButton.Visibility = Visibility.Collapsed;
+            IconEntityAdded.Visibility = Visibility.Collapsed;
             IDBox.IsReadOnly = false;
         }
 
@@ -66,6 +68,7 @@ namespace PL
                 InvalidInputBlock.Text = "Customer added!";
                 InvalidInputBlock.Visibility = Visibility.Visible;
                 InvalidInputBlock.Foreground = Brushes.Green;
+                IconEntityAdded.Visibility = Visibility.Visible;
             }
             catch (Exception exp)
             {

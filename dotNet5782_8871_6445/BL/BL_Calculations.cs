@@ -19,17 +19,17 @@ namespace BlApi
         private double GetRandBatteryStatus(double min, double max)
         {
             Random rand = new();
-            double MinBattery = 0, MaxBattery = 100, swap, battery;
+            double minBattery = 0, maxBattery = 100, swap, battery;
             if (min > max) { swap = min; min = max; max = swap; }
-            if (min >= MaxBattery)
-                return MaxBattery;
-            if (max <= MinBattery)
-                return MinBattery;
+            if (min >= maxBattery)
+                return maxBattery;
+            if (max <= minBattery)
+                return minBattery;
             double remider = (int)min + (int)max + rand.Next(50);
             remider /= 100;
             battery = rand.Next((int)min, (int)max) + remider;
-            if (battery > MaxBattery)
-                return MaxBattery;
+            if (battery > maxBattery)
+                return maxBattery;
             return battery;
         }
 
@@ -87,8 +87,8 @@ namespace BlApi
         /// <returns>distance (km)</returns>
         internal double DistanceDroneCustomer(DroneToList drone, Customer customer)
         {
-            Location CustomerLocation = new(customer.Latitude, customer.Longitude);
-            return Distance(drone.CurrentLocation, CustomerLocation);
+            Location customerLocation = new(customer.Latitude, customer.Longitude);
+            return Distance(drone.CurrentLocation, customerLocation);
         }
 
         /// <summary>
@@ -99,8 +99,8 @@ namespace BlApi
         /// <returns>distance (km)</returns>
         private double DistanceCustomerCustomer(Customer sender, Customer target)
         {
-            Location SenderLocation = new(sender.Latitude, sender.Longitude), TargetLocation = new(target.Latitude, target.Longitude);
-            return Distance(SenderLocation, TargetLocation);
+            Location senderLocation = new(sender.Latitude, sender.Longitude), targetLocation = new(target.Latitude, target.Longitude);
+            return Distance(senderLocation, targetLocation);
         }
 
         /// <summary>
@@ -111,8 +111,8 @@ namespace BlApi
         /// <returns>distance (km)</returns>
         private double DistanceCustomerStation(Customer customer, Station station)
         {
-            Location CustomerLocation = new(customer.Latitude, customer.Longitude), StationLocation = new(station.Latitude, station.Longitude);
-            return Distance(CustomerLocation, StationLocation);
+            Location customerLocation = new(customer.Latitude, customer.Longitude), stationLocation = new(station.Latitude, station.Longitude);
+            return Distance(customerLocation, stationLocation);
         }
 
         /// <summary>
@@ -128,7 +128,16 @@ namespace BlApi
                 if (parcel.ID == 0)
                     return false;
                 double total;
-                Customer sender = Data.GetCustomer(parcel.SenderID), target = Data.GetCustomer(parcel.TargetID);
+                Customer sender, target;
+                try
+                {
+                    sender = Data.GetCustomer(parcel.SenderID);
+                    target = Data.GetCustomer(parcel.TargetID);
+                }
+                catch (CustomerExistException ex)
+                {
+                    throw new EntityExistException("Invalid id. ",ex);
+                }
                 Location targetLocation = new(target.Latitude, target.Longitude);
                 Station nearestStat = GetNearestStation(targetLocation, Data.GetStations(station => true));
                 total = BatteryUsageCurrStation(drone, sender, target, nearestStat, parcel.Weight);
@@ -150,19 +159,19 @@ namespace BlApi
         /// <returns></returns>
         private double BatteryUsageCurrStation(DroneToList drone, Customer sender, Customer target, Station Station, WeightCategories Weight)
         {
-            double DisDroneSender, DisSenderTarget, DisTargetStation;
-            DisDroneSender = DistanceDroneCustomer(drone, sender);
-            DisSenderTarget = DistanceCustomerCustomer(sender, target);
-            DisTargetStation = DistanceCustomerStation(target, Station);
-            return BatteryUsageEmpty * (DisDroneSender + DisTargetStation) + GetWeightMultiplier(Weight) * DisSenderTarget;
+            double disDroneSender, disSenderTarget, disTargetStation;
+            disDroneSender = DistanceDroneCustomer(drone, sender);
+            disSenderTarget = DistanceCustomerCustomer(sender, target);
+            disTargetStation = DistanceCustomerStation(target, Station);
+            return BatteryUsageEmpty * (disDroneSender + disTargetStation) + GetWeightMultiplier(Weight) * disSenderTarget;
         }
 
         private double CalcBatteryCharged(DroneToList drone)
         {
             lock (Data)
             {
-                double TimeDifference = (DateTime.Now - (DateTime)Data.GetDroneCharge(drone.ID).Start).TotalSeconds;
-                drone.BatteryStatus += BatteryChargeRate * TimeDifference;
+                double timeDifference = (DateTime.Now - (DateTime)Data.GetDroneCharge(drone.ID).Start).TotalSeconds;
+                drone.BatteryStatus += BatteryChargeRate * timeDifference;
                 if (drone.BatteryStatus > 100)
                     return 100;
                 return drone.BatteryStatus;

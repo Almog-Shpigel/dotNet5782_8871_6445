@@ -59,15 +59,25 @@ namespace BlApi
         /// <returns>Drone to list object</returns>
         private DroneToList InitDroneInDelivery(DroneToList droneInDelivery, Parcel parcel)
         {
+            Customer sender, target;
             droneInDelivery.Status = DroneStatus.Delivery;         ///Updating drone's status
             droneInDelivery.ParcelID = parcel.ID;
-            Customer sender = Data.GetCustomer(parcel.SenderID), target = Data.GetCustomer(parcel.TargetID);
-            Location SenderLocation = new(sender.Latitude, sender.Longitude), TargetLocation = new(target.Latitude, target.Longitude);
-            Station nearestStationToSender = GetNearestStation(SenderLocation, Data.GetStations(station => true));
+            try
+            {
+                 sender = Data.GetCustomer(parcel.SenderID);
+                 target = Data.GetCustomer(parcel.TargetID);
+            }
+            catch (CustomerExistException ex)
+            {
+                throw new InvalidIDException("Invalid id. ",ex);
+            }
+            
+            Location senderLocation = new(sender.Latitude, sender.Longitude), TargetLocation = new(target.Latitude, target.Longitude);
+            Station nearestStationToSender = GetNearestStation(senderLocation, Data.GetStations(station => true));
             if (parcel.PickedUp == null)            ///Checking if the drone already picked up the parcel or not     
                 droneInDelivery.CurrentLocation = new(nearestStationToSender.Latitude, nearestStationToSender.Longitude);
             else                                    ///means it did get pickedup
-                droneInDelivery.CurrentLocation = SenderLocation;
+                droneInDelivery.CurrentLocation = senderLocation;
 
             double total = BatteryUsageCurrStation(droneInDelivery, sender, target, nearestStationToSender, parcel.Weight); ///Returns the amount of battery needed to complete the delivery
             droneInDelivery.BatteryStatus = GetRandBatteryStatus(total, 100);          ///Choosing random battery number between the minimum needed to complete the delivery and full battery
@@ -78,22 +88,32 @@ namespace BlApi
         {
             Station nearest;
             Customer customer;
-            int RandomCustomer, RandomStation;
+            int randomCustomer, randomStation;
             double battery;
             Random rand = new();
-            IEnumerable<Station> AllAvailableStations = Data.GetStations(station => station.ChargeSlots > 0);
-            IEnumerable<Customer> AllPastCustomers = Data.GetParcels(parcel => parcel.Delivered != null).Select(parcel => Data.GetCustomer(parcel.TargetID));
+            IEnumerable<Station> allAvailableStations = Data.GetStations(station => station.ChargeSlots > 0);
+            IEnumerable<Customer> allPastCustomers = Data.GetParcels(parcel => parcel.Delivered != null).Select(parcel => Data.GetCustomer(parcel.TargetID));
             DroneCharge droneCharging = Data.GetDroneCharge(D => D.DroneID == newDrone.ID).FirstOrDefault();
-            if (droneCharging.DroneID != 0 || !AllPastCustomers.Any())
+            if (droneCharging.DroneID != 0 || !allPastCustomers.Any())
             {
                 newDrone.Status = DroneStatus.Charging;
-                if(droneCharging.StationID == 0)
+                if (droneCharging.StationID == 0)
                 {
-                    RandomStation = rand.Next(0, GetAvailableStations().Count());
-                    nearest = AllAvailableStations.ElementAt(RandomStation);
+                    randomStation = rand.Next(0, GetAvailableStations().Count());
+                    nearest = allAvailableStations.ElementAt(randomStation);
                 }
                 else
-                    nearest = Data.GetStation(droneCharging.StationID);
+                {
+                    try
+                    {
+                        nearest = Data.GetStation(droneCharging.StationID);
+                    }
+                    catch (StationExistException ex)
+                    {
+                        throw new EntityExistException("Invalid id. ",ex);
+                    }
+                    
+                }
                 newDrone.CurrentLocation = new(nearest.Latitude, nearest.Longitude);               
                 Drone drone = new(newDrone.ID);
                 if (droneCharging.DroneID == 0)
@@ -103,8 +123,8 @@ namespace BlApi
             else
             {
                 newDrone.Status = DroneStatus.Available;
-                RandomCustomer = rand.Next(0, AllPastCustomers.Count());
-                customer = AllPastCustomers.ElementAt(RandomCustomer);
+                randomCustomer = rand.Next(0, allPastCustomers.Count());
+                customer = allPastCustomers.ElementAt(randomCustomer);
                 newDrone.CurrentLocation = new(customer.Latitude, customer.Longitude);
                 nearest = GetNearestStation(newDrone.CurrentLocation, Data.GetStations(station => true));
                 battery = Distance(newDrone.CurrentLocation, new Location(nearest.Latitude, nearest.Longitude)) * BatteryUsageEmpty;

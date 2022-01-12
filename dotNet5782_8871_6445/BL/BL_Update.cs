@@ -12,48 +12,48 @@ namespace BlApi
     partial class BL
     {
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public void UpdateDroneName(int DroneID, string NewModelName)
+        public void UpdateDroneName(int droneID, string newModelName)
         {
             lock (Data)
             {
-                if (DroneID is < 100000 or > 999999)
+                if (droneID is < 100000 or > 999999)
                     throw new InvalidInputException("Drone ID has to have 6 positive digits.");
-                if (NewModelName == "")
+                if (newModelName == "")
                     return;                                     /// Do nothing
-                Drone drone = new(DroneID, NewModelName);
+                Drone drone = new(droneID, newModelName);
                 try
                 {
                     Data.UpdateDroneName(drone);
                 }
                 catch (DroneExistException ex)
                 {
-                    throw new EntityExistException(ex.Message); // TO DO: maybe add to\change the message
+                    throw new EntityExistException("Invalid operation. \n" + ex.Message); 
                 }
-                DroneToList newDrone = DroneList.Find(d => d.ID == DroneID);
+                DroneToList newDrone = DroneList.Find(d => d.ID == droneID);
                 DroneList.Remove(newDrone);
-                newDrone.Model = NewModelName;
+                newDrone.Model = newModelName;
                 DroneList.Add(newDrone);
                 DroneList = DroneList.OrderBy(d => d.ID).ToList();
             }
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public void UpdateStationName(int StationID, string NewStationName)
+        public void UpdateStationName(int stationID, string newStationName)
         {
             lock (Data)
             {
-                if (StationID is < 100000 or > 999999)
+                if (stationID is < 100000 or > 999999)
                     throw new InvalidInputException("Invalid station ID number. Must have 6 digits");
-                if (NewStationName == "")
+                if (newStationName == "")
                     return;
-                Station station = new(StationID, NewStationName);
+                Station station = new(stationID, newStationName);
                 try
                 {
                     Data.UpdateStationName(station);
                 }
                 catch (StationExistException ex)
                 {
-                    throw new EntityExistException(ex.Message); // TO DO: maybe add to\change the message
+                    throw new EntityExistException("Invalid operation. \n" + ex.Message); 
                 }
             }
         }
@@ -80,79 +80,79 @@ namespace BlApi
                 }
                 catch (StationExistException ex)
                 {
-                    throw new EntityExistException(ex.Message); // TO DO: maybe add to\change the message
+                    throw new EntityExistException("Invalid operation. \n" + ex.Message); 
                 }
             }
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public void UpdateCustomerName(int CustomerID,string NewCustomerName)
+        public void UpdateCustomerName(int customerID,string newCustomerName)
         {
             lock (Data)
             {
-                if (CustomerID is < 100000000 or > 999999999)
+                if (customerID is < 100000000 or > 999999999)
                     throw new InvalidIDException("Customer ID has to have 9 positive digits.");
-                if (NewCustomerName == "")
+                if (newCustomerName == "")
                     return;
-                Customer customer = new(CustomerID, NewCustomerName);
+                Customer customer = new(customerID, newCustomerName);
                 try
                 {
                     Data.UpdateCustomerName(customer);
                 }
                 catch (CustomerExistException ex)
                 {
-                    throw new EntityExistException(ex.Message); // TO DO: maybe add to\change the message
+                    throw new EntityExistException("Invalid operation. \n" + ex.Message); 
                 }
             }
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public void UpdateCustomerPhone(int CustomerID, int NewCustomerPhone)
+        public void UpdateCustomerPhone(int customerID, int newCustomerPhone)
         {
             lock (Data)
             {
-                if (NewCustomerPhone is < 500000000 or > 599999999)
+                if (newCustomerPhone is < 500000000 or > 599999999)
                     throw new InvalidInputException("Invalid phone number");
-                string phoneNumber ="0" + NewCustomerPhone.ToString();
-                Customer customer = new(CustomerID, "", phoneNumber);
+                string phoneNumber ="0" + newCustomerPhone.ToString();
+                Customer customer = new(customerID, "", phoneNumber);
                 try
                 {
                     Data.UpdateCustomerPhone(customer);
                 }
                 catch (CustomerExistException ex)
                 {
-                    throw new EntityExistException(ex.Message); // TO DO: maybe add to\change the message
+                    throw new EntityExistException("Invalid operation. \n" + ex.Message); 
                 }
             }
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public void UpdateDroneToBeAvailable(int DroneID)
+        public void UpdateDroneToBeAvailable(int droneID)
         {
             lock (Data)
             {
-                DroneToList DroneToBeAvailable;
-                if (DroneID is < 100000 or > 999999)
+                DroneToList droneToBeAvailable;
+                if (droneID is < 100000 or > 999999)
                     throw new InvalidIDException("Drone ID has to have 6 positive digits.");
-                if (!DroneList.Any(d => d.ID == DroneID))
-                    throw new EntityExistException($"Drone {DroneID} doesn't exist in data!");
-                DroneToBeAvailable = DroneList.Find(d => d.ID == DroneID);
-                if (DroneToBeAvailable.Status != DroneStatus.Charging)
+                if (!DroneList.Any(d => d.ID == droneID))
+                    throw new EntityExistException($"Drone {droneID} doesn't exist in data!");
+                droneToBeAvailable = DroneList.Find(d => d.ID == droneID);
+                if (droneToBeAvailable.Status != DroneStatus.Charging)
                     throw new InvalidOperationException("Can't release a drone that isn't charging");
 
-                DroneToBeAvailable.BatteryStatus = CalcBatteryCharged(DroneToBeAvailable);
-                Drone drone = new(DroneID);
+                droneToBeAvailable.BatteryStatus = CalcBatteryCharged(droneToBeAvailable);
+                Drone drone = new(droneID);
                 try
                 {
                     Data.UpdateDroneToBeAvailable(drone);
                 }
                 catch (DroneExistException ex)
                 {
-                    throw new EntityExistException(ex.Message); // TO DO: maybe add to\change the message
+                    throw new EntityExistException("invalid operation. \n"+ ex.Message); 
                 }
-                DroneToList droneToList = DroneList.Find(d => d.ID == DroneID);
+                DroneToList droneToList = DroneList.Find(d => d.ID == droneID);
                 DroneList.Remove(droneToList);
-                droneToList.BatteryStatus = DroneToBeAvailable.BatteryStatus;
+                droneToList.BatteryStatus = droneToBeAvailable.BatteryStatus;
                 droneToList.Status = DroneStatus.Available;
                 DroneList.Add(droneToList);
                 DroneList = DroneList.OrderBy(d => d.ID).ToList();
@@ -160,100 +160,100 @@ namespace BlApi
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public void UpdateDroneToBeCharged(int DroneID)
+        public void UpdateDroneToBeCharged(int droneID)
         {
             lock (Data)
             {
-                if (DroneID is < 100000 or > 999999)
+                if (droneID is < 100000 or > 999999)
                     throw new InvalidIDException("Drone ID has to have 6 positive digits.");
                 Drone drone;
                 try
                 {
-                    drone = Data.GetDrone(DroneID);            ///Will throw an exception if the drone is not in the data
+                    drone = Data.GetDrone(droneID);            ///Will throw an exception if the drone is not in the data
                 }
                 catch (DroneExistException ex)
                 {
-                    throw new EntityExistException(ex.Message); // TO DO: maybe add to\change the message
+                    throw new EntityExistException("Invalid operation. \n " + ex.Message); // TO DO: maybe add to\change the message
                 }
-                Station NearestStatation;
-                Location NearestStataionLocation;
-                DroneToList droneToList = DroneList.Find(d => d.ID == DroneID);
+                Station nearestStatation;
+                Location nearestStataionLocation;
+                DroneToList droneToList = DroneList.Find(d => d.ID == droneID);
                 if (droneToList.Status == DroneStatus.Delivery)
                     throw new DroneStatusExpetion("Drone is in the middle of a delivery");
                 if (droneToList.Status == DroneStatus.Charging)
                     throw new DroneStatusExpetion("The drone is already charging");
-                NearestStatation = GetNearestStation(droneToList.CurrentLocation, Data.GetStations(station => station.ChargeSlots > 0));
-                NearestStataionLocation = new(NearestStatation.Latitude, NearestStatation.Longitude);
-                if (droneToList.BatteryStatus < Distance(droneToList.CurrentLocation, NearestStataionLocation) * BatteryUsageEmpty)
+                nearestStatation = GetNearestStation(droneToList.CurrentLocation, Data.GetStations(station => station.ChargeSlots > 0));
+                nearestStataionLocation = new(nearestStatation.Latitude, nearestStatation.Longitude);
+                if (droneToList.BatteryStatus < Distance(droneToList.CurrentLocation, nearestStataionLocation) * BatteryUsageEmpty)
                     throw new NotEnoughBatteryExpetion("There is not enough battery to reach the nearest station.");
 
-                droneToList.BatteryStatus -= Distance(droneToList.CurrentLocation, NearestStataionLocation) * BatteryUsageEmpty;
-                droneToList.CurrentLocation = new(NearestStataionLocation.Latitude, NearestStataionLocation.Longitude);
+                droneToList.BatteryStatus -= Distance(droneToList.CurrentLocation, nearestStataionLocation) * BatteryUsageEmpty;
+                droneToList.CurrentLocation = new(nearestStataionLocation.Latitude, nearestStataionLocation.Longitude);
                 droneToList.Status = DroneStatus.Charging;
-                Data.UpdateDroneToBeCharge(drone, NearestStatation, DateTime.Now);
+                Data.UpdateDroneToBeCharge(drone, nearestStatation, DateTime.Now);
             }
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public void UpdateParcelAssignToDrone(int DroneID)
+        public void UpdateParcelAssignToDrone(int droneID)
         {
             lock (Data)
             {
-                Parcel MaxParcel;
-                DroneToList DroneToBeAssign;
-                IEnumerable<Parcel> AllAvailableParcels;
-                if (DroneID < 100000 || DroneID > 999999)
+                Parcel maxParcel;
+                DroneToList droneToBeAssign;
+                IEnumerable<Parcel> allAvailableParcels;
+                if (droneID < 100000 || droneID > 999999)
                     throw new InvalidIDException("Drone ID has to have 6 positive digits.");
-                if (DroneList.Any(d => d.ID == DroneID))
-                    DroneToBeAssign = DroneList.Find(d => d.ID == DroneID);
+                if (DroneList.Any(d => d.ID == droneID))
+                    droneToBeAssign = DroneList.Find(d => d.ID == droneID);
                 else
-                    throw new EntityExistException($"Drone {DroneID} doesn't exsits in the data!");
-                if (DroneToBeAssign.Status != DroneStatus.Available)
+                    throw new EntityExistException($"Drone {droneID} doesn't exsits in the data!");
+                if (droneToBeAssign.Status != DroneStatus.Available)
                     throw new DroneStatusExpetion("Drone is unavailable for a delivery!");
-                AllAvailableParcels = Data.GetParcels(p => p.DroneID == 0);
-                if (!AllAvailableParcels.Any())
+                allAvailableParcels = Data.GetParcels(p => p.DroneID == 0);
+                if (!allAvailableParcels.Any())
                     throw new NoAvailableParcelsException("There are no parcels to assign at this moment.");
-                AllAvailableParcels = AllAvailableParcels.Where(p => PossibleDelivery(DroneToBeAssign, p));
-                if (!AllAvailableParcels.Any())
+                allAvailableParcels = allAvailableParcels.Where(p => PossibleDelivery(droneToBeAssign, p));
+                if (!allAvailableParcels.Any())
                     throw new NoAvailableParcelsException("There is not enough battery to complete a delivery. Try charging the drone.");
-                AllAvailableParcels = AllAvailableParcels.Where(p => DroneToBeAssign.MaxWeight >= p.Weight);
-                if (!AllAvailableParcels.Any())
+                allAvailableParcels = allAvailableParcels.Where(p => droneToBeAssign.MaxWeight >= p.Weight);
+                if (!allAvailableParcels.Any())
                     throw new NoAvailableParcelsException("The drone can't carry any parcel at this moment.");
-                AllAvailableParcels = AllAvailableParcels.OrderBy(p => p.Priority).ThenBy(p => p.Weight);
-                MaxParcel = AllAvailableParcels.First();
-                foreach (var parcel in AllAvailableParcels)
+                allAvailableParcels = allAvailableParcels.OrderBy(p => p.Priority).ThenBy(p => p.Weight);
+                maxParcel = allAvailableParcels.First();
+                foreach (var parcel in allAvailableParcels)
                 {
-                    if (DistanceDroneCustomer(DroneToBeAssign, Data.GetCustomer(parcel.SenderID)) < DistanceDroneCustomer(DroneToBeAssign, Data.GetCustomer(MaxParcel.SenderID)))
-                        MaxParcel = parcel;
+                    if (DistanceDroneCustomer(droneToBeAssign, Data.GetCustomer(parcel.SenderID)) < DistanceDroneCustomer(droneToBeAssign, Data.GetCustomer(maxParcel.SenderID)))
+                        maxParcel = parcel;
                 }
-                Data.PairParcelToDrone(MaxParcel, new(DroneToBeAssign.ID));
-                DroneList.Remove(DroneToBeAssign);
-                DroneToBeAssign.Status = DroneStatus.Delivery;
-                DroneToBeAssign.ParcelID = MaxParcel.ID;
-                DroneList.Add(DroneToBeAssign);
+                Data.PairParcelToDrone(maxParcel, new(droneToBeAssign.ID));
+                DroneList.Remove(droneToBeAssign);
+                droneToBeAssign.Status = DroneStatus.Delivery;
+                droneToBeAssign.ParcelID = maxParcel.ID;
+                DroneList.Add(droneToBeAssign);
                 DroneList = DroneList.OrderBy(d => d.ID).ToList();
             }
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public void UpdateParcelCollectedByDrone(int DroneID)
+        public void UpdateParcelCollectedByDrone(int droneID)
         {
             lock (Data)
             {
                 Customer sender;
-                Parcel ParcelToBeCollected;
+                Parcel parcelToBeCollected;
                 DroneToList droneInDelivery;
-                if (DroneID < 100000 || DroneID > 999999)
+                if (droneID < 100000 || droneID > 999999)
                     throw new InvalidIDException("Drone ID has to have 6 positive digits.");
-                droneInDelivery = DroneList.Find(d => d.ID == DroneID);
+                droneInDelivery = DroneList.Find(d => d.ID == droneID);
                 if (droneInDelivery.Status != DroneStatus.Delivery)
                     throw new DroneNotInDeliveryException("This drone is not in delivery!");
-                ParcelToBeCollected = Data.GetParcel(droneInDelivery.ParcelID);
-                if (ParcelToBeCollected.PickedUp != null)
+                parcelToBeCollected = Data.GetParcel(droneInDelivery.ParcelID);
+                if (parcelToBeCollected.PickedUp != null)
                     throw new ParcelTimesException("The parcel has been already collected!");
 
-                sender = Data.GetCustomer(ParcelToBeCollected.SenderID);
-                Data.UpdateParcelCollected(ParcelToBeCollected);
+                sender = Data.GetCustomer(parcelToBeCollected.SenderID);
+                Data.UpdateParcelCollected(parcelToBeCollected);
                 DroneList.Remove(droneInDelivery);
                 droneInDelivery.BatteryStatus -= DistanceDroneCustomer(droneInDelivery, sender) * BatteryUsageEmpty;
                 droneInDelivery.CurrentLocation = new(sender.Latitude, sender.Longitude);
@@ -311,33 +311,6 @@ namespace BlApi
         public void UpdateDroneSimulatorStart(int droneID, Action updateView, Func<bool> checkIfCanceled)
         {
             new DroneSimulator(this, droneID, updateView, checkIfCanceled);
-        }
-
-        internal void UpdateDroneLocation(double degree, DroneBL drone, double speed)
-        {
-            if (0 <= degree && degree < 90)
-                drone.CurrentLocation = new(drone.CurrentLocation.Latitude + speed * Math.Cos(degree), drone.CurrentLocation.Longitude + speed * Math.Sin(degree));
-            if (90 <= degree && degree < 180)
-                drone.CurrentLocation = new(drone.CurrentLocation.Latitude + speed * Math.Cos(degree), drone.CurrentLocation.Longitude + speed * Math.Sin(degree));
-            if (180 <= degree && degree < 270)
-                drone.CurrentLocation = new(drone.CurrentLocation.Latitude + speed * Math.Cos(degree), drone.CurrentLocation.Longitude + speed * Math.Sin(degree));
-            if (270 <= degree && degree < 360)
-                drone.CurrentLocation = new(drone.CurrentLocation.Latitude + speed * Math.Cos(degree), drone.CurrentLocation.Longitude + speed * Math.Sin(degree));
-            UpdateDrone(drone);
-        }
-
-        private void UpdateDrone(DroneBL drone)
-        {
-            lock (Data)
-            {
-                if (drone.ID is < 100000 or > 999999)
-                    throw new InvalidInputException("Drone ID has to have 6 positive digits.");
-                DroneToList newDrone = DroneList.Find(d => d.ID == drone.ID);
-                DroneList.Remove(newDrone);
-                newDrone.CurrentLocation = drone.CurrentLocation;
-                DroneList.Add(newDrone);
-                DroneList = DroneList.OrderBy(d => d.ID).ToList();
-            }
         }
     }
 }

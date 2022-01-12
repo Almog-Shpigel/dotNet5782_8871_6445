@@ -29,21 +29,29 @@ namespace BlApi
                 List<ParcelToList> parcels = new();
                 foreach (Parcel parcel in Data.GetParcels(parcel => true))
                 {
-                    ParcelToList NewParcel = new();
-                    NewParcel.ID = parcel.ID;
-                    NewParcel.Priority = parcel.Priority;
-                    NewParcel.TargetName = Data.GetCustomer(parcel.TargetID).Name;
-                    NewParcel.SenderName = Data.GetCustomer(parcel.SenderID).Name;
-                    NewParcel.Weight = parcel.Weight;
+                    ParcelToList newParcel = new();
+                    newParcel.ID = parcel.ID;
+                    newParcel.Priority = parcel.Priority;
+                    try
+                    {
+                        newParcel.TargetName = Data.GetCustomer(parcel.TargetID).Name;
+                        newParcel.SenderName = Data.GetCustomer(parcel.SenderID).Name;
+                    }
+                    catch (CustomerExistException ex)
+                    {
+                        throw new EntityExistException("Invalid id. \n " + ex.Message);
+                    }
+                    
+                    newParcel.Weight = parcel.Weight;
                     if (parcel.Delivered != null)
-                        NewParcel.Status = ParcelStatus.Delivered;
+                        newParcel.Status = ParcelStatus.Delivered;
                     else if (parcel.PickedUp != null)
-                        NewParcel.Status = ParcelStatus.PickedUp;
+                        newParcel.Status = ParcelStatus.PickedUp;
                     else if (parcel.Scheduled != null)
-                        NewParcel.Status = ParcelStatus.Scheduled;
+                        newParcel.Status = ParcelStatus.Scheduled;
                     else
-                        NewParcel.Status = ParcelStatus.Requested;
-                    parcels.Add(NewParcel);
+                        newParcel.Status = ParcelStatus.Requested;
+                    parcels.Add(newParcel);
                 }
                 return parcels;
             }
@@ -68,12 +76,12 @@ namespace BlApi
                 List<CustomerToList> customers = new();
                 foreach (Customer customer in Data.GetCustomers(customer => true))
                 {
-                    CustomerToList NewCustomer = new(customer.ID, customer.Name, customer.Phone);
-                    NewCustomer.ParcelsOnTheWay = Data.GetParcels(parcel => parcel.TargetID == NewCustomer.ID && parcel.Delivered == null).Count();
-                    NewCustomer.ParcelsRecived = Data.GetParcels(parcel => parcel.TargetID == NewCustomer.ID && parcel.Delivered != null).Count();
-                    NewCustomer.SentAndNOTDeliverd = Data.GetParcels(parcel => parcel.SenderID == NewCustomer.ID && parcel.Delivered == null).Count();
-                    NewCustomer.SentAndDeliverd = Data.GetParcels(parcel => parcel.SenderID == NewCustomer.ID && parcel.Delivered != null).Count();
-                    customers.Add(NewCustomer);
+                    CustomerToList newCustomer = new(customer.ID, customer.Name, customer.Phone);
+                    newCustomer.ParcelsOnTheWay = Data.GetParcels(parcel => parcel.TargetID == newCustomer.ID && parcel.Delivered == null).Count();
+                    newCustomer.ParcelsRecived = Data.GetParcels(parcel => parcel.TargetID == newCustomer.ID && parcel.Delivered != null).Count();
+                    newCustomer.SentAndNOTDeliverd = Data.GetParcels(parcel => parcel.SenderID == newCustomer.ID && parcel.Delivered == null).Count();
+                    newCustomer.SentAndDeliverd = Data.GetParcels(parcel => parcel.SenderID == newCustomer.ID && parcel.Delivered != null).Count();
+                    customers.Add(newCustomer);
                 }
                 return customers;
             }
@@ -97,7 +105,7 @@ namespace BlApi
         {
             lock (Data)
             {
-                IEnumerable<StationToList> AvailableStations = Data
+                IEnumerable<StationToList> availableStations = Data
                 .GetStations(station => station.ChargeSlots > 0)
                 .Select(station => new StationToList()
                 {
@@ -106,7 +114,7 @@ namespace BlApi
                     Name = station.Name,
                     UsedChargeSlots = Data.GetDroneCharge(droneCharge => droneCharge.StationID == station.ID).Count()
                 });
-                return AvailableStations;
+                return availableStations;
             }
         }
 
@@ -125,12 +133,12 @@ namespace BlApi
         {
             lock (Data)
             {
-                IEnumerable<DroneToList> SelectedDrones = GetAllDrones();
+                IEnumerable<DroneToList> selectedDrones = GetAllDrones();
                 if ((int)weight != -1)
-                    SelectedDrones = SelectedDrones.Where(drone => drone.MaxWeight == weight);
+                    selectedDrones = selectedDrones.Where(drone => drone.MaxWeight == weight);
                 if ((int)status != -1)
-                    SelectedDrones = SelectedDrones.Where(drone => drone.Status == status);
-                return SelectedDrones;
+                    selectedDrones = selectedDrones.Where(drone => drone.Status == status);
+                return selectedDrones;
             }
         }
 
@@ -139,18 +147,18 @@ namespace BlApi
         {
             lock (Data)
             {
-                IEnumerable<ParcelToList> SelectedParcels = GetAllParcels();
+                IEnumerable<ParcelToList> selectedParcels = GetAllParcels();
                 if ((int)weight != -1)
-                    SelectedParcels = SelectedParcels.Where(parcel => parcel.Weight == weight);
+                    selectedParcels = selectedParcels.Where(parcel => parcel.Weight == weight);
                 if ((int)priorities != -1)
-                    SelectedParcels = SelectedParcels.Where(parcel => parcel.Priority == priorities);
+                    selectedParcels = selectedParcels.Where(parcel => parcel.Priority == priorities);
                 if ((int)status != -1)
-                    SelectedParcels = SelectedParcels.Where(parcel => parcel.Status == status);
+                    selectedParcels = selectedParcels.Where(parcel => parcel.Status == status);
                 if (from != null)
-                    SelectedParcels = SelectedParcels.Where(parcel => from <= Data.GetParcel(parcel.ID).TimeRequested);
+                    selectedParcels = selectedParcels.Where(parcel => from <= Data.GetParcel(parcel.ID).TimeRequested);
                 if (to != null)
-                    SelectedParcels = SelectedParcels.Where(parcel => to >= Data.GetParcel(parcel.ID).TimeRequested);
-                return SelectedParcels;
+                    selectedParcels = selectedParcels.Where(parcel => to >= Data.GetParcel(parcel.ID).TimeRequested);
+                return selectedParcels;
             }
         }
 
@@ -158,13 +166,13 @@ namespace BlApi
 
         #region Get one
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public DroneBL GetDrone(int DroneID)
+        public DroneBL GetDrone(int droneID)
         {
             lock (Data)
             {
                 DroneToList drone;
-                if (DroneList.Any(d => d.ID == DroneID))
-                    drone = DroneList.Where(d => d.ID == DroneID).First();
+                if (DroneList.Any(d => d.ID == droneID))
+                    drone = DroneList.Where(d => d.ID == droneID).First();
                 else
                     throw new DroneExistException();
 
@@ -180,13 +188,29 @@ namespace BlApi
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public ParcelBL GetParcel(int ParcelID)
+        public ParcelBL GetParcel(int parcelID)
         {
             lock (Data)
             {
-                Parcel parcel = Data.GetParcel(ParcelID);
-                Customer sender = Data.GetCustomer(parcel.SenderID);
-                Customer target = Data.GetCustomer(parcel.TargetID);
+                Parcel parcel;
+                Customer sender,target;
+                try
+                {
+                    parcel = Data.GetParcel(parcelID);
+                }
+                catch (ParcelExistException ex)
+                {
+                    throw new EntityExistException("Invalid id. \n "+ ex.Message);
+                }
+                try
+                {
+                    sender = Data.GetCustomer(parcel.SenderID);
+                    target = Data.GetCustomer(parcel.TargetID);
+                }
+                catch (CustomerExistException ex)
+                {
+                    throw new EntityExistException("Invalid id. \n"+ ex.Message);
+                }
                 ParcelBL parcelBL = new(new(sender.ID, sender.Name), new(target.ID, target.Name), parcel.Weight, parcel.Priority);
                 parcelBL.ID = parcel.ID;
                 parcelBL.TimeRequested = parcel.TimeRequested;
@@ -202,18 +226,18 @@ namespace BlApi
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public StationBL GetStation(int StationID)
+        public StationBL GetStation(int stationID)
         {
             lock (Data)
             {
                 Station station;
                 try
                 {
-                    station = Data.GetStation(StationID);
+                    station = Data.GetStation(stationID);
                 }
                 catch (StationExistException ex)
                 {
-                    throw new EntityExistException("Wrong id.\n ", ex);
+                    throw new EntityExistException("Invalid id. \n" + ex.Message);
                 }
 
                 Location location = new(station.Latitude, station.Longitude);
@@ -231,30 +255,30 @@ namespace BlApi
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public CustomerBL GetCustomer(int CustomerID)
+        public CustomerBL GetCustomer(int customerID)
         {
             lock (Data)
             {
                 Customer customer;
                 try
                 {
-                    customer = Data.GetCustomer(CustomerID);
+                    customer = Data.GetCustomer(customerID);
                 }
                 catch (CustomerExistException ex)
                 {
-                    throw new InvalidIDException("Wrong id!\n", ex);
+                    throw new InvalidIDException("Invalid id. \n" + ex.Message);
                 }
 
                 Location location = new(customer.Latitude, customer.Longitude);
-                CustomerBL CustomerToDisplay = new CustomerBL(customer.ID, customer.Name, customer.Phone, location);
+                CustomerBL customerToDisplay = new CustomerBL(customer.ID, customer.Name, customer.Phone, location);
                 foreach (var parcel in Data.GetParcels(parcel => true))
                 {
-                    if (parcel.SenderID == CustomerToDisplay.ID)
-                        CustomerToDisplay.ParcelesSentByCustomer.Add(CreateParcelAtCustomer(parcel, parcel.TargetID));
-                    if (parcel.TargetID == CustomerToDisplay.ID)
-                        CustomerToDisplay.ParcelesSentToCustomer.Add(CreateParcelAtCustomer(parcel, parcel.SenderID));
+                    if (parcel.SenderID == customerToDisplay.ID)
+                        customerToDisplay.ParcelesSentByCustomer.Add(CreateParcelAtCustomer(parcel, parcel.TargetID));
+                    if (parcel.TargetID == customerToDisplay.ID)
+                        customerToDisplay.ParcelesSentToCustomer.Add(CreateParcelAtCustomer(parcel, parcel.SenderID));
                 }
-                return CustomerToDisplay;
+                return customerToDisplay;
             }
         }
         #endregion
@@ -284,8 +308,8 @@ namespace BlApi
                 CustomerInParcel customer1 = new(sender.ID, sender.Name), customer2 = new(target.ID, target.Name);
                 Location pickUpLocation = new(sender.Latitude, sender.Longitude), targetLocation = new(target.Latitude, target.Longitude);
                 double distance = DistanceCustomerCustomer(sender, target);
-                ParcelInDelivery UpdateParcelInDelivery = new(parcel.ID, parcel.Weight, parcel.Priority, customer1, customer2, pickUpLocation, targetLocation, distance);
-                return UpdateParcelInDelivery;
+                ParcelInDelivery updateParcelInDelivery = new(parcel.ID, parcel.Weight, parcel.Priority, customer1, customer2, pickUpLocation, targetLocation, distance);
+                return updateParcelInDelivery;
             }
         }
 
@@ -302,8 +326,8 @@ namespace BlApi
                 ParcelStatus status = GetParcelStatus(parcel);
                 Customer cust = Data.GetCustomer(customerID);
                 CustomerInParcel customer = new(cust.ID, cust.Name);
-                ParcelAtCustomer NewParcel = new(parcel.ID, parcel.Weight, parcel.Priority, status, customer);
-                return NewParcel;
+                ParcelAtCustomer newParcel = new(parcel.ID, parcel.Weight, parcel.Priority, status, customer);
+                return newParcel;
             }
         }
 
@@ -372,16 +396,16 @@ namespace BlApi
         /// </para>
         /// </summary>
         /// <returns></returns>
-        internal Station GetNearestStation(Location location, IEnumerable<Station> AllStations)
+        internal Station GetNearestStation(Location location, IEnumerable<Station> allStations)
         {
             lock (Data)
             {
-                if (!AllStations.Any())
+                if (!allStations.Any())
                     throw new NoAvailableStation("There are no station available.");
-                Station nearestStation = AllStations.First();
+                Station nearestStation = allStations.First();
                 double distance, minDistance;
                 minDistance = Distance(location, new(nearestStation.Latitude, nearestStation.Longitude));
-                foreach (Station station in AllStations)
+                foreach (Station station in allStations)
                 {
                     distance = Distance(location, new(station.Latitude, station.Longitude));
                     if (distance < minDistance)

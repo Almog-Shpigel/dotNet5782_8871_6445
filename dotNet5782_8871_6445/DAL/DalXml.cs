@@ -14,6 +14,8 @@ namespace DAL
         internal static readonly DalXml instance = new();
         private DalXml()
         {
+            /*****XML Initializtion, after the first run should put lines 18-34 on comments out *****/
+            #region XML Initialize
             DataSource.Initialize();
             XmlTools.SaveListToXmlSerializer(DataSource.customers, customersPath);
             XmlTools.SaveListToXmlSerializer(DataSource.drones, dronesPath);
@@ -31,6 +33,7 @@ namespace DAL
             XElement Counters = new("Counters", ParcelIDCounter);
             XElement configItems = new XElement("Config-Data", BatteryUsage, Counters);
             XmlTools.SaveListToXElement(configItems, configPath);
+            #endregion
 
         }
 
@@ -49,8 +52,8 @@ namespace DAL
         [MethodImpl(MethodImplOptions.Synchronized)]
         public void AddNewStation(Station station)
         {
-            XElement ListStations = XmlTools.LoadListFromXElement(stationsPath);
-            var x = (from s in ListStations.Elements()
+            XElement listStations = XmlTools.LoadListFromXElement(stationsPath);
+            var x = (from s in listStations.Elements()
                      where Convert.ToInt32(s.Element("ID").Value) == station.ID
                      select s
                    ).FirstOrDefault();
@@ -62,29 +65,29 @@ namespace DAL
             XElement longitude = new("Longitude", station.Longitude);
             XElement slots = new("ChargeSlots",station.ChargeSlots);
 
-            ListStations.Add(new XElement("Station", id, name, latitude, longitude, slots));
-            XmlTools.SaveListToXElement(ListStations, stationsPath);
+            listStations.Add(new XElement("Station", id, name, latitude, longitude, slots));
+            XmlTools.SaveListToXElement(listStations, stationsPath);
             
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
         public void AddNewCustomer(Customer customer)
         {
-            List<Customer> ListCustomers = XmlTools.LoadListFromXmlSerializer<Customer>(customersPath);
-            if (ListCustomers.Any(c => c.ID == customer.ID))
+            List<Customer> listCustomers = XmlTools.LoadListFromXmlSerializer<Customer>(customersPath);
+            if (listCustomers.Any(c => c.ID == customer.ID))
                 throw new CustomerExistException($"The customer ID {customer.ID} exists already in the data!!");
-            ListCustomers.Add(customer);
-            XmlTools.SaveListToXmlSerializer(ListCustomers, customersPath);
+            listCustomers.Add(customer);
+            XmlTools.SaveListToXmlSerializer(listCustomers, customersPath);
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
         public void AddNewParcel(Parcel parcel)
         {
-            List<Parcel> ListParcels = XmlTools.LoadListFromXmlSerializer<Parcel>(parcelsPath);
-            List<Customer> ListCustomers = XmlTools.LoadListFromXmlSerializer<Customer>(customersPath);
-            if (!ListCustomers.Any(c => c.ID == parcel.SenderID))
+            List<Parcel> listParcels = XmlTools.LoadListFromXmlSerializer<Parcel>(parcelsPath);
+            List<Customer> listCustomers = XmlTools.LoadListFromXmlSerializer<Customer>(customersPath);
+            if (!listCustomers.Any(c => c.ID == parcel.SenderID))
                 throw new CustomerExistException($"Customer {parcel.SenderID} doesn't exists in the data!!");
-            if (!ListCustomers.Any(c => c.ID == parcel.TargetID))
+            if (!listCustomers.Any(c => c.ID == parcel.TargetID))
                 throw new CustomerExistException($"Customer {parcel.TargetID} dosen't exists in the data!!");
             XElement config = XmlTools.LoadData(configPath);
             int parcelCounter = Convert.ToInt32(config.Element("Counters").Element("ParcelIDCounter").Value);
@@ -92,23 +95,23 @@ namespace DAL
             config.Element("Counters").Element("ParcelIDCounter").Remove();
             parcelCounter++;
             config.Element("Counters").Add(new XElement("ParcelIDCounter", parcelCounter));
-            ListParcels.Add(parcel);
+            listParcels.Add(parcel);
             XmlTools.SaveListToXElement(config, configPath);
-            XmlTools.SaveListToXmlSerializer(ListParcels, parcelsPath);
+            XmlTools.SaveListToXmlSerializer(listParcels, parcelsPath);
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
         public void AddNewDrone(Drone drone, Station station)
         {
-            List<Drone> ListDrones = XmlTools.LoadListFromXmlSerializer<Drone>(dronesPath);
-            List<Station> ListStations = XmlTools.LoadListFromXmlSerializer<Station>(stationsPath);
-            if (ListDrones.Any(d => d.ID == drone.ID))
+            List<Drone> listDrones = XmlTools.LoadListFromXmlSerializer<Drone>(dronesPath);
+            List<Station> listStations = XmlTools.LoadListFromXmlSerializer<Station>(stationsPath);
+            if (listDrones.Any(d => d.ID == drone.ID))
                 throw new DroneExistException($"The drone ID {drone.ID} exists already in the data!!");
-            if (!ListStations.Any(s => s.ID == station.ID))
+            if (!listStations.Any(s => s.ID == station.ID))
                 throw new StationExistException($"The station ID {station.ID} doesn't exists in the data!!");
             UpdateDroneToBeCharge(drone, station, DateTime.Now);
-            ListDrones.Add(drone);
-            XmlTools.SaveListToXmlSerializer(ListDrones, dronesPath);
+            listDrones.Add(drone);
+            XmlTools.SaveListToXmlSerializer(listDrones, dronesPath);
         }
         #endregion
 
@@ -116,63 +119,63 @@ namespace DAL
         [MethodImpl(MethodImplOptions.Synchronized)]
         public void UpdateDroneName(Drone newDrone)
         {
-            List<Drone> ListDrones = XmlTools.LoadListFromXmlSerializer<Drone>(dronesPath);
+            List<Drone> listDrones = XmlTools.LoadListFromXmlSerializer<Drone>(dronesPath);
             Drone oldDrone = GetDrone(newDrone.ID);
-            ListDrones.Remove(oldDrone);
+            listDrones.Remove(oldDrone);
             oldDrone.Model = newDrone.Model;
-            ListDrones.Add(oldDrone);
-            ListDrones = ListDrones.OrderBy(d => d.ID).ToList();
-            XmlTools.SaveListToXmlSerializer(ListDrones, dronesPath);
+            listDrones.Add(oldDrone);
+            listDrones = listDrones.OrderBy(d => d.ID).ToList();
+            XmlTools.SaveListToXmlSerializer(listDrones, dronesPath);
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
         public void UpdateStationName(Station station)
         {
-            XElement ListStations = XmlTools.LoadListFromXElement(stationsPath);
-            XElement oldStation = (from s in ListStations.Elements()
+            XElement listStations = XmlTools.LoadListFromXElement(stationsPath);
+            XElement oldStation = (from s in listStations.Elements()
                                    where Convert.ToInt32(s.Element("ID").Value) == station.ID
                                    select s).FirstOrDefault();
             if (oldStation is null)
                 throw new StationExistException($"Station {station.ID} doesn't exists in the data!!");
             oldStation.Element("Name").Value = station.Name;
-            XmlTools.SaveListToXElement(ListStations, stationsPath);
+            XmlTools.SaveListToXElement(listStations, stationsPath);
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
         public void UpdateStationSlots(Station station)
         {
-            XElement ListStations = XmlTools.LoadListFromXElement(stationsPath);
-            XElement oldStation = (from s in ListStations.Elements()
+            XElement listStations = XmlTools.LoadListFromXElement(stationsPath);
+            XElement oldStation = (from s in listStations.Elements()
                                    where Convert.ToInt32(s.Element("ID").Value) == station.ID
                                    select s).FirstOrDefault();
             if (oldStation is null)
                 throw new StationExistException($"Station {station.ID} doesn't exists in the data!!");
             oldStation.Element("ChargeSlots").Value = station.ChargeSlots.ToString();
-            XmlTools.SaveListToXElement(ListStations, stationsPath);
+            XmlTools.SaveListToXElement(listStations, stationsPath);
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
         public void UpdateCustomerName(Customer newCustomer)
         {
-            List<Customer> ListCustomers = XmlTools.LoadListFromXmlSerializer<Customer>(customersPath);
+            List<Customer> listCustomers = XmlTools.LoadListFromXmlSerializer<Customer>(customersPath);
             Customer oldCustomer = GetCustomer(newCustomer.ID);
-            ListCustomers.Remove(oldCustomer);
+            listCustomers.Remove(oldCustomer);
             oldCustomer.Name = newCustomer.Name;
-            ListCustomers.Add(oldCustomer);
-            ListCustomers = ListCustomers.OrderBy(c => c.ID).ToList();
-            XmlTools.SaveListToXmlSerializer(ListCustomers, customersPath);
+            listCustomers.Add(oldCustomer);
+            listCustomers = listCustomers.OrderBy(c => c.ID).ToList();
+            XmlTools.SaveListToXmlSerializer(listCustomers, customersPath);
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
         public void UpdateCustomerPhone(Customer customer)
         {
-            List<Customer> ListCustomers = XmlTools.LoadListFromXmlSerializer<Customer>(customersPath);
+            List<Customer> listCustomers = XmlTools.LoadListFromXmlSerializer<Customer>(customersPath);
             Customer oldCustomer = GetCustomer(customer.ID);
-            ListCustomers.Remove(oldCustomer);
+            listCustomers.Remove(oldCustomer);
             oldCustomer.Phone = '0' + customer.Phone;
-            ListCustomers.Add(oldCustomer);
-            ListCustomers = ListCustomers.OrderBy(c => c.ID).ToList();
-            XmlTools.SaveListToXmlSerializer(ListCustomers, customersPath);
+            listCustomers.Add(oldCustomer);
+            listCustomers = listCustomers.OrderBy(c => c.ID).ToList();
+            XmlTools.SaveListToXmlSerializer(listCustomers, customersPath);
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
@@ -180,90 +183,91 @@ namespace DAL
         {
             Drone oldDrone = GetDrone(drone.ID);
 
-            List<DroneCharge> ListDronesCharge = XmlTools.LoadListFromXmlSerializer<DroneCharge>(droneChargePath);
+            List<DroneCharge> listDronesCharge = XmlTools.LoadListFromXmlSerializer<DroneCharge>(droneChargePath);
             DroneCharge droneCharge = GetDroneCharge(oldDrone.ID);
-            ListDronesCharge.Remove(droneCharge);
-            List<Station> ListStations = XmlTools.LoadListFromXmlSerializer<Station>(stationsPath);
+            listDronesCharge.Remove(droneCharge);
+            List<Station> listStations = XmlTools.LoadListFromXmlSerializer<Station>(stationsPath);
             Station station = GetStation(droneCharge.StationID);
-            ListStations.Remove(station);
+            listStations.Remove(station);
             station.ChargeSlots++;
-            ListStations.Add(station);
-            ListStations = ListStations.OrderBy(s => s.ID).ToList();
-            XmlTools.SaveListToXmlSerializer(ListStations, stationsPath);
-            XmlTools.SaveListToXmlSerializer(ListDronesCharge, droneChargePath);            
+            listStations.Add(station);
+            listStations = listStations.OrderBy(s => s.ID).ToList();
+            XmlTools.SaveListToXmlSerializer(listStations, stationsPath);
+            XmlTools.SaveListToXmlSerializer(listDronesCharge, droneChargePath);            
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
         public void UpdateDroneToBeCharge(Drone drone, Station station, DateTime? start)
         {
-            List<Station> ListStations = XmlTools.LoadListFromXmlSerializer<Station>(stationsPath);
-            List<DroneCharge> ListDronesCharge = XmlTools.LoadListFromXmlSerializer<DroneCharge>(droneChargePath);
-            Station UpdatedStation = GetStation(station.ID);
-            DroneCharge droneCharge = new DroneCharge(drone.ID, station.ID, start);
-            ListDronesCharge.Add(droneCharge);
-            ListDronesCharge = ListDronesCharge.OrderBy(d => d.DroneID).ToList();
-            ListStations.Remove(UpdatedStation);
-            UpdatedStation.ChargeSlots--;
-            ListStations.Add(UpdatedStation);
-            ListStations = ListStations.OrderBy(s => s.ID).ToList();
-            XmlTools.SaveListToXmlSerializer(ListStations, stationsPath);
-            XmlTools.SaveListToXmlSerializer(ListDronesCharge, droneChargePath);
+            List<Station> listStations = XmlTools.LoadListFromXmlSerializer<Station>(stationsPath);
+            List<DroneCharge> listDronesCharge = XmlTools.LoadListFromXmlSerializer<DroneCharge>(droneChargePath);
+            Station updatedStation = GetStation(station.ID);
+            Drone droneToBeCharged = GetDrone(drone.ID);
+            DroneCharge droneCharge = new DroneCharge(droneToBeCharged.ID, station.ID, start);
+            listDronesCharge.Add(droneCharge);
+            listDronesCharge = listDronesCharge.OrderBy(d => d.DroneID).ToList();
+            listStations.Remove(updatedStation);
+            updatedStation.ChargeSlots--;
+            listStations.Add(updatedStation);
+            listStations = listStations.OrderBy(s => s.ID).ToList();
+            XmlTools.SaveListToXmlSerializer(listStations, stationsPath);
+            XmlTools.SaveListToXmlSerializer(listDronesCharge, droneChargePath);
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
         public void UpdateParcelInDelivery(Parcel parcel)
         {
-            List<Parcel> ListParcels = XmlTools.LoadListFromXmlSerializer<Parcel>(parcelsPath);
-            Parcel UpdatedParcel = GetParcel(parcel.ID);
-            ListParcels.Remove(UpdatedParcel);
-            UpdatedParcel.Delivered = DateTime.Now;
-            ListParcels.Add(UpdatedParcel);
-            ListParcels = ListParcels.OrderBy(p => p.ID).ToList();
-            XmlTools.SaveListToXmlSerializer(ListParcels, parcelsPath);
+            List<Parcel> listParcels = XmlTools.LoadListFromXmlSerializer<Parcel>(parcelsPath);
+            Parcel updatedParcel = GetParcel(parcel.ID);
+            listParcels.Remove(updatedParcel);
+            updatedParcel.Delivered = DateTime.Now;
+            listParcels.Add(updatedParcel);
+            listParcels = listParcels.OrderBy(p => p.ID).ToList();
+            XmlTools.SaveListToXmlSerializer(listParcels, parcelsPath);
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
         public void UpdateParcelCollected(Parcel newParcel)
         {
-            List<Parcel> ListParcels = XmlTools.LoadListFromXmlSerializer<Parcel>(parcelsPath);
-            Parcel oldParcel = ListParcels.Find(p => p.ID == newParcel.ID);
+            List<Parcel> listParcels = XmlTools.LoadListFromXmlSerializer<Parcel>(parcelsPath);
+            Parcel oldParcel = listParcels.Find(p => p.ID == newParcel.ID);
             if (oldParcel.ID == 0)
                 throw new DroneExistException($"Parcel {newParcel.ID} doesn't exists in the data!!");
 
-            ListParcels.Remove(oldParcel);
+            listParcels.Remove(oldParcel);
             oldParcel.PickedUp = DateTime.Now;         ///Updating the time of the pickup by the drone
-            ListParcels.Add(oldParcel);
-            XmlTools.SaveListToXmlSerializer(ListParcels, parcelsPath);
+            listParcels.Add(oldParcel);
+            XmlTools.SaveListToXmlSerializer(listParcels, parcelsPath);
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
         public void PairParcelToDrone(Parcel newParcel, Drone newDrone)
         {
-            List<Parcel> ListParcels = XmlTools.LoadListFromXmlSerializer<Parcel>(parcelsPath);
+            List<Parcel> listParcels = XmlTools.LoadListFromXmlSerializer<Parcel>(parcelsPath);
             List<Drone> DroneParcels = XmlTools.LoadListFromXmlSerializer<Drone>(dronesPath);
-            Parcel oldParcel = ListParcels.Find(p => p.ID == newParcel.ID);
+            Parcel oldParcel = listParcels.Find(p => p.ID == newParcel.ID);
             Drone oldDrone = DroneParcels.Find(d => d.ID == newDrone.ID);
             if (oldParcel.ID == 0)
                 throw new DroneExistException($"Parcel {newParcel.ID} doesn't exists in the data!!");
             if (oldDrone.ID == 0)
                 throw new DroneExistException($"Drone {newDrone.ID} doesn't exists in the data!!");
 
-            ListParcels.Remove(oldParcel);
+            listParcels.Remove(oldParcel);
             oldParcel.DroneID = newDrone.ID;            ///Pairing the parcel with the ID of the drone chose to take it
             oldParcel.Scheduled = DateTime.Now;         ///Updating the scheduled time for the parcel
-            ListParcels.Add(oldParcel);
-            ListParcels = ListParcels.OrderBy(p => p.ID).ToList();
-            XmlTools.SaveListToXmlSerializer(ListParcels, parcelsPath);
+            listParcels.Add(oldParcel);
+            listParcels = listParcels.OrderBy(p => p.ID).ToList();
+            XmlTools.SaveListToXmlSerializer(listParcels, parcelsPath);
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
         public void UpdateDeleteParcel(Parcel parcel)
         {
-            List<Parcel> ListParcels = XmlTools.LoadListFromXmlSerializer<Parcel>(parcelsPath);
-            Parcel UpdatedParcel = GetParcel(parcel.ID);
-            ListParcels.Remove(UpdatedParcel);
-            ListParcels = ListParcels.OrderBy(p => p.ID).ToList();
-            XmlTools.SaveListToXmlSerializer(ListParcels, parcelsPath);
+            List<Parcel> listParcels = XmlTools.LoadListFromXmlSerializer<Parcel>(parcelsPath);
+            Parcel updatedParcel = GetParcel(parcel.ID);
+            listParcels.Remove(updatedParcel);
+            listParcels = listParcels.OrderBy(p => p.ID).ToList();
+            XmlTools.SaveListToXmlSerializer(listParcels, parcelsPath);
         }
         #endregion
 
@@ -271,24 +275,24 @@ namespace DAL
         [MethodImpl(MethodImplOptions.Synchronized)]
         public double GetBatteryProperty(string elementString)
         {
-            XElement BatteryPropertyList = XmlTools.LoadData(configPath);
+            XElement batteryPropertyList = XmlTools.LoadData(configPath);
             double batteryProperty = 0;
             switch (elementString)
             {
                 case "BatteryUsageEmpty":
-                    batteryProperty =Convert.ToDouble( BatteryPropertyList.Element("BatteryUsage").Element("BatteryUsageEmpty").Value);
+                    batteryProperty =Convert.ToDouble( batteryPropertyList.Element("BatteryUsage").Element("BatteryUsageEmpty").Value);
                     break;
                 case "BatteryUsageLightWight":
-                    batteryProperty = Convert.ToDouble(BatteryPropertyList.Element("BatteryUsage").Element("BatteryUsageLightWight").Value);
+                    batteryProperty = Convert.ToDouble(batteryPropertyList.Element("BatteryUsage").Element("BatteryUsageLightWight").Value);
                     break;
                 case "BatteryUsageMediumWight":
-                    batteryProperty = Convert.ToDouble(BatteryPropertyList.Element("BatteryUsage").Element("BatteryUsageMediumWight").Value);
+                    batteryProperty = Convert.ToDouble(batteryPropertyList.Element("BatteryUsage").Element("BatteryUsageMediumWight").Value);
                     break;
                 case "BatteryUsageHaevyWight":
-                    batteryProperty = Convert.ToDouble(BatteryPropertyList.Element("BatteryUsage").Element("BatteryUsageHaevyWight").Value);
+                    batteryProperty = Convert.ToDouble(batteryPropertyList.Element("BatteryUsage").Element("BatteryUsageHaevyWight").Value);
                     break;
                 case "BatteryChargeRate":
-                    batteryProperty = Convert.ToDouble(BatteryPropertyList.Element("BatteryUsage").Element("BatteryChargeRate").Value);
+                    batteryProperty = Convert.ToDouble(batteryPropertyList.Element("BatteryUsage").Element("BatteryChargeRate").Value);
                     break;
                 default:
                     break;
@@ -297,33 +301,33 @@ namespace DAL
         }
         
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public Drone GetDrone(int DroneID)
+        public Drone GetDrone(int droneID)
         {
-            List<Drone> ListDrones = XmlTools.LoadListFromXmlSerializer<Drone>(dronesPath);
-            Drone drone = ListDrones.Find(drone => DroneID == drone.ID);
+            List<Drone> listDrones = XmlTools.LoadListFromXmlSerializer<Drone>(dronesPath);
+            Drone drone = listDrones.Find(drone => droneID == drone.ID);
             if (drone.ID != 0)
                 return drone;
             else
-                throw new CustomerExistException($"Drone {DroneID} doesn't exist in data!");
+                throw new CustomerExistException($"Drone {droneID} doesn't exist in data!");
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public Parcel GetParcel(int ParcelID)
+        public Parcel GetParcel(int parcelID)
         {
-            List<Parcel> ListParcels = XmlTools.LoadListFromXmlSerializer<Parcel>(parcelsPath);
-            Parcel parcel = ListParcels.Find(parcel => ParcelID == parcel.ID);
+            List<Parcel> listParcels = XmlTools.LoadListFromXmlSerializer<Parcel>(parcelsPath);
+            Parcel parcel = listParcels.Find(parcel => parcelID == parcel.ID);
             if (parcel.ID != 0)
                 return parcel;
             else
-                throw new CustomerExistException($"Parcel {ParcelID} doesn't exist in data!");
+                throw new CustomerExistException($"Parcel {parcelID} doesn't exist in data!");
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public Station GetStation(int StationID)
+        public Station GetStation(int stationID)
         {
-            XElement ListStations = XmlTools.LoadListFromXElement(stationsPath);
-            Station station = (from s in ListStations.Elements()
-                               where Convert.ToInt32(s.Element("ID").Value) == StationID
+            XElement listStations = XmlTools.LoadListFromXElement(stationsPath);
+            Station station = (from s in listStations.Elements()
+                               where Convert.ToInt32(s.Element("ID").Value) == stationID
                                select new Station()
                                {
                                    ID = Convert.ToInt32(s.Element("ID").Value),
@@ -332,80 +336,66 @@ namespace DAL
                                    Longitude = Convert.ToDouble(s.Element("Longitude").Value),
                                    Name = s.Element("Name").Value
                                }).FirstOrDefault();
-            //try
-            //{
-            //    station = (from s in ListStations.Elements()
-            //                   where Convert.ToInt32(s.Element("ID").Value) == StationID
-            //                   select new Station()
-            //                   {
-            //                       ID = Convert.ToInt32(s.Element("ID").Value),
-            //                       ChargeSlots = Convert.ToInt32(s.Element("ChargeSlots").Value),
-            //                       Latitude = Convert.ToDouble(s.Element("Latitude").Value),
-            //                       Longitude = Convert.ToDouble(s.Element("Longitude").Value),
-            //                       Name = s.Element("Name").Value
-            //                   }).FirstOrDefault();
-            //}
-            //catch (Exception)
-            //{
-            //    station = new();
-            //}
-            return station;
+            if (station.ID != 0)
+                return station;
+            else
+                throw new StationExistException($"Station {stationID} doesn't exist in data!");
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public Customer GetCustomer(int CustomerID)
+        public Customer GetCustomer(int customerID)
         {
             List<Customer> ListCustomer = XmlTools.LoadListFromXmlSerializer<Customer>(customersPath);
-            Customer customer = ListCustomer.Find(customer => CustomerID == customer.ID);
+            Customer customer = ListCustomer.Find(customer => customerID == customer.ID);
             if (customer.ID != 0)
                 return customer;
             else
-                throw new CustomerExistException($"Customer {CustomerID} doesn't exist in data!");
+                throw new CustomerExistException($"Customer {customerID} doesn't exist in data!");
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public DroneCharge GetDroneCharge(int DroneChargeID)
+        public DroneCharge GetDroneCharge(int droneChargeID)
         {
-            List<DroneCharge> ListDroneCharge = XmlTools.LoadListFromXmlSerializer<DroneCharge>(droneChargePath);
-            DroneCharge drone = ListDroneCharge.Find(drone => DroneChargeID == drone.DroneID);
+            List<DroneCharge> listDroneCharge = XmlTools.LoadListFromXmlSerializer<DroneCharge>(droneChargePath);
+            DroneCharge drone = listDroneCharge.Find(drone => droneChargeID == drone.DroneID);
             if (drone.DroneID != 0)
                 return drone;
             else
-                throw new CustomerExistException($"Customer {DroneChargeID} doesn't exist in data!");
+                throw new DroneExistException($"Drone charge {droneChargeID} doesn't exist in data!");
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public IEnumerable<Customer> GetCustomers(Predicate<Customer> CustomerPredicate)
+        public IEnumerable<Customer> GetCustomers(Predicate<Customer> customerPredicate)
         {
-            List<Customer> ListCustomers = XmlTools.LoadListFromXmlSerializer<Customer>(customersPath);
-            return from customer in ListCustomers
-                   where CustomerPredicate(customer)
+            List<Customer> listCustomers = XmlTools.LoadListFromXmlSerializer<Customer>(customersPath);
+            return from customer in listCustomers
+                   where customerPredicate(customer)
                    select customer;
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public IEnumerable<Drone> GetDrones(Predicate<Drone> DronePredicate)
+        public IEnumerable<Drone> GetDrones(Predicate<Drone> dronePredicate)
         {
-            List<Drone> ListDrones = XmlTools.LoadListFromXmlSerializer<Drone>(dronesPath);
-            return from drone in ListDrones
-                   where DronePredicate(drone)
+            List<Drone> listDrones = XmlTools.LoadListFromXmlSerializer<Drone>(dronesPath);
+            return from drone in listDrones
+                   where dronePredicate(drone)
                    select drone;
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public IEnumerable<Parcel> GetParcels(Predicate<Parcel> ParcelPredicate)
+        public IEnumerable<Parcel> GetParcels(Predicate<Parcel> parcelPredicate)
         {
-            List<Parcel> ListParcels = XmlTools.LoadListFromXmlSerializer<Parcel>(parcelsPath);
-            return from parcel in ListParcels
-                   where ParcelPredicate(parcel)
+            List<Parcel> listParcels = XmlTools.LoadListFromXmlSerializer<Parcel>(parcelsPath);
+            return from parcel in listParcels
+                   where parcelPredicate(parcel)
                    select parcel;
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public IEnumerable<Station> GetStations(Predicate<Station> StationPredicate)
+        public IEnumerable<Station> GetStations(Predicate<Station> stationPredicate)
         {
-            XElement ListStations = XmlTools.LoadListFromXElement(stationsPath);
-            List<Station> stations = (from s in ListStations.Elements()
+            XElement listStations = XmlTools.LoadListFromXElement(stationsPath);
+            var stations = (from s in listStations.Elements()
                                       select new Station()
                                       {
                                           ID = Convert.ToInt32(s.Element("ID").Value),
@@ -413,22 +403,18 @@ namespace DAL
                                           Latitude = Convert.ToDouble(s.Element("Latitude").Value),
                                           Longitude = Convert.ToDouble(s.Element("Longitude").Value),
                                           Name = s.Element("Name").Value
-                                      }).Where(s => StationPredicate(s)).ToList();
+                                      }).Where(s => stationPredicate(s));
             return stations;
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public IEnumerable<DroneCharge> GetDroneCharge(Predicate<DroneCharge> DroneChangePredicate)
+        public IEnumerable<DroneCharge> GetDroneCharge(Predicate<DroneCharge> droneChangePredicate)
         {
-            List<DroneCharge> ListDroneCharge = XmlTools.LoadListFromXmlSerializer<DroneCharge>(droneChargePath);
-            return from drone in ListDroneCharge
-                   where DroneChangePredicate(drone)
+            List<DroneCharge> listDroneCharge = XmlTools.LoadListFromXmlSerializer<DroneCharge>(droneChargePath);
+            return from drone in listDroneCharge
+                   where droneChangePredicate(drone)
                    select drone;
         }
-        #endregion
-
-        #region Calc
-
         #endregion
     }
 }

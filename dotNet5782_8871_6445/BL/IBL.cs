@@ -61,8 +61,19 @@ namespace BlApi
         /// <param name="StationID"></param>
         /// <param name="NewStationName"></param>
         void UpdateStationSlots(int StationID, int NewNumberSlots , int CurrentlyCharging);
+        /// <summary>
+        /// Updating a customer's name
+        /// </summary>
+        /// <param name="CustomerID"></param>
+        /// <param name="NewCustomerName"></param>
 
         public void UpdateCustomerName(int CustomerID, string NewCustomerName);
+
+        /// <summary>
+        /// Updating a customer's phone number
+        /// </summary>
+        /// <param name="CustomerID"></param>
+        /// <param name="NewCustomerPhone"></param>
         public void UpdateCustomerPhone(int CustomerID, int NewCustomerPhone);
 
         /// <summary>
@@ -103,7 +114,19 @@ namespace BlApi
         /// <param name="DroneID"></param>
         public void UpdateDroneToBeAvailable(int DroneID);
 
+        /// <summary>
+        /// Deleting a parcel from the data
+        /// </summary>
+        /// <param name="id"></param>
+
         public void UpdateDeleteParcel(int id);
+
+        /// <summary>
+        /// Creating a thread that starts a simulator for the drone
+        /// </summary>
+        /// <param name="droneID"></param>
+        /// <param name="updateView"></param>
+        /// <param name="checkIfCanceled"></param>
 
         public void UpdateDroneSimulatorStart(int droneID, Action updateView, Func<bool> checkIfCanceled);
 
@@ -111,45 +134,81 @@ namespace BlApi
 
         #region Get
         #region Get All
+        /// <summary>
+        /// Function that recive all the drones from the data and convert them into "DroneToLIst" entity and returns the new IEnumarble
+        /// </summary>
+        /// <returns>IEnumerable<DroneToList></returns>
         public IEnumerable<DroneToList> GetAllDrones();
 
         /// <summary>
-        /// Function that recive all the parcels from data and create a list of ParcelToList and send it to print in console
+        /// Function that recive all the parcels from the data and convert them into "ParcelToLIst" entity and returns the new IEnumarble
         /// </summary>
-        /// <returns></returns>
+        /// <returns>IEnumerable<ParcelToList></returns>
         public IEnumerable<ParcelToList> GetAllParcels();
 
         /// <summary>
         /// Function that recive all the stations from data and create a list of StationToList and send it to print in console
         /// </summary>
-        /// <returns></returns>
+        /// <returns>IEnumerable<StationToList></returns>
         public IEnumerable<StationToList> GetAllStations();
 
         /// <summary>
         /// Function that recive all the customers from data and create a list of CustomerToList and send it to print in console
         /// </summary>
-        /// <returns></returns>
+        /// <returns>IEnumerable<CustomerToList></returns>
         public IEnumerable<CustomerToList> GetAllCustomers();
 
+        /// <summary>
+        /// Returns all the stations from the data
+        /// </summary>
+        /// <returns>IEnumerable<Station></returns>
         public IEnumerable<Station> GatAllStationsDO();
+
+        /// <summary>
+        /// Recive a ParcelAtCustomer entity and returns the matching ParcelToList entity
+        /// </summary>
+        /// <param name="parcel"></param>
+        /// <returns>ParcelToList</returns>
         ParcelToList GetParcelToList(ParcelAtCustomer parcel);
         #endregion
 
         #region Get some
+
         /// <summary>
-        /// Function that returns all the unassigned parcels by going through the parcels and creating a new list out of the ones that doesn't have a drone paired to them
+        /// Returns all the CustomerInParcel entity
         /// </summary>
-        /// <returns></returns>
-        public IEnumerable<ParcelToList> GetUnassignedParcels();
+        /// <returns>IEnumerable<CustomerInParcel></returns>
         public IEnumerable<CustomerInParcel> GetAllCustomerInParcels();
         /// <summary>
         /// Function that return all the station who has more than 0 charge slots available
         /// </summary>
         /// <returns>list of available stations</returns>
         public IEnumerable<StationToList> GetAvailableStations();
+        
+        /// <summary>
+        /// Returns all the parcels grouped according to the paremeters sent
+        /// </summary>
+        /// <param name="groupByString"></param>
+        /// <returns>Grouped parcels by sender\recevier</returns>
         public IEnumerable<ParcelToList> GetParcelsGroupBy(string groupByString);
 
+        /// <summary>
+        /// Returns a list of all the droneToList entities filtered by the wanted status and\or weight
+        /// </summary>
+        /// <param name="status"></param>
+        /// <param name="weight"></param>
+        /// <returns>Filtered list of DroneToList</returns>
         public IEnumerable<DroneToList> GetDrones(DroneStatus status, WeightCategories weight);
+
+        /// <summary>
+        /// Returns all the parcels filtered by priority/wight/status and time created
+        /// </summary>
+        /// <param name="priorities"></param>
+        /// <param name="weight"></param>
+        /// <param name="status"></param>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns>Filtered list of ParcelToList</returns>
 
         public IEnumerable<ParcelToList> GetParcels(Priorities priorities, WeightCategories weight,ParcelStatus status, DateTime? from, DateTime? to);
         #endregion

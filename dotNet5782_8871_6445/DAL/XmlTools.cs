@@ -14,6 +14,9 @@ namespace DAL
     {
         static string dir = @"..\..\..\..\Data\";
         static XElement Root;
+        /// <summary>
+        /// File initialilize
+        /// </summary>
         static XmlTools()
         {
             if (!Directory.Exists(dir))
@@ -21,7 +24,13 @@ namespace DAL
         }
 
         #region Save Load With Xml Serializer
-        public static void SaveListToXmlSerializer<T>(List<T> list, string filePath)
+        /// <summary>
+        /// Generic function to save a list in the XML file that match the given path using XmlSerializer
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="list"></param>
+        /// <param name="filePath"></param>
+        public static void SaveListToXmlSerializer<T>(List<T> list, string filePath) 
         {
             try
             {
@@ -35,6 +44,12 @@ namespace DAL
                 throw new XmlFileLoadCreateException(filePath, $"failed to create xml file: {filePath}", ex);
             }
         }
+        /// <summary>
+        /// Generic function that returns a list of items from the file that match the given path using XmlSerializer
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="filePath"></param>
+        /// <returns> List of items located in the wanted XML file</returns>
 
         public static List<T> LoadListFromXmlSerializer<T>(string filePath)
         {
@@ -59,6 +74,13 @@ namespace DAL
         }
         #endregion
         #region  Save Load With XElement
+
+        // <summary>
+        /// Generic function that returns a list of items from the file that match the given path using XElement
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="filePath"></param>
+        /// <returns> XElement items located in the wanted XML file</returns>
         public static XElement LoadListFromXElement(string filePath)
         {
             if (File.Exists(dir + filePath))
@@ -66,6 +88,11 @@ namespace DAL
             else
                 return CreateFiles(filePath);
         }
+        /// <summary>
+        /// Generic function to save a list in the XML file that match the given path using XElement
+        /// </summary>
+        /// <param name="EntityList"></param>
+        /// <param name="filePath"></param>
 
         public static void SaveListToXElement(XElement EntityList, string filePath)
         {
@@ -78,6 +105,11 @@ namespace DAL
                 throw new XmlFileLoadCreateException(filePath, $"failed to create xml file: {filePath}", ex);
             }
         }
+        /// <summary>
+        /// Return XElement type in the XML file located in the given path
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <returns>XElement</returns>
 
         public static XElement LoadData(string filePath)
         {
@@ -90,6 +122,11 @@ namespace DAL
                 throw new XmlFileLoadCreateException(filePath, $"failed to load xml file: {filePath}", ex);
             }
         }
+        /// <summary>
+        /// Create XML file with the given path
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <returns>XElement</returns>
 
         public static XElement CreateFiles(string filePath)
         {

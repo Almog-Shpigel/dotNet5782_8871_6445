@@ -125,10 +125,19 @@ namespace PL
 
         private void UpdateReleaseDroneFromChargeButton_Click(object sender, RoutedEventArgs e)
         {
-            bl.UpdateDroneToBeAvailable(Convert.ToInt32(IDBox.Text));
-            droneBL = bl.GetDrone(droneBL.ID);
-            DataContext = droneBL;
-            ButtenEnableCheck();
+            try 
+            {
+                bl.UpdateDroneToBeAvailable(Convert.ToInt32(IDBox.Text));
+                droneBL = bl.GetDrone(droneBL.ID);
+                DataContext = droneBL;
+                ButtenEnableCheck();
+            }
+            catch (Exception exp)
+            {
+                InvalidBatteryToCompleteDeliveryBlock.Text = exp.Message;
+                InvalidBatteryToCompleteDeliveryBlock.Visibility = Visibility.Visible;
+            }
+            
         }
 
         private void UpdateParcelAssignToDroneButton_Click(object sender, RoutedEventArgs e)
@@ -261,6 +270,7 @@ namespace PL
             worker.ProgressChanged += Worker_ProgressChanged;
             worker.RunWorkerCompleted += Worker_RunWorkerCompleted;
             worker.RunWorkerAsync(droneBL.ID);
+            UpdateButtonsPanel.IsEnabled = false;
         }
 
         private void updateView()
@@ -270,7 +280,10 @@ namespace PL
 
         private void ManualThreadButton_Click(object sender, RoutedEventArgs e)
         {
-
+            UpdateButtonsPanel.IsEnabled = true;
+            worker.CancelAsync();
+            ButtenEnableCheck();
+            updateDrone();
         }
 
         private void Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)

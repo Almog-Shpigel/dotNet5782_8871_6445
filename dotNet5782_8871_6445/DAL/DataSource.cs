@@ -70,8 +70,8 @@ namespace DalObject
                 Customer NewCustomer = new(id, name, phone, latitude, longitude);
                 customers.Add(NewCustomer);
             }
-            /// Initializing 10 parcels.
-            for (int i = 0; i < 10; i++)
+            /// Initializing 20 parcels.
+            for (int i = 0; i < 20; i++)
             {
                 int id = 344000 + ++Config.ParcelsCounter;
                 int sender = customers[rnd.Next(10)].ID;

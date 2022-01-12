@@ -90,25 +90,7 @@ namespace BlApi
         #endregion
 
         #region Get Some
-        [MethodImpl(MethodImplOptions.Synchronized)]
-        public IEnumerable<ParcelToList> GetUnassignedParcels()
-        {
-            lock (Data)
-            {
-                IEnumerable<ParcelToList> UnassignedParcels = Data
-                .GetParcels(parcel => parcel.ID == 0)
-                .Select(parcel => new ParcelToList()
-                {
-                    ID = parcel.ID,
-                    SenderName = Data.GetCustomer(parcel.SenderID).Name,
-                    TargetName = Data.GetCustomer(parcel.TargetID).Name,
-                    Weight = parcel.Weight,
-                    Priority = parcel.Priority,
-                    Status = GetParcelStatus(parcel)
-                });
-                return UnassignedParcels;
-            }
-        }
+
 
         [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<StationToList> GetAvailableStations()

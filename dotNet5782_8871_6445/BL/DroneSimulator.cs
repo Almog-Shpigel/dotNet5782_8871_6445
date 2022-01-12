@@ -44,7 +44,9 @@ namespace BL
                                                              .Where(p => drone.MaxWeight >= p.Weight)
                                                              .OrderBy(p => p.Priority)
                                                              .ThenBy(p => p.Weight).FirstOrDefault();
-                                if (MaxParcel.ID != 0 && (drone.BatteryStatus < 100 || !bl.PossibleDelivery(droneToList, MaxParcel)))
+                                if (MaxParcel.ID == 0 && drone.BatteryStatus == 100)
+                                    break;
+                                if ((MaxParcel.ID == 0 && drone.BatteryStatus < 100) || !bl.PossibleDelivery(droneToList, MaxParcel))
                                 {
                                     Station near = bl.GetNearestStation(drone.CurrentLocation, dal.GetStations(station => station.ChargeSlots > 0));
                                     if (drone.BatteryStatus < bl.Distance(droneToList.CurrentLocation, new(near.Latitude, near.Longitude)) * bl.BatteryUsageEmpty)

@@ -254,82 +254,82 @@ namespace DalObject
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public Drone GetDrone(int DroneID)
+        public Drone GetDrone(int droneID)
         {
-            Drone drone = DataSource.drones.Find(d => d.ID == DroneID);
+            Drone drone = DataSource.drones.Find(d => d.ID == droneID);
             if(drone.ID == 0)
-                throw new DroneExistException($"Drone {DroneID} doesn't exists in the data!!");
+                throw new DroneExistException($"Drone {droneID} doesn't exists in the data!!");
             return drone;
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public Parcel GetParcel(int ParcelID)
+        public Parcel GetParcel(int parcelID)
         {
-            Parcel parcel = DataSource.parcels.Find(p => p.ID == ParcelID);
+            Parcel parcel = DataSource.parcels.Find(p => p.ID == parcelID);
             if (parcel.ID == 0)
-                throw new ParcelExistException($"Parcel {ParcelID} doesn't exists in the data!!");
+                throw new ParcelExistException($"Parcel {parcelID} doesn't exists in the data!!");
             return parcel;
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public Station GetStation(int StationID)
+        public Station GetStation(int stationID)
         {
-            Station station = DataSource.stations.Find(s => s.ID == StationID);
+            Station station = DataSource.stations.Find(s => s.ID == stationID);
             if (station.ID == 0)
-                throw new StationExistException($"Station {StationID} doesn't exists in the data!!");
+                throw new StationExistException($"Station {stationID} doesn't exists in the data!!");
             return station;
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public Customer GetCustomer(int CustomerID)
+        public Customer GetCustomer(int customerID)
         {
-            Customer customer = DataSource.customers.Find(c => c.ID == CustomerID);
+            Customer customer = DataSource.customers.Find(c => c.ID == customerID);
             if (customer.ID == 0)
-                throw new CustomerExistException($"Customer {CustomerID} doesn't exists in the data!!");
+                throw new CustomerExistException($"Customer {customerID} doesn't exists in the data!!");
             return customer;
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public DroneCharge GetDroneCharge(int DroneChargeID)
+        public DroneCharge GetDroneCharge(int droneChargeID)
         {
-            DroneCharge drone = DataSource.DroneCharges.Find(d => d.DroneID == DroneChargeID);
+            DroneCharge drone = DataSource.DroneCharges.Find(d => d.DroneID == droneChargeID);
             if (drone.DroneID == 0)
-                throw new DroneExistException($"Drone in charge {DroneChargeID} doesn't exists in the data!!");
+                throw new DroneExistException($"Drone in charge {droneChargeID} doesn't exists in the data!!");
             return drone;
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public IEnumerable<Drone> GetDrones(Predicate<Drone> DronePredicate)
+        public IEnumerable<Drone> GetDrones(Predicate<Drone> dronePredicate)
         {
-            return DataSource.drones.Where(drone => DronePredicate(drone));
+            return DataSource.drones.Where(drone => dronePredicate(drone));
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public IEnumerable<Parcel> GetParcels(Predicate<Parcel> ParcelPredicate)
+        public IEnumerable<Parcel> GetParcels(Predicate<Parcel> parcelPredicate)
         {
-            IEnumerable<Parcel> SelectedParcels = DataSource.parcels.Where(parcel => ParcelPredicate(parcel));
-            return SelectedParcels;
+            IEnumerable<Parcel> selectedParcels = DataSource.parcels.Where(parcel => parcelPredicate(parcel));
+            return selectedParcels;
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public IEnumerable<Station> GetStations(Predicate<Station> StationPredicate)
+        public IEnumerable<Station> GetStations(Predicate<Station> stationPredicate)
         {
-            IEnumerable<Station> SelectedStations = DataSource.stations.Where(station => StationPredicate(station));
-            return SelectedStations;
+            IEnumerable<Station> selectedStations = DataSource.stations.Where(station => stationPredicate(station));
+            return selectedStations;
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public IEnumerable<Customer> GetCustomers(Predicate<Customer> CustomerPredicate)
+        public IEnumerable<Customer> GetCustomers(Predicate<Customer> customerPredicate)
         {
-            IEnumerable<Customer> SelectedCustomers = DataSource.customers.Where(customer => CustomerPredicate(customer));
-            return SelectedCustomers;
+            IEnumerable<Customer> selectedCustomers = DataSource.customers.Where(customer => customerPredicate(customer));
+            return selectedCustomers;
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public IEnumerable<DroneCharge> GetDroneCharge(Predicate<DroneCharge> DroneChargePredicate)
+        public IEnumerable<DroneCharge> GetDroneCharge(Predicate<DroneCharge> droneChargePredicate)
         {
-            IEnumerable<DroneCharge> SelectedDroneCharge = DataSource.DroneCharges.Where(droneCharge => DroneChargePredicate(droneCharge));
-            return SelectedDroneCharge;
+            IEnumerable<DroneCharge> selectedDroneCharge = DataSource.DroneCharges.Where(droneCharge => droneChargePredicate(droneCharge));
+            return selectedDroneCharge;
         }
         #endregion
 

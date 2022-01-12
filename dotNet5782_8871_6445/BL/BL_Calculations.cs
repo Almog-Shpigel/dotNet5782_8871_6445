@@ -125,6 +125,8 @@ namespace BlApi
         {
             lock (Data)
             {
+                if (parcel.ID == 0)
+                    return false;
                 double total;
                 Customer sender = Data.GetCustomer(parcel.SenderID), target = Data.GetCustomer(parcel.TargetID);
                 Location targetLocation = new(target.Latitude, target.Longitude);

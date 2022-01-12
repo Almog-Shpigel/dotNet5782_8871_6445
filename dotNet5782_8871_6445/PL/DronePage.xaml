@@ -87,14 +87,13 @@
             
         </StackPanel>
         <StackPanel Grid.Row="1" Grid.Column="2">
-            <Button x:Name="DroneListGoBackButton" Content="Go back to the list" Click="DroneListGoBackButton_Click" ClickMode="Release"
-                Style="{StaticResource ButtonPageStyle}" Grid.Row="2" Grid.Column="2" VerticalAlignment="Top"
-                    Visibility="{Binding ElementName=UpdateButtonsPanel, Path=Visibility}"/>
-            <Border BorderBrush="Black" BorderThickness="1" Height="220" Margin="10,10">
+            <Button x:Name="DroneListGoBackButton" Content="Go back" Click="DroneListGoBackButton_Click" ClickMode="Release"
+                Style="{StaticResource ButtonPageStyle}" Grid.Row="2" Grid.Column="2" VerticalAlignment="Top"/>
+            <Border BorderBrush="Black" BorderThickness="1" Height="220" Margin="10,10" Visibility="{Binding ElementName=UpdateButtonsPanel, Path=Visibility}">
                 <m:Map x:Name="myMap" Grid.RowSpan="2"
-                    Center="{Binding Location}" ZoomLevel="10"
+                    Center="{Binding Location}" ZoomLevel="10" 
                     Mode="Road" 
-                    CredentialsProvider="AqTTbx5Fyl3jocqOWa8mxbnsv-7MqNqBPc5kVABd_psvOsnH-cxtzJ1wUdpdeCxE" />
+                    CredentialsProvider="AqTTbx5Fyl3jocqOWa8mxbnsv-7MqNqBPc5kVABd_psvOsnH-cxtzJ1wUdpdeCxE"/>
             </Border>
             <Button x:Name="AutoThreadButton" Content="Simulator" Style="{StaticResource ButtonPageStyle}" Visibility="{Binding ElementName=UpdateButtonsPanel, Path=Visibility}" Click="AutoThreadButton_Click"/>
             <Button x:Name="ManualThreadButton" Content="Manual" Style="{StaticResource ButtonPageStyle}" Visibility="{Binding ElementName=UpdateButtonsPanel, Path=Visibility}"  Click="ManualThreadButton_Click"/>

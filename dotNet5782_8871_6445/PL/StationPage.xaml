@@ -32,8 +32,8 @@
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock x:Name="PrintAvailableSlots" Text="Available slots:" Style="{StaticResource TextBlockPageStyle}" />
-                <TextBox x:Name="AvailableSlotsBox" Text="{Binding ChargeSlots}" IsReadOnly="True" Width="150" FontSize="20" Margin="10,0"/>
-                <TextBox x:Name="UpdateTotalSlotsBox" Width="150" FontSize="15" Margin="10,0" TextChanged="AvailableSlotsBox_TextChanged" materialDesign:HintAssist.Hint="Enter total slots"/>
+                <TextBox x:Name="AvailableSlotsBox" TextChanged="AvailableSlotsBox_TextChanged" Text="{Binding ChargeSlots}" IsReadOnly="True" Width="150" FontSize="20" Margin="10,0"/>
+                <TextBox x:Name="UpdateTotalSlotsBox" Width="150" FontSize="15" Margin="10,0" TextChanged="UpdateTotalSlotsBox_TextChanged" materialDesign:HintAssist.Hint="Enter total slots"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock x:Name="PrintLocationBlock" Text="Location:" Style="{StaticResource TextBlockPageStyle}" />

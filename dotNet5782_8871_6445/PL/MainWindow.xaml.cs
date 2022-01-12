@@ -88,8 +88,7 @@ namespace PL
         private void StationListAddButton_Click(object sender, RoutedEventArgs e)
         {
             stationPage = new(e);
-            stationPage.StationListGoBackButton.Click += StationListPageButton_Click;
-            stationPage.StationEntityAddButton.Click += StationListPageButton_Click;
+            stationPage.StationListGoBackButton.Click += StationListPageButton_Click;           
             Content = stationPage;
         }
 

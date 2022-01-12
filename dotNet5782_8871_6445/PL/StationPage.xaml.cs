@@ -41,7 +41,9 @@ namespace PL
         {
             InitializeComponent();
             IDBox.IsReadOnly = false;
+            AvailableSlotsBox.IsReadOnly = false;
             UpdateNameButton.Visibility = Visibility.Collapsed;
+            UpdateTotalSlotsBox.Visibility = Visibility.Collapsed;
             EnableButton();
            
         }
@@ -88,6 +90,7 @@ namespace PL
                 UpdateChargeSlotsButton.IsEnabled = true;
                 InvalidInputBlock.Visibility = Visibility.Collapsed;
                 AvailableSlotsBox.Foreground = Brushes.Black;
+                EnableButton();
             }
             else
             {
@@ -127,13 +130,17 @@ namespace PL
             try
             {
                 IBL.AddNewStation(NewStation);
+                StationEntityAddButton.IsEnabled = false;
+                InvalidInputBlock.Text = "Station added!";
+                InvalidInputBlock.Visibility = Visibility.Visible;
+                InvalidInputBlock.Foreground = Brushes.Green;
             }
             catch (Exception exp)
             {
                 InvalidInputBlock.Text = exp.Message;
                 InvalidInputBlock.Visibility = Visibility.Visible;
                 IDBox.Foreground = Brushes.Red;
-                StationEntityAddButton.IsEnabled = false; 
+                
             }
         }
 
@@ -155,7 +162,7 @@ namespace PL
             EnableButton();
         }
 
-        private void AvailableSlotsBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void UpdateTotalSlotsBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             int stationID;
             if (int.TryParse(UpdateTotalSlotsBox.Text, out stationID))
@@ -169,6 +176,24 @@ namespace PL
                 InvalidInputBlock.Visibility = Visibility.Visible;
                 InvalidInputBlock.Text = "Available slots must be a number";
                 UpdateTotalSlotsBox.Foreground = Brushes.Red;
+                StationEntityAddButton.IsEnabled = false;
+            }
+        }
+
+        private void AvailableSlotsBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            int stationID;
+            if (int.TryParse(AvailableSlotsBox.Text, out stationID))
+            {
+                InvalidInputBlock.Visibility = Visibility.Collapsed;
+                AvailableSlotsBox.Foreground = Brushes.Black;
+                EnableButton();
+            }
+            else
+            {
+                InvalidInputBlock.Visibility = Visibility.Visible;
+                InvalidInputBlock.Text = "Available slots must be a number";
+                AvailableSlotsBox.Foreground = Brushes.Red;
                 StationEntityAddButton.IsEnabled = false;
             }
         }

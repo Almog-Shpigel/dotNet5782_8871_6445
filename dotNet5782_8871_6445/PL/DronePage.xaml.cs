@@ -205,14 +205,14 @@ namespace PL
                 InvalidDroneIDBlock.Text = exp.Message;
                 InvalidDroneIDBlock.Visibility = Visibility.Visible;
                 IDBox.Foreground = Brushes.Red;
-                //DroneEntityAddButton.IsEnabled = false;
+               
             }
             catch (InvalidInputException exp)
             {
                 InvalidDroneIDBlock.Text = exp.Message;
                 InvalidDroneIDBlock.Visibility = Visibility.Visible;
                 IDBox.Foreground = Brushes.Red;
-                //DroneEntityAddButton.IsEnabled = false;
+                
             }
         }
 

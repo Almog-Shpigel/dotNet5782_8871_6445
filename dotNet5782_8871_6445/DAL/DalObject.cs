@@ -42,9 +42,9 @@ namespace DalObject
 
         public void AddNewParcel(Parcel parcel)
         {
-            if (DataSource.customers.Any(c => c.ID == parcel.SenderID))
+            if (!DataSource.customers.Any(c => c.ID == parcel.SenderID))
                 throw new CustomerExistException($"Customer {parcel.SenderID} doesn't exists in the data!!");
-            if (DataSource.customers.Any(c => c.ID == parcel.TargetID))
+            if (!DataSource.customers.Any(c => c.ID == parcel.TargetID))
                 throw new CustomerExistException($"Customer {parcel.TargetID} doesn't exists in the data!!");            
             parcel.ID = 344000 + ++DataSource.Config.ParcelsCounter;
             DataSource.parcels.Add(parcel);

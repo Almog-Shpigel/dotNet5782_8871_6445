@@ -21,7 +21,7 @@ namespace BO
         public ParcelBL(CustomerInParcel sender, CustomerInParcel target, WeightCategories weight, Priorities priority)
         {
             Sender = new(sender.ID, sender.Name);
-            Target = new(target.ID, sender.Name);
+            Target = new(target.ID, target.Name);
             DroneInParcel = null;
             Weight = weight;
             Priority = priority;

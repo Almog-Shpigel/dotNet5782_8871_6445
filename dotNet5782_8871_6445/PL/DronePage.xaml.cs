@@ -186,15 +186,16 @@ namespace PL
 
         private void DroneEntityAddButton_Click(object sender, RoutedEventArgs e)
         {
-            int DroneID = Convert.ToInt32(IDBox.Text),
-                StationID = Convert.ToInt32(StationSelector.Text);
+            int droneID = Convert.ToInt32(IDBox.Text),
+                stationID = Convert.ToInt32(StationSelector.Text);
             string name = ModelBlock.Text;
             WeightCategories weight = (WeightCategories)WeightSelector.SelectedItem;
-            DroneBL drone = new(DroneID, name, weight);
+            DroneBL drone = new(droneID, name, weight);
             try
             {
-                bl.AddNewDrone(drone, StationID);
+                bl.AddNewDrone(drone, stationID);
                 IDBox.IsEnabled = false;
+                ModelBlock.IsEnabled = false;
                 StationSelector.IsEnabled = false;
                 WeightSelector.IsEnabled = false;
                 DroneEntityAddButton.IsEnabled = false;

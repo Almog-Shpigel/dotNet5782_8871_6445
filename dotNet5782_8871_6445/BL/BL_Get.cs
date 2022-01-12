@@ -56,7 +56,7 @@ namespace BlApi
             {
                 IEnumerable<StationToList> stations = Data.GetStations(station => true).Select(station => new StationToList(station.ID, station.Name, station.ChargeSlots,
                 Data.GetDroneCharge(droneCharge => droneCharge.StationID == station.ID).Count()));
-                return stations;
+                return stations.OrderBy(s => s.ID);
             }
         }
 
@@ -84,7 +84,7 @@ namespace BlApi
         {
             lock (Data)
             {
-                return Data.GetStations(station => true);
+                return Data.GetStations(station => true).OrderBy(s => s.ID);
             }
         }
         #endregion

@@ -12,7 +12,7 @@
     <Grid Background="#819eb1">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="5*"/>
-            <ColumnDefinition Width="70*"/>
+            <ColumnDefinition Width="100*"/>
             <ColumnDefinition Width="30*"/>
             <ColumnDefinition Width="5*"/>
         </Grid.ColumnDefinitions>
@@ -24,8 +24,8 @@
             <StackPanel Orientation="Horizontal">
                 <TextBlock x:Name="PrintIDblock" Text="Station ID:" Style="{StaticResource TextBlockPageStyle}" />
                 <TextBox   x:Name="IDBox" Text="{Binding ID}" Width="150" FontSize="20" Margin="10,0" IsReadOnly="True" materialDesign:HintAssist.Hint="Enter ID"/>
-                <materialDesign:PackIcon x:Name="IconEntityAdded" Kind="Approve"  Width="30" Height="30" Margin="10,5" HorizontalAlignment="Center" Foreground="Green" Background="Transparent"/>
-                <TextBlock x:Name="InvalidInputBlock"  Style="{StaticResource TextBlockInvalidStyle}"/>
+                <materialDesign:PackIcon x:Name="IconEntityAdded" Kind="Done"  Width="30" Height="30" Margin="10,5" HorizontalAlignment="Center" Foreground="Green" Background="Transparent"/>
+                <TextBlock x:Name="InvalidInputBlock"  Style="{StaticResource TextBlockInvalidStyle}" TextWrapping="Wrap"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock x:Name="PrintModelBlock" Text="Station name:" Style="{StaticResource TextBlockPageStyle}" />
@@ -33,8 +33,8 @@
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock x:Name="PrintAvailableSlots" Text="Available slots:" Style="{StaticResource TextBlockPageStyle}" />
-                <TextBox x:Name="AvailableSlotsBox" TextChanged="AvailableSlotsBox_TextChanged" Text="{Binding ChargeSlots}" IsReadOnly="True" Width="150" FontSize="20" Margin="10,0"/>
-                <TextBox x:Name="UpdateTotalSlotsBox" Width="150" FontSize="15" Margin="10,0" TextChanged="UpdateTotalSlotsBox_TextChanged" materialDesign:HintAssist.Hint="Enter total slots"/>
+                <TextBox x:Name="AvailableSlotsBox" TextChanged="AvailableSlotsBox_TextChanged" Text="{Binding ChargeSlots}" materialDesign:HintAssist.Hint="Enter number" IsReadOnly="True" Width="150" FontSize="20" Margin="10,0"/>
+                <TextBox x:Name="UpdateTotalSlotsBox" Width="150" FontSize="20" Margin="10,0" TextChanged="UpdateTotalSlotsBox_TextChanged" materialDesign:HintAssist.Hint="Enter total slots"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock x:Name="PrintLocationBlock" Text="Location:" Style="{StaticResource TextBlockPageStyle}" />

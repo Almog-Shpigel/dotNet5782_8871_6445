@@ -84,13 +84,13 @@ namespace PL
                 SenderIDSelector.IsEnabled = false;
                 TargetIDSelector.IsEnabled = false;
                 WeightSelector.IsEnabled = false;
-
-
+                PrioritySelector.IsEnabled = false;
             }
             catch (InvalidInputException ex)
             {
-                
+                InvalidTargetIDBlock.Visibility = Visibility.Visible;
                 ParcelEntityAddButton.IsEnabled = false;
+                InvalidTargetIDBlock.Text = ex.Message;
             }
         }
 
@@ -101,6 +101,7 @@ namespace PL
 
         private void TargetIDSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            InvalidTargetIDBlock.Visibility = Visibility.Collapsed;
             EnableButton();
         }
 

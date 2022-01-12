@@ -212,7 +212,6 @@ namespace PL
         private void ParcelDataGridAddButton_Click(object sender, RoutedEventArgs e)
         {
             parcelPage = new(e);
-            //parcelPage.ParcelEntityAddButton.Click += ParcelListPageButton_Click;
             parcelPage.ParcelDataGridGoBackButton.Click += ParcelListPageButton_Click;
             Content = parcelPage;
         }
@@ -288,7 +287,7 @@ namespace PL
                 }
                 catch (InvalidIDException ex)
                 {
-                    MessageBoxResult res = MessageBox.Show(ex.Message + ex.InnerException.Message, "Verification", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    MessageBoxResult res = MessageBox.Show(ex.Message, "Verification", MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;
                 }
                 CustomerToList customerToList = new(id);

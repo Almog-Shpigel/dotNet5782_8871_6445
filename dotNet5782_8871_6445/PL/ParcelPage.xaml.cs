@@ -80,9 +80,16 @@ namespace PL
             try
             {
                 IBL.AddNewParcel(parcel);
+                ParcelEntityAddButton.IsEnabled = false;
+                SenderIDSelector.IsEnabled = false;
+                TargetIDSelector.IsEnabled = false;
+                WeightSelector.IsEnabled = false;
+
+
             }
-            catch (Exception) //TO DO: find a better Exception
+            catch (InvalidInputException ex)
             {
+                
                 ParcelEntityAddButton.IsEnabled = false;
             }
         }

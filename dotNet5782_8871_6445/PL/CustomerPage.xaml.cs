@@ -68,9 +68,14 @@ namespace PL
                 InvalidInputBlock.Text = "Customer added!";
                 InvalidInputBlock.Visibility = Visibility.Visible;
                 InvalidInputBlock.Foreground = Brushes.Green;
+                IDBox.IsEnabled = false;
+                NameBox.IsEnabled = false;
+                PhoneNumberBox.IsEnabled = false;
+                EnterLatitudeBox.IsEnabled = false;
+                EnterLongitudeBox.IsEnabled = false;
                 IconEntityAdded.Visibility = Visibility.Visible;
             }
-            catch (Exception exp)
+            catch (InvalidInputException exp)
             {
                 InvalidInputBlock.Text = exp.Message;
                 InvalidInputBlock.Visibility = Visibility.Visible;

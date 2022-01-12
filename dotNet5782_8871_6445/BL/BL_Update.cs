@@ -92,6 +92,8 @@ namespace BlApi
             {
                 if (CustomerID is < 100000000 or > 999999999)
                     throw new InvalidIDException("Customer ID has to have 9 positive digits.");
+                if (NewCustomerName == "")
+                    return;
                 Customer customer = new(CustomerID, NewCustomerName);
                 try
                 {
@@ -306,11 +308,36 @@ namespace BlApi
             }
         }
 
-        [MethodImpl(MethodImplOptions.Synchronized)]
         public void UpdateDroneSimulatorStart(int droneID, Action updateView, Func<bool> checkIfCanceled)
         {
             new DroneSimulator(this, droneID, updateView, checkIfCanceled);
         }
-        
+
+        internal void UpdateDroneLocation(double degree, DroneBL drone, double speed)
+        {
+            if (0 <= degree && degree < 90)
+                drone.CurrentLocation = new(drone.CurrentLocation.Latitude + speed * Math.Cos(degree), drone.CurrentLocation.Longitude + speed * Math.Sin(degree));
+            if (90 <= degree && degree < 180)
+                drone.CurrentLocation = new(drone.CurrentLocation.Latitude + speed * Math.Cos(degree), drone.CurrentLocation.Longitude + speed * Math.Sin(degree));
+            if (180 <= degree && degree < 270)
+                drone.CurrentLocation = new(drone.CurrentLocation.Latitude + speed * Math.Cos(degree), drone.CurrentLocation.Longitude + speed * Math.Sin(degree));
+            if (270 <= degree && degree < 360)
+                drone.CurrentLocation = new(drone.CurrentLocation.Latitude + speed * Math.Cos(degree), drone.CurrentLocation.Longitude + speed * Math.Sin(degree));
+            UpdateDrone(drone);
+        }
+
+        private void UpdateDrone(DroneBL drone)
+        {
+            lock (Data)
+            {
+                if (drone.ID is < 100000 or > 999999)
+                    throw new InvalidInputException("Drone ID has to have 6 positive digits.");
+                DroneToList newDrone = DroneList.Find(d => d.ID == drone.ID);
+                DroneList.Remove(newDrone);
+                newDrone.CurrentLocation = drone.CurrentLocation;
+                DroneList.Add(newDrone);
+                DroneList = DroneList.OrderBy(d => d.ID).ToList();
+            }
+        }
     }
 }

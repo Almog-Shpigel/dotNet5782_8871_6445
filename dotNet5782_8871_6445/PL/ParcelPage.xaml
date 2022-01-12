@@ -67,8 +67,22 @@
                     <TextBlock x:Name="PrintDeliveredBlock"         Text="Delivered:"       Style="{StaticResource TextBlockPageStyle}" />
                     <TextBlock x:Name="DeliveredBlock"   Width="auto"  MinWidth="170" FontSize="20" Margin="10,0" Text="{Binding Delivered}"/>
                 </StackPanel>
-                <StackPanel Orientation="Horizontal">
+                <StackPanel >
                     <TextBlock x:Name="PrintDroneInParcelIDBlock"   Text="Drone In Parcel:" Style="{StaticResource TextBlockPageStyle}" TextWrapping="Wrap" VerticalAlignment="Top"/>
+                    <DataGrid x:Name="DroneDataGrid" AutoGenerateColumns="False" EnableRowVirtualization="False" DataContext="{Binding DroneInParcel}"
+                  ItemsSource="{Binding DroneInParcel}" RowDetailsVisibilityMode="VisibleWhenSelected" RenderTransformOrigin="0.5,0.5"
+                  SelectionChanged="DroneDataGrid_SelectionChanged"  Style="{StaticResource ParcelDataGrid}" IsReadOnly="True">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn x:Name="iDColumn" Binding="{Binding ID}" Header="Drone ID" Width="Auto"/>
+                            <DataGridTextColumn x:Name="SenderColumn" Binding="{Binding BatteryStatus}" Header="Battery" Width="Auto"/>
+                            <DataGridTextColumn x:Name="nameColumn" Binding="{Binding CurrentLocation}" Header="Location" Width="Auto"/>
+                        </DataGrid.Columns>
+                        <DataGrid.ItemContainerStyle>
+                            <Style TargetType="{x:Type DataGridRow}">
+                                <EventSetter Event="MouseDoubleClick"  Handler="DataGridRow_MouseDoubleClick" />
+                            </Style>
+                        </DataGrid.ItemContainerStyle>
+                    </DataGrid>
                     <TextBlock x:Name="DroneInParcelIDBlock"  Width="auto"  MinWidth="170" FontSize="20" Margin="10,0" Text="{Binding DroneInParcel}" TextWrapping="Wrap"/>
                     <materialDesign:PackIcon x:Name="PreviewDroneInParcel" Kind="Eye" Width="30" Height="30" Margin="10,5" HorizontalAlignment="Center" MouseLeftButtonDown="PreviewDroneInParcel_MouseLeftButtonDown"  Background="Transparent"/>
                 </StackPanel>

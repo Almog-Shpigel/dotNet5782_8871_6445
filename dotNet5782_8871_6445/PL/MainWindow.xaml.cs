@@ -136,6 +136,7 @@ namespace PL
                 customerPage.CustomerListGoBackButton.Click += CustomerListPageButton_Click;
                 customerPage.ParcelSentListViewFromCustomer.MouseDoubleClick += ParcelSentListViewFromCustomer_MouseDoubleClick;
                 customerPage.ParcelReceivedListViewFromCustomer.MouseDoubleClick += ParcelReceivedListViewFromCustomer_MouseDoubleClick;
+                customerPage.UpdateNewParcel.Click += ParcelDataGridAddButton_Click;
                 Content = customerPage;
             }
         }
@@ -202,7 +203,6 @@ namespace PL
                 parcelPage = new(parcel.ID);
                 parcelPage.ParcelDataGridGoBackButton.Click += ParcelListPageButton_Click;
                 parcelPage.UpdateDeleteParcelButton.Click += ParcelListPageButton_Click;
-                parcelPage.ParcelEntityAddButton.Click += ParcelListPageButton_Click;
                 parcelPage.PreviewSender.MouseLeftButtonDown += PreviewSender_MouseLeftButtonDown;
                 parcelPage.PreviewTarget.MouseLeftButtonDown += PreviewTarget_MouseLeftButtonDown;
                 parcelPage.PreviewDroneInParcel.MouseLeftButtonDown += PreviewDroneInParcel_MouseLeftButtonDown;

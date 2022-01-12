@@ -31,6 +31,7 @@ namespace PL
         {
             InitializeComponent();
             UpdateNameButton.Visibility = Visibility.Collapsed;
+            IDBox.IsReadOnly = false;
         }
 
         private void UpdateNameButton_Click(object sender, RoutedEventArgs e)
@@ -54,27 +55,6 @@ namespace PL
 
         }
 
-        private void EnterCustomerIDBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            int customerID;
-            if (!int.TryParse(IDBox.Text, out customerID))
-            {
-                InvalidInputBlock.Visibility = Visibility.Visible;
-                InvalidInputBlock.Text = "Customer id must contain only numbers";
-                IDBox.Foreground = Brushes.Red;
-                CustomerEntityAddButton.IsEnabled = false;
-            }
-            else
-            {
-                InvalidInputBlock.Visibility = Visibility.Collapsed;
-                IDBox.Foreground = Brushes.Black;
-                EnableButton();
-            }
-        }
-        private void EnterCustomerNameBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            EnableButton();
-        }
         private void CustomerEntityAddButton_Click(object sender, RoutedEventArgs e)
         {
             CustomerBL NewCustomer = new(Convert.ToInt32(IDBox.Text), NameBox.Text, PhoneNumberBox.Text,
@@ -120,7 +100,35 @@ namespace PL
         {
 
         }
-        private void EnterCustomerPhoneBox_TextChanged(object sender, TextChangedEventArgs e)
+
+        private void ListViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+
+        private void IDBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (!int.TryParse(IDBox.Text, out int customerID))
+            {
+                InvalidInputBlock.Visibility = Visibility.Visible;
+                InvalidInputBlock.Text = "Customer id must contain only numbers";
+                IDBox.Foreground = Brushes.Red;
+                CustomerEntityAddButton.IsEnabled = false;
+            }
+            else
+            {
+                InvalidInputBlock.Visibility = Visibility.Collapsed;
+                IDBox.Foreground = Brushes.Black;
+                EnableButton();
+            }
+        }
+
+        private void NameBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            EnableButton();
+        }
+
+        private void PhoneNumberBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             EnableButton();
         }
@@ -132,12 +140,33 @@ namespace PL
         {
             EnableButton();
         }
-        private void UpdatePhoneBlock_TextChanged(object sender, TextChangedEventArgs e)
+
+        private void UpdateNewParcel_Click(object sender, RoutedEventArgs e)
         {
 
         }
 
-        private void ListViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void ParcelSentListViewFromCustomer_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void ParcelSentDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void DataGridRow_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+
+        private void ParcelSentListViewFromCustomer_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void ParcelReceivedListViewFromCustomer_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
         }

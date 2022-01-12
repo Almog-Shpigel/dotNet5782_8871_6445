@@ -159,7 +159,7 @@ namespace BlApi
         {
             lock (Data)
             {
-                double TimeDifference = (DateTime.Now - (DateTime)Data.GetDroneCharge(drone.ID).Start).TotalMinutes;
+                double TimeDifference = (DateTime.Now - (DateTime)Data.GetDroneCharge(drone.ID).Start).TotalSeconds;
                 drone.BatteryStatus += BatteryChargeRate * TimeDifference;
                 if (drone.BatteryStatus > 100)
                     return 100;

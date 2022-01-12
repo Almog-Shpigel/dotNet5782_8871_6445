@@ -187,6 +187,7 @@ namespace BlApi
                     throw new DroneExistException();
 
                 DroneBL droneBL = new(drone.ID, drone.Model, drone.MaxWeight, (int)drone.BatteryStatus, drone.Status);
+                droneBL.CurrentLocation = drone.CurrentLocation;
                 if (drone.ParcelID == 0)
                     return droneBL;
                 if (droneBL.Status == DroneStatus.Delivery)

@@ -23,7 +23,7 @@
         <StackPanel x:Name="ShowDetailsDrone1" Grid.Column="1" Grid.Row="2">
             <StackPanel Orientation="Horizontal">
                 <TextBlock x:Name="PrintIDblock" Text="Drone ID:" Style="{StaticResource TextBlockPageStyle}" />
-                <TextBox   x:Name="IDBox" Text="{Binding ID}" Width="150" FontSize="20" Margin="10,0" IsReadOnly="True"/>
+                <TextBox   x:Name="IDBox" Text="{Binding ID}" Width="150" FontSize="20" Margin="10,0" IsReadOnly="True" TextChanged="IDBox_TextChanged"/>
                 <TextBlock x:Name="InvalidDroneIDBlock" Text=" * please enter a valid number" Style="{StaticResource TextBlockInvalidStyle}" Visibility="{Binding ElementName=DroneEntityAddButton, Path=Visibility}"/>
                 <TextBlock x:Name="ExistsDroneIDBlock" Style="{StaticResource TextBlockInvalidStyle}"/>
             </StackPanel>
@@ -36,7 +36,7 @@
             <StackPanel Orientation="Horizontal">
                 <TextBlock x:Name="PrintWeightBlock" Text="Max weight:" Style="{StaticResource TextBlockPageStyle}" />
                 <TextBox x:Name="WeightBlock" Text="{Binding MaxWeight}" Width="150" FontSize="20" Margin="10,0" IsReadOnly="True" Visibility="{Binding ElementName=UpdateButtonsPanel, Path=Visibility}" />
-                <ComboBox  x:Name="WeightSelector" SelectionChanged="WeightSelector_SelectionChanged" Style="{StaticResource ComboBoxStyle}" Visibility="{Binding ElementName=DroneEntityAddButton, Path=Visibility}"/>
+                <ComboBox  x:Name="WeightSelector" SelectionChanged="WeightSelector_SelectionChanged" Width="auto"  MinWidth="170" FontSize="20" Margin="10,0" IsEditable="True" Visibility="{Binding ElementName=DroneEntityAddButton, Path=Visibility}"/>
             </StackPanel>
             <StackPanel x:Name="BatteryPanel" Orientation="Horizontal" Visibility="{Binding ElementName=UpdateButtonsPanel, Path=Visibility}">
                 <TextBlock x:Name="PrintBatteryBlock" Text="Battery:" Style="{StaticResource TextBlockPageStyle}" />
@@ -69,7 +69,7 @@
             </StackPanel>
             <StackPanel Orientation="Horizontal" Visibility="{Binding ElementName=DroneEntityAddButton, Path=Visibility}">
                 <TextBlock x:Name="PrintStationIDBlock" Text="Station ID:" Style="{StaticResource TextBlockPageStyle}" />
-                <ComboBox  x:Name="StationSelector"  SelectionChanged="StationSelector_SelectionChanged" Style="{StaticResource ComboBoxStyle}"/>
+                <ComboBox  x:Name="StationSelector"  SelectionChanged="StationSelector_SelectionChanged" Width="auto"  MinWidth="170" FontSize="20" Margin="10,0" IsEditable="True"/>
                 <TextBlock x:Name="InvalidStationIDBlock" Style="{StaticResource TextBlockInvalidStyle}"/>
             </StackPanel>
             <Button x:Name="DroneEntityAddButton" Content="Add" Click="DroneEntityAddButton_Click" Style="{StaticResource ButtonPageStyle}" HorizontalAlignment="Left" Margin="50,10"/>
@@ -88,15 +88,16 @@
         </StackPanel>
         <StackPanel Grid.Row="1" Grid.Column="2">
             <Button x:Name="DroneListGoBackButton" Content="Go back to the list" Click="DroneListGoBackButton_Click" ClickMode="Release"
-                Style="{StaticResource ButtonPageStyle}" Grid.Row="2" Grid.Column="2" VerticalAlignment="Top"/>
-            <!--<Border BorderBrush="Black" BorderThickness="1" Height="220" Margin="10,10">
+                Style="{StaticResource ButtonPageStyle}" Grid.Row="2" Grid.Column="2" VerticalAlignment="Top"
+                    Visibility="{Binding ElementName=UpdateButtonsPanel, Path=Visibility}"/>
+            <Border BorderBrush="Black" BorderThickness="1" Height="220" Margin="10,10">
                 <m:Map x:Name="myMap" Grid.RowSpan="2"
-                    Center="{Binding Location}" ZoomLevel="16"
+                    Center="{Binding Location}" ZoomLevel="10"
                     Mode="Road" 
                     CredentialsProvider="AqTTbx5Fyl3jocqOWa8mxbnsv-7MqNqBPc5kVABd_psvOsnH-cxtzJ1wUdpdeCxE" />
-            </Border>-->
-            <Button x:Name="AutoThreadButton" Content="Simulator" Style="{StaticResource ButtonPageStyle}" Visibility="{Binding Auto, Converter={StaticResource BoolVisibilityConverter}}" Click="AutoThreadButton_Click"/>
-            <Button x:Name="ManualThreadButton" Content="Manual" Style="{StaticResource ButtonPageStyle}" Visibility="{Binding Auto, Converter={StaticResource BoolVisibilityConverter}}"  Click="ManualThreadButton_Click"/>
+            </Border>
+            <Button x:Name="AutoThreadButton" Content="Simulator" Style="{StaticResource ButtonPageStyle}" Visibility="{Binding ElementName=UpdateButtonsPanel, Path=Visibility}" Click="AutoThreadButton_Click"/>
+            <Button x:Name="ManualThreadButton" Content="Manual" Style="{StaticResource ButtonPageStyle}" Visibility="{Binding ElementName=UpdateButtonsPanel, Path=Visibility}"  Click="ManualThreadButton_Click"/>
         </StackPanel>
         
     </Grid>

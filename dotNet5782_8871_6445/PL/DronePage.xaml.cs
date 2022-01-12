@@ -2,6 +2,7 @@
 using BlApi;
 using BO;
 using DO;
+using Microsoft.Maps.MapControl.WPF;
 using System;
 using System.ComponentModel;
 using System.Linq;
@@ -20,6 +21,7 @@ namespace PL
         private BlApi.IBL bl = BlFactory.GetBl();
         private BO.DroneBL droneBL;
         BackgroundWorker worker;
+        Pushpin pin;
 
         public DronePage(RoutedEventArgs e)
         {
@@ -40,8 +42,16 @@ namespace PL
             DataContext = droneBL;
             DroneEntityAddButton.Visibility = Visibility.Collapsed;
             ButtenEnableCheck();
+            pin = new();
+            ToolTip tt = new();
+            pin.Location = new(droneBL.CurrentLocation.Latitude, droneBL.CurrentLocation.Longitude);
+            pin.Tag = droneBL.ID;
+            tt.Content = droneBL.ToString();
+            pin.ToolTip = tt;
+            myMap.Children.Add(pin);
+            myMap.Center = pin.Location;
         }
-        
+
 
         private void ButtenEnableCheck()
         {
@@ -94,23 +104,6 @@ namespace PL
                 DroneEntityAddButton.IsEnabled = true;
             else
                 DroneEntityAddButton.IsEnabled = false;
-        }
-
-        private void IDBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            int droneID;
-            if (!int.TryParse(IDBox.Text, out droneID))
-            {
-                InvalidDroneIDBlock.Visibility = Visibility.Visible;
-                IDBox.Foreground = Brushes.Red;
-                DroneEntityAddButton.IsEnabled = false;
-            }
-            else
-            {
-                InvalidDroneIDBlock.Visibility = Visibility.Collapsed;
-                IDBox.Foreground = Brushes.Black;
-                EnableButton();
-            }
         }
 
         private void UpdateDroneToBeChargedButton_Click(object sender, RoutedEventArgs e)
@@ -246,6 +239,14 @@ namespace PL
             StatusBlock.Text = droneBL.Status.ToString();
             ParcelBlock.Text = droneBL.Parcel.ID.ToString();
             LocationBlock.Text = droneBL.CurrentLocation.ToString();
+            myMap.Children.Remove(pin);
+            pin = new();
+            ToolTip tt = new();
+            pin.Location = new(droneBL.CurrentLocation.Latitude, droneBL.CurrentLocation.Longitude);
+            pin.Tag = droneBL.ID;
+            tt.Content = droneBL.ToString();
+            pin.ToolTip = tt;
+            myMap.Children.Add(pin);
         }
 
         private bool checkIfCanceled()
@@ -287,5 +288,21 @@ namespace PL
             bl.UpdateDroneSimulatorStart((int)e.Argument, updateView, checkIfCanceled);
         }
 
+        private void IDBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            int droneID;
+            if (!int.TryParse(IDBox.Text, out droneID))
+            {
+                InvalidDroneIDBlock.Visibility = Visibility.Visible;
+                IDBox.Foreground = Brushes.Red;
+                DroneEntityAddButton.IsEnabled = false;
+            }
+            else
+            {
+                InvalidDroneIDBlock.Visibility = Visibility.Collapsed;
+                IDBox.Foreground = Brushes.Black;
+                EnableButton();
+            }
+        }
     }
 }

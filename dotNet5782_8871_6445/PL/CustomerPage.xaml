@@ -25,16 +25,16 @@
         <StackPanel Grid.Row="2" Grid.Column="1">
             <StackPanel Orientation="Horizontal">
                 <TextBlock x:Name="PrintIDblock"        Text="Customer ID:"        Style="{StaticResource TextBlockPageStyle}" />
-                <TextBox x:Name="IDBox" Text="{Binding ID}" Width="150" FontSize="20" Margin="10,0" IsReadOnly="True" materialDesign:HintAssist.Hint="Enter number"/>
+                <TextBox x:Name="IDBox" Text="{Binding ID}" Width="150" FontSize="20" Margin="10,0" IsReadOnly="True" materialDesign:HintAssist.Hint="Enter number" TextChanged="IDBox_TextChanged"/>
                 <TextBlock x:Name="InvalidInputBlock"  Style="{StaticResource TextBlockInvalidStyle}"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock x:Name="PrintNameBlock"     Text="Customer name:"      Style="{StaticResource TextBlockPageStyle}" />
-                <TextBox x:Name="NameBox"  Text="{Binding Name}" Width="150" FontSize="20" Margin="10,0" materialDesign:HintAssist.Hint="Enter name"/>
+                <TextBox x:Name="NameBox"  Text="{Binding Name}" Width="150" FontSize="20" Margin="10,0" materialDesign:HintAssist.Hint="Enter name" TextChanged="NameBox_TextChanged"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock x:Name="PrintPhoneBlock"    Text="Phone number:"      Style="{StaticResource TextBlockPageStyle}" />
-                <TextBox x:Name="PhoneNumberBox" Text="{Binding Phone}" Width="150" FontSize="20" Margin="10,0" materialDesign:HintAssist.Hint="Enter number"/>
+                <TextBox x:Name="PhoneNumberBox" Text="{Binding Phone}" Width="150" FontSize="20" Margin="10,0" materialDesign:HintAssist.Hint="Enter number" TextChanged="PhoneNumberBox_TextChanged"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock x:Name="PrintLatitudeBlock" Text="Location:" Style="{StaticResource TextBlockPageStyle}" />
@@ -42,29 +42,48 @@
                 <TextBox   x:Name="EnterLatitudeBox" TextChanged ="EnterLatitudeBox_TextChanged" Width="150" FontSize="20" Margin="10,0" materialDesign:HintAssist.Hint="Latitude" Visibility="{Binding ElementName=CustomerEntityAddButton, Path=Visibility}"/>
                 <TextBox   x:Name="EnterLongitudeBox" TextChanged ="EnterLongitudeBox_TextChanged" Width="150" FontSize="20" Margin="10,0" materialDesign:HintAssist.Hint="Longitude" Visibility="{Binding ElementName=CustomerEntityAddButton, Path=Visibility}"/>
             </StackPanel>
-            <StackPanel x:Name="ParcelInCustomerListPanel" Orientation="Horizontal" Visibility="{Binding ElementName=UpdateNameButton, Path=Visibility}">
+            <StackPanel x:Name="ParcelInCustomerListPanel" Visibility="{Binding ElementName=UpdateNameButton, Path=Visibility}" >
                 <StackPanel>
                     <TextBlock x:Name="PrintSentBlock"    Text="Parcels sent:"    Style="{StaticResource TextBlockPageStyle}" />
-                    <ListView x:Name="ParcelSentListViewFromCustomer" Style="{StaticResource ListViewStyle}">
-                        <ListView.ItemContainerStyle>
-                            <Style TargetType="{x:Type ListViewItem}">
+                    <DataGrid x:Name="ParcelSentListViewFromCustomer" AutoGenerateColumns="False" EnableRowVirtualization="False"
+                  ItemsSource="{Binding}" RowDetailsVisibilityMode="VisibleWhenSelected" RenderTransformOrigin="0.5,0.5"
+                  SelectionChanged="ParcelSentListViewFromCustomer_SelectionChanged_1"  Style="{StaticResource ParcelDataGrid}" IsReadOnly="True" MaxHeight="250">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn x:Name="iDColumnSent" Binding="{Binding ID}" Header="Parcel ID" Width="Auto"/>
+                            <DataGridTextColumn x:Name="SenderColumnSent" Binding="{Binding SenderName}" Header="Sender" Width="Auto"/>
+                            <DataGridTextColumn x:Name="nameColumnSent" Binding="{Binding TargetName}" Header="Receiver" Width="Auto"/>
+                            <DataGridTextColumn x:Name="numberColumnSent" Binding="{Binding Weight}" Header="Weight" Width="Auto"/>
+                            <DataGridTextColumn x:Name="semesterColumnSent" Binding="{Binding Priority}" Header="Priority" Width="Auto"/>
+                            <DataGridTextColumn x:Name="yearColumnSent" Binding="{Binding Status}" Header="Status" Width="Auto"/>
+                        </DataGrid.Columns>
+                        <DataGrid.ItemContainerStyle>
+                            <Style TargetType="{x:Type DataGridRow}">
                                 <EventSetter Event="MouseDoubleClick" Handler="ParcelSentListViewFromCustomer_MouseDoubleClick" />
                             </Style>
-                        </ListView.ItemContainerStyle>
-                    </ListView>
+                        </DataGrid.ItemContainerStyle>
+                    </DataGrid>
                 </StackPanel>
                 <StackPanel>
                     <TextBlock x:Name="PrintReceiveBlock"    Text="Parcel received:"    Style="{StaticResource TextBlockPageStyle}" />
-                    <ListView x:Name="ParcelReceivedListViewFromCustomer" Style="{StaticResource ListViewStyle}">
-                        <ListView.ItemContainerStyle>
-                            <Style TargetType="{x:Type ListViewItem}">
+                    <DataGrid x:Name="ParcelReceivedListViewFromCustomer" AutoGenerateColumns="False" EnableRowVirtualization="False"
+                  ItemsSource="{Binding}" RowDetailsVisibilityMode="VisibleWhenSelected" RenderTransformOrigin="0.5,0.5"
+                  SelectionChanged="ParcelReceivedListViewFromCustomer_SelectionChanged"  Style="{StaticResource ParcelDataGrid}" IsReadOnly="True" MaxHeight="250">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn x:Name="iDColumnReceived" Binding="{Binding ID}" Header="Parcel ID" Width="Auto"/>
+                            <DataGridTextColumn x:Name="SenderColumnReceived" Binding="{Binding SenderName}" Header="Sender" Width="Auto"/>
+                            <DataGridTextColumn x:Name="nameColumnReceived" Binding="{Binding TargetName}" Header="Receiver" Width="Auto"/>
+                            <DataGridTextColumn x:Name="numberColumnReceived" Binding="{Binding Weight}" Header="Weight" Width="Auto"/>
+                            <DataGridTextColumn x:Name="semesterColumnReceived" Binding="{Binding Priority}" Header="Priority" Width="Auto"/>
+                            <DataGridTextColumn x:Name="yearColumnReceived" Binding="{Binding Status}" Header="Status" Width="Auto"/>
+                        </DataGrid.Columns>
+                        <DataGrid.ItemContainerStyle>
+                            <Style TargetType="{x:Type DataGridRow}">
                                 <EventSetter Event="MouseDoubleClick" Handler="ParcelReceivedListViewFromCustomer_MouseDoubleClick" />
                             </Style>
-                        </ListView.ItemContainerStyle>
-                    </ListView>
+                        </DataGrid.ItemContainerStyle>
+                    </DataGrid>
                 </StackPanel>
             </StackPanel>
-
         </StackPanel>
 
         <StackPanel Grid.Row="1" Grid.Column="2">
@@ -72,6 +91,7 @@
                 <Button x:Name="CustomerEntityAddButton" Content="Add" Click="CustomerEntityAddButton_Click" Style="{StaticResource ButtonPageStyle}" />
                 <Button x:Name="UpdateNameButton" Content="Update name" Click="UpdateNameButton_Click" Style="{StaticResource ButtonPageStyle}" />
                 <Button x:Name="UpdatePhoneButton" Content="Update phone number" Click="UpdatePhoneButton_Click" Style="{StaticResource ButtonPageStyle}" Visibility="{Binding ElementName=UpdateNameButton, Path=Visibility}"/>
+                <Button x:Name="UpdateNewParcel" Content="Make a new delivery" Click="UpdateNewParcel_Click" Style="{StaticResource ButtonPageStyle}" Visibility="{Binding ElementName=UpdateNameButton, Path=Visibility}"/>
                 <Button x:Name="CustomerListGoBackButton" Content="Go back" Click="CustomerListGoBackButton_Click" Style="{StaticResource ButtonPageStyle}" />
             </StackPanel>
             <!--<Border BorderBrush="Black" BorderThickness="1" Height="220" Margin="10,10">

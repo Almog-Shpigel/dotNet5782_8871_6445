@@ -123,7 +123,6 @@ namespace PL
             customerListPage.CustomerListAddButton.Click += CustomerListAddButton_Click;
             customerListPage.BackWindow.Click += BackWindow_Click;
             customerListPage.CustomersListView.MouseDoubleClick += CustomerListView_MouseDoubleClick;
-            customerPage.UpdateNewParcel.Click += ParcelDataGridAddButton_Click;
             Content = customerListPage;
         }
 
@@ -136,7 +135,7 @@ namespace PL
                 customerPage.CustomerListGoBackButton.Click += CustomerListPageButton_Click;
                 customerPage.ParcelSentListViewFromCustomer.MouseDoubleClick += ParcelSentListViewFromCustomer_MouseDoubleClick;
                 customerPage.ParcelReceivedListViewFromCustomer.MouseDoubleClick += ParcelReceivedListViewFromCustomer_MouseDoubleClick;
-                
+                customerPage.UpdateNewParcel.Click += ParcelDataGridAddButton_Click;
                 Content = customerPage;
             }
         }
